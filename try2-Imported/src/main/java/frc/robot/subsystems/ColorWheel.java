@@ -8,68 +8,65 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
-
 
 import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 
-
-
-
-
 /**
- * An example subsystem.  You can replace me with your own Subsystem.
+ * An example subsystem. You can replace me with your own Subsystem.
  */
 public class ColorWheel extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-  public ColorSensorV3 sensor; 
-  private final I2C.Port i2cPort = I2C.Port.kOnboard;
-  public static ColorWheel instance; 
-  public Color detectedColor;
- 
+   // Put methods for controlling this subsystem
+   // here. Call these from Commands.
+   public ColorSensorV3 sensor;
+   private final I2C.Port i2cPort = I2C.Port.kOnboard;
+   public Talon colorWheelSpinner;
+   public static ColorWheel instance;
+   public Color detectedColor;
 
-  public static ColorWheel initializeColorWheel()
-  {
-     if(instance == null)
-     { instance = new ColorWheel();}
-     return instance;
-  }
-  //Blue color mins and maxes
-  public double BlueRedMin = .11;
-  public double BlueRedMax =.19; 
-  public double BlueGreenMin=.42;
-  public double BlueGreenMax=.45; 
-  public double BlueBlueMin=.35;
-  public double BlueBlueMax=.46;
+   public static ColorWheel initializeColorWheel() {
+      if (instance == null) {
+         instance = new ColorWheel();
+      }
+      return instance;
+   }
 
-  //Green color mins and maxes
-  public double GreenRedMin = .15;
-  public double GreenRedMax = .2;
-  public double GreenGreenMin = .5;
-  public double GreenGreenMax = .59;
-  public double GreenBlueMin = .25;
-  public double GreenBlueMax = .25;
+   // Blue color mins and maxes
+   public double BlueRedMin = .11;
+   public double BlueRedMax = .19;
+   public double BlueGreenMin = .42;
+   public double BlueGreenMax = .45;
+   public double BlueBlueMin = .35;
+   public double BlueBlueMax = .46;
+
+   // Green color mins and maxes
+   public double GreenRedMin = .15;
+   public double GreenRedMax = .2;
+   public double GreenGreenMin = .5;
+   public double GreenGreenMax = .59;
+   public double GreenBlueMin = .25;
+   public double GreenBlueMax = .25;
+
+   // Red color mins and maxes
+   public double RedRedMin = .38;
+   public double RedRedMax = .55;
+   public double RedGreenMin = .32;
+   public double RedGreenMax = .40;
+   public double RedBlueMin = .12;
+   public double RedBlueMax = .18;
+
+   // Yellow color mins and maxes
+   public double YellowRedMin = .31;
+   public double YellowRedMax = .32;
+   public double YellowGreenMin = .51;
+   public double YellowGreenMax = .56;
+   public double YellowBlueMin = .11;
+   public double YellowBlueMax = .16;
+
   
-  //Red color mins and maxes
-  public double RedRedMin = .38;
-  public double RedRedMax = .55;
-  public double RedGreenMin = .32;
-  public double RedGreenMax = .40;
-  public double RedBlueMin = .12;
-  public double RedBlueMax = .18;
-
-  //Yellow color mins and maxes
-  public double YellowRedMin = .31;
-  public double YellowRedMax = .32;
-  public double YellowGreenMin = .51;
-  public double YellowGreenMax = .56;
-  public double YellowBlueMin = .11;
-  public double YellowBlueMax = .16;
-
-
 
   public boolean IsBlue()
   {
@@ -95,6 +92,10 @@ public class ColorWheel extends Subsystem {
 
   {
      sensor = new ColorSensorV3(i2cPort);
+     //TODO:: Get Id for talon to run motor for color wheel 
+     colorWheelSpinner = new Talon();
+
+
   }
   
 //Detect current Red value given from the color sensor
@@ -140,9 +141,9 @@ public class ColorWheel extends Subsystem {
       return null;
   }
 
-  public void getToColor(String desiredColor) {
+  public void getToColor(final String desiredColor) {
       while (checkForColor() != desiredColor){
-         //TODO:: Run Motor that will spin color wheel
+         //TODO:: Run Motor that will spin color wheel. Grab code from 2019 so that it uses talons not Nios
       }
   }
 
