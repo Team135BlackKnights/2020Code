@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 
 import com.revrobotics.ColorSensorV3;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 
@@ -38,22 +37,77 @@ public class ColorWheel extends Subsystem {
      { instance = new ColorWheel();}
      return instance;
   }
+  //Blue color mins and maxes
+  public double BlueRedMin = .11;
+  public double BlueRedMax =.19; 
+  public double BlueGreenMin=.42;
+  public double BlueGreenMax=.45; 
+  public double BlueBlueMin=.35;
+  public double BlueBlueMax=.46;
+
+  //Green color mins and maxes
+  public double GreenRedMin = .15;
+  public double GreenRedMax = .2;
+  public double GreenGreenMin = .5;
+  public double GreenGreenMax = .59;
+  public double GreenBlueMin = .25;
+  public double GreenBlueMax = .25;
   
+  //Red color mins and maxes
+  public double RedRedMin = .38;
+  public double RedRedMax = .55;
+  public double RedGreenMin = .32;
+  public double RedGreenMax = .40;
+  public double RedBlueMin = .12;
+  public double RedBlueMax = .18;
+
+  //Yellow color mins and maxes
+  public double YellowRedMin = .31;
+  public double YellowRedMax = .32;
+  public double YellowGreenMin = .51;
+  public double YellowGreenMax = .56;
+  public double YellowBlueMin = .11;
+  public double YellowBlueMax = .16;
+
+
+
+  public boolean IsBlue()
+  {
+   return ((red() >= BlueRedMin && red()<= BlueRedMax) && (green() >= BlueGreenMin && green() <= BlueGreenMax) && (blue() >= BlueBlueMin && blue() <= BlueBlueMax));
+  }
+
+  public boolean IsRed()
+  {
+   return ((red() >= RedRedMin && red()<= RedRedMax) && (green() >= RedGreenMin && green() <= RedGreenMax) && (blue() >= RedBlueMin && blue() <= RedBlueMax));
+  }
+
+  public boolean IsGreen()
+  {
+   return ((red() >= GreenRedMin && red()<= GreenRedMax) && (green() >= GreenGreenMin && green() <= GreenGreenMax) && (blue() >= GreenBlueMin && blue() <= GreenBlueMax));
+  }
+  
+  public boolean IsYellow() 
+  {
+   return ((red() >= YellowRedMin && red()<= YellowRedMax) && (green() >= YellowGreenMin && green() <= YellowGreenMax) && (blue() >= YellowBlueMin && blue() <= YellowBlueMax));
+  }
+
   private ColorWheel()
 
   {
      sensor = new ColorSensorV3(i2cPort);
   }
-
+  
+//Detect current Red value given from the color sensor
   public double red()
   {
      return detectedColor.red;
   }
-
+//Detect current Green value given from the color sensor
   public double green()
   {
      return detectedColor.green;
   }
+  //Detect current Blue value given from the color sensor
   public double blue()
   {
      return detectedColor.blue;
@@ -62,11 +116,37 @@ public class ColorWheel extends Subsystem {
   
   
  
- public int IRdistance()
- {
+   public int IRdistance()
+   {
     return sensor.getProximity();
+   }
+
+   //Determine what the current color under the censor is
+   public String checkForColor()
+  {
+   if (IsBlue()) {
+      return "Blue";
+   }
+   else if (IsRed()){
+      return "Red";
+   }
+   else if (IsGreen()){
+      return "Green";
+   }
+   else if (IsYellow()){
+      return "Yellow";
+   }
+   else
+      return null;
   }
-  public void printOut()
+
+  public void getToColor(String desiredColor) {
+      while (checkForColor() != desiredColor){
+         //TODO:: Run Motor that will spin color wheel
+      }
+  }
+
+   public void printOut()
   {
     detectedColor = sensor.getColor();
 
@@ -81,9 +161,12 @@ public class ColorWheel extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+    
   }
   public void periodic()
   {
      printOut();
+   
+     
   }
 }
