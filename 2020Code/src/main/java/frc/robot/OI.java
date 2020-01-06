@@ -10,10 +10,10 @@ public class OI {
   public interface MOTORS {
 
     final int
-    FRONT_LEFT_SPARK_ID = 7, 
-		FRONT_RIGHT_SPARK_ID = 1, 
-		REAR_LEFT_SPARK_ID = 2,
-		REAR_RIGHT_SPARK_ID = 3;
+    FRONT_LEFT_SPARK_ID = 2, 
+		FRONT_RIGHT_SPARK_ID = 3, 
+		REAR_LEFT_SPARK_ID = 1,
+		REAR_RIGHT_SPARK_ID = 4;
 
     final int colorSpinner = 1;
   }
