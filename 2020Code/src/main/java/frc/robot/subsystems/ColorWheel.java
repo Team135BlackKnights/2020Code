@@ -27,7 +27,7 @@ public class ColorWheel extends Subsystem {
    public static ColorWheel instance;
    public Color detectedColor;
 
-   public static ColorWheel initializeColorWheel() {
+   public ColorWheel initializeColorWheel() {
       if (instance == null) {
          instance = new ColorWheel();
       }
@@ -93,7 +93,7 @@ public class ColorWheel extends Subsystem {
   {
      sensor = new ColorSensorV3(i2cPort);
      //TODO:: Get Id for talon to run motor for color wheel 
-     colorWheelSpinner = new Talon();
+     colorWheelSpinner = new Talon(1);
 
 
   }
@@ -143,7 +143,7 @@ public class ColorWheel extends Subsystem {
 
   public void getToColor(final String desiredColor) {
       while (checkForColor() != desiredColor){
-         //TODO:: Run Motor that will spin color wheel. Grab code from 2019 so that it uses talons not Nios
+         //TODO:: Run Motor that will spin color wheel. Grab code from 2019 so that it uses talons not Neos
       }
   }
 
