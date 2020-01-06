@@ -11,9 +11,13 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
+import frc.robot.OI;
 
 /**
  * An example subsystem. You can replace me with your own Subsystem.
@@ -23,7 +27,7 @@ public class ColorWheel extends Subsystem {
    // here. Call these from Commands.
    public ColorSensorV3 sensor;
    private final I2C.Port i2cPort = I2C.Port.kOnboard;
-   public Talon colorWheelSpinner;
+   public TalonSRX colorWheelSpinner;
    public static ColorWheel instance;
    public Color detectedColor;
 
@@ -92,8 +96,9 @@ public class ColorWheel extends Subsystem {
 
   {
      sensor = new ColorSensorV3(i2cPort);
-     //TODO:: Get Id for talon to run motor for color wheel 
-     colorWheelSpinner = new Talon(1);
+     colorWheelSpinner = new TalonSRX(OI.MOTORS.colorSpinner);
+
+     colorWheelSpinner.setNeutralMode(NeutralMode.Brake);
 
 
   }
@@ -141,9 +146,9 @@ public class ColorWheel extends Subsystem {
       return null;
   }
 
-  public void getToColor(final String desiredColor) {
+  public void getToColor(final String desiredColor, double power) {
       while (checkForColor() != desiredColor){
-         //TODO:: Run Motor that will spin color wheel. Grab code from 2019 so that it uses talons not Neos
+         colorWheelSpinner.set(ControlMode.PercentOutput, power);
       }
   }
 
@@ -166,8 +171,8 @@ public class ColorWheel extends Subsystem {
   }
   public void periodic()
   {
-     printOut();
-   
+   printOut();
+   getToColor("Blue", .2);
      
   }
 }
