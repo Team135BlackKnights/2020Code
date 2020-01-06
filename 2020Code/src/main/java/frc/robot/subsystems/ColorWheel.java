@@ -92,6 +92,8 @@ public class ColorWheel extends Subsystem {
    return ((red() >= YellowRedMin && red()<= YellowRedMax) && (green() >= YellowGreenMin && green() <= YellowGreenMax) && (blue() >= YellowBlueMin && blue() <= YellowBlueMax));
   }
 
+
+  //Initialization point
   private ColorWheel()
 
   {

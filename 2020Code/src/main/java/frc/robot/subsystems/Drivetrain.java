@@ -1,24 +1,42 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.OI;
+import frc.robot.commands.DriveWithJoysticks;
 
-/**
- * Add your docs here.
- */
+
 public class Drivetrain extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+  public static Drivetrain instance;
 
+  public CANSparkMax frontLeftMotor = new CANSparkMax(OI.MOTORS.FRONT_LEFT_SPARK_ID, MotorType.kBrushless);
+	public CANSparkMax rearLeftMotor = new CANSparkMax(OI.MOTORS.REAR_LEFT_SPARK_ID, MotorType.kBrushless);
+	public CANSparkMax frontRightMotor = new CANSparkMax(OI.MOTORS.FRONT_RIGHT_SPARK_ID, MotorType.kBrushless);
+	public CANSparkMax rearRightMotor = new CANSparkMax(OI.MOTORS.REAR_RIGHT_SPARK_ID, MotorType.kBrushless);
+
+  public Drivetrain()
+	{
+		// Configuring each drive motor to all have the same settings
+		ConfigSpark(frontLeftMotor);
+		ConfigSpark(frontRightMotor);
+		ConfigSpark(rearLeftMotor);
+		ConfigSpark(rearRightMotor);
+	}
+	public void ConfigSpark(CANSparkMax spark)
+	{
+		spark.setIdleMode(IdleMode.kBrake);
+		spark.setInverted(false);
+  }
+  
   @Override
   public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new DriveWithJoysticks());
   }
+
+  public static Drivetrain getInstance() {if (instance == null) {instance = new Drivetrain();}return instance;}
+
 }
