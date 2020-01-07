@@ -22,8 +22,10 @@ public class Drivetrain extends Subsystem {
 	public CANSparkMax rearRightMotor = new CANSparkMax(RobotMap.MOTORS.REAR_RIGHT_SPARK_ID, MotorType.kBrushless);
 
 	DifferentialDrive chassis;
+	SpeedControllerGroup leftSide, rightSide;
 
-
+	
+	
   public Drivetrain()
 	{
 		// Configuring each drive motor to all have the same settings
@@ -31,6 +33,12 @@ public class Drivetrain extends Subsystem {
 		ConfigSpark(frontRightMotor);
 		ConfigSpark(rearLeftMotor);
 		ConfigSpark(rearRightMotor);
+		leftSide = new SpeedControllerGroup(frontLeftMotor, rearLeftMotor);
+		rightSide = new SpeedControllerGroup(frontRightMotor, rearRightMotor);
+	  
+
+		chassis = new DifferentialDrive(leftSide, rightSide);
+
 	}
 	public void ConfigSpark(CANSparkMax spark)
 	{
@@ -38,9 +46,6 @@ public class Drivetrain extends Subsystem {
 		spark.setInverted(false);
   }
   
-  SpeedControllerGroup leftSide = new SpeedControllerGroup(frontLeftMotor, rearLeftMotor);
-	SpeedControllerGroup rightSide = new SpeedControllerGroup(frontRightMotor, rearRightMotor);
-	
   public void TankDrive(double leftMotorPower, double rightMotorPower) 
 	{
 		chassis.tankDrive(leftMotorPower, rightMotorPower);
