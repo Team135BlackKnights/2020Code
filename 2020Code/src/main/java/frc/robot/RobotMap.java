@@ -15,7 +15,7 @@ package frc.robot;
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
-public class RobotMap {
+public interface RobotMap {
 
   public interface KOI {
     public static final int 
@@ -30,12 +30,19 @@ public class RobotMap {
       
   }
   public interface MOTORS {
+    // The convention for assigning IDS to motors will be based on which order is loosely based on its PDP power slot in reverse order 
+    // ie PDP slot 15 goes to motor number 2 
+    // The other part of the ID assignement is the motor controller type 
+      // talon FX's will have a 0 or no number in front
+      // Can Sparks will have a 1 in front of the id number
+      // Talon SRX will have a 2 in front of the id number 
+      // Victor SPX will have a 3 in front of the id number 
 
-    final int FRONT_LEFT_SPARK_ID = 2, 
-		FRONT_RIGHT_SPARK_ID = 3, 
-		REAR_LEFT_SPARK_ID = 1,
-		REAR_RIGHT_SPARK_ID = 4;
-    final int colorSpinner = 1;
+
+    final int FRONT_LEFT_SPARK_ID = 12,    FRONT_RIGHT_SPARK_ID = 13,
+              REAR_LEFT_SPARK_ID = 11,     REAR_RIGHT_SPARK_ID  = 14;
+    
+    final int SPINNER_TALON_ID = 21;
   }
   // For example to map the left and right motors, you could define the
   // following variables to use with your drivetrain subsystem.

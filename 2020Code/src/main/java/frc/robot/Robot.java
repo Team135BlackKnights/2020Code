@@ -18,7 +18,7 @@ import frc.robot.subsystems.Drivetrain;;
 
 public class Robot extends TimedRobot {
   public static Drivetrain drivetrain;
-  public static ColorWheel ColorWheel;
+  public static ColorWheel colorWheel;
   public static OI oi;
 
   Command autonomousCommand;
@@ -30,7 +30,7 @@ public class Robot extends TimedRobot {
     oi = new OI();
     drivetrain = Drivetrain.getInstance();
     //Disabled due to lack of support from updated RoboRio
-    //ColorWheel = ColorWheel.initializeColorWheel();
+    colorWheel = ColorWheel.initializeColorWheel();
     
     
     // chooser.addOption("My Auto", new MyAutoCommand());

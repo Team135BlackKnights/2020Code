@@ -15,16 +15,16 @@ import frc.robot.OI;
 import frc.robot.RobotMap;
 
 
-public class ColorWheel extends Subsystem {
+public class ColorWheel extends Subsystem implements RobotMap { 
    // Put methods for controlling this subsystem
    // here. Call these from Commands.
-   public ColorSensorV3 sensor;
+   public ColorSensorV3 controlPanelColorSensor;
    private final I2C.Port i2cPort = I2C.Port.kOnboard;
-   public TalonSRX colorWheelSpinner;
+   public TalonSRX controlPanelTalon;
    public static ColorWheel instance;
    public Color detectedColor;
 
-   public ColorWheel initializeColorWheel() {
+   public static ColorWheel initializeColorWheel() {
       if (instance == null) {
          instance = new ColorWheel();
       }
@@ -90,10 +90,10 @@ public class ColorWheel extends Subsystem {
   private ColorWheel()
 
   {
-     sensor = new ColorSensorV3(i2cPort);
-     colorWheelSpinner = new TalonSRX(RobotMap.MOTORS.colorSpinner);
+     controlPanelColorSensor = new ColorSensorV3(i2cPort);
+     controlPanelTalon = new TalonSRX(MOTORS.SPINNER_TALON_ID);
 
-     colorWheelSpinner.setNeutralMode(NeutralMode.Brake);
+     controlPanelTalon.setNeutralMode(NeutralMode.Brake);
 
 
   }
@@ -113,15 +113,6 @@ public class ColorWheel extends Subsystem {
   {
      return detectedColor.blue;
   }
-
-  
-  
- 
-   public int IRdistance()
-   {
-    return sensor.getProximity();
-   }
-
    //Determine what the current color under the censor is
    public String checkForColor()
   {
@@ -143,18 +134,17 @@ public class ColorWheel extends Subsystem {
 
   public void getToColor(final String desiredColor, double power) {
       while (checkForColor() != desiredColor){
-         colorWheelSpinner.set(ControlMode.PercentOutput, power);
+         controlPanelTalon.set(ControlMode.PercentOutput, power);
       }
   }
 
    public void printOut()
   {
-    detectedColor = sensor.getColor();
+    detectedColor = controlPanelColorSensor.getColor();
 
     SmartDashboard.putNumber("color red",red());
     SmartDashboard.putNumber("color green",green());
     SmartDashboard.putNumber("color blue  ",blue());
-    SmartDashboard.putNumber("IR Distance",IRdistance());
 
   }
 

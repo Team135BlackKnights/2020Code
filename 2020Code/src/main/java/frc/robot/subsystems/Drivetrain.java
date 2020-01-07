@@ -16,10 +16,10 @@ import frc.robot.commands.DriveWithJoysticks;
 public class Drivetrain extends Subsystem {
   public static Drivetrain instance;
 
-  public CANSparkMax frontLeftMotor = new CANSparkMax(RobotMap.MOTORS.FRONT_LEFT_SPARK_ID, MotorType.kBrushless);
-	public CANSparkMax rearLeftMotor = new CANSparkMax(RobotMap.MOTORS.REAR_LEFT_SPARK_ID, MotorType.kBrushless);
-	public CANSparkMax frontRightMotor = new CANSparkMax(RobotMap.MOTORS.FRONT_RIGHT_SPARK_ID, MotorType.kBrushless);
-	public CANSparkMax rearRightMotor = new CANSparkMax(RobotMap.MOTORS.REAR_RIGHT_SPARK_ID, MotorType.kBrushless);
+  public CANSparkMax frontLeftSpark = new CANSparkMax(RobotMap.MOTORS.FRONT_LEFT_SPARK_ID, MotorType.kBrushless);
+	public CANSparkMax rearLeftSpark = new CANSparkMax(RobotMap.MOTORS.REAR_LEFT_SPARK_ID, MotorType.kBrushless);
+	public CANSparkMax frontRightSpark = new CANSparkMax(RobotMap.MOTORS.FRONT_RIGHT_SPARK_ID, MotorType.kBrushless);
+	public CANSparkMax rearRightSpark = new CANSparkMax(RobotMap.MOTORS.REAR_RIGHT_SPARK_ID, MotorType.kBrushless);
 
 	DifferentialDrive chassis;
 	SpeedControllerGroup leftSide, rightSide;
@@ -29,16 +29,16 @@ public class Drivetrain extends Subsystem {
   public Drivetrain()
 	{
 		// Configuring each drive motor to all have the same settings
-		ConfigSpark(frontLeftMotor);
-		ConfigSpark(frontRightMotor);
-		ConfigSpark(rearLeftMotor);
-		ConfigSpark(rearRightMotor);
-		leftSide = new SpeedControllerGroup(frontLeftMotor, rearLeftMotor);
-		rightSide = new SpeedControllerGroup(frontRightMotor, rearRightMotor);
+		ConfigSpark(frontLeftSpark);
+		ConfigSpark(frontRightSpark);
+		ConfigSpark(rearLeftSpark);
+		ConfigSpark(rearRightSpark);
+		leftSide = new SpeedControllerGroup(frontLeftSpark, rearLeftSpark);
+		rightSide = new SpeedControllerGroup(frontRightSpark, rearRightSpark);
 	  
 
 		chassis = new DifferentialDrive(leftSide, rightSide);
-
+		chassis.setSafetyEnabled(false);
 	}
 	public void ConfigSpark(CANSparkMax spark)
 	{
