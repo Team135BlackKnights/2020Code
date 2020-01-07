@@ -153,6 +153,7 @@ public class ColorWheel extends Subsystem implements RobotMap {
 
   @Override
   public void initDefaultCommand() {}
+  
   public void periodic()
   {
    printOut();

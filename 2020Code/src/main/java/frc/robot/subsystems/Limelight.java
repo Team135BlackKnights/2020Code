@@ -29,17 +29,17 @@ public class Limelight extends Subsystem {
 	TARGET_SKEW = 4;
 	public double[] limelightData = new double[NUMBER_OF_LIMELIGHT_CHARACTERISTICS];
 
-  public static int 
-  LED_ON = 0, 
+    public static int 
+    LED_ON = 0, 
 	LED_OFF = 1,
-  LED_BLINKING = 2,
+    LED_BLINKING = 2,
 
-  VISION_PROCESSOR = 0,
-  DRIVER_CAMERA = 1, 
+    VISION_PROCESSOR = 0,
+    DRIVER_CAMERA = 1, 
 
-  TARGET_PIPELINE = 0, 
-  BALL_PIPELINE = 1, 
-  VISION_PIPELINE = 2;
+    TARGET_PIPELINE = 0, 
+    BALL_PIPELINE = 1, 
+    VISION_PIPELINE = 2;
 	
 
 	public double[] GetLimelightData() { // creating an array so we can get to any of the values that we need from network tables

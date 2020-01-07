@@ -16,12 +16,12 @@ public class Drivetrain extends Subsystem implements RobotMap.MOTORS{
   public static Drivetrain instance;
 
   public CANSparkMax frontLeftSpark = new CANSparkMax(FRONT_LEFT_SPARK_ID, MotorType.kBrushless);
-	public CANSparkMax rearLeftSpark = new CANSparkMax(REAR_LEFT_SPARK_ID, MotorType.kBrushless);
-	public CANSparkMax frontRightSpark = new CANSparkMax(FRONT_RIGHT_SPARK_ID, MotorType.kBrushless);
-	public CANSparkMax rearRightSpark = new CANSparkMax(REAR_RIGHT_SPARK_ID, MotorType.kBrushless);
+  public CANSparkMax rearLeftSpark = new CANSparkMax(REAR_LEFT_SPARK_ID, MotorType.kBrushless);
+  public CANSparkMax frontRightSpark = new CANSparkMax(FRONT_RIGHT_SPARK_ID, MotorType.kBrushless);
+  public CANSparkMax rearRightSpark = new CANSparkMax(REAR_RIGHT_SPARK_ID, MotorType.kBrushless);
 
-	DifferentialDrive chassis;
-	SpeedControllerGroup leftSide, rightSide;
+  DifferentialDrive chassis;
+  SpeedControllerGroup leftSide, rightSide;
 
 	
 	
@@ -32,6 +32,8 @@ public class Drivetrain extends Subsystem implements RobotMap.MOTORS{
 		ConfigSpark(frontRightSpark);
 		ConfigSpark(rearLeftSpark);
 		ConfigSpark(rearRightSpark);
+
+
 		leftSide = new SpeedControllerGroup(frontLeftSpark, rearLeftSpark);
 		rightSide = new SpeedControllerGroup(frontRightSpark, rearRightSpark);
 	  
@@ -39,21 +41,25 @@ public class Drivetrain extends Subsystem implements RobotMap.MOTORS{
 		chassis = new DifferentialDrive(leftSide, rightSide);
 		chassis.setSafetyEnabled(false);
 	}
+	
 	public void ConfigSpark(CANSparkMax spark)
 	{
 		spark.setIdleMode(IdleMode.kBrake);
 		spark.setInverted(false);
-  }
-  
-  public void TankDrive(double leftMotorPower, double rightMotorPower) 
+    }
+
+//A mode of driving based off setting power to the left and right side of the robot.
+    public void TankDrive(double leftMotorPower, double rightMotorPower) 
 	{
 		chassis.tankDrive(leftMotorPower, rightMotorPower);
 	}
+//Runs based off power from one joystick and angle from anohter
 	public void ArcadeDrive(double y, double z)
   	{
 		chassis.arcadeDrive(y, -z);
 	}
 	
+//Simply set the both sides of the robot to have a power of zero
 	public void stopMotors()
 	{
 		TankDrive(0,0);

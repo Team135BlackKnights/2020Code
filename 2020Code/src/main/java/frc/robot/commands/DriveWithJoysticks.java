@@ -39,12 +39,15 @@ public class DriveWithJoysticks extends Command {
 
     double leftDrivePower, rightDrivePower, lateralPower, rotationPower;
     
+    //Declare the power based off the correct stick and, if it is active, lowered power mode to drive slower.
     leftDrivePower = JoystickYValue* halfPowerDrive;
     rightDrivePower = RJoystickYValue * halfPowerDrive;
     lateralPower = JoystickYValue * halfPowerDrive;
     rotationPower = RJoystickZValue * halfPowerDrive;
         
     Robot.drivetrain.ArcadeDrive(lateralPower, rotationPower * .85);
+    //Robot.drivetrain.TankDrive(leftDrivePower, rightDrivePower);
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
