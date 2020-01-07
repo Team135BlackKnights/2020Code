@@ -8,18 +8,17 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import frc.robot.OI;
 import frc.robot.RobotMap;
 import frc.robot.commands.DriveWithJoysticks;
 
 
-public class Drivetrain extends Subsystem {
+public class Drivetrain extends Subsystem implements RobotMap.MOTORS{
   public static Drivetrain instance;
 
-  public CANSparkMax frontLeftSpark = new CANSparkMax(RobotMap.MOTORS.FRONT_LEFT_SPARK_ID, MotorType.kBrushless);
-	public CANSparkMax rearLeftSpark = new CANSparkMax(RobotMap.MOTORS.REAR_LEFT_SPARK_ID, MotorType.kBrushless);
-	public CANSparkMax frontRightSpark = new CANSparkMax(RobotMap.MOTORS.FRONT_RIGHT_SPARK_ID, MotorType.kBrushless);
-	public CANSparkMax rearRightSpark = new CANSparkMax(RobotMap.MOTORS.REAR_RIGHT_SPARK_ID, MotorType.kBrushless);
+  public CANSparkMax frontLeftSpark = new CANSparkMax(FRONT_LEFT_SPARK_ID, MotorType.kBrushless);
+	public CANSparkMax rearLeftSpark = new CANSparkMax(REAR_LEFT_SPARK_ID, MotorType.kBrushless);
+	public CANSparkMax frontRightSpark = new CANSparkMax(FRONT_RIGHT_SPARK_ID, MotorType.kBrushless);
+	public CANSparkMax rearRightSpark = new CANSparkMax(REAR_RIGHT_SPARK_ID, MotorType.kBrushless);
 
 	DifferentialDrive chassis;
 	SpeedControllerGroup leftSide, rightSide;
@@ -53,6 +52,11 @@ public class Drivetrain extends Subsystem {
 	public void ArcadeDrive(double y, double z)
   	{
 		chassis.arcadeDrive(y, -z);
+	}
+	
+	public void stopMotors()
+	{
+		TankDrive(0,0);
 	}
 
   @Override

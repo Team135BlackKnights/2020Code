@@ -37,10 +37,8 @@ public class DriveWithJoysticks extends Command {
     halfPowerDrive = (OI.rightTrigger() || OI.leftTrigger() ) ? .75 :1;
 
 
-    double leftDrivePower;
-    double rightDrivePower;
-    double lateralPower;
-    double rotationPower;
+    double leftDrivePower, rightDrivePower, lateralPower, rotationPower;
+    
     leftDrivePower = JoystickYValue* halfPowerDrive;
     rightDrivePower = RJoystickYValue * halfPowerDrive;
     lateralPower = JoystickYValue * halfPowerDrive;

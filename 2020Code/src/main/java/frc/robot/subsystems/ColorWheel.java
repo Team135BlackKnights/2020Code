@@ -2,7 +2,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -11,7 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
-import frc.robot.OI;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.RobotMap;
 
 
@@ -23,13 +22,6 @@ public class ColorWheel extends Subsystem implements RobotMap {
    public TalonSRX controlPanelTalon;
    public static ColorWheel instance;
    public Color detectedColor;
-
-   public static ColorWheel initializeColorWheel() {
-      if (instance == null) {
-         instance = new ColorWheel();
-      }
-      return instance;
-   }
 
    // Blue color mins and maxes
    public double BlueRedMin = .09;
@@ -136,8 +128,12 @@ public class ColorWheel extends Subsystem implements RobotMap {
       if (checkForColor() != desiredColor){
          controlPanelTalon.set(ControlMode.PercentOutput, power);
       }
-      else controlPanelTalon.set(ControlMode.PercentOutput, 0);
+      else stopControlPanel();
+  }
 
+  public void stopControlPanel()
+  {   
+     controlPanelTalon.set(ControlMode.PercentOutput, 0);
   }
 
    public void printOut()
@@ -151,15 +147,18 @@ public class ColorWheel extends Subsystem implements RobotMap {
     SmartDashboard.putString("Current Color", checkForColor() );
 
   }
+  
+  public String gameMessage = DriverStation.getInstance().getGameSpecificMessage();
+
 
   @Override
-  public void initDefaultCommand() {
-    
-  }
+  public void initDefaultCommand() {}
   public void periodic()
   {
    printOut();
    getToColor("Yellow", 1);
-     
   }
+
+  public static ColorWheel getInstance() {if (instance == null) { instance = new ColorWheel();}return instance;}
+
 }

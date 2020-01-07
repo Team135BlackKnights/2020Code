@@ -13,12 +13,14 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.ColorWheel;
-import frc.robot.subsystems.Drivetrain;;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Limelight;;
 
 
 public class Robot extends TimedRobot {
   public static Drivetrain drivetrain;
   public static ColorWheel colorWheel;
+  public static Limelight  limelight;
   public static OI oi;
 
   Command autonomousCommand;
@@ -29,8 +31,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     oi = new OI();
     //drivetrain = Drivetrain.getInstance();
-    //Disabled due to lack of support from updated RoboRio
-    colorWheel = ColorWheel.initializeColorWheel();
+    limelight = Limelight.getInstance();
+    colorWheel = ColorWheel.getInstance();
     
     
     // chooser.addOption("My Auto", new MyAutoCommand());
