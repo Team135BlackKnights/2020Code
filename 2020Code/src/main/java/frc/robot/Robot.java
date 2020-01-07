@@ -28,7 +28,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     oi = new OI();
-    drivetrain = Drivetrain.getInstance();
+    //drivetrain = Drivetrain.getInstance();
     //Disabled due to lack of support from updated RoboRio
     colorWheel = ColorWheel.initializeColorWheel();
     

@@ -32,36 +32,36 @@ public class ColorWheel extends Subsystem implements RobotMap {
    }
 
    // Blue color mins and maxes
-   public double BlueRedMin = .11;
-   public double BlueRedMax = .19;
+   public double BlueRedMin = .09;
+   public double BlueRedMax = .21;
    public double BlueGreenMin = .42;
-   public double BlueGreenMax = .45;
-   public double BlueBlueMin = .35;
-   public double BlueBlueMax = .46;
+   public double BlueGreenMax = .50;
+   public double BlueBlueMin = .33;
+   public double BlueBlueMax = .48;
 
    // Green color mins and maxes
    public double GreenRedMin = .15;
    public double GreenRedMax = .2;
    public double GreenGreenMin = .5;
    public double GreenGreenMax = .59;
-   public double GreenBlueMin = .25;
-   public double GreenBlueMax = .25;
+   public double GreenBlueMin = .24;
+   public double GreenBlueMax = .27;
 
    // Red color mins and maxes
    public double RedRedMin = .38;
-   public double RedRedMax = .55;
-   public double RedGreenMin = .32;
+   public double RedRedMax = .58;
+   public double RedGreenMin = .31;
    public double RedGreenMax = .40;
-   public double RedBlueMin = .12;
+   public double RedBlueMin = .09;
    public double RedBlueMax = .18;
 
    // Yellow color mins and maxes
-   public double YellowRedMin = .31;
-   public double YellowRedMax = .32;
-   public double YellowGreenMin = .51;
-   public double YellowGreenMax = .56;
-   public double YellowBlueMin = .11;
-   public double YellowBlueMax = .16;
+   public double YellowRedMin = .29;
+   public double YellowRedMax = .35;
+   public double YellowGreenMin = .49;
+   public double YellowGreenMax = .58;
+   public double YellowBlueMin = .10;
+   public double YellowBlueMax = .17;
 
   
 
@@ -129,13 +129,15 @@ public class ColorWheel extends Subsystem implements RobotMap {
       return "Yellow";
    }
    else
-      return null;
+      return "No Color";
   }
 
   public void getToColor(final String desiredColor, double power) {
-      while (checkForColor() != desiredColor){
+      if (checkForColor() != desiredColor){
          controlPanelTalon.set(ControlMode.PercentOutput, power);
       }
+      else controlPanelTalon.set(ControlMode.PercentOutput, 0);
+
   }
 
    public void printOut()
@@ -146,6 +148,8 @@ public class ColorWheel extends Subsystem implements RobotMap {
     SmartDashboard.putNumber("color green",green());
     SmartDashboard.putNumber("color blue  ",blue());
 
+    SmartDashboard.putString("Current Color", checkForColor() );
+
   }
 
   @Override
@@ -155,7 +159,7 @@ public class ColorWheel extends Subsystem implements RobotMap {
   public void periodic()
   {
    printOut();
-   getToColor("Blue", .2);
+   getToColor("Yellow", 1);
      
   }
 }
