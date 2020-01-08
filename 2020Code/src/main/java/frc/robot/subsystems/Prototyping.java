@@ -12,24 +12,25 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.RobotMap.MOTORS;
+import frc.robot.*;
 import frc.robot.commands.PrototypeManipControl;
 
-public class Prototyping extends Subsystem {
+public class Prototyping extends Subsystem implements RobotMap.MOTORS{
   public static Prototyping instance;
 
-  public TalonSRX manipControlOneTalon;
-  public TalonSRX manipControlTwoTalon;
-  public TalonSRX buttonControlOneTalon;
-  public TalonSRX buttonControlTwoTalon;
+  public TalonSRX 
+    manipControlOneTalon, 
+    manipControlTwoTalon, 
+    buttonControlOneTalon, 
+    buttonControlTwoTalon;
 
 
   public Prototyping() {
-    manipControlOneTalon = new TalonSRX(MOTORS.MANIPCONTROLONE_TALON);
-    manipControlTwoTalon = new TalonSRX(MOTORS.MANIPCONTROLTWO_TALON);
+    manipControlOneTalon = new TalonSRX(MANIPCONTROLONE_TALON);
+    manipControlTwoTalon = new TalonSRX(MANIPCONTROLTWO_TALON);
 
-    buttonControlOneTalon = new TalonSRX(MOTORS.BUTTONCONTROLONE_TALON);
-    buttonControlTwoTalon = new TalonSRX(MOTORS.BUTTONCONTROLTWO_TALON);
+    buttonControlOneTalon = new TalonSRX(BUTTONCONTROLONE_TALON);
+    buttonControlTwoTalon = new TalonSRX(BUTTONCONTROLTWO_TALON);
     
 
     manipControlOneTalon.setNeutralMode(NeutralMode.Brake);

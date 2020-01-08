@@ -42,11 +42,11 @@ public interface RobotMap {
   final int FRONT_LEFT_SPARK_ID = 12,    FRONT_RIGHT_SPARK_ID = 13,
               REAR_LEFT_SPARK_ID = 1,     REAR_RIGHT_SPARK_ID  = 14;
     
-  final int SPINNER_TALON_ID = 22,
-              TURRET_TALON_ID = 21;
+  final int SPINNER_TALON_ID = 6,
+              TURRET_TALON_ID = 4;
 
-  final int BUTTONCONTROLTWO_TALON = 0, BUTTONCONTROLONE_TALON = 1,
-              MANIPCONTROLONE_TALON = 2, MANIPCONTROLTWO_TALON = 3;
+  final int BUTTONCONTROLTWO_TALON = 21, BUTTONCONTROLONE_TALON = 22,
+              MANIPCONTROLONE_TALON = 23, MANIPCONTROLTWO_TALON = 24;
   }
   // For example to map the left and right motors, you could define the
   // following variables to use with your drivetrain subsystem.
