@@ -18,6 +18,7 @@ import frc.robot.subsystems.*;
 public class Robot extends TimedRobot {
   public static Drivetrain drivetrain;
   public static ColorWheel colorWheel;
+  public static Prototyping prototyping;
   public static Limelight  limelight;
   public static Turret 		turret;
   public static OI oi;
@@ -30,9 +31,10 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     oi = new OI();
     drivetrain = Drivetrain.getInstance();
-    limelight = Limelight.getInstance();
+	limelight = Limelight.getInstance();
+	prototyping = Prototyping.getInstance();
 	//colorWheel = ColorWheel.getInstance();
-	//turret = Turret.getInstance();
+	turret = Turret.getInstance();
     
     
     // chooser.addOption("My Auto", new MyAutoCommand());

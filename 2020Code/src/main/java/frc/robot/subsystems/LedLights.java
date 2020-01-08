@@ -5,7 +5,7 @@ import java.util.Map;
 
 //Import for a command to run the functions within this.
 //https://github.com/FRC2706/2017-2706-Robot-Code/tree/master/src/org/usfirst/frc/team2706/robot
-import org.usfirst.frc.team2706.robot.bling.BlingPeriodic2;
+//import org.usfirst.frc.team2706.robot.bling.BlingPeriodic2;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SerialPort;
@@ -504,7 +504,7 @@ public class LedLights extends Subsystem {
     public Command getDefaultCommand() {
         if (defaultCommand == null) {
           //TODO:: Find command to be replacement for this.
-            defaultCommand = new BlingPeriodic2();
+           // defaultCommand = new BlingPeriodic2();
         }
         return defaultCommand;
     }

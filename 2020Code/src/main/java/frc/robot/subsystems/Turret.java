@@ -11,7 +11,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.*;
 
 public class Turret extends Subsystem implements RobotMap.MOTORS { 
@@ -44,6 +43,8 @@ public class Turret extends Subsystem implements RobotMap.MOTORS {
   @Override
   public void periodic() 
   {
+    rotateTurret(-.75);
+    /*
     if(Robot.limelight.GetLimelightData()[1] > 1 && Robot.limelight.GetLimelightData()[0] >= 1)
 		{
 			rotateTurret(.75);
@@ -59,9 +60,10 @@ public class Turret extends Subsystem implements RobotMap.MOTORS {
 
 		}
 		else {
-      stopTurret();
+      rotateTurret(1);
       SmartDashboard.putString("Turret Not moving", "true");
-		}
+    }
+    */
     // This method will be called once per scheduler run
   }
 }
