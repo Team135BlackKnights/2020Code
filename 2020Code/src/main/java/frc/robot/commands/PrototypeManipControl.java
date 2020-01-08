@@ -19,7 +19,7 @@ public class PrototypeManipControl extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ManipJoystickYValue = Robot.oi.GetJoystickYValue(1);
+    ManipJoystickYValue = Robot.oi.GetJoystickYValue(2);
 
     Robot.prototyping.runManip(ManipJoystickYValue);
   }

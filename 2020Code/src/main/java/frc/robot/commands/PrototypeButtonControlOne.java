@@ -32,7 +32,7 @@ public class PrototypeButtonControlOne extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {    
-    Robot.prototyping.runButtonTalon2(0);
+    Robot.prototyping.runButtonTalon1(0);
   }
 
   // Called when another command which requires one or more of the same

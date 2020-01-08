@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
 	limelight = Limelight.getInstance();
 	prototyping = Prototyping.getInstance();
 	//colorWheel = ColorWheel.getInstance();
-	turret = Turret.getInstance();
+	//turret = Turret.getInstance();
     
     
     // chooser.addOption("My Auto", new MyAutoCommand());

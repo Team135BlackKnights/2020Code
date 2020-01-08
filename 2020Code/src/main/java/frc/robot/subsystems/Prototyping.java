@@ -31,13 +31,21 @@ public class Prototyping extends Subsystem implements RobotMap.MOTORS{
 
     buttonControlOneTalon = new TalonSRX(BUTTONCONTROLONE_TALON);
     buttonControlTwoTalon = new TalonSRX(BUTTONCONTROLTWO_TALON);
-    
+  
+    ConfigTalon(manipControlOneTalon);
+    ConfigTalon(manipControlTwoTalon);
+    ConfigTalon(buttonControlOneTalon);
+    ConfigTalon(buttonControlTwoTalon);
 
-    manipControlOneTalon.setNeutralMode(NeutralMode.Brake);
-    manipControlTwoTalon.setNeutralMode(NeutralMode.Brake);
-    buttonControlOneTalon.setNeutralMode(NeutralMode.Brake);
-    buttonControlTwoTalon.setNeutralMode(NeutralMode.Brake);
+  }
 
+  public void ConfigTalon(TalonSRX talon)
+  {
+    talon.setNeutralMode(NeutralMode.Brake);
+    talon.configReverseSoftLimitEnable(false);
+    talon.configForwardSoftLimitEnable(false);
+    talon.enableCurrentLimit(true);
+    talon.enableVoltageCompensation(true);
   }
 
   public void runManip(double power) {

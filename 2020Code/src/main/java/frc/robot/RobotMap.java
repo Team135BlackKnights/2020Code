@@ -40,7 +40,7 @@ public interface RobotMap {
 
 
   final int FRONT_LEFT_SPARK_ID = 12,    FRONT_RIGHT_SPARK_ID = 13,
-              REAR_LEFT_SPARK_ID = 1,     REAR_RIGHT_SPARK_ID  = 14;
+              REAR_LEFT_SPARK_ID = 11,     REAR_RIGHT_SPARK_ID  = 14;
     
   final int SPINNER_TALON_ID = 6,
               TURRET_TALON_ID = 4;
