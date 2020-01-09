@@ -8,6 +8,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.DriveWithJoysticks;
 
@@ -46,7 +48,12 @@ public class Drivetrain extends Subsystem implements RobotMap.MOTORS{
 	{
 		spark.setIdleMode(IdleMode.kBrake);
 		spark.setInverted(false);
-    }
+	}
+	public double MotorPower(CANSparkMax spark)
+	{
+		 return spark.getAppliedOutput();
+	}
+
 
 //A mode of driving based off setting power to the left and right side of the robot.
     public void TankDrive(double leftMotorPower, double rightMotorPower) 
@@ -68,6 +75,14 @@ public class Drivetrain extends Subsystem implements RobotMap.MOTORS{
   @Override
   public void initDefaultCommand() {
     setDefaultCommand(new DriveWithJoysticks());
+  }
+  public void periodic()
+  {
+	SmartDashboard.putNumber("Front Left Drive Power", MotorPower(frontLeftSpark));
+	SmartDashboard.putNumber("Rear Left Drive Power", MotorPower(rearLeftSpark));
+	SmartDashboard.putNumber("Front Right Drive Power", MotorPower(frontRightSpark));
+	SmartDashboard.putNumber("Rear Right Drive Power", MotorPower(rearRightSpark));
+
   }
 
   public static Drivetrain getInstance() {if (instance == null) {instance = new Drivetrain();}return instance;}

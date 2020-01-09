@@ -46,7 +46,7 @@ public class DriveWithJoysticks extends Command {
     rotationPower = RJoystickZValue * halfPowerDrive;
         
     Robot.drivetrain.ArcadeDrive(lateralPower, rotationPower * .85);
-    Robot.drivetrain.TankDrive(leftDrivePower, rightDrivePower);
+    //Robot.drivetrain.TankDrive(leftDrivePower, rightDrivePower);
 
   }
 
