@@ -29,12 +29,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    oi = new OI();
+    
     drivetrain = Drivetrain.getInstance();
 	limelight = Limelight.getInstance();
 	prototyping = Prototyping.getInstance();
 	//colorWheel = ColorWheel.getInstance();
 	//turret = Turret.getInstance();
+	oi = new OI();
     
     
     // chooser.addOption("My Auto", new MyAutoCommand());

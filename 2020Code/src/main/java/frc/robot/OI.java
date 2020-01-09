@@ -25,11 +25,18 @@ public class OI implements RobotMap.KOI{
 	rightTrigger = new JoystickButton(rightJoystick, TRIGGER_BUTTON),
 	leftTrigger = new JoystickButton(leftJoystick, TRIGGER_BUTTON),
 	prototypeButtonOne = new JoystickButton(manipJoystick, 1),
-	prototypeButtonTwo = new JoystickButton(manipJoystick, 2);
+	prototypeButtonTwo = new JoystickButton(manipJoystick, 2),
+	resetEncoderButton = new JoystickButton(rightJoystick, 2),
+	encoderDriveTestButton = new JoystickButton(leftJoystick, 1),
+	autoTestButton = new JoystickButton(leftJoystick, 2);
+
 	public OI()
 	{
 		prototypeButtonOne.toggleWhenPressed(new PrototypeButtonControlOne());
 		prototypeButtonTwo.toggleWhenPressed(new PrototypeButtonControlTwo());
+		resetEncoderButton.whenPressed(new resetEncoders());
+		encoderDriveTestButton.whenPressed(new EncoderDrive(-50, 50,4));
+		autoTestButton.whenPressed(new AutoMaybe());
 	}
 //Returns the values for the sliders of the three joysticks 
 // adding a deadband so that it doesn't count .01 as still doing something

@@ -13,7 +13,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Counter;
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -69,7 +68,7 @@ public class FalconDrive extends Subsystem implements RobotMap{
 
   public void forceBreakMode(boolean forceBreak)
   {
-    SmartDashboard.putBoolean("Forced Break Mode:", forceBreak)
+    SmartDashboard.putBoolean("Forced Break Mode:", forceBreak);
      if(forceBreak)
      { 
        leftFrontFX.setNeutralMode(NeutralMode.Brake);
@@ -99,6 +98,7 @@ public class FalconDrive extends Subsystem implements RobotMap{
     rightFrontFX.set(ControlMode.Position, rightPos);
     rightFrontFX.set(ControlMode.Position, rightPos);
   }
+
   
   
   

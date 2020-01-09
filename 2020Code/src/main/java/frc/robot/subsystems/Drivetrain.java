@@ -1,6 +1,7 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -25,7 +26,10 @@ public class Drivetrain extends Subsystem implements RobotMap.MOTORS{
   DifferentialDrive chassis;
   SpeedControllerGroup leftSide, rightSide;
 
-	
+  public CANEncoder leftEncoder, rightEncoder; 
+
+	//current auto points
+	// 0,0 -54,54 -70,70 -91,88 -43,40 -34,49 -76,91 -72,71
 	
   public Drivetrain()
 	{
@@ -35,23 +39,71 @@ public class Drivetrain extends Subsystem implements RobotMap.MOTORS{
 		ConfigSpark(rearLeftSpark);
 		ConfigSpark(rearRightSpark);
 
+		rearLeftSpark.follow(frontLeftSpark);
+		rearRightSpark.follow(frontRightSpark);
 
-		leftSide = new SpeedControllerGroup(frontLeftSpark, rearLeftSpark);
-		rightSide = new SpeedControllerGroup(frontRightSpark, rearRightSpark);
-	  
+		leftEncoder = new CANEncoder(frontLeftSpark);
+		rightEncoder = new CANEncoder(frontRightSpark);
 
-		chassis = new DifferentialDrive(leftSide, rightSide);
+		chassis = new DifferentialDrive(frontLeftSpark, frontRightSpark);
 		chassis.setSafetyEnabled(false);
+		resetEncoders();
+		SmartDashboard.putBoolean("DriveTrain initialized",true);
 	}
 	
 	public void ConfigSpark(CANSparkMax spark)
 	{
 		spark.setIdleMode(IdleMode.kBrake);
 		spark.setInverted(false);
+		spark.enableVoltageCompensation(12);
+		
 	}
 	public double MotorPower(CANSparkMax spark)
 	{
 		 return spark.getAppliedOutput();
+	}
+	public void resetEncoders()
+	{ 
+		leftEncoder.setPosition(0);
+		rightEncoder.setPosition(0);
+	}
+	public double getEncoderPosition(CANEncoder encoder)
+	{ 
+		return encoder.getPosition();
+	}
+	public double getLeftPos()
+	{ 
+		return getEncoderPosition(leftEncoder);
+	}
+	public double getRightPos()
+	{ 
+		return getEncoderPosition(rightEncoder);
+	}
+
+	public double getEncoderVelocity(CANEncoder encoder)
+	{ 
+		return encoder.getVelocity();
+	}
+
+	public double getLeftVel()
+	{ 
+		return getEncoderVelocity(leftEncoder);
+	}
+	public double getRightVel()
+	{
+		return getEncoderVelocity(rightEncoder);
+	}
+
+	public double limit(double x, double upperLimit, double lowerLimit)
+	{	if(x >= upperLimit){ x = upperLimit;}
+		else if( x<=lowerLimit){ x = lowerLimit;}
+		return x;
+	}
+	public double applyDeadband(double input, double deadband)
+	{
+		if(Math.abs(input) <= deadband) input = 0;
+
+		return input; 
 	}
 
 
@@ -83,6 +135,8 @@ public class Drivetrain extends Subsystem implements RobotMap.MOTORS{
 	SmartDashboard.putNumber("Front Right Drive Power", MotorPower(frontRightSpark));
 	SmartDashboard.putNumber("Rear Right Drive Power", MotorPower(rearRightSpark));
 
+	SmartDashboard.putNumber("left Encoder Position", getEncoderPosition(leftEncoder));
+	SmartDashboard.putNumber("right Encoder Positoin" ,getEncoderPosition(rightEncoder));
   }
 
   public static Drivetrain getInstance() {if (instance == null) {instance = new Drivetrain();}return instance;}
