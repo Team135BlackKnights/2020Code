@@ -14,7 +14,7 @@ import frc.robot.commands.DriveWithJoysticks;
 
 public class Drivetrain extends Subsystem implements RobotMap.MOTORS{
   public static Drivetrain instance;
-
+// Actual driveTrain will have Falcons
   public CANSparkMax frontLeftSpark = new CANSparkMax(FRONT_LEFT_SPARK_ID, MotorType.kBrushless);
   public CANSparkMax rearLeftSpark = new CANSparkMax(REAR_LEFT_SPARK_ID, MotorType.kBrushless);
   public CANSparkMax frontRightSpark = new CANSparkMax(FRONT_RIGHT_SPARK_ID, MotorType.kBrushless);
