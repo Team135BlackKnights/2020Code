@@ -54,8 +54,8 @@ public class EncoderDrive extends TimedCommand {
     double rightMinAlt = rightError > 0 ? 1: -1;
     double leftMinPower = minDrivePower * leftMinAlt;
     double rightMinPower = minDrivePower * rightMinAlt;
-    leftPower = Robot.drivetrain.limit((leftPower *leftP) + leftMinPower, .5, -.5);
-    rightPower = Robot.drivetrain.limit((rightPower * rightP) +rightMinPower , .5, -.5);
+    leftPower = Robot.drivetrain.limit((leftPower *leftP) + leftMinPower, .7, -.7);
+    rightPower = Robot.drivetrain.limit((rightPower * rightP) +rightMinPower , .7, -.7);
 
     SmartDashboard.putNumber("Encoder Drive Left Power", leftPower);
     SmartDashboard.putNumber("Encoder Drive Right Power", rightPower);
