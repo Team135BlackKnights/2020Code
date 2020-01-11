@@ -34,9 +34,9 @@ public class OI implements RobotMap.KOI{
 	{
 		prototypeButtonOne.toggleWhenPressed(new PrototypeButtonControlOne());
 		prototypeButtonTwo.toggleWhenPressed(new PrototypeButtonControlTwo());
-		resetEncoderButton.whenPressed(new resetEncoders());
+		//resetEncoderButton.whenPressed(new resetEncoders());
 		encoderDriveTestButton.whenPressed(new EncoderDrive(-50, 50,4));
-		autoTestButton.whenPressed(new AutoMaybe());
+		//autoTestButton.whenPressed(new AutoMaybe());
 	}
 //Returns the values for the sliders of the three joysticks 
 // adding a deadband so that it doesn't count .01 as still doing something
