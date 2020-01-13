@@ -10,13 +10,21 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.*;
 import frc.robot.commands.PrototypeManipControl;
 
 public class Prototyping extends Subsystem implements RobotMap.MOTORS{
   public static Prototyping instance;
+
+  public CANSparkMax
+    topShooterSpark,
+    bottomShooterSpark;
 
   public TalonSRX 
     manipControlOneTalon, 
@@ -26,6 +34,12 @@ public class Prototyping extends Subsystem implements RobotMap.MOTORS{
 
 
   public Prototyping() {
+    topShooterSpark = new CANSparkMax(FRONT_LEFT_SPARK_ID, MotorType.kBrushless);
+    bottomShooterSpark = new CANSparkMax(FRONT_RIGHT_SPARK_ID, MotorType.kBrushless);
+
+    ConfigSpark(topShooterSpark);
+    ConfigSpark(bottomShooterSpark);
+
     manipControlOneTalon = new TalonSRX(MANIPCONTROLONE_TALON);
     manipControlTwoTalon = new TalonSRX(MANIPCONTROLTWO_TALON);
 
@@ -38,6 +52,13 @@ public class Prototyping extends Subsystem implements RobotMap.MOTORS{
     ConfigTalon(buttonControlTwoTalon);
 
   }
+  public void ConfigSpark(CANSparkMax spark)
+	{
+		spark.setIdleMode(IdleMode.kBrake);
+		spark.setInverted(false);
+		spark.enableVoltageCompensation(12);
+		
+	}
 
   public void ConfigTalon(TalonSRX talon)
   {
@@ -59,6 +80,18 @@ public class Prototyping extends Subsystem implements RobotMap.MOTORS{
   public void runButtonTalon2(double power)
   {
     buttonControlTwoTalon.set(ControlMode.PercentOutput, power);
+  }
+
+  public void runShooter(double topShooterRPM, double bottomShooterRPM) {
+    double volts = 12;
+    int maxRPM = 5200;
+    
+    double topShooterPower = (volts/maxRPM) * topShooterRPM;
+    double bottomShooterPower = (volts/maxRPM) * bottomShooterRPM;
+    
+    topShooterSpark.set(topShooterPower);
+    bottomShooterSpark.set(bottomShooterPower);
+
   }
   @Override
   public void periodic() {

@@ -28,12 +28,14 @@ public class OI implements RobotMap.KOI{
 	prototypeButtonTwo = new JoystickButton(manipJoystick, 2),
 	resetEncoderButton = new JoystickButton(rightJoystick, 2),
 	encoderDriveTestButton = new JoystickButton(leftJoystick, 1),
-	autoTestButton = new JoystickButton(leftJoystick, 2);
+	autoTestButton = new JoystickButton(leftJoystick, 2),
+	prototypeShooterButton = new JoystickButton(rightJoystick, 7);
 
 	public OI()
 	{
 		prototypeButtonOne.toggleWhenPressed(new PrototypeButtonControlOne());
 		prototypeButtonTwo.toggleWhenPressed(new PrototypeButtonControlTwo());
+		prototypeShooterButton.toggleWhenPressed(new PrototypeShooter());
 		//resetEncoderButton.whenPressed(new resetEncoders());
 		encoderDriveTestButton.whenPressed(new EncoderDrive(-50, 50,4));
 		//autoTestButton.whenPressed(new AutoMaybe());
