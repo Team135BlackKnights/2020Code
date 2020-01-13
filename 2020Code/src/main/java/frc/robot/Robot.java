@@ -19,7 +19,8 @@ public class Robot extends TimedRobot {
   public static Drivetrain drivetrain;
   public static ColorWheel colorWheel;
   public static Prototyping prototyping;
-  public static Limelight  limelight;
+  public static TurretLimelight  turretlimelight;
+  public static IntakeLimelight intakeLimelight; 
   public static Turret 		turret;
   public static OI oi;
 
@@ -31,7 +32,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     
     drivetrain = Drivetrain.getInstance();
-	limelight = Limelight.getInstance();
+	turretlimelight = TurretLimelight.getInstance();
+	intakeLimelight = IntakeLimelight.getInstance();
 	prototyping = Prototyping.getInstance();
 	//colorWheel = ColorWheel.getInstance();
 	//turret = Turret.getInstance();

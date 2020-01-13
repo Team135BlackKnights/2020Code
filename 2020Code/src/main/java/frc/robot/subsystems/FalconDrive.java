@@ -30,10 +30,11 @@ public class FalconDrive extends Subsystem implements RobotMap{
 
   public SpeedControllerGroup leftDriveSide, rightDriveSide; 
   public DifferentialDrive chassis; 
-  
+  /*
   public AHRS navx;
   public Counter leftLidar, rightLidar;
   public Ultrasonic leftSonar, rightSonar, rearSonar, frontSonar;
+  */
   public FalconDrive getInstance()
   {
      if (instance == null) {
@@ -64,6 +65,24 @@ public class FalconDrive extends Subsystem implements RobotMap{
     rightFrontFX.setSelectedSensorPosition(0);
     leftRearFX.setSelectedSensorPosition(0);
     rightRearFX.setSelectedSensorPosition(0);
+  }
+
+  public double getEncoderDistance(TalonFX falcon)
+  {
+    return falcon.getSelectedSensorPosition();
+  }
+  public double getEncoderVelocity(TalonFX falcon)
+  {
+    return falcon.getSelectedSensorVelocity();
+  }
+
+  public double getLeftPos()
+  {
+    return (getEncoderDistance(leftFrontFX) + getEncoderDistance(leftRearFX))/2;
+  }
+  public double getRightPos()
+  {
+    return (getEncoderDistance(rightFrontFX) + getEncoderDistance(rightRearFX))/2;
   }
 
   public void forceBreakMode(boolean forceBreak)
@@ -99,6 +118,11 @@ public class FalconDrive extends Subsystem implements RobotMap{
     rightFrontFX.set(ControlMode.Position, rightPos);
   }
 
+  public void printPositions()
+  {
+    SmartDashboard.putNumber("leftFront Position", getEncoderDistance(leftFrontFX));
+    SmartDashboard.putNumber("leftRear Position", getEncoderDistance(leftRearFX));
+  } 
   
   
   

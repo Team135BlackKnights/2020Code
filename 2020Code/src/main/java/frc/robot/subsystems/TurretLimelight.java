@@ -7,11 +7,11 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 
 //import frc.robot.commands.*;
 
-public class Limelight extends Subsystem {
-	private static Limelight instance;
+public class TurretLimelight extends Subsystem {
+	private static TurretLimelight instance;
 
 	NetworkTableInstance networkTableInstance = NetworkTableInstance.getDefault();
-	NetworkTable limelightTable = networkTableInstance.getTable("limelight");
+	NetworkTable limelightTable = networkTableInstance.getTable("limelight-turret");
 	NetworkTableEntry validTargetEntry = limelightTable.getEntry("tv"),
 	horizontalOffsetEntry = limelightTable.getEntry("tx"),
 	verticalOffsetEntry = limelightTable.getEntry("ty"),
@@ -71,7 +71,7 @@ public class Limelight extends Subsystem {
 	@Override
 	public void periodic() 	{}
 
-	public static Limelight getInstance() {if (instance == null) {instance = new Limelight();}return instance;}
+	public static TurretLimelight getInstance() {if (instance == null) {instance = new TurretLimelight();}return instance;}
 
 	public void initDefaultCommand() {}
 }

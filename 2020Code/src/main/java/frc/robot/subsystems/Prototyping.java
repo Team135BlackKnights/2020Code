@@ -83,8 +83,8 @@ public class Prototyping extends Subsystem implements RobotMap.MOTORS{
   }
 
   public void runShooter(double topShooterRPM, double bottomShooterRPM) {
-    double volts = 12;
-    int maxRPM = 5200;
+    double volts = 1;
+    int maxRPM = 5676;
     
     double topShooterPower = (volts/maxRPM) * topShooterRPM;
     double bottomShooterPower = (volts/maxRPM) * bottomShooterRPM;

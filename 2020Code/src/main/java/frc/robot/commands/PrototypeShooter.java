@@ -11,8 +11,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class PrototypeShooter extends Command {
-  public PrototypeShooter() {
+  public double _topRPM, _bottomRPM;
+  public PrototypeShooter(double topRPM, double bottomRPM) {
     requires(Robot.prototyping);
+    this._topRPM = topRPM;
+    this._bottomRPM = bottomRPM;
   }
 
   // Called just before this Command runs the first time
@@ -24,7 +27,7 @@ public class PrototypeShooter extends Command {
   @Override
   protected void execute() {
     //                           top   bottom
-    Robot.prototyping.runShooter(2000, 1500);
+    Robot.prototyping.runShooter(_topRPM, _bottomRPM);
 
   }
 
