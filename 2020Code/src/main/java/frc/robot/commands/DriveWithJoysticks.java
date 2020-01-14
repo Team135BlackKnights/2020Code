@@ -11,7 +11,7 @@ public class DriveWithJoysticks extends Command {
   public double halfPowerDrive;
 
   public DriveWithJoysticks() {
-    requires(Robot.drivetrain);
+    requires(Robot.drive);
     
     JoystickYValue = Robot.oi.GetJoystickYValue(1) *  Robot.oi.returnRightSlider();
     RJoystickYValue = Robot.oi.GetJoystickYValue(0) * Robot.oi.returnLeftSlider();
@@ -45,11 +45,12 @@ public class DriveWithJoysticks extends Command {
     lateralPower = JoystickYValue * halfPowerDrive;
     rotationPower = RJoystickZValue * halfPowerDrive;
         
-    Robot.drivetrain.ArcadeDrive(lateralPower, rotationPower * .85);
+    Robot.drive.ArcadeDrive(lateralPower, rotationPower * .85);
     //Robot.drivetrain.TankDrive(leftDrivePower, rightDrivePower);
 
   }
 
+  
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {

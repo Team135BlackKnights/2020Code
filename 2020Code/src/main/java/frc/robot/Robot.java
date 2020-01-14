@@ -16,7 +16,7 @@ import frc.robot.subsystems.*;
 
 
 public class Robot extends TimedRobot {
-  public static Drivetrain drivetrain;
+  public static FalconDrive drive; 
   public static ColorWheel colorWheel;
   public static Prototyping prototyping;
   public static TurretLimelight  turretlimelight;
@@ -30,8 +30,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    
-    drivetrain = Drivetrain.getInstance();
+	
+	drive = FalconDrive.getInstance();
 	turretlimelight = TurretLimelight.getInstance();
 	intakeLimelight = IntakeLimelight.getInstance();
 	prototyping = Prototyping.getInstance();

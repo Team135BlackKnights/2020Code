@@ -25,7 +25,7 @@ import frc.robot.RobotMap;
  */
 public class FalconDrive extends Subsystem implements RobotMap{
 
-  public FalconDrive instance; 
+  public static FalconDrive instance; 
   public TalonFX leftFrontFX, rightFrontFX, leftRearFX, rightRearFX;
 
   public SpeedControllerGroup leftDriveSide, rightDriveSide; 
@@ -35,7 +35,7 @@ public class FalconDrive extends Subsystem implements RobotMap{
   public Counter leftLidar, rightLidar;
   public Ultrasonic leftSonar, rightSonar, rearSonar, frontSonar;
   */
-  public FalconDrive getInstance()
+  public static FalconDrive getInstance()
   {
      if (instance == null) {
         instance = new FalconDrive();
@@ -51,6 +51,7 @@ public class FalconDrive extends Subsystem implements RobotMap{
     chassis = new DifferentialDrive(leftDriveSide, rightDriveSide);
     chassis.setSafetyEnabled(false);
     chassis.setMaxOutput(.98);
+    resetEncoders();
   }
 
   public void configFalcon(TalonFX falcon, boolean isLeft, int ID)
@@ -59,13 +60,19 @@ public class FalconDrive extends Subsystem implements RobotMap{
     falcon.setNeutralMode(NeutralMode.Brake);
     falcon.enableVoltageCompensation(true);
   }
-  public void ResetEncoders()
+  public void resetEncoders()
   {
     leftFrontFX.setSelectedSensorPosition(0);
     rightFrontFX.setSelectedSensorPosition(0);
     leftRearFX.setSelectedSensorPosition(0);
     rightRearFX.setSelectedSensorPosition(0);
   }
+
+  public double limit(double x, double upperLimit, double lowerLimit)
+	{	if(x >= upperLimit){ x = upperLimit;}
+		else if( x<=lowerLimit){ x = lowerLimit;}
+		return x;
+	}
 
   public double getEncoderDistance(TalonFX falcon)
   {

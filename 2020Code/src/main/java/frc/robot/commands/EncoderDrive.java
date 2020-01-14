@@ -18,7 +18,7 @@ public class EncoderDrive extends TimedCommand {
     super(1);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.drivetrain);
+    requires(Robot.drive);
     this._leftTarget = leftTarget;
     this._rightTarget = rightTarget;
     this._tolerance = tolerance;
@@ -34,8 +34,8 @@ public class EncoderDrive extends TimedCommand {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double currentLeftPos = Robot.drivetrain.getLeftPos();
-    double currentRightPos = Robot.drivetrain.getRightPos();
+    double currentLeftPos = Robot.drive.getLeftPos();
+    double currentRightPos = Robot.drive.getRightPos();
 
     leftError = currentLeftPos-_leftTarget;
     rightError = currentRightPos - _rightTarget;
@@ -54,14 +54,16 @@ public class EncoderDrive extends TimedCommand {
     double rightMinAlt = rightError > 0 ? 1: -1;
     double leftMinPower = minDrivePower * leftMinAlt;
     double rightMinPower = minDrivePower * rightMinAlt;
-    leftPower = Robot.drivetrain.limit((leftPower *leftP) + leftMinPower, .7, -.7);
-    rightPower = Robot.drivetrain.limit((rightPower * rightP) +rightMinPower , .7, -.7);
+    leftPower = Robot.drive.limit((leftPower *leftP) + leftMinPower, .7, -.7);
+    rightPower = Robot.drive.limit((rightPower * rightP) +rightMinPower , .7, -.7);
 
     SmartDashboard.putNumber("Encoder Drive Left Power", leftPower);
     SmartDashboard.putNumber("Encoder Drive Right Power", rightPower);
 
-    Robot.drivetrain.TankDrive(-leftPower, rightPower);
+    Robot.drive.TankDrive(-leftPower, rightPower);
   }
+
+  
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
