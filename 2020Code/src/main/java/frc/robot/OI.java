@@ -36,7 +36,7 @@ public class OI implements RobotMap.KOI{
 		prototypeButtonOne.toggleWhenPressed(new PrototypeButtonControlOne());
 		prototypeButtonTwo.toggleWhenPressed(new PrototypeButtonControlTwo());
 		prototypeShooterButton.toggleWhenPressed(new PrototypeShooter(1740 ,3285));
-		//resetEncoderButton.whenPressed(new resetEncoders());
+		resetEncoderButton.whenPressed(new resetEncoders());
 		encoderDriveTestButton.whenPressed(new EncoderDrive(-50, 50,4));
 		//autoTestButton.whenPressed(new AutoMaybe());
 	}

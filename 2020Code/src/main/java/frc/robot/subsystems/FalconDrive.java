@@ -8,8 +8,12 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Counter;
@@ -19,6 +23,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import frc.robot.commands.*;
 
 /**
  * Add your docs here.
@@ -26,7 +31,7 @@ import frc.robot.RobotMap;
 public class FalconDrive extends Subsystem implements RobotMap{
 
   public static FalconDrive instance; 
-  public TalonFX leftFrontFX, rightFrontFX, leftRearFX, rightRearFX;
+  public WPI_TalonFX frontLeftFX, frontRightFX, rearLeftFX, rearRightFX;
 
   public SpeedControllerGroup leftDriveSide, rightDriveSide; 
   public DifferentialDrive chassis; 
@@ -43,29 +48,44 @@ public class FalconDrive extends Subsystem implements RobotMap{
   }
   private FalconDrive()
   {
-    configFalcon(leftFrontFX, true, MOTORS.FRONT_LEFT_FALCON);
-    configFalcon(leftRearFX, true, MOTORS.REAR_LEFT_FALCON);
-    configFalcon(rightFrontFX, false, MOTORS.FRONT_RIGHT_FALCON);
-    configFalcon(rightRearFX, false, MOTORS.REAR_RIGHT_FALCON);
+    frontLeftFX = new WPI_TalonFX(MOTORS.FRONT_LEFT_FALCON);
+    rearLeftFX = new WPI_TalonFX(MOTORS.REAR_LEFT_FALCON);
 
+    frontRightFX = new WPI_TalonFX(MOTORS.FRONT_RIGHT_FALCON);
+    rearRightFX = new WPI_TalonFX(MOTORS.REAR_RIGHT_FALCON);
+    
+    configFalcon(frontLeftFX, true);
+    configFalcon(rearLeftFX, true);
+    configFalcon(frontRightFX, false);
+    configFalcon(rearRightFX, false);
+
+   leftDriveSide = new SpeedControllerGroup(frontLeftFX, rearLeftFX);
+   rightDriveSide = new SpeedControllerGroup(frontRightFX, rearRightFX);
+  
     chassis = new DifferentialDrive(leftDriveSide, rightDriveSide);
+
     chassis.setSafetyEnabled(false);
     chassis.setMaxOutput(.98);
     resetEncoders();
   }
 
-  public void configFalcon(TalonFX falcon, boolean isLeft, int ID)
+  public void configFalcon(WPI_TalonFX falcon, boolean isLeft)
   { 
-    falcon = new TalonFX(ID);
     falcon.setNeutralMode(NeutralMode.Brake);
+    falcon.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor,0,100);
+    falcon.configVoltageCompSaturation(12.0, 100);
     falcon.enableVoltageCompensation(true);
+    falcon.setStatusFramePeriod(StatusFrame.Status_2_Feedback0,5, 100);
+    falcon.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_50Ms,100);
+    falcon.configVelocityMeasurementWindow(1,100);    
   }
   public void resetEncoders()
   {
-    leftFrontFX.setSelectedSensorPosition(0);
-    rightFrontFX.setSelectedSensorPosition(0);
-    leftRearFX.setSelectedSensorPosition(0);
-    rightRearFX.setSelectedSensorPosition(0);
+    frontLeftFX.setSelectedSensorPosition(0);
+    frontRightFX.setSelectedSensorPosition(0);
+    rearLeftFX.setSelectedSensorPosition(0);
+    rearRightFX.setSelectedSensorPosition(0);
+    SmartDashboard.putBoolean("Encoders Reset:", true);
   }
 
   public double limit(double x, double upperLimit, double lowerLimit)
@@ -76,7 +96,7 @@ public class FalconDrive extends Subsystem implements RobotMap{
 
   public double getEncoderDistance(TalonFX falcon)
   {
-    return falcon.getSelectedSensorPosition();
+    return falcon.getSelectedSensorPosition()/4096;
   }
   public double getEncoderVelocity(TalonFX falcon)
   {
@@ -85,11 +105,11 @@ public class FalconDrive extends Subsystem implements RobotMap{
 
   public double getLeftPos()
   {
-    return (getEncoderDistance(leftFrontFX) + getEncoderDistance(leftRearFX))/2;
+    return (getEncoderDistance(frontLeftFX) + getEncoderDistance(rearLeftFX))/2;
   }
   public double getRightPos()
   {
-    return (getEncoderDistance(rightFrontFX) + getEncoderDistance(rightRearFX))/2;
+    return (getEncoderDistance(frontRightFX) + getEncoderDistance(rearRightFX))/2;
   }
 
   public void forceBreakMode(boolean forceBreak)
@@ -97,10 +117,10 @@ public class FalconDrive extends Subsystem implements RobotMap{
     SmartDashboard.putBoolean("Forced Break Mode:", forceBreak);
      if(forceBreak)
      { 
-       leftFrontFX.setNeutralMode(NeutralMode.Brake);
-       rightFrontFX.setNeutralMode(NeutralMode.Brake);
-       leftRearFX.setNeutralMode(NeutralMode.Brake);
-       rightRearFX.setNeutralMode(NeutralMode.Brake);
+       frontLeftFX.setNeutralMode(NeutralMode.Brake);
+       frontRightFX.setNeutralMode(NeutralMode.Brake);
+       rearLeftFX.setNeutralMode(NeutralMode.Brake);
+       rearRightFX.setNeutralMode(NeutralMode.Brake);
      }
   }
 
@@ -111,7 +131,7 @@ public class FalconDrive extends Subsystem implements RobotMap{
 
   public void ArcadeDrive(double lateralPower, double rotationalPower)
   { 
-    chassis.arcadeDrive(lateralPower, rotationalPower);
+    chassis.arcadeDrive(lateralPower, -rotationalPower);
   }
   public void CurvatureDrive(double xSpeed, double zRotation)
   {
@@ -119,17 +139,61 @@ public class FalconDrive extends Subsystem implements RobotMap{
   }
   public void EncoderDrive(double leftPos, double rightPos)
   {
-    leftFrontFX.set(ControlMode.Position, leftPos);
-    leftRearFX.set(ControlMode.Position, leftPos);
-    rightFrontFX.set(ControlMode.Position, rightPos);
-    rightFrontFX.set(ControlMode.Position, rightPos);
+    frontLeftFX.set(ControlMode.Position, leftPos);
+    rearLeftFX.set(ControlMode.Position, leftPos);
+    frontRightFX.set(ControlMode.Position, rightPos);
+    frontRightFX.set(ControlMode.Position, rightPos);
   }
 
   public void printPositions()
   {
-    SmartDashboard.putNumber("leftFront Position", getEncoderDistance(leftFrontFX));
-    SmartDashboard.putNumber("leftRear Position", getEncoderDistance(leftRearFX));
+    SmartDashboard.putNumber("front Left Position:", getEncoderDistance(frontLeftFX));
+    SmartDashboard.putNumber("rear Left Position:", getEncoderDistance(rearLeftFX));
+    SmartDashboard.putNumber("front Right Position:", getEncoderDistance(frontRightFX));
+    SmartDashboard.putNumber("rear Right Position:", getEncoderDistance(rearRightFX));
+    
+    SmartDashboard.putNumber("Average Left Position:", getLeftPos());
+    SmartDashboard.putNumber("Average Right Position:", getRightPos());
   } 
+  
+  public double getMotorPercent(WPI_TalonFX falcon)
+  {
+    return falcon.getMotorOutputPercent();
+  }
+  public double getMotorVoltage(WPI_TalonFX falcon)
+  {
+    return falcon.getMotorOutputVoltage();
+  }
+  public double getMotorTemp(WPI_TalonFX falcon)
+ {
+  return falcon.getTemperature();
+ }
+ public void printPower()
+  {
+    SmartDashboard.putNumber("front Left Output Percent: ", getMotorPercent(frontLeftFX));
+    SmartDashboard.putNumber("rear Left Output Percent: ", getMotorPercent(rearLeftFX));
+    SmartDashboard.putNumber("front Right Output Percent: ", getMotorPercent(frontRightFX));
+    SmartDashboard.putNumber("rear Right Output Percent: ", getMotorPercent(rearRightFX));
+  }
+  public void printVoltage()
+  {
+    SmartDashboard.putNumber("front Left Voltage: ", getMotorVoltage(frontLeftFX));
+    SmartDashboard.putNumber("rear Left Voltage: ", getMotorVoltage(rearLeftFX));
+    SmartDashboard.putNumber("front Right Voltage: ", getMotorVoltage(frontRightFX));
+    SmartDashboard.putNumber("rear Right Voltage: ", getMotorVoltage(rearRightFX));
+  }
+  public void printTemperature()
+  {
+    SmartDashboard.putNumber("front Left Temp: ", getMotorVoltage(frontLeftFX));
+    SmartDashboard.putNumber("rear Left Voltage: ", getMotorVoltage(rearLeftFX));
+    SmartDashboard.putNumber("front Right Voltage: ", getMotorVoltage(frontRightFX));
+    SmartDashboard.putNumber("rear Right Voltage: ", getMotorVoltage(rearRightFX));
+  }
+  public void periodic()
+  {
+    printPositions();
+
+  }
   
   
   
@@ -138,6 +202,7 @@ public class FalconDrive extends Subsystem implements RobotMap{
 
   @Override
   public void initDefaultCommand() {
+    setDefaultCommand(new DriveWithJoysticks());
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }

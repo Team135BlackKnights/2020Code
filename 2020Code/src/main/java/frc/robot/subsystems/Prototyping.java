@@ -34,7 +34,7 @@ public class Prototyping extends Subsystem implements RobotMap.MOTORS{
 
 
   public Prototyping() {
-    topShooterSpark = new CANSparkMax(FRONT_LEFT_SPARK_ID, MotorType.kBrushless);
+    topShooterSpark = new CANSparkMax(REAR_LEFT_SPARK_ID, MotorType.kBrushless);
     bottomShooterSpark = new CANSparkMax(FRONT_RIGHT_SPARK_ID, MotorType.kBrushless);
 
     ConfigSpark(topShooterSpark);
