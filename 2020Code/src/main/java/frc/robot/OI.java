@@ -29,15 +29,15 @@ public class OI implements RobotMap.KOI{
 	resetEncoderButton = new JoystickButton(rightJoystick, 2),
 	encoderDriveTestButton = new JoystickButton(leftJoystick, 1),
 	autoTestButton = new JoystickButton(leftJoystick, 2),
-	prototypeShooterButton = new JoystickButton(manipJoystick, 7);
+	prototypeShooterButton = new JoystickButton(manipJoystick, 3);
 
 	public OI()
 	{
 		prototypeButtonOne.toggleWhenPressed(new PrototypeButtonControlOne());
 		prototypeButtonTwo.toggleWhenPressed(new PrototypeButtonControlTwo());
-		prototypeShooterButton.toggleWhenPressed(new PrototypeShooter(1740 ,3285));
+		prototypeShooterButton.toggleWhenPressed(new PrototypeShooter(1800 , 3500));
 		resetEncoderButton.whenPressed(new resetEncoders());
-		encoderDriveTestButton.whenPressed(new EncoderDrive(-50, 50,4));
+		encoderDriveTestButton.whenPressed(new EncoderDrive(-50, 50,4, true, 12));
 		//autoTestButton.whenPressed(new AutoMaybe());
 	}
 //Returns the values for the sliders of the three joysticks 

@@ -10,12 +10,14 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.*;
 import frc.robot.commands.PrototypeManipControl;
 
@@ -25,6 +27,8 @@ public class Prototyping extends Subsystem implements RobotMap.MOTORS{
   public CANSparkMax
     topShooterSpark,
     bottomShooterSpark;
+
+  public CANEncoder topEncoder, bottomEncoder;
 
   public TalonSRX 
     manipControlOneTalon, 
@@ -51,6 +55,10 @@ public class Prototyping extends Subsystem implements RobotMap.MOTORS{
     ConfigTalon(buttonControlOneTalon);
     ConfigTalon(buttonControlTwoTalon);
 
+    topEncoder = new CANEncoder(topShooterSpark);
+    bottomEncoder = new CANEncoder(bottomShooterSpark);
+
+    resetShooterEncoders();
   }
   public void ConfigSpark(CANSparkMax spark)
 	{
@@ -58,8 +66,29 @@ public class Prototyping extends Subsystem implements RobotMap.MOTORS{
 		spark.setInverted(false);
 		spark.enableVoltageCompensation(12);
 		
-	}
+  }
+  public void resetShooterEncoders()
+  {
+    topEncoder.setPosition(0);
+    bottomEncoder.setPosition(0);
+  }
+  public double getEncoderTicks(CANEncoder encoder)
+  {
+    return encoder.getPosition();
+  }
 
+  public double getEncoderVelocity(CANEncoder encoder)
+  {
+    return encoder.getVelocity();
+  }
+
+  public double ticksToRevs(double ticks)
+  {
+    return ticks/4096;
+  }
+  
+
+  
   public void ConfigTalon(TalonSRX talon)
   {
     talon.setNeutralMode(NeutralMode.Brake);
@@ -89,13 +118,43 @@ public class Prototyping extends Subsystem implements RobotMap.MOTORS{
     double topShooterPower = (volts/maxRPM) * topShooterRPM;
     double bottomShooterPower = (volts/maxRPM) * bottomShooterRPM;
     
-    topShooterSpark.set(topShooterPower);
+    topShooterSpark.set(-topShooterPower);
     bottomShooterSpark.set(bottomShooterPower);
 
   }
-  @Override
-  public void periodic() {
 
+  public double getMotorTemp(CANSparkMax spark)
+  {
+    return spark.getMotorTemperature();
+  }
+
+  public double neoPercentOutput(CANSparkMax spark)
+  {
+    return spark.getAppliedOutput();
+  }
+  public double neoVoltage(CANSparkMax spark)
+  {
+    return spark.getBusVoltage();
+  }
+  
+  public void printSparkStuff()
+  {
+    SmartDashboard.putNumber("top Shooter Percent Output", neoPercentOutput(topShooterSpark));
+    SmartDashboard.putNumber("Top Shooter Voltage", neoVoltage(topShooterSpark));
+    
+    SmartDashboard.putNumber("bottom Shooter Percent Output", neoPercentOutput(bottomShooterSpark));
+    SmartDashboard.putNumber("bottom Shooter Voltage", neoVoltage(bottomShooterSpark));
+  
+    SmartDashboard.putNumber("Top Shooter Revs ", ticksToRevs(getEncoderTicks(topEncoder)));
+    SmartDashboard.putNumber("Bottom Shooter Revs ", ticksToRevs(getEncoderTicks(bottomEncoder)));
+
+    SmartDashboard.putNumber("top SHooter temp", getMotorTemp(topShooterSpark));
+    SmartDashboard.putNumber("bottom shooter temp", getMotorTemp(bottomShooterSpark));
+  }
+  @Override
+  public void periodic() 
+  {
+    printSparkStuff();
 
     // This method will be called once per scheduler run
   }

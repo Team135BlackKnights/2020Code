@@ -27,6 +27,7 @@ public class resetEncoders extends InstantCommand {
   @Override
   protected void initialize() {
     Robot.drive.resetEncoders();
+    Robot.prototyping.resetShooterEncoders();
 
   }
 

@@ -51,6 +51,12 @@ public interface RobotMap {
   final int FRONT_LEFT_FALCON = 1, FRONT_RIGHT_FALCON = 4,
             REAR_LEFT_FALCON = 2,  REAR_RIGHT_FALCON = 3; 
   }
+  public interface SENSORS {
+  final int RIGHT_SONAR_TRIG = 0, RIGHT_SONAR_ECHO = 1,
+            LEFT_SONAR_TRIG = 2, LEFT_SONAR_ECHO = 3;
+
+  }
+
   // For example to map the left and right motors, you could define the
   // following variables to use with your drivetrain subsystem.
   // public static int leftMotor = 1;

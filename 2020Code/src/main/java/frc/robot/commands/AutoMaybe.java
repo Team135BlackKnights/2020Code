@@ -15,11 +15,11 @@ public class AutoMaybe extends CommandGroup {
    */
   public AutoMaybe() {
     //addSequential(new EncoderDrive(-20,20,2));
-    addSequential(new EncoderDrive(-100, 100, 2));
-    addSequential(new EncoderDrive(-39, 39, 2));
-    addSequential(new EncoderDrive(-51, 80, 2));
-    addSequential(new EncoderDrive(-84, 102, 2));
-    addSequential(new EncoderDrive(-75, 75, 2));
+    addSequential(new EncoderDrive(-100, 100, 2, true, 12));
+    //addSequential(new EncoderDrive(-39, 39, 2));
+    //addSequential(new EncoderDrive(-51, 80, 2));
+    //addSequential(new EncoderDrive(-84, 102, 2));
+    //addSequential(new EncoderDrive(-75, 75, 2));
 
 
     // Add Commands here:

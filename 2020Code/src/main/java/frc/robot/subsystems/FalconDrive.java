@@ -35,6 +35,10 @@ public class FalconDrive extends Subsystem implements RobotMap{
 
   public SpeedControllerGroup leftDriveSide, rightDriveSide; 
   public DifferentialDrive chassis; 
+
+  public Ultrasonic rightSonar,leftSonar;
+  public  Counter testLidar; 
+
   /*
   public AHRS navx;
   public Counter leftLidar, rightLidar;
@@ -59,14 +63,37 @@ public class FalconDrive extends Subsystem implements RobotMap{
     configFalcon(frontRightFX, false);
     configFalcon(rearRightFX, false);
 
+    leftSonar = new Ultrasonic(SENSORS.LEFT_SONAR_TRIG, SENSORS.LEFT_SONAR_ECHO);
+    rightSonar = new Ultrasonic(SENSORS.RIGHT_SONAR_TRIG, SENSORS.RIGHT_SONAR_ECHO);
+    testLidar = new Counter(8);
+    initLidar(testLidar); 
+
    leftDriveSide = new SpeedControllerGroup(frontLeftFX, rearLeftFX);
    rightDriveSide = new SpeedControllerGroup(frontRightFX, rearRightFX);
   
     chassis = new DifferentialDrive(leftDriveSide, rightDriveSide);
-
+    rightSonar.setAutomaticMode(true);
+    leftSonar.setAutomaticMode(true);
     chassis.setSafetyEnabled(false);
     chassis.setMaxOutput(.98);
     resetEncoders();
+  }
+
+  public void initLidar(Counter lidar)
+  {
+    lidar.setMaxPeriod(1.00);
+    lidar.setSemiPeriodMode(true);
+    lidar.reset();
+  }
+
+  public double lidarDistance(Counter lidar)
+  {
+    double lidarDistance;
+    if(lidar.get() < 1)
+      lidarDistance = 0;
+    else 
+      lidarDistance = (lidar.getPeriod() * 1000000.0 / 10.0);
+    return lidarDistance;
   }
 
   public void configFalcon(WPI_TalonFX falcon, boolean isLeft)
@@ -154,6 +181,8 @@ public class FalconDrive extends Subsystem implements RobotMap{
     
     SmartDashboard.putNumber("Average Left Position:", getLeftPos());
     SmartDashboard.putNumber("Average Right Position:", getRightPos());
+
+    
   } 
   
   public double getMotorPercent(WPI_TalonFX falcon)
@@ -189,10 +218,26 @@ public class FalconDrive extends Subsystem implements RobotMap{
     SmartDashboard.putNumber("front Right Voltage: ", getMotorVoltage(frontRightFX));
     SmartDashboard.putNumber("rear Right Voltage: ", getMotorVoltage(rearRightFX));
   }
+  
+  public double sonarDistance(Ultrasonic sonar)
+  {
+    return sonar.getRangeInches();
+  }
+
+  public void printUltrasonicValues() {
+    SmartDashboard.putNumber("right ultrasonic:", sonarDistance(rightSonar) );
+    SmartDashboard.putNumber("left ultrasonic:", sonarDistance(leftSonar) );
+  }
+  public double poofs = 2.54;
+  public void printLidarValues()
+  {
+    SmartDashboard.putNumber("test Lidar distance in", lidarDistance(testLidar)/poofs);
+  }
   public void periodic()
   {
     printPositions();
-
+    printUltrasonicValues();
+    printLidarValues();
   }
   
   
