@@ -30,8 +30,6 @@ public interface RobotMap {
       
   }
   public interface MOTORS {
-    // The convention for assigning IDS to motors will be based on which order is loosely based on its PDP power slot in reverse order 
-    // ie PDP slot 15 goes to motor number 2 
     // The other part of the ID assignement is the motor controller type 
       // talon FX's will have a 0 or no number in front
       // Can Sparks will have a 1 in front of the id number
@@ -45,15 +43,20 @@ public interface RobotMap {
   final int SPINNER_TALON_ID = 6,
               TURRET_TALON_ID = 4;
 
-  final int BUTTONCONTROLTWO_TALON = 21, BUTTONCONTROLONE_TALON = 22,
-              MANIPCONTROLONE_TALON = 23, MANIPCONTROLTWO_TALON = 24;
+  final int BUTTON_CONTROL_TWO_TALON = 21, BUTTON_CONTROL_ONE_TALON = 22,
+              MANIP_CONTROL_ONE_TALON = 23, MANIP_CONTROL_TWO_TALON = 24;
 
   final int FRONT_LEFT_FALCON = 1, FRONT_RIGHT_FALCON = 4,
             REAR_LEFT_FALCON = 2,  REAR_RIGHT_FALCON = 3; 
   }
   public interface SENSORS {
   final int RIGHT_SONAR_TRIG = 0, RIGHT_SONAR_ECHO = 1,
-            LEFT_SONAR_TRIG = 2, LEFT_SONAR_ECHO = 3;
+            LEFT_SONAR_TRIG = 2, LEFT_SONAR_ECHO = 3,
+
+            FRONT_LIDAR_ID = 8, BACK_LIDAR_ID = 9,
+            TURRET_LIDAR = 10,  SHOOTER_TRIP_ID = 11,
+            INTAKE_TRIP_ID = 12, INTAKE_SONAR_TRIG = 13, 
+            INTAKE_SONAR_ECHO = 14;
 
   }
 

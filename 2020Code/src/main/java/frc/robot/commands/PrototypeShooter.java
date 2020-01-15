@@ -34,6 +34,7 @@ public class PrototypeShooter extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    Robot.prototyping.runShooter(0,0);
     return false;
   }
 

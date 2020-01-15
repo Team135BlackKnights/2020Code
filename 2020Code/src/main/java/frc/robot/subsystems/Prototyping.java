@@ -15,13 +15,13 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.*;
 import frc.robot.commands.PrototypeManipControl;
 
-public class Prototyping extends Subsystem implements RobotMap.MOTORS{
+public class Prototyping extends Subsystem implements RobotMap{
   public static Prototyping instance;
 
   public CANSparkMax
@@ -29,6 +29,8 @@ public class Prototyping extends Subsystem implements RobotMap.MOTORS{
     bottomShooterSpark;
 
   public CANEncoder topEncoder, bottomEncoder;
+
+  public DigitalInput photoSwitchTest;
 
   public TalonSRX 
     manipControlOneTalon, 
@@ -38,17 +40,17 @@ public class Prototyping extends Subsystem implements RobotMap.MOTORS{
 
 
   public Prototyping() {
-    topShooterSpark = new CANSparkMax(REAR_LEFT_SPARK_ID, MotorType.kBrushless);
-    bottomShooterSpark = new CANSparkMax(FRONT_RIGHT_SPARK_ID, MotorType.kBrushless);
+    topShooterSpark = new CANSparkMax(MOTORS.REAR_LEFT_SPARK_ID, MotorType.kBrushless);
+    bottomShooterSpark = new CANSparkMax(MOTORS.FRONT_RIGHT_SPARK_ID, MotorType.kBrushless);
 
     ConfigSpark(topShooterSpark);
     ConfigSpark(bottomShooterSpark);
 
-    manipControlOneTalon = new TalonSRX(MANIPCONTROLONE_TALON);
-    manipControlTwoTalon = new TalonSRX(MANIPCONTROLTWO_TALON);
+    manipControlOneTalon = new TalonSRX(MOTORS.MANIP_CONTROL_ONE_TALON);
+    manipControlTwoTalon = new TalonSRX(MOTORS.MANIP_CONTROL_TWO_TALON);
 
-    buttonControlOneTalon = new TalonSRX(BUTTONCONTROLONE_TALON);
-    buttonControlTwoTalon = new TalonSRX(BUTTONCONTROLTWO_TALON);
+    buttonControlOneTalon = new TalonSRX(MOTORS.BUTTON_CONTROL_ONE_TALON);
+    buttonControlTwoTalon = new TalonSRX(MOTORS.BUTTON_CONTROL_TWO_TALON);
   
     ConfigTalon(manipControlOneTalon);
     ConfigTalon(manipControlTwoTalon);
@@ -59,6 +61,13 @@ public class Prototyping extends Subsystem implements RobotMap.MOTORS{
     bottomEncoder = new CANEncoder(bottomShooterSpark);
 
     resetShooterEncoders();
+    
+    photoSwitchTest = new DigitalInput(SENSORS.SHOOTER_TRIP_ID);
+  }
+
+  public boolean getDigitalInput(DigitalInput input)
+  {
+    return input.get();
   }
   public void ConfigSpark(CANSparkMax spark)
 	{
@@ -151,10 +160,15 @@ public class Prototyping extends Subsystem implements RobotMap.MOTORS{
     SmartDashboard.putNumber("top SHooter temp", getMotorTemp(topShooterSpark));
     SmartDashboard.putNumber("bottom shooter temp", getMotorTemp(bottomShooterSpark));
   }
+  public void printDigitalInputs()
+  {
+    SmartDashboard.putBoolean("is photo swtich test tripped", getDigitalInput(photoSwitchTest));
+  }
   @Override
   public void periodic() 
   {
     printSparkStuff();
+    printDigitalInputs();
 
     // This method will be called once per scheduler run
   }
