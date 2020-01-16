@@ -47,7 +47,7 @@ public class OI implements RobotMap.KOI{
 
 		prototypeShooterButton.toggleWhenPressed(new PrototypeShooter(1600, 3800));
 		resetEncoderButton.whenPressed(new resetDriveEncoders());
-		encoderDriveTestButton.whenPressed(new EncoderDrive(-50, 50,4, true, 12));
+		encoderDriveTestButton.whenPressed(new EncoderDrive(-50, 50, 1, true, 20));
 		//autoTestButton.whenPressed(new AutoMaybe());
 	}
 //Returns the values for the sliders of the three joysticks 

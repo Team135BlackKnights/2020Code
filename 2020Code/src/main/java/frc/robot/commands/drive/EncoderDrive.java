@@ -18,6 +18,7 @@ public class EncoderDrive extends TimedCommand {
   public double _leftTarget, _rightTarget, _distanceFromWall,
               leftError, rightError, _tolerance;
   public boolean _stickToWall;
+  public double actualDistanceFromWall;
 
 
   
@@ -60,14 +61,14 @@ public class EncoderDrive extends TimedCommand {
     leftD = 0,  rightD = 0;
     
     double 
-    angleP = .15,
+    angleP = .3,
     angleI = 0,
     angleD = 0;    
 
-    double actualDistanceFromWall = sonarDistance(Robot.drive.rightSonar);
+    actualDistanceFromWall = sonarDistance(Robot.drive.rightSonar);
 
 
-    double minDrivePower = .15; 
+    double minDrivePower = .26; 
     double leftMinAlt = leftError > 0 ? 1: -1;
     double rightMinAlt = rightError > 0 ? 1: -1;
     double leftMinPower = minDrivePower * leftMinAlt;
@@ -76,11 +77,12 @@ public class EncoderDrive extends TimedCommand {
     double wallDistancePower = ((actualDistanceFromWall - _distanceFromWall)/_distanceFromWall) * angleP;
 
     leftPower = Robot.drive.limit(leftPower, .45, -.45);
+    rightPower = Robot.drive.limit(rightPower, .45, -.45);
 
     SmartDashboard.putNumber("wallDistancePower", wallDistancePower);
     if (_stickToWall) {
-      leftPower = Robot.drive.limit(((leftPower *leftP) + leftMinPower) + (wallDistancePower), .7, -.7);
-      rightPower = Robot.drive.limit(((rightPower*rightP) + rightMinPower) + (wallDistancePower),.7,-.7);
+      leftPower = Robot.drive.limit(((leftPower *leftP) + leftMinPower) + (wallDistancePower), .8, -.8);
+      rightPower = Robot.drive.limit(((rightPower*rightP) + rightMinPower) + (wallDistancePower),.8,-.8);
     }
     else {
       leftPower = Robot.drive.limit((leftPower *leftP) + leftMinPower, .7, -.7);
@@ -100,8 +102,8 @@ public class EncoderDrive extends TimedCommand {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return (Math.abs(leftError) <= _tolerance && Math.abs(rightError) <=_tolerance) ||
-    Robot.oi.GetJoystickZValue(0) >.2;  }
+    return (Math.abs(leftError) <= _tolerance && Math.abs(rightError) <=_tolerance) && (_stickToWall && (actualDistanceFromWall + 1 <= _distanceFromWall || actualDistanceFromWall - 1 <= _distanceFromWall)) ||
+    Robot.oi.GetJoystickZValue(0) >.2 ;  }
 
   // Called once after isFinished returns true
   @Override
