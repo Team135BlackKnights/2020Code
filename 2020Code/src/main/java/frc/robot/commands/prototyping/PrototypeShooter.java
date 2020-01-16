@@ -5,19 +5,18 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.prototyping;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class PrototypeButtonControlTwo extends Command {
-
-  
-  public PrototypeButtonControlTwo() {
-    //requires(Robot.prototyping);
-
+public class PrototypeShooter extends Command {
+  public double _topRPM, _bottomRPM;
+  public PrototypeShooter(double topRPM, double bottomRPM) {
+    requires(Robot.prototyping);
+    this._topRPM = topRPM;
+    this._bottomRPM = bottomRPM;
   }
-
 
   // Called just before this Command runs the first time
   @Override
@@ -27,7 +26,8 @@ public class PrototypeButtonControlTwo extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.prototyping.runButtonTalon2(.75);
+    //                           top   bottom
+    Robot.prototyping.runShooter(_topRPM, _bottomRPM);
 
   }
 
@@ -40,7 +40,8 @@ public class PrototypeButtonControlTwo extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.prototyping.runButtonTalon2(0);
+    Robot.prototyping.runShooter(0,0);
+
   }
 
   // Called when another command which requires one or more of the same

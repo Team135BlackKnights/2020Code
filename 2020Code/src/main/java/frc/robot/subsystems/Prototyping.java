@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.*;
-import frc.robot.commands.PrototypeManipControl;
+import frc.robot.commands.prototyping.PrototypeManipControl;
 
 public class Prototyping extends Subsystem implements RobotMap{
   public static Prototyping instance;

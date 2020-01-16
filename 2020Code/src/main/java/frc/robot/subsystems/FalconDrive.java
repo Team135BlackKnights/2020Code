@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
-import frc.robot.commands.*;
+import frc.robot.commands.drive.*;
 
 /**
  * Add your docs here.
@@ -38,6 +38,8 @@ public class FalconDrive extends Subsystem implements RobotMap{
 
   public Ultrasonic rightSonar,leftSonar;
   public  Counter testLidar; 
+  public AHRS navx;
+
 
   /*
   public AHRS navx;
@@ -67,6 +69,9 @@ public class FalconDrive extends Subsystem implements RobotMap{
     rightSonar = new Ultrasonic(SENSORS.RIGHT_SONAR_TRIG, SENSORS.RIGHT_SONAR_ECHO);
     testLidar = new Counter(8);
     initLidar(testLidar); 
+
+    navx = new AHRS(SENSORS.navXPort);
+    navx.reset();
 
    leftDriveSide = new SpeedControllerGroup(frontLeftFX, rearLeftFX);
    rightDriveSide = new SpeedControllerGroup(frontRightFX, rearRightFX);
@@ -129,7 +134,14 @@ public class FalconDrive extends Subsystem implements RobotMap{
   {
     return falcon.getSelectedSensorVelocity();
   }
-
+  public double getAngle()
+ 	{
+    return navx.getAngle();
+	}
+  public double getRotationRate()
+  {
+    return navx.getRate();
+  }
   public double getLeftPos()
   {
     return (getEncoderDistance(frontLeftFX) + getEncoderDistance(rearLeftFX))/2;
@@ -235,9 +247,13 @@ public class FalconDrive extends Subsystem implements RobotMap{
   }
   public void periodic()
   {
+    SmartDashboard.putNumber("current angle", getAngle());
     printPositions();
     printUltrasonicValues();
     printLidarValues();
+  }
+  public void stopMotors() {
+    chassis.tankDrive(0, 0);
   }
   
   

@@ -3,7 +3,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.*;
+import frc.robot.commands.drive.*;
+import frc.robot.commands.prototyping.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -24,19 +25,23 @@ public class OI implements RobotMap.KOI{
   public static JoystickButton 
 	rightTrigger = new JoystickButton(rightJoystick, TRIGGER_BUTTON),
 	leftTrigger = new JoystickButton(leftJoystick, TRIGGER_BUTTON),
+	manipTrigger = new JoystickButton(manipJoystick, TRIGGER_BUTTON),
 	prototypeButtonOne = new JoystickButton(manipJoystick, 1),
 	prototypeButtonTwo = new JoystickButton(manipJoystick, 2),
 	resetEncoderButton = new JoystickButton(rightJoystick, 2),
 	encoderDriveTestButton = new JoystickButton(leftJoystick, 1),
 	autoTestButton = new JoystickButton(leftJoystick, 2),
-	prototypeShooterButton = new JoystickButton(manipJoystick, 3);
+	prototypeShooterButton = new JoystickButton(manipJoystick, 3),
+	turnToAngle90 = new JoystickButton(manipJoystick, 12);
 
 	public OI()
 	{
 		prototypeButtonOne.toggleWhenPressed(new PrototypeButtonControlOne());
 		prototypeButtonTwo.toggleWhenPressed(new PrototypeButtonControlTwo());
-		prototypeShooterButton.toggleWhenPressed(new PrototypeShooter(1800 , 3500));
-		resetEncoderButton.whenPressed(new resetEncoders());
+		turnToAngle90.whenPressed(new TurnToAngle(90));
+
+		prototypeShooterButton.toggleWhenPressed(new PrototypeShooter(1600, 3800));
+		resetEncoderButton.whenPressed(new resetDriveEncoders());
 		encoderDriveTestButton.whenPressed(new EncoderDrive(-50, 50,4, true, 12));
 		//autoTestButton.whenPressed(new AutoMaybe());
 	}
@@ -62,6 +67,10 @@ public static boolean leftTrigger() {
 public static boolean rightTrigger()
 {
   return rightTrigger.get();
+}
+public static boolean manipTrigger()
+{
+	return manipTrigger.get();
 }
 
 

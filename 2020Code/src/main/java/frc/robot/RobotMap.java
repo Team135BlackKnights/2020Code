@@ -7,7 +7,7 @@
 
 package frc.robot;
 
-
+import edu.wpi.first.wpilibj.SerialPort;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -22,8 +22,21 @@ public interface RobotMap {
       LEFT_JOYSTICK = 0,
       RIGHT_JOYSTICK = 1,
       MANIP_JOYSTICK = 2,
-      TRIGGER_BUTTON = 1;
 
+      TRIGGER_BUTTON = 1,
+      THUMB_BUTTON = 2,
+       
+      HANDLE_BOTTOM_LEFT_BUTTON = 3,
+      HANDLE_BOTTOM_RIGHT_BUTTON = 4, 
+      HANDLE_TOP_LEFT_BUTTON = 5,
+      HANDLE_TOP_RIGHT_BUTTON = 6,
+
+      BASE_TOP_LEFT_BUTTON = 7,
+      BASE_TOP_RIGHT_BUTTON = 8,
+      BASE_MIDDLE_LEFT_BUTTON = 9,
+      BASE_MIDDLE_RIGHT_BUTTON = 10,
+      BASE_BOTTOM_LEFT_BUTTON = 11,
+      BASE_BOTTOM_RIGHT_BUTTON = 12;
 
     public static final double 
       JOYSTICK_DEADBAND = .2;
@@ -49,7 +62,8 @@ public interface RobotMap {
   final int FRONT_LEFT_FALCON = 1, FRONT_RIGHT_FALCON = 4,
             REAR_LEFT_FALCON = 2,  REAR_RIGHT_FALCON = 3; 
   }
-  public interface SENSORS {
+  public interface SENSORS 
+  {
   final int RIGHT_SONAR_TRIG = 0, RIGHT_SONAR_ECHO = 1,
             LEFT_SONAR_TRIG = 2, LEFT_SONAR_ECHO = 3,
 
@@ -57,6 +71,7 @@ public interface RobotMap {
             TURRET_LIDAR = 10,  SHOOTER_TRIP_ID = 11,
             INTAKE_TRIP_ID = 12, INTAKE_SONAR_TRIG = 13, 
             INTAKE_SONAR_ECHO = 14;
+            public SerialPort.Port navXPort = SerialPort.Port.kUSB;
 
   }
 

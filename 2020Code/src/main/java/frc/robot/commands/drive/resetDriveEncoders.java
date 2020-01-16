@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.drive;
 import frc.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
@@ -13,11 +13,11 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 /**
  * Add your docs here.
  */
-public class resetEncoders extends InstantCommand {
+public class resetDriveEncoders extends InstantCommand {
   /**
    * Add your docs here.
    */
-  public resetEncoders() {
+  public resetDriveEncoders() {
     super();
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
