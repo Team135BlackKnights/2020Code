@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -9,17 +10,18 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 
 public class IntakeLimelight extends Subsystem {
 	private static IntakeLimelight instance;
-
+	
 	NetworkTableInstance networkTableInstance = NetworkTableInstance.getDefault();
-	NetworkTable limelightTable = networkTableInstance.getTable("limelight-intake");
-	NetworkTableEntry validTargetEntry = limelightTable.getEntry("tv"),
-	horizontalOffsetEntry = limelightTable.getEntry("tx"),
-	verticalOffsetEntry = limelightTable.getEntry("ty"),
-	targetAreaEntry = limelightTable.getEntry("ta"),
-	targetSkewEntry = limelightTable.getEntry("tl"),
-	ledModeEntry = limelightTable.getEntry("ledMode"),
-	cameraModeEntry = limelightTable.getEntry("camMode"),
-	limelightPipelineEntry = limelightTable.getEntry("pipeline");
+	NetworkTable intakeLimelightTable = networkTableInstance.getTable("limelight-intake");
+	NetworkTableEntry 
+	validTargetEntry = intakeLimelightTable.getEntry("tv"),
+	horizontalOffsetEntry = intakeLimelightTable.getEntry("tx"),
+	verticalOffsetEntry = intakeLimelightTable.getEntry("ty"),
+	targetAreaEntry = intakeLimelightTable.getEntry("ta"),
+	targetSkewEntry = intakeLimelightTable.getEntry("tl"),
+	ledModeEntry = intakeLimelightTable.getEntry("ledMode"),
+	cameraModeEntry = intakeLimelightTable.getEntry("camMode"),
+	limelightPipelineEntry = intakeLimelightTable.getEntry("pipeline");
 
 	public static final int NUMBER_OF_LIMELIGHT_CHARACTERISTICS = 5,
 	VALID_TARGET = 0,
@@ -69,7 +71,12 @@ public class IntakeLimelight extends Subsystem {
 	}
 
 	@Override
-	public void periodic() 	{}
+	public void periodic() 	
+	{
+		SmartDashboard.putNumber(" Horizontal offset", GetLimelightData()[HORIZONTAL_OFFSET]);
+		SmartDashboard.putNumber(" Vertical Offset", limelightData[VERTICAL_OFFSET]);
+		SmartDashboard.putBoolean("Target Exist", limelightData[0] >=1);
+	}
 
 	public static IntakeLimelight getInstance() {if (instance == null) {instance = new IntakeLimelight();}return instance;}
 

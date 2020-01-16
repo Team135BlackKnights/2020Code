@@ -18,14 +18,18 @@ public class OI implements RobotMap.KOI{
   public static Joystick 
     leftJoystick = new Joystick(LEFT_JOYSTICK),
     rightJoystick = new Joystick(RIGHT_JOYSTICK),
-    manipJoystick = new Joystick(MANIP_JOYSTICK);
-
+	manipJoystick = new Joystick(MANIP_JOYSTICK);
+	
+	public final static int 
+	TOP_POV = 0 ,
+	RIGHT_POV = 1, 
+	BOTTOM_POV = 2,
+	LEFT_POV = 3;
   public static Joystick[] joysticks = {leftJoystick, rightJoystick, manipJoystick};
 
   public static JoystickButton 
 	rightTrigger = new JoystickButton(rightJoystick, TRIGGER_BUTTON),
 	leftTrigger = new JoystickButton(leftJoystick, TRIGGER_BUTTON),
-	manipTrigger = new JoystickButton(manipJoystick, TRIGGER_BUTTON),
 	prototypeButtonOne = new JoystickButton(manipJoystick, 1),
 	prototypeButtonTwo = new JoystickButton(manipJoystick, 2),
 	resetEncoderButton = new JoystickButton(rightJoystick, 2),
@@ -36,6 +40,7 @@ public class OI implements RobotMap.KOI{
 
 	public OI()
 	{
+		
 		prototypeButtonOne.toggleWhenPressed(new PrototypeButtonControlOne());
 		prototypeButtonTwo.toggleWhenPressed(new PrototypeButtonControlTwo());
 		turnToAngle90.whenPressed(new TurnToAngle(90));
@@ -68,10 +73,13 @@ public static boolean rightTrigger()
 {
   return rightTrigger.get();
 }
-public static boolean manipTrigger()
+
+public double getThrottle(Joystick joystick)
 {
-	return manipTrigger.get();
+	return joystick.getThrottle();
 }
+
+
 
 
 //returns value of the given joystick with a deadband applied
@@ -86,6 +94,54 @@ public static boolean manipTrigger()
 	}
 	public double GetJoystickZValue(int joystickNumber) {
 		return DeadbandJoystickValue( -joysticks[joystickNumber].getZ() );
+	}
+
+	public double getPovAngle(Joystick joystick)
+	{
+		return joystick.getPOV();
+	}
+
+	public boolean isPovDirectionPressed(Joystick joystick, int povDirection)
+	{
+		double povValue = this.getPovAngle(joystick);
+		boolean povDirectionPressed = false;
+		switch(povDirection) {
+
+		case (TOP_POV):
+		if (povValue >= 315.0 || (povValue <= 45.0 && povValue != -1)) {
+			povDirectionPressed = true;
+		}
+		else {
+			povDirectionPressed = false;
+		}
+		break;
+	case (RIGHT_POV):
+		if (povValue >= 45.0 && povValue <= 135.0) {
+			povDirectionPressed = true;
+		}
+		else {
+			povDirectionPressed = false;
+		}
+		break;
+	case (BOTTOM_POV):
+		if (povValue >= 135.0 && povValue <= 225.0) {
+			povDirectionPressed = true;
+		}
+		else {
+			povDirectionPressed = false;
+		}
+		break;
+	case (LEFT_POV):
+		if (povValue >= 225.0 && povValue <= 315.0) {
+			povDirectionPressed = true;
+		}
+		else {
+			povDirectionPressed = false;
+		}
+		break;
+	}
+	return povDirectionPressed;
+
 	}
 
   

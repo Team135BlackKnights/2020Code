@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -9,17 +10,18 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 
 public class TurretLimelight extends Subsystem {
 	private static TurretLimelight instance;
-
+	
 	NetworkTableInstance networkTableInstance = NetworkTableInstance.getDefault();
-	NetworkTable limelightTable = networkTableInstance.getTable("limelight-turret");
-	NetworkTableEntry validTargetEntry = limelightTable.getEntry("tv"),
-	horizontalOffsetEntry = limelightTable.getEntry("tx"),
-	verticalOffsetEntry = limelightTable.getEntry("ty"),
-	targetAreaEntry = limelightTable.getEntry("ta"),
-	targetSkewEntry = limelightTable.getEntry("tl"),
-	ledModeEntry = limelightTable.getEntry("ledMode"),
-	cameraModeEntry = limelightTable.getEntry("camMode"),
-	limelightPipelineEntry = limelightTable.getEntry("pipeline");
+	NetworkTable TurretLimelightTable = networkTableInstance.getTable("limelight-turret");
+	NetworkTableEntry 
+	validTargetEntry = TurretLimelightTable.getEntry("tv"),
+	horizontalOffsetEntry = TurretLimelightTable.getEntry("tx"),
+	verticalOffsetEntry = TurretLimelightTable.getEntry("ty"),
+	targetAreaEntry = TurretLimelightTable.getEntry("ta"),
+	targetSkewEntry = TurretLimelightTable.getEntry("tl"),
+	ledModeEntry = TurretLimelightTable.getEntry("ledMode"),
+	cameraModeEntry = TurretLimelightTable.getEntry("camMode"),
+	limelightPipelineEntry = TurretLimelightTable.getEntry("pipeline");
 
 	public static final int NUMBER_OF_LIMELIGHT_CHARACTERISTICS = 5,
 	VALID_TARGET = 0,
@@ -69,7 +71,12 @@ public class TurretLimelight extends Subsystem {
 	}
 
 	@Override
-	public void periodic() 	{}
+	public void periodic() 	
+	{
+		SmartDashboard.putNumber(" Horizontal offset", GetLimelightData()[HORIZONTAL_OFFSET]);
+		SmartDashboard.putNumber(" Vertical Offset", limelightData[VERTICAL_OFFSET]);
+		SmartDashboard.putBoolean("Target Exist", limelightData[0] >=1);
+	}
 
 	public static TurretLimelight getInstance() {if (instance == null) {instance = new TurretLimelight();}return instance;}
 
