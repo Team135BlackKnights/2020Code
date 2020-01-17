@@ -30,7 +30,9 @@ import frc.robot.commands.drive.*;
  */
 public class FalconDrive extends Subsystem implements RobotMap{
 
+  //
   public static FalconDrive instance; 
+  //Declares four Falcon FX Motors
   public WPI_TalonFX frontLeftFX, frontRightFX, rearLeftFX, rearRightFX;
 
   public SpeedControllerGroup leftDriveSide, rightDriveSide; 
