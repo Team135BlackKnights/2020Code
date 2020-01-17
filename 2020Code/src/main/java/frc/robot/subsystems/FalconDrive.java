@@ -51,8 +51,9 @@ public class FalconDrive extends Subsystem implements RobotMap{
      if (instance == null) {
         instance = new FalconDrive();
      } return instance;
+     
   }
-  private FalconDrive()
+  public FalconDrive()
   {
     frontLeftFX = new WPI_TalonFX(MOTORS.FRONT_LEFT_FALCON);
     rearLeftFX = new WPI_TalonFX(MOTORS.REAR_LEFT_FALCON);
@@ -82,6 +83,8 @@ public class FalconDrive extends Subsystem implements RobotMap{
     chassis.setSafetyEnabled(false);
     chassis.setMaxOutput(.98);
     resetEncoders();
+    System.out.println("Falcon Initialized");
+
   }
 
   public void initLidar(Counter lidar)
@@ -89,6 +92,10 @@ public class FalconDrive extends Subsystem implements RobotMap{
     lidar.setMaxPeriod(1.00);
     lidar.setSemiPeriodMode(true);
     lidar.reset();
+  }
+  public void resetGyro()
+  {
+    navx.zeroYaw();
   }
 
   public double lidarDistance(Counter lidar)
@@ -136,7 +143,8 @@ public class FalconDrive extends Subsystem implements RobotMap{
   }
   public double getAngle()
  	{
-    return navx.getAngle();
+    SmartDashboard.putNumber("Current angle of Robot:", navx.getYaw());
+    return navx.getYaw();
 	}
   public double getRotationRate()
   {
@@ -247,7 +255,7 @@ public class FalconDrive extends Subsystem implements RobotMap{
   }
   public void periodic()
   {
-    SmartDashboard.putNumber("current angle", getAngle());
+    getAngle();
     printPositions();
     printUltrasonicValues();
     printLidarValues();

@@ -3,6 +3,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.auton.EncoderDriveToWithAngle;
 import frc.robot.commands.drive.*;
 import frc.robot.commands.prototyping.*;
 
@@ -30,25 +31,30 @@ public class OI implements RobotMap.KOI{
   public static JoystickButton 
 	rightTrigger = new JoystickButton(rightJoystick, TRIGGER_BUTTON),
 	leftTrigger = new JoystickButton(leftJoystick, TRIGGER_BUTTON),
-	prototypeButtonOne = new JoystickButton(manipJoystick, 1),
-	prototypeButtonTwo = new JoystickButton(manipJoystick, 2),
-	resetEncoderButton = new JoystickButton(rightJoystick, 2),
-	encoderDriveTestButton = new JoystickButton(leftJoystick, 1),
-	autoTestButton = new JoystickButton(leftJoystick, 2),
-	prototypeShooterButton = new JoystickButton(manipJoystick, 3),
-	turnToAngle90 = new JoystickButton(manipJoystick, 12);
+	swapControlsButton = new JoystickButton(rightJoystick, HANDLE_TOP_RIGHT_BUTTON),
+	prototypeButtonOne = new JoystickButton(manipJoystick, TRIGGER_BUTTON),
+	prototypeButtonTwo = new JoystickButton(manipJoystick, THUMB_BUTTON),
+	resetEncoderButton = new JoystickButton(rightJoystick, THUMB_BUTTON),
+	encoderDriveTestButton = new JoystickButton(leftJoystick, TRIGGER_BUTTON),
+	autoTestButton = new JoystickButton(leftJoystick, THUMB_BUTTON),
+	gyroResetButton = new JoystickButton(leftJoystick, HANDLE_BOTTOM_RIGHT_BUTTON),
+	prototypeShooterButton = new JoystickButton(manipJoystick, HANDLE_BOTTOM_LEFT_BUTTON),
+	turnToAngle90 = new JoystickButton(rightJoystick, BASE_BOTTOM_RIGHT_BUTTON);
 
 	public OI()
 	{
 		
 		prototypeButtonOne.toggleWhenPressed(new PrototypeButtonControlOne());
 		prototypeButtonTwo.toggleWhenPressed(new PrototypeButtonControlTwo());
-		turnToAngle90.whenPressed(new TurnToAngle(90));
+		turnToAngle90.whenPressed(new TurnToAngle(180));
 
 		prototypeShooterButton.toggleWhenPressed(new PrototypeShooter(1600, 3800));
 		resetEncoderButton.whenPressed(new resetDriveEncoders());
-		encoderDriveTestButton.whenPressed(new EncoderDrive(-50, 50, 1, true, 20));
-		//autoTestButton.whenPressed(new AutoMaybe());
+		gyroResetButton.whenPressed(new resetGyro());
+		encoderDriveTestButton.whenPressed(new EncoderDrive(-50, 50, 2, false));
+		autoTestButton.whenPressed(new EncoderDriveToWithAngle(-36, 43, 50));
+		System.out.println("Operator Interface Initialized");
+
 	}
 //Returns the values for the sliders of the three joysticks 
 // adding a deadband so that it doesn't count .01 as still doing something
@@ -72,6 +78,10 @@ public static boolean leftTrigger() {
 public static boolean rightTrigger()
 {
   return rightTrigger.get();
+}
+public static boolean swapControls()
+{
+	return swapControlsButton.get();
 }
 
 public double getThrottle(Joystick joystick)

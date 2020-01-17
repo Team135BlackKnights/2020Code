@@ -32,13 +32,16 @@ public class Robot extends TimedRobot {
   public void robotInit() {
 	
 	drive = FalconDrive.getInstance();
+
 	turretlimelight = TurretLimelight.getInstance();
 	intakeLimelight = IntakeLimelight.getInstance();
 	prototyping = Prototyping.getInstance();
+
 	//colorWheel = ColorWheel.getInstance();
 	//turret = Turret.getInstance();
 	oi = new OI();
-    
+
+
     
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);

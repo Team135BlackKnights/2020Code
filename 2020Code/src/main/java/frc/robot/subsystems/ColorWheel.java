@@ -87,6 +87,7 @@ public class ColorWheel extends Subsystem implements RobotMap {
 
      controlPanelTalon.setNeutralMode(NeutralMode.Brake);
 
+     System.out.println("Color Wheel Initialized");
 
   }
   

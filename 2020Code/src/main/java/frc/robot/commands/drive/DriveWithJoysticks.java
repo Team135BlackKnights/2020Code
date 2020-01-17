@@ -9,6 +9,7 @@ public class DriveWithJoysticks extends Command {
   private double JoystickYValue, RJoystickYValue, RJoystickZValue;
 
   public double halfPowerDrive;
+  public boolean swapControls;
 
   public DriveWithJoysticks() {
     requires(Robot.drive);
@@ -35,6 +36,7 @@ public class DriveWithJoysticks extends Command {
     RJoystickZValue = Robot.oi.GetJoystickZValue(0) * Robot.oi.returnLeftSlider();
 
     halfPowerDrive = (OI.rightTrigger() || OI.leftTrigger() ) ? .75 :1;
+    swapControls= (OI.swapControls() && swapControls ==false) ? true : false;
 
 
     double leftDrivePower, rightDrivePower, lateralPower, rotationPower;
@@ -45,8 +47,13 @@ public class DriveWithJoysticks extends Command {
     lateralPower = JoystickYValue * halfPowerDrive;
     rotationPower = RJoystickZValue * halfPowerDrive;
         
-    Robot.drive.ArcadeDrive(lateralPower, rotationPower * .85);
-    //Robot.drivetrain.TankDrive(leftDrivePower, rightDrivePower);
+    if(swapControls)
+    {
+      Robot.drive.TankDrive(leftDrivePower, rightDrivePower);
+    }
+    else {
+      Robot.drive.ArcadeDrive(lateralPower, rotationPower * .85);
+    }
 
   }
 

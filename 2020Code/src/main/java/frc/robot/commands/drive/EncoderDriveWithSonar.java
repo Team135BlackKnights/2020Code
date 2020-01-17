@@ -13,21 +13,24 @@ import edu.wpi.first.wpilibj.command.TimedCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-public class EncoderDrive extends TimedCommand {
+public class EncoderDriveWithSonar extends TimedCommand {
   public double _leftTarget, _rightTarget, _distanceFromWall,
               leftError, rightError, _tolerance;
-  public boolean _stopWhenDone;
   public double actualDistanceFromWall;
+  public boolean _stopWhenDone;
 
 
   
-  public EncoderDrive(double leftTarget, double rightTarget, double tolerance, boolean stopWhenDone) {
+  public EncoderDriveWithSonar(double leftTarget, double rightTarget, double tolerance, double distanceFromWall, boolean stopWhenDone) {
     super(1);
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
     requires(Robot.drive);
 
     this._leftTarget = leftTarget;
     this._rightTarget = rightTarget;
     this._tolerance = tolerance;
+    this._distanceFromWall = distanceFromWall;
     this._stopWhenDone = stopWhenDone;
   }
 
@@ -52,21 +55,32 @@ public class EncoderDrive extends TimedCommand {
     rightPower = rightError/60;
 
     double 
-    leftP = 1.4,  rightP = 1.4;
+    leftP = 1.5,  rightP = 1.5;
     
+    double 
+    angleP = .3;   
+
+    actualDistanceFromWall = sonarDistance(Robot.drive.rightSonar);
+
+
     double minDrivePower = .26; 
     double leftMinAlt = leftError > 0 ? 1: -1;
     double rightMinAlt = rightError > 0 ? 1: -1;
     double leftMinPower = minDrivePower * leftMinAlt;
     double rightMinPower = minDrivePower * rightMinAlt;
     
+    double wallDistancePower = ((actualDistanceFromWall - _distanceFromWall)/_distanceFromWall) * angleP;
+    
+    if (wallDistancePower < 0) {
+      minDrivePower = -minDrivePower;
+    }
 
     leftPower = Robot.drive.limit(leftPower, .45, -.45);
     rightPower = Robot.drive.limit(rightPower, .45, -.45);
-
-    
-      leftPower = Robot.drive.limit((leftPower *leftP) + leftMinPower, .7, -.7);
-      rightPower = Robot.drive.limit((rightPower * rightP) +rightMinPower , .7, -.7);
+  
+    SmartDashboard.putNumber("wallDistancePower", wallDistancePower);
+      leftPower = Robot.drive.limit(((leftPower *leftP) + leftMinPower) + (wallDistancePower), .8, -.8);
+      rightPower = Robot.drive.limit(((rightPower*rightP) + rightMinPower) + (wallDistancePower),.8,-.8);
     
     SmartDashboard.putNumber("Encoder Drive Left Power", leftPower);
     SmartDashboard.putNumber("Encoder Drive Right Power", rightPower);
@@ -74,10 +88,16 @@ public class EncoderDrive extends TimedCommand {
     Robot.drive.TankDrive(-leftPower, rightPower);
   }
 
+  public double sonarDistance(Ultrasonic sonar)
+  {
+    return sonar.getRangeInches();
+  }
+
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return (Math.abs(leftError) <= _tolerance && Math.abs(rightError) <=_tolerance) ||
+    return (Math.abs(leftError) <= _tolerance && Math.abs(rightError) <=_tolerance) && 
+    ((actualDistanceFromWall + 1 <= _distanceFromWall || actualDistanceFromWall - 1 <= _distanceFromWall)) ||
     Robot.oi.GetJoystickZValue(0) >.2 ;  }
 
   // Called once after isFinished returns true

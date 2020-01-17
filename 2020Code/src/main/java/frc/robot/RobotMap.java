@@ -25,7 +25,7 @@ public interface RobotMap {
 
       TRIGGER_BUTTON = 1,
       THUMB_BUTTON = 2,
-       
+
       HANDLE_BOTTOM_LEFT_BUTTON = 3,
       HANDLE_BOTTOM_RIGHT_BUTTON = 4, 
       HANDLE_TOP_LEFT_BUTTON = 5,
@@ -43,7 +43,7 @@ public interface RobotMap {
       
   }
   public interface MOTORS {
-    // The other part of the ID assignement is the motor controller type 
+    // part of the ID assignement is the motor controller type 
       // talon FX's will have a 0 or no number in front
       // Can Sparks will have a 1 in front of the id number
       // Talon SRX will have a 2 in front of the id number 
@@ -75,13 +75,4 @@ public interface RobotMap {
 
   }
 
-  // For example to map the left and right motors, you could define the
-  // following variables to use with your drivetrain subsystem.
-  // public static int leftMotor = 1;
-  // public static int rightMotor = 2;
-
-  // If you are using multiple modules, make sure to define both the port
-  // number and the module. For example you with a rangefinder:
-  // public static int rangefinderPort = 1;
-  // public static int rangefinderModule = 1;
 }

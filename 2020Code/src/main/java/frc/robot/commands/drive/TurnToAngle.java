@@ -42,7 +42,7 @@ public class TurnToAngle extends TimedCommand
 		double turnModifer = turnLeft ? -1: 1;
 		
 		double P, I, D;
-		P = .72;
+		P = .52;
 		I = .28; 
 		D = 0;
 	
@@ -55,7 +55,7 @@ public class TurnToAngle extends TimedCommand
 	
 	protected boolean isFinished() 
 	{
-		return (Math.abs(angleError) <= .05) || 
+		return  (Math.abs(angleError) <= 2) || 
 		Robot.oi.GetJoystickZValue(0) >.2;
 	}
 

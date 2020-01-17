@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.sensors.PigeonIMU;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -63,6 +64,8 @@ public class Prototyping extends Subsystem implements RobotMap{
     resetShooterEncoders();
     
     photoSwitchTest = new DigitalInput(SENSORS.SHOOTER_TRIP_ID);
+    System.out.println("Prototyping Initialized");
+
   }
 
   public boolean getDigitalInput(DigitalInput input)
