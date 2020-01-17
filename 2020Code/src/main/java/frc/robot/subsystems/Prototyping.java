@@ -64,12 +64,12 @@ public class Prototyping extends Subsystem implements RobotMap{
     bottomEncoder = new CANEncoder(bottomShooterSpark);
 
     pidgey = new PigeonIMU(0);
+    resetPidgey();
 
     resetShooterEncoders();
     
     photoSwitchTest = new DigitalInput(SENSORS.SHOOTER_TRIP_ID);
     System.out.println("Prototyping Initialized");
-    pidgey.getYawPitchRoll(pidgeyYPR);
   }
 
   public void resetPidgey()
@@ -91,6 +91,10 @@ public class Prototyping extends Subsystem implements RobotMap{
   public double getRoll()
   {
     return pidgeyYPR[2];
+  }
+  public double getHeading()
+  {
+    return pidgey.getFusedHeading();
   }
 
   public boolean getDigitalInput(DigitalInput input)
@@ -194,14 +198,20 @@ public class Prototyping extends Subsystem implements RobotMap{
   }
   public void printPidgey()
   {
-    SmartDashboard.putNumberArray("Pidgey yaw pitch Roll", pidgeyYPR);
+
+    SmartDashboard.putNumber("pidgey yaw", getYaw());
+    SmartDashboard.putNumber("pidgey ptich", getPitch());
+    SmartDashboard.putNumber("pidgey roll", getRoll());
+    SmartDashboard.putNumber("pidgey heading", getHeading());
+
   }
   @Override
   public void periodic() 
-  {
+  {    pidgey.getYawPitchRoll(pidgeyYPR);
+
     printSparkStuff();
     printDigitalInputs();
-
+    printPidgey();
     // This method will be called once per scheduler run
   }
 

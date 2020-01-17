@@ -53,8 +53,8 @@ public class EncoderDriveToWithAngle extends TimedCommand {
     rightError = currentRightPos - _rightTarget;
 
     double leftPower, rightPower;
-    leftPower = leftError/60;
-    rightPower = rightError/60;
+    leftPower = leftError/55;
+    rightPower = rightError/55;
 
     SmartDashboard.putNumber("Left Error:", leftError );
     SmartDashboard.putNumber("Right Error:", rightError );
@@ -66,7 +66,7 @@ public class EncoderDriveToWithAngle extends TimedCommand {
     SmartDashboard.putNumber("Angle Error", angleError);
 
     double anglePower;
-    anglePower = angleError/ 90;
+    anglePower = angleError/ 85;
 
     double minDrivePower = .40;
 

@@ -3,6 +3,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.auton.EncoderDriveToWithAngle;
 import frc.robot.commands.drive.*;
 import frc.robot.commands.drive.commandGroups.*;
 import frc.robot.commands.prototyping.*;
@@ -52,7 +53,7 @@ public class OI implements RobotMap.KOI{
 		resetEncoderButton.whenPressed(new resetDriveEncoders());
 		gyroResetButton.whenPressed(new resetGyro());
 		encoderDriveTestButton.whenPressed(new EncoderDrive(-50, 50, 2, false));
-		autoTestButton.whenPressed(new AutoMaybe());
+		autoTestButton.whenPressed(new EncoderDriveToWithAngle(40, -29, 85));
 		System.out.println("Operator Interface Initialized");
 
 	}

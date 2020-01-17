@@ -83,6 +83,7 @@ public class FalconDrive extends Subsystem implements RobotMap{
     chassis.setMaxOutput(.98);
     
     resetEncoders();
+    setBrakeMode(NeutralMode.Brake);
     
     System.out.println("Falcon Initialized");
 
@@ -254,6 +255,7 @@ public class FalconDrive extends Subsystem implements RobotMap{
   {
     getAngle();
     printPositions();
+    printPower();
     printUltrasonicValues();
     printLidarValues();
   }
