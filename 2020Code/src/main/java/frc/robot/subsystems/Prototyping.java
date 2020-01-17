@@ -39,6 +39,8 @@ public class Prototyping extends Subsystem implements RobotMap{
     buttonControlOneTalon, 
     buttonControlTwoTalon;
 
+  public PigeonIMU pidgey;
+
 
   public Prototyping() {
     topShooterSpark = new CANSparkMax(MOTORS.REAR_LEFT_SPARK_ID, MotorType.kBrushless);
@@ -61,11 +63,34 @@ public class Prototyping extends Subsystem implements RobotMap{
     topEncoder = new CANEncoder(topShooterSpark);
     bottomEncoder = new CANEncoder(bottomShooterSpark);
 
+    pidgey = new PigeonIMU(0);
+
     resetShooterEncoders();
     
     photoSwitchTest = new DigitalInput(SENSORS.SHOOTER_TRIP_ID);
     System.out.println("Prototyping Initialized");
+    pidgey.getYawPitchRoll(pidgeyYPR);
+  }
 
+  public void resetPidgey()
+  {
+    pidgey.setYaw(0);
+    pidgey.setFusedHeading(0);
+  }
+
+  double [] pidgeyYPR = new double[3];
+  public double getYaw()
+  {
+    return pidgeyYPR[0];
+  }
+  
+  public double getPitch()
+  {
+    return pidgeyYPR[1];
+  }
+  public double getRoll()
+  {
+    return pidgeyYPR[2];
   }
 
   public boolean getDigitalInput(DigitalInput input)
@@ -166,6 +191,10 @@ public class Prototyping extends Subsystem implements RobotMap{
   public void printDigitalInputs()
   {
     SmartDashboard.putBoolean("is photo swtich test tripped", getDigitalInput(photoSwitchTest));
+  }
+  public void printPidgey()
+  {
+    SmartDashboard.putNumberArray("Pidgey yaw pitch Roll", pidgeyYPR);
   }
   @Override
   public void periodic() 

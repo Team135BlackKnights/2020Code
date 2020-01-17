@@ -15,9 +15,11 @@ import edu.wpi.first.wpilibj.SerialPort;
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
-public interface RobotMap {
+public interface RobotMap 
+{
 
-  public interface KOI {
+  public interface KOI 
+  {
     public static final int 
       LEFT_JOYSTICK = 0,
       RIGHT_JOYSTICK = 1,
@@ -42,14 +44,9 @@ public interface RobotMap {
       JOYSTICK_DEADBAND = .2;
       
   }
-  public interface MOTORS {
-    // part of the ID assignement is the motor controller type 
-      // talon FX's will have a 0 or no number in front
-      // Can Sparks will have a 1 in front of the id number
-      // Talon SRX will have a 2 in front of the id number 
-      // Victor SPX will have a 3 in front of the id number 
-
-
+  public interface MOTORS 
+  {
+    
   final int FRONT_LEFT_SPARK_ID = 12,    FRONT_RIGHT_SPARK_ID = 13,
               REAR_LEFT_SPARK_ID = 11,     REAR_RIGHT_SPARK_ID  = 14;
     
@@ -61,6 +58,13 @@ public interface RobotMap {
 
   final int FRONT_LEFT_FALCON = 1, FRONT_RIGHT_FALCON = 4,
             REAR_LEFT_FALCON = 2,  REAR_RIGHT_FALCON = 3; 
+  }
+  public interface CONSTANTS 
+  {
+  final int 
+      ENCODER_TICKS_PER_REVOLUTION = 4096,
+      WHEEL_DIAMETER = 6;
+
   }
   public interface SENSORS 
   {

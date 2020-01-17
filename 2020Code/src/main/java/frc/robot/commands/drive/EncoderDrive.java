@@ -8,7 +8,6 @@
 package frc.robot.commands.drive;
 
 
-import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
