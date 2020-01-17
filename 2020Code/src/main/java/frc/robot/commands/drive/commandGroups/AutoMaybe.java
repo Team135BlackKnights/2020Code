@@ -1,6 +1,8 @@
 package frc.robot.commands.drive.commandGroups;
 
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.commands.auton.EncoderDriveToWithAngle;
 import frc.robot.commands.drive.*;
 
 public class AutoMaybe extends CommandGroup {
@@ -8,8 +10,13 @@ public class AutoMaybe extends CommandGroup {
    * Add your docs here.
    */
   public AutoMaybe() {
+    addSequential(new EncoderDriveToWithAngle(-60, 60, 0));
+    addSequential(new EncoderDriveToWithAngle(-38, 23, -110));
+    //addSequential(new EncoderDriveToWithAngle(-60, 60, 0));
+    //addSequential(new EncoderDriveToWithAngle(-60, 60, 0));
+
     //addSequential(new EncoderDrive(-20,20,2));
-    addSequential(new EncoderDrive(-100, 100, 2, true));
+    //addSequential(new EncoderDrive(-100, 100, 2, true));
     //addSequential(new EncoderDrive(-39, 39, 2));
     //addSequential(new EncoderDrive(-51, 80, 2));
     //addSequential(new EncoderDrive(-84, 102, 2));
