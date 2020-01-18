@@ -42,7 +42,29 @@ public interface RobotMap
 
     public static final double 
       JOYSTICK_DEADBAND = .2;
-      
+  }
+
+
+  public interface TURRET
+  {
+     public static final int
+      ROTATION_SPARK_ID = 11,
+      TOP_SHOOTER_SPARK_ID = 12,
+      BOTTOM_SHOOTER_SPARK_ID = 13,
+      FEEDER_SPARK_ID = 14,
+
+      TILT_TALON_ID = 21,
+
+      LIDAR_ID = 9,
+      TRIP_SWITCH_ID = 10,
+      LEFT_LIMIT_ID = 11, 
+      RIGHT_LIMIT_ID = 12,
+      TILT_LIMIT_ID = 13,
+      PIGEON_ID = 0,
+
+      TOP_WHEEL_DIAMETER = 4,
+      BOTTOM_WHEEL_DIAMETER = 6; 
+
   }
   public interface MOTORS 
   {
