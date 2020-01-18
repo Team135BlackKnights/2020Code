@@ -15,11 +15,11 @@ public class MiddleAuto extends CommandGroup {
    * Add your docs here.
    */
   public MiddleAuto() {
-    addSequential(new EncoderDriveToWithAngle(21,-24,-26));
-    addSequential(new EncoderDriveToWithAngle(16,-20,-26));
-    addSequential(new EncoderDriveToWithAngle(39,-40,-19));
-    addSequential(new EncoderDriveToWithAngle(34,-48,-116));
-    addSequential(new EncoderDriveToWithAngle(59,-70,-97));
+    addSequential(new EncoderDriveToWithAngle(21,-24,-26, false));
+    addSequential(new EncoderDriveToWithAngle(16,-20,-26, true));
+    addSequential(new EncoderDriveToWithAngle(39,-40,-19, true));
+    addSequential(new EncoderDriveToWithAngle(34,-48,-116, true));
+    addSequential(new EncoderDriveToWithAngle(59,-70,-97, false));
 
     // Add Commands here:
     // e.g. addSequential(new Command1());

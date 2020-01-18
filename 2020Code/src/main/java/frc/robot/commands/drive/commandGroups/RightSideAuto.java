@@ -15,11 +15,11 @@ public class RightSideAuto extends CommandGroup {
    * Add your docs here.
    */
   public RightSideAuto() {
-    addSequential(new EncoderDriveToWithAngle(47, -47, 0));
-    addSequential(new EncoderDriveToWithAngle(24, -26, -21));
-    addSequential(new EncoderDriveToWithAngle(40, -29, 85));
-    addSequential(new EncoderDriveToWithAngle(51, -41, 74));
-    addSequential(new EncoderDriveToWithAngle(34, -33, 1));
+    addSequential(new EncoderDriveToWithAngle(47, -47, 0, false));
+    addSequential(new EncoderDriveToWithAngle(24, -26, -21, false));
+    addSequential(new EncoderDriveToWithAngle(40, -29, 85, false));
+    addSequential(new EncoderDriveToWithAngle(51, -41, 74, false));
+    addSequential(new EncoderDriveToWithAngle(34, -33, 1, false));
 
     // Add Commands here:
 

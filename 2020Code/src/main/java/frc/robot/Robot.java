@@ -19,7 +19,7 @@ import frc.robot.subsystems.*;
 public class Robot extends TimedRobot {
   //Dec FalconDrivers with drive
   public static FalconDrive drive; 
-  //Dec ColorWheel with colorwheel
+  //Declare ColorWheel with colorwheel
   public static ColorWheel colorWheel;
   //Dec Prototyping with prototyping
   public static Prototyping prototyping;
@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
 
 	prototyping = Prototyping.getInstance();
 
-	//colorWheel = ColorWheel.getInstance();
+	colorWheel = ColorWheel.getInstance();
 	//turret = Turret.getInstance();
 	oi = new OI();
 

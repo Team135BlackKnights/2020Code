@@ -14,6 +14,7 @@ public class resetGyro extends InstantCommand
   @Override
   protected void initialize() 
   {
+    Robot.prototyping.resetPidgey();
     Robot.drive.resetGyro();
   }
 }

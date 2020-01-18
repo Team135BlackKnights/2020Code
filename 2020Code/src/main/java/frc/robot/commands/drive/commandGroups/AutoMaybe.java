@@ -8,8 +8,8 @@ public class AutoMaybe extends CommandGroup {
    * Add your docs here.
    */
   public AutoMaybe() {
-    addSequential(new EncoderDriveToWithAngle(-60, 60, 0));
-    addSequential(new EncoderDriveToWithAngle(-38, 23, -110));
+    addSequential(new EncoderDriveToWithAngle(-60, 60, 0, false));
+    addSequential(new EncoderDriveToWithAngle(-38, 23, -110, false));
     //addSequential(new EncoderDriveToWithAngle(-60, 60, 0));
     //addSequential(new EncoderDriveToWithAngle(-60, 60, 0));
 

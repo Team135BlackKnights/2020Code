@@ -20,13 +20,14 @@ public class EncoderDriveToWithAngle extends TimedCommand {
    */
   public double _leftTarget, _rightTarget, _angleDesired;
   public double leftError, rightError, angleError;
+  public boolean _shortDistance;
 
-
-  public EncoderDriveToWithAngle(double leftTarget, double rightTarget, double angleDesired) {
+  public EncoderDriveToWithAngle(double leftTarget, double rightTarget, double angleDesired, boolean shortDistance) {
     super(1);
     requires(Robot.drive);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    this._shortDistance = shortDistance;
     this._leftTarget = leftTarget;
     this._rightTarget = rightTarget;
     this._angleDesired = angleDesired;
@@ -62,22 +63,30 @@ public class EncoderDriveToWithAngle extends TimedCommand {
 
 
     double currentAngle = Robot.drive.getAngle();
+    //angleError = Math.abs(_angleDesired - currentAngle);
     angleError = _angleDesired - currentAngle;
     SmartDashboard.putNumber("Angle Error", angleError);
 
     double anglePower;
-    anglePower = angleError/ 85;
+    anglePower = angleError/ 70;
 
-    double minDrivePower = .40;
 
     double leftMinDirection = leftError > 0 ? 1: -1;
     double rightMinDirection = rightError > 0 ? 1: -1;
 
+    double minDrivePower = .40;
     double 
-    rightP = 1.5,  leftP = 1.5;
-
+    rightP = 1,  leftP = 1;
     double 
     angleP = .8;
+
+    if (_shortDistance) {
+      minDrivePower = .40;
+      rightP = 1.5;
+      leftP = 1.5;
+      angleP = 1;
+    }
+
 
     rightPower = (minDrivePower * rightMinDirection) + (rightPower * rightP) - (anglePower * angleP);
     leftPower = (minDrivePower * leftMinDirection) + (leftPower * leftP) - (anglePower * angleP);

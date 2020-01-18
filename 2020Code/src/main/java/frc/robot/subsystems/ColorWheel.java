@@ -22,11 +22,16 @@ public class ColorWheel extends Subsystem implements RobotMap {
    public TalonSRX controlPanelTalon;
    public static ColorWheel instance;
    public Color detectedColor;
+   public String currentColor;
+   public int colorChanges = 0;
+   public String lastSeenColor = "Red";
+
+
 
    // Blue color mins and maxes
    public double BlueRedMin = .09;
    public double BlueRedMax = .21;
-   public double BlueGreenMin = .42;
+   public double BlueGreenMin = .40;
    public double BlueGreenMax = .50;
    public double BlueBlueMin = .33;
    public double BlueBlueMax = .48;
@@ -125,6 +130,17 @@ public class ColorWheel extends Subsystem implements RobotMap {
       return "No Color";
   }
 
+  public void countColor() {
+   
+   SmartDashboard.putString("Last Seen Color:", lastSeenColor);
+   if ((checkForColor() != lastSeenColor) && (checkForColor() != "No Color")) {
+      colorChanges++;
+   }
+   if (currentColor != "No Color") {
+      lastSeenColor = currentColor;
+   }
+  }
+
   public void getToColor(final String desiredColor, double power) {
       if (checkForColor() != desiredColor){
          controlPanelTalon.set(ControlMode.PercentOutput, power);
@@ -140,12 +156,15 @@ public class ColorWheel extends Subsystem implements RobotMap {
    public void printOut()
   {
     detectedColor = controlPanelColorSensor.getColor();
-
+    
+    currentColor = checkForColor();
     SmartDashboard.putNumber("color red",red());
     SmartDashboard.putNumber("color green",green());
     SmartDashboard.putNumber("color blue  ",blue());
-
-    SmartDashboard.putString("Current Color", checkForColor() );
+    
+    SmartDashboard.putString("Current Color", currentColor );
+    countColor();
+    SmartDashboard.putNumber("ColorChanges:", colorChanges);
 
   }
   
