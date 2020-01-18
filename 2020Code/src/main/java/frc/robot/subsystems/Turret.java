@@ -95,6 +95,13 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
 
   public void runRotation(double power)
   {
+   // rotateTurret(-.75);
+    /*
+    if(Robot.limelight.GetLimelightData()[1] > 1 && Robot.limelight.GetLimelightData()[0] >= 1)
+		{
+			rotateTurret(.75);
+			SmartDashboard.putString("Direction turret turning:", "left");
+      SmartDashboard.putString("Turret Not moving", "false");
 
     if(isAtLeftLimit())
     {
@@ -109,9 +116,9 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     }
 
     rotationSpark.set(power);
-
+*/
   }
-
+  
   public void runTopShooter(double power)
   {
     topShooterSpark.set(power);

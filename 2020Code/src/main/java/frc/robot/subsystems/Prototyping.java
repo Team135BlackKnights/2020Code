@@ -207,11 +207,11 @@ public class Prototyping extends Subsystem implements RobotMap{
   }
   @Override
   public void periodic() 
-  {    pidgey.getYawPitchRoll(pidgeyYPR);
+  {   // pidgey.getYawPitchRoll(pidgeyYPR);
 
-    printSparkStuff();
-    printDigitalInputs();
-    printPidgey();
+   // printSparkStuff();
+    //printDigitalInputs();
+    //printPidgey();
     // This method will be called once per scheduler run
   }
 

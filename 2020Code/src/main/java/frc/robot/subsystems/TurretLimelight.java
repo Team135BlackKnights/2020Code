@@ -73,9 +73,9 @@ public class TurretLimelight extends Subsystem {
 	@Override
 	public void periodic() 	
 	{
-		SmartDashboard.putNumber(" Horizontal offset", GetLimelightData()[HORIZONTAL_OFFSET]);
-		SmartDashboard.putNumber(" Vertical Offset", limelightData[VERTICAL_OFFSET]);
-		SmartDashboard.putBoolean("Target Exist", limelightData[0] >=1);
+	//	SmartDashboard.putNumber(" Horizontal offset", GetLimelightData()[HORIZONTAL_OFFSET]);
+	//	SmartDashboard.putNumber(" Vertical Offset", limelightData[VERTICAL_OFFSET]);
+	//	SmartDashboard.putBoolean("Target Exist", limelightData[0] >=1);
 	}
 
 	public static TurretLimelight getInstance() {if (instance == null) {instance = new TurretLimelight();}return instance;}

@@ -38,7 +38,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-
+	SmartDashboard.putNumber("ENABLED", 1);
 	//Cam Drivers
 	drive = FalconDrive.getInstance();
 	//Camera Sensors for Turret (Outer/Inner Circle)
