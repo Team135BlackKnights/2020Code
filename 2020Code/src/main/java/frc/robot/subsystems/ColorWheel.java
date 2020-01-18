@@ -4,63 +4,29 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.RobotMap;
 
 
-public class ColorWheel extends Subsystem implements RobotMap { 
+public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL{ 
    // Put methods for controlling this subsystem
    // here. Call these from Commands.
    public ColorSensorV3 controlPanelColorSensor;
    private final I2C.Port i2cPort = I2C.Port.kOnboard;
-   public TalonSRX controlPanelTalon;
+   public CANSparkMax rotatorSpark; 
    public static ColorWheel instance;
    public Color detectedColor;
    public String currentColor;
    public int colorChanges = 0;
    public String lastSeenColor = "Red";
+   public String gameData, desiredColor;
 
-
-
-   // Blue color mins and maxes
-   public double BlueRedMin = .09;
-   public double BlueRedMax = .21;
-   public double BlueGreenMin = .40;
-   public double BlueGreenMax = .50;
-   public double BlueBlueMin = .33;
-   public double BlueBlueMax = .48;
-
-   // Green color mins and maxes
-   public double GreenRedMin = .15;
-   public double GreenRedMax = .2;
-   public double GreenGreenMin = .5;
-   public double GreenGreenMax = .59;
-   public double GreenBlueMin = .24;
-   public double GreenBlueMax = .27;
-
-   // Red color mins and maxes
-   public double RedRedMin = .38;
-   public double RedRedMax = .58;
-   public double RedGreenMin = .31;
-   public double RedGreenMax = .40;
-   public double RedBlueMin = .09;
-   public double RedBlueMax = .18;
-
-   // Yellow color mins and maxes
-   public double YellowRedMin = .29;
-   public double YellowRedMax = .35;
-   public double YellowGreenMin = .49;
-   public double YellowGreenMax = .58;
-   public double YellowBlueMin = .10;
-   public double YellowBlueMax = .17;
-
-  
 
   public boolean IsBlue()
   {
@@ -88,11 +54,41 @@ public class ColorWheel extends Subsystem implements RobotMap {
 
   {
      controlPanelColorSensor = new ColorSensorV3(i2cPort);
-     controlPanelTalon = new TalonSRX(MOTORS.SPINNER_TALON_ID);
-
-     controlPanelTalon.setNeutralMode(NeutralMode.Brake);
+     rotatorSpark = new CANSparkMax(ROTATOR_ID, MotorType.kBrushless);
 
      System.out.println("Color Wheel Initialized");
+     gameData = DriverStation.getInstance().getGameSpecificMessage();
+     desiredColor = "No Color";
+     
+  }
+
+  public String gameColor()
+  {
+   if(gameData.length() > 0)
+   {
+     switch (gameData.charAt(0))
+     {
+       case 'B' :
+         desiredColor = "Blue";
+      break;
+       case 'G' :
+         desiredColor = "Green";
+       break;
+       case 'R' :
+         desiredColor = "Red";
+       break;
+       case 'Y' :
+         desiredColor = "Yellow";
+       break;
+       default :
+         desiredColor = "No color";
+       break;
+     }
+   } else {
+      desiredColor = "No Color";
+      //Code for no data received yet
+   }
+   return desiredColor;
 
   }
   
@@ -111,7 +107,7 @@ public class ColorWheel extends Subsystem implements RobotMap {
   {
      return detectedColor.blue;
   }
-   //Determine what the current color under the censor is
+   //Determine what the current color under the color sensor is
    public String checkForColor()
   {
    if (IsBlue()) {
@@ -143,14 +139,14 @@ public class ColorWheel extends Subsystem implements RobotMap {
 
   public void getToColor(final String desiredColor, double power) {
       if (checkForColor() != desiredColor){
-         controlPanelTalon.set(ControlMode.PercentOutput, power);
+         rotatorSpark.set(power);
       }
       else stopControlPanel();
   }
 
   public void stopControlPanel()
   {   
-     controlPanelTalon.set(ControlMode.PercentOutput, 0);
+     rotatorSpark.set( 0);
   }
 
    public void printOut()
@@ -165,6 +161,8 @@ public class ColorWheel extends Subsystem implements RobotMap {
     SmartDashboard.putString("Current Color", currentColor );
     countColor();
     SmartDashboard.putNumber("ColorChanges:", colorChanges);
+
+    SmartDashboard.putString("Desired Color ", desiredColor);
 
   }
   

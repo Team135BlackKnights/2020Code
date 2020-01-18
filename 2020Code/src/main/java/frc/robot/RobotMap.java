@@ -66,6 +66,45 @@ public interface RobotMap
       BOTTOM_WHEEL_DIAMETER = 6; 
 
   }
+
+  public interface CONTROL_PANEL
+  {
+    public static final int 
+      ROTATOR_ID = 15;
+
+
+      public double BlueRedMin = .09;
+      public double BlueRedMax = .21;
+      public double BlueGreenMin = .40;
+      public double BlueGreenMax = .50;
+      public double BlueBlueMin = .33;
+      public double BlueBlueMax = .48;
+   
+      // Green color mins and maxes
+      public double GreenRedMin = .15;
+      public double GreenRedMax = .2;
+      public double GreenGreenMin = .5;
+      public double GreenGreenMax = .59;
+      public double GreenBlueMin = .24;
+      public double GreenBlueMax = .27;
+   
+      // Red color mins and maxes
+      public double RedRedMin = .38;
+      public double RedRedMax = .58;
+      public double RedGreenMin = .31;
+      public double RedGreenMax = .40;
+      public double RedBlueMin = .09;
+      public double RedBlueMax = .18;
+   
+      // Yellow color mins and maxes
+      public double YellowRedMin = .29;
+      public double YellowRedMax = .35;
+      public double YellowGreenMin = .49;
+      public double YellowGreenMax = .58;
+      public double YellowBlueMin = .10;
+      public double YellowBlueMax = .17;
+      
+  }
   public interface MOTORS 
   {
     
