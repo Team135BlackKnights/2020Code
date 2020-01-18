@@ -43,7 +43,7 @@ public class Turret extends Subsystem implements RobotMap.MOTORS {
   @Override
   public void periodic() 
   {
-    rotateTurret(-.75);
+   // rotateTurret(-.75);
     /*
     if(Robot.limelight.GetLimelightData()[1] > 1 && Robot.limelight.GetLimelightData()[0] >= 1)
 		{

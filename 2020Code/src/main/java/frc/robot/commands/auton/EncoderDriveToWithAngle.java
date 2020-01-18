@@ -78,10 +78,10 @@ public class EncoderDriveToWithAngle extends TimedCommand {
     double 
     rightP = 1,  leftP = 1;
     double 
-    angleP = .8;
+    angleP = 1;
 
     if (_shortDistance) {
-      minDrivePower = .40;
+      minDrivePower = .20;
       rightP = 1.5;
       leftP = 1.5;
       angleP = 1;

@@ -158,12 +158,13 @@ public class ColorWheel extends Subsystem implements RobotMap {
     detectedColor = controlPanelColorSensor.getColor();
     
     currentColor = checkForColor();
+    countColor();
+
     SmartDashboard.putNumber("color red",red());
     SmartDashboard.putNumber("color green",green());
     SmartDashboard.putNumber("color blue  ",blue());
     
     SmartDashboard.putString("Current Color", currentColor );
-    countColor();
     SmartDashboard.putNumber("ColorChanges:", colorChanges);
 
   }
@@ -176,9 +177,13 @@ public class ColorWheel extends Subsystem implements RobotMap {
   
   public void periodic()
   {
-   printOut();
-   getToColor("Yellow", 1);
-  }
+   detectedColor = controlPanelColorSensor.getColor();
+    
+   currentColor = checkForColor();
+   countColor(); 
+   SmartDashboard.putString("Current Color", currentColor );
+   SmartDashboard.putNumber("ColorChanges:", colorChanges);
+ }
 
   public static ColorWheel getInstance() {if (instance == null) { instance = new ColorWheel();}return instance;}
 
