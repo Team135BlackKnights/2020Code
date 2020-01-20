@@ -58,7 +58,7 @@ public class OI implements RobotMap.KOI{
 		resetEncoderButton.whenPressed(new resetDriveEncoders());
 		gyroResetButton.whenPressed(new resetGyro());
 		encoderDriveTestButton.whenPressed(new EncoderDrive(-50, 50, 2, false));
-		autoTestButton.whenPressed(new EncoderDriveToWithAngle(50, -40, 45, false));
+		autoTestButton.whenPressed(new RightSideAuto());
 		System.out.println("Operator Interface Initialized");
 
 	}
