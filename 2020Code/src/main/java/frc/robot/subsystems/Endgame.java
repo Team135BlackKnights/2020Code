@@ -8,6 +8,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,6 +27,7 @@ public class Endgame extends Subsystem implements RobotMap.ENDGAME{
 
 public DigitalInput limSwitch;
 public CANSparkMax windUpSpark, liftRaiseSpark; 
+public CANEncoder liftRaiseEncoder; 
 
 public static Endgame instance;
 
@@ -41,10 +44,12 @@ public Endgame()
   limSwitch = new DigitalInput(LIMIT_ID);
   windUpSpark = new CANSparkMax(WIND_UP_SPARK_ID, MotorType.kBrushless);
   liftRaiseSpark = new CANSparkMax(LIFT_UP_SPARK_ID, MotorType.kBrushless);
+  liftRaiseEncoder = liftRaiseSpark.getEncoder();
 }
 
 public static int windrotations = 5;
 public static int currentrotations = 0;
+/*
 public void runWinch(double power)
 {
   currentrotations = 0;
@@ -52,13 +57,18 @@ public void runWinch(double power)
     windUpSpark.set(power);
   windUpSpark.set(0);
 }
+*/
+public void runWinch(double power)
+{
+  windUpSpark.set(power);
+}
 public static boolean liftUpButton(){
   liftUpButton = OI.endgameLiftUp.get();
   return liftUpButton;
 }
 
 public static int liftrotations = 10;
-
+/*
 public void liftRaiseSparkRaise(double power){
   currentrotations = 0;
   while (currentrotations < liftrotations){
@@ -75,10 +85,16 @@ public void liftRaiseSparkLower(double power){
   }
   liftRaiseSpark.set(0);
 }
+*/ // bad 
+public void raiseLiftSpark(double power)
 
-public void findRotations()
 {
-  liftRaiseSpark.getselectedsensorposition()
+  liftRaiseSpark.set(power);
+}// closer to good
+
+public double  findRotations()
+{
+ return  liftRaiseEncoder.getPosition()/4096;
 }
   @Override
   public void initDefaultCommand() {
