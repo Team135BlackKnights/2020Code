@@ -46,7 +46,7 @@ public class Robot extends TimedRobot {
 	//Camera Sensors for Intake (# of balls through intake)
 	intakeLimelight = IntakeLimelight.getInstance();
 
-	prototyping = Prototyping.getInstance();
+	//prototyping = Prototyping.getInstance();
 
 	colorWheel = ColorWheel.getInstance();
 	//turret = Turret.getInstance();

@@ -19,6 +19,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 /**
@@ -71,6 +72,8 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     tiltTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
 
     resetAllTurretEncoders();
+    resetPidgey();
+
     System.out.println("Turret Initialized");
   }
 
@@ -129,6 +132,10 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     {
       limit(power, 0, -.9);
     }
+    else 
+    {
+      limit(power, .9, -.9);
+    }
 
     tiltTalon.set(ControlMode.PercentOutput, power);
 
@@ -154,11 +161,13 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
   
   public void runTopShooter(double power)
   {
+    limit(power, .9, -.9);
     topShooterSpark.set(power);
   }
 
   public void runBottomShooter(double power)
   {
+    limit(power, .9, -.9);
     bottomShooterSpark.set(power);
   }
 
@@ -179,6 +188,11 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     ballFeederSpark.set(power);
   }
 
+  public void aimTurret(double rotationPower, double tiltPower)
+  {
+     runTilt(tiltPower);
+     runRotation(rotationPower);
+  }
   public boolean isBallInShooter()
   {
     return turretBallTripSwitch.get();
@@ -199,7 +213,76 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     return turretTiltLimit.get();
   }
 
- 
+  public double getPigeonHeading()
+  {
+    return pidgey.getFusedHeading();
+  }
+
+  public void resetPidgey()
+  {
+    pidgey.setFusedHeading(0);
+  }
+
+  public double getSparkEncoderPosition(CANEncoder encoder)
+  {
+    return encoder.getPosition();
+  }
+
+  public double getSparkEncoderVelocity(CANEncoder encoder)
+  {
+    return encoder.getVelocity();
+  }
+  
+  public double getTalonPosition(WPI_TalonSRX talon)
+  {
+    return talon.getSelectedSensorPosition();
+  }
+
+  public double getTalonVelocity(WPI_TalonSRX talon)
+  {
+     return talon.getSelectedSensorVelocity();
+  }
+
+  public double ticksToRotations(double ticks)
+  {
+    return ticks/4096;
+  }
+
+  public double rotationsToInches(double rotations, double wheelDiameter)
+  {
+    return rotations * wheelDiameter * Math.PI;
+  }
+
+  public double getTopWheelRPM()
+  {
+    return rotationsToInches(getSparkEncoderPosition(topShooterEncoder), TOP_WHEEL_DIAMETER);
+  }
+
+  public double getBottomWheelRPM()
+  {
+    return rotationsToInches(getSparkEncoderPosition(bottomShooterEncoder), BOTTOM_WHEEL_DIAMETER);
+  }
+
+  public double getSparkPower(CANSparkMax spark)
+  {
+     return spark.getAppliedOutput();
+  }
+
+  public double getTalonPower(WPI_TalonSRX talon)
+  {
+    return talon.get();
+  }
+
+  public double getSparkTemp(CANSparkMax spark)
+  {
+    return spark.getMotorTemperature();
+  }
+  
+  public double getTalonTemp(WPI_TalonSRX talon)
+  {
+    return talon.getTemperature();
+  }
+
 
   public double limit(double x, double upperLimit, double lowerLimit)
 	{	if(x >= upperLimit){ x = upperLimit;}
