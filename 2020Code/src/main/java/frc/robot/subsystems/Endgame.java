@@ -24,7 +24,7 @@ public class Endgame extends Subsystem implements RobotMap.ENDGAME{
   // here. Call these from Commands.
 
 public DigitalInput limSwitch;
-public CANSparkMax windUpSpark, liftRaiseSpark; 
+public CANSparkMax winchSpark, liftRaiseSpark; 
 
 public static Endgame instance;
 
@@ -39,7 +39,7 @@ public static boolean liftUpButton;
 public Endgame()
 {
   limSwitch = new DigitalInput(LIMIT_ID);
-  windUpSpark = new CANSparkMax(WIND_UP_SPARK_ID, MotorType.kBrushless);
+  winchSpark = new CANSparkMax(WIND_UP_SPARK_ID, MotorType.kBrushless);
   liftRaiseSpark = new CANSparkMax(LIFT_UP_SPARK_ID, MotorType.kBrushless);
 }
 
@@ -49,8 +49,8 @@ public void runWinch(double power)
 {
   currentrotations = 0;
   while (currentrotations < windrotations)
-    windUpSpark.set(power);
-  windUpSpark.set(0);
+    winchSpark.set(power);
+  winchSpark.set(0);
 }
 public static boolean liftUpButton(){
   liftUpButton = OI.endgameLiftUp.get();
@@ -78,7 +78,7 @@ public void liftRaiseSparkLower(double power){
 
 public void findRotations()
 {
-  liftRaiseSpark.getselectedsensorposition()
+
 }
   @Override
   public void initDefaultCommand() {
