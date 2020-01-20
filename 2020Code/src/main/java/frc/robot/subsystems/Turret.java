@@ -83,7 +83,6 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     spark.enableVoltageCompensation(12);
   }
 
-
   public void initTalonSRX(WPI_TalonSRX talon)
   {
     talon.configReverseSoftLimitEnable(false);

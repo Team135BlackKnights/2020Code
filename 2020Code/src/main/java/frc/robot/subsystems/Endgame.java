@@ -8,11 +8,14 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.RobotMap;
+import com.revrobotics.EncoderType;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
@@ -24,7 +27,8 @@ public class Endgame extends Subsystem implements RobotMap.ENDGAME{
   // here. Call these from Commands.
 
 public DigitalInput limSwitch;
-public CANSparkMax winchSpark, liftRaiseSpark; 
+public CANSparkMax winchSpark, liftRaiseSpark;
+public CANEncoder liftRaiseEncoder, winchEncoder; 
 
 public static Endgame instance;
 
@@ -41,45 +45,42 @@ public Endgame()
   limSwitch = new DigitalInput(LIMIT_ID);
   winchSpark = new CANSparkMax(WIND_UP_SPARK_ID, MotorType.kBrushless);
   liftRaiseSpark = new CANSparkMax(LIFT_UP_SPARK_ID, MotorType.kBrushless);
+  liftRaiseEncoder = liftRaiseSpark.getEncoder();
+  winchEncoder = winchSpark.getEncoder();
+
+  resetAllEndgameEncoders();
+
 }
 
-public static int windrotations = 5;
-public static int currentrotations = 0;
+
 public void runWinch(double power)
 {
-  currentrotations = 0;
-  while (currentrotations < windrotations)
-    winchSpark.set(power);
-  winchSpark.set(0);
+ winchSpark.set(power);
 }
-public static boolean liftUpButton(){
-  liftUpButton = OI.endgameLiftUp.get();
-  return liftUpButton;
-}
-
-public static int liftrotations = 10;
 
 public void liftRaiseSparkRaise(double power){
-  currentrotations = 0;
-  while (currentrotations < liftrotations){
   liftRaiseSpark.set(power);
-  }
-  liftRaiseSpark.set(0);
 }
 
-public void liftRaiseSparkLower(double power){
-  currentrotations = 0;
-  while (currentrotations < liftrotations)
-  {
-    liftRaiseSpark.set(power * -1);
-  }
-  liftRaiseSpark.set(0);
-}
-
-public void findRotations()
+public void resetAllEndgameEncoders()
 {
-
+  resetWinchEncoder();
+  resetLiftEncoder();
 }
+
+public void resetWinchEncoder(){
+  winchEncoder.setPosition(0);
+}
+
+public void resetLiftEncoder(){
+   liftRaiseEncoder.setPosition(0);
+}
+
+public void getEncoderPosition()
+{
+  
+}
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
