@@ -15,12 +15,6 @@ public class DriveWithJoysticks extends Command {
   //Method which finds the position of the Joysticks and assigns them to a corresponding value
   public DriveWithJoysticks() {
     requires(Robot.drive);
-    
-    JoystickYValue = Robot.oi.GetJoystickYValue(1) *  Robot.oi.returnRightSlider();
-    RJoystickYValue = Robot.oi.GetJoystickYValue(0) * Robot.oi.returnLeftSlider();
-    RJoystickZValue = Robot.oi.GetJoystickZValue(0) * Robot.oi.returnLeftSlider();
-    
-
   }
 
   // Called just before this Command runs the first time and does nothing
@@ -32,15 +26,15 @@ public class DriveWithJoysticks extends Command {
   @Override
   protected void execute() {
 
-
+    //Creates a value for each joystick's power based on the direction/power of the joystick and the max set by the slider
     JoystickYValue = Robot.oi.GetJoystickYValue(1) *  Robot.oi.returnRightSlider();
     RJoystickYValue = Robot.oi.GetJoystickYValue(0) * Robot.oi.returnLeftSlider();
     RJoystickZValue = Robot.oi.GetJoystickZValue(0) * Robot.oi.returnLeftSlider();
 
-    //
+    //If the left or right triggers are pulled, the drive speed is set to 75% of normal, else it is 100%
     halfPowerDrive = (OI.rightTrigger() || OI.leftTrigger() ) ? .75 :1;
 
-    //Detects if the swap controls button is being pushed and if controls are not already swapped, and swaps them to arcade drive
+    //Detects if the swap controls button is being pushed and if controls are not already swapped, and swaps them to tank drive
     swapControls= (OI.swapControls() && swapControls ==false) ? true : false;
 
 
@@ -51,7 +45,8 @@ public class DriveWithJoysticks extends Command {
     rightDrivePower = RJoystickYValue * halfPowerDrive;
     lateralPower = JoystickYValue * halfPowerDrive;
     rotationPower = RJoystickZValue * halfPowerDrive;
-        
+    
+    //If swapControls is true, it uses TankDrive rather than the default Arcade Drive
     if(swapControls)
     {
       Robot.drive.TankDrive(leftDrivePower, rightDrivePower);

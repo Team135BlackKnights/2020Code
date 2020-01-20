@@ -23,6 +23,7 @@ public class IntakeLimelight extends Subsystem {
 	cameraModeEntry = intakeLimelightTable.getEntry("camMode"),
 	limelightPipelineEntry = intakeLimelightTable.getEntry("pipeline");
 
+	// Lists different situations with target
 	public static final int NUMBER_OF_LIMELIGHT_CHARACTERISTICS = 5,
 	VALID_TARGET = 0,
 	HORIZONTAL_OFFSET = 1,
@@ -31,14 +32,17 @@ public class IntakeLimelight extends Subsystem {
 	TARGET_SKEW = 4;
 	public double[] limelightData = new double[NUMBER_OF_LIMELIGHT_CHARACTERISTICS];
 
-    public static int 
+	public static int 
+	// LED congigs
     LED_ON = 0, 
 	LED_OFF = 1,
     LED_BLINKING = 2,
 
+	// Camera Configs
     VISION_PROCESSOR = 0,
     DRIVER_CAMERA = 1, 
 
+	// Pipeline Configs
     TARGET_PIPELINE = 0, 
     BALL_PIPELINE = 1, 
     VISION_PIPELINE = 2;
@@ -53,15 +57,15 @@ public class IntakeLimelight extends Subsystem {
 		return limelightData;
 	}
 
-	public void SetLEDMode(int onOrOff) {
+	public void SetLEDMode(int onOrOff) { // LED Configs
 		ledModeEntry.setNumber(onOrOff);
 	}
 
-	public void SetCameraMode(int cameraMode) {
+	public void SetCameraMode(int cameraMode) { // Camera Configs
 		cameraModeEntry.setNumber(cameraMode);
 	}
 
-	public void SetCameraPipeline(int pipeline) {
+	public void SetCameraPipeline(int pipeline) { // Pipeline Configs
 		limelightPipelineEntry.setNumber(pipeline);
 	}
 	public void initLimelight(int ledMode, int pipeline)
@@ -70,6 +74,7 @@ public class IntakeLimelight extends Subsystem {
 		SetCameraPipeline(pipeline);
 	}
 
+	
 	@Override
 	public void periodic() 	
 	{

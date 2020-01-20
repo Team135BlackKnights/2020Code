@@ -40,7 +40,8 @@ public class OI implements RobotMap.KOI{
 	autoTestButton = new JoystickButton(leftJoystick, THUMB_BUTTON),
 	gyroResetButton = new JoystickButton(leftJoystick, HANDLE_BOTTOM_RIGHT_BUTTON),
 	prototypeShooterButton = new JoystickButton(manipJoystick, HANDLE_BOTTOM_LEFT_BUTTON),
-	turnToAngle90 = new JoystickButton(rightJoystick, BASE_BOTTOM_RIGHT_BUTTON);
+	turnToAngle90 = new JoystickButton(rightJoystick, BASE_BOTTOM_RIGHT_BUTTON),
+	endgameLiftUp = new JoystickButton(rightJoystick, BASE_TOP_LEFT_BUTTON);
 
 	public OI()
 	{

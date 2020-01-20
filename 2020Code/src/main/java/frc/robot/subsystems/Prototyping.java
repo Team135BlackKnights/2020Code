@@ -129,7 +129,7 @@ public class Prototyping extends Subsystem implements RobotMap{
   }
   
 
-  
+  // Restrictions/Settings for Talons
   public void ConfigTalon(TalonSRX talon)
   {
     talon.setNeutralMode(NeutralMode.Brake);

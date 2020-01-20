@@ -259,7 +259,7 @@ public class LedLights extends Subsystem {
   }
 
   /**
-   * This command just quickly clear the LED Strip.
+   * This command just quickly clears the LED Strip.
    */
   public void clear() {
     // Clear the LED strip

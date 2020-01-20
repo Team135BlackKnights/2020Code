@@ -72,7 +72,7 @@ public interface RobotMap
     public static final int 
       ROTATOR_ID = 15;
 
-
+      // Blue color mins and maxes
       public double BlueRedMin = .09;
       public double BlueRedMax = .21;
       public double BlueGreenMin = .40;
@@ -140,4 +140,12 @@ public interface RobotMap
 
   }
 
+  public interface ENDGAME
+  {
+    public static final int 
+    LIMIT_ID = 13,  
+    WIND_UP_SPARK_ID = 15,
+    LIFT_UP_SPARK_ID = 15;
+
+  }
 }

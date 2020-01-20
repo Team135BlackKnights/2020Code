@@ -30,22 +30,28 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL{
    public boolean atDesiredRoations;
 
 
-
+//Checks if the color it is seeing is blue by checking it against the min and max tolerances of each color
   public boolean IsBlue()
   {
    return ((red() >= BlueRedMin && red()<= BlueRedMax) && (green() >= BlueGreenMin && green() <= BlueGreenMax) && (blue() >= BlueBlueMin && blue() <= BlueBlueMax));
   }
+
+  //Checks if the color it is seeing is red by checking it against the min and max tolerances of each color
 
   public boolean IsRed()
   {
    return ((red() >= RedRedMin && red()<= RedRedMax) && (green() >= RedGreenMin && green() <= RedGreenMax) && (blue() >= RedBlueMin && blue() <= RedBlueMax));
   }
 
+  //Checks if the color it is seeing is green by checking it against the min and max tolerances of each color
+
   public boolean IsGreen()
   {
    return ((red() >= GreenRedMin && red()<= GreenRedMax) && (green() >= GreenGreenMin && green() <= GreenGreenMax) && (blue() >= GreenBlueMin && blue() <= GreenBlueMax));
   }
   
+  //Checks if the color it is seeing is yellow by checking it against the min and max tolerances of each color
+
   public boolean IsYellow() 
   {
    return ((red() >= YellowRedMin && red()<= YellowRedMax) && (green() >= YellowGreenMin && green() <= YellowGreenMax) && (blue() >= YellowBlueMin && blue() <= YellowBlueMax));
@@ -56,19 +62,23 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL{
   private ColorWheel()
 
   {
+     // Creates a color sensor in controlPanelColorSensor
      controlPanelColorSensor = new ColorSensorV3(i2cPort);
+     //Creates a SparkMax motor controller in rotatorSpark
      rotatorSpark = new CANSparkMax(ROTATOR_ID, MotorType.kBrushless);
 
-     System.out.println("Color Wheel Initialized");
-     gameData = DriverStation.getInstance().getGameSpecificMessage();
-     desiredColor = "No Color";
+     System.out.println("Color Wheel Initialized"); // Prints to screen
+     gameData = DriverStation.getInstance().getGameSpecificMessage(); // Gets the data sent by the FMS as to what color we need
+     desiredColor = "No Color"; //Desired color is none
      
   }
 
   public String gameColor()
   {
+     //Checks if the gamedata has arrived yet by making sure its length is greater than 0
    if(gameData.length() > 0)
    {
+      //Takes the Game Specific Data and changes it to a usable form
      switch (gameData.charAt(0))
      {
        case 'B' :
@@ -131,34 +141,37 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL{
 
   public void countColor() {
    
-   SmartDashboard.putString("Last Seen Color:", lastSeenColor);
-   if ((checkForColor() != lastSeenColor) && (checkForColor() != "No Color")) {
+   SmartDashboard.putString("Last Seen Color:", lastSeenColor); //Prints the last seen color to dash
+   if ((checkForColor() != lastSeenColor) && (checkForColor() != "No Color")) { // if the current color is not the last seen color and it isn't No Color, add 1 to the count
       colorChanges++;
    }
-   if (currentColor != "No Color") {
+   if (currentColor != "No Color") { //If the current color isn't no color, put it into last seen
       lastSeenColor = currentColor;
    }
   }
 
+  // Takes the desired color and power setting and if the current color isn't the desired color, rotate the panel
   public void getToColor(final String desiredColor, double power) {
       if (checkForColor() != desiredColor){
          rotatorSpark.set(power);
       }
-      else stopControlPanel();
+      else stopControlPanel();//Stops the panel
   }
 
+  // Takes the desired number of rotations and power setting, and rotates the wheel that many times
   public void rotateColorWheel(double power, int desiredRotations) {
-     colorChanges = 0;
+     colorChanges = 0; //Resets number of color changes to 0
 
-     lastSeenColor = checkForColor();
-     rotatorSpark.set(power);
-     while(wheelRotations < desiredRotations) {
+     lastSeenColor = checkForColor(); //Sets the last seen color to the current color 
+     rotatorSpark.set(power); //Runs the motor at the desired power
+     while(wheelRotations < desiredRotations) { //While the number of rotations is less than we need, it continues to count colors and rotate the wheel
         countColor();
-        wheelRotations = colorChanges / 8;
+        wheelRotations = colorChanges / 8; //Calculates wheel rotations based on how many color changes its seen
      }
-     atDesiredRoations = true;
+     atDesiredRoations = true; //After the above function ends, the desired rotations has been reached
   }
 
+  //To stop the control panel, the motor controller is set to 0 power
   public void stopControlPanel()
   {   
      rotatorSpark.set( 0);
@@ -166,11 +179,14 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL{
 
    public void printOut()
   {
+     //Sets detected color to the current color seen by the color sensor(An RGB value)
     detectedColor = controlPanelColorSensor.getColor();
-    
+    //Sets current color to the color currently seen by the sensor(In string form)
     currentColor = checkForColor();
+    //Runs the function to count colors
     countColor();
 
+    //Prints the different color values, the current color, the number of color changes, and the desired color to smart dash
     SmartDashboard.putNumber("color red",red());
     SmartDashboard.putNumber("color green",green());
     SmartDashboard.putNumber("color blue  ",blue());
@@ -179,25 +195,31 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL{
     SmartDashboard.putNumber("ColorChanges:", colorChanges);
 
     SmartDashboard.putString("Desired Color ", desiredColor);
-
   }
   
+  //Pulls the game specific message from driver station
   public String gameMessage = DriverStation.getInstance().getGameSpecificMessage();
 
 
   @Override
   public void initDefaultCommand() {}
   
-  public void periodic()
+  public void periodic() // Periodic function
   {
+     //Sets the detected color to the color currently seen by the camera(RGB Val)
    detectedColor = controlPanelColorSensor.getColor();
     
+   //Sets the current color to the current color(String)
    currentColor = checkForColor();
+   //Counts color changes
    countColor(); 
+
+   //Prints to the screen
    SmartDashboard.putString("Current Color", currentColor );
    SmartDashboard.putNumber("ColorChanges:", colorChanges);
  }
 
+ //Creates the instance colorwheel if the instance is empty
   public static ColorWheel getInstance() {if (instance == null) { instance = new ColorWheel();}return instance;}
 
 }

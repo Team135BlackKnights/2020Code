@@ -99,6 +99,7 @@ public class EncoderDriveToWithAngle extends TimedCommand {
     SmartDashboard.putNumber("LeftPower:", leftPower);
     SmartDashboard.putNumber("RightPower:", rightPower);
   }
+  // Called 
   @Override
   protected boolean isFinished() {
     return (Math.abs(leftError) <= 1 && Math.abs(rightError) <= 1) && Math.abs(angleError) <= 3; }
