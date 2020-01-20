@@ -26,6 +26,9 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL{
    public int colorChanges = 0;
    public String lastSeenColor = "Red";
    public String gameData, desiredColor;
+   public int wheelRotations = 0;
+   public boolean atDesiredRoations;
+
 
 
   public boolean IsBlue()
@@ -142,6 +145,18 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL{
          rotatorSpark.set(power);
       }
       else stopControlPanel();
+  }
+
+  public void rotateColorWheel(double power, int desiredRotations) {
+     colorChanges = 0;
+
+     lastSeenColor = checkForColor();
+     rotatorSpark.set(power);
+     while(wheelRotations < desiredRotations) {
+        countColor();
+        wheelRotations = colorChanges / 8;
+     }
+     atDesiredRoations = true;
   }
 
   public void stopControlPanel()

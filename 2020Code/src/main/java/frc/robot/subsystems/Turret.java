@@ -11,7 +11,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.EncoderType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -28,6 +30,7 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
 
   public WPI_TalonSRX tiltTalon; 
   public CANSparkMax rotationSpark, bottomShooterSpark, topShooterSpark, ballFeederSpark;
+  public CANEncoder rotationEncoder, bottomShooterEncoder, topShooterEncoder, ballFeederEncoder; 
   public DigitalInput turretBallTripSwitch, turretLeftLimit, turretRightLimit, turretTiltLimit;
   public Counter turretLidar; 
   public PigeonIMU pidgey; 
@@ -61,24 +64,62 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     initCANSparkMax(topShooterSpark);
     initCANSparkMax(ballFeederSpark);
 
+    rotationEncoder = rotationSpark.getEncoder(EncoderType.kQuadrature, 4096);
+    bottomShooterEncoder = bottomShooterSpark.getEncoder();
+    topShooterEncoder = topShooterSpark.getEncoder();
+    ballFeederEncoder = ballFeederSpark.getEncoder();
     tiltTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-    tiltTalon.setSensorPhase(true);
 
-
+    resetAllTurretEncoders();
+    System.out.println("Turret Initialized");
   }
 
   public void initCANSparkMax(CANSparkMax spark)
   {
 		spark.setInverted(false);
-		spark.enableVoltageCompensation(12);
+    spark.enableVoltageCompensation(12);
   }
+
 
   public void initTalonSRX(WPI_TalonSRX talon)
   {
     talon.configReverseSoftLimitEnable(false);
     talon.configForwardSoftLimitEnable(false);
-   // talon.enableCurrentLimit(true);
     talon.enableVoltageCompensation(true);
+    talon.setSensorPhase(true);
+    talon.configNominalOutputForward(0);
+    talon.configNominalOutputReverse(0);
+    talon.configPeakOutputForward(1);
+    talon.configPeakOutputReverse(-1);
+  }
+
+  public void resetTiltEncoder()
+  {
+    tiltTalon.setSelectedSensorPosition(0);
+  }
+
+  public void resetShooterEncoders()
+  {
+     bottomShooterEncoder.setPosition(0);
+     topShooterEncoder.setPosition(0);
+  }
+ 
+  public void resetBallFeederEncoder()
+  {
+    ballFeederEncoder.setPosition(0);
+  }
+
+  public void resetRotationEncoder()
+  {
+    rotationEncoder.setPosition(0);
+  }
+
+  public void resetAllTurretEncoders()
+  {
+    resetTiltEncoder();
+    resetShooterEncoders();
+    resetBallFeederEncoder();
+    resetRotationEncoder();;
   }
 
   public void runTilt(double power)
@@ -95,14 +136,6 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
 
   public void runRotation(double power)
   {
-   // rotateTurret(-.75);
-    /*
-    if(Robot.limelight.GetLimelightData()[1] > 1 && Robot.limelight.GetLimelightData()[0] >= 1)
-		{
-			rotateTurret(.75);
-			SmartDashboard.putString("Direction turret turning:", "left");
-      SmartDashboard.putString("Turret Not moving", "false");
-
     if(isAtLeftLimit())
     {
       limit(power, .9, 0);
@@ -116,7 +149,7 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     }
 
     rotationSpark.set(power);
-*/
+
   }
   
   public void runTopShooter(double power)
@@ -127,6 +160,18 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
   public void runBottomShooter(double power)
   {
     bottomShooterSpark.set(power);
+  }
+
+  public void runShootersRPM(double topRPM, double bottomRPM)
+  {
+    double maxRPM = 5676;
+    double _topRPM, _bottomRPM;
+
+    _topRPM = topRPM/maxRPM;
+    _bottomRPM = bottomRPM/maxRPM;
+
+    runTopShooter(_topRPM);
+    runBottomShooter(_bottomRPM);
   }
 
   public void runBallFeeder(double power)
@@ -153,6 +198,8 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
   {
     return turretTiltLimit.get();
   }
+
+ 
 
   public double limit(double x, double upperLimit, double lowerLimit)
 	{	if(x >= upperLimit){ x = upperLimit;}
