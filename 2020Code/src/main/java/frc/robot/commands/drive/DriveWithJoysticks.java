@@ -5,12 +5,14 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
 
+//Creates a class for the Joysticks to control the bot
 public class DriveWithJoysticks extends Command {
-  private double JoystickYValue, RJoystickYValue, RJoystickZValue;
+  private double JoystickYValue, RJoystickYValue, RJoystickZValue; //Declares variables to store the positions of different joysticks
 
   public double halfPowerDrive;
   public boolean swapControls;
 
+  //Method which finds the position of the Joysticks and assigns them to a corresponding value
   public DriveWithJoysticks() {
     requires(Robot.drive);
     
@@ -21,7 +23,7 @@ public class DriveWithJoysticks extends Command {
 
   }
 
-  // Called just before this Command runs the first time
+  // Called just before this Command runs the first time and does nothing
   @Override
   protected void initialize() {
   }
@@ -35,7 +37,10 @@ public class DriveWithJoysticks extends Command {
     RJoystickYValue = Robot.oi.GetJoystickYValue(0) * Robot.oi.returnLeftSlider();
     RJoystickZValue = Robot.oi.GetJoystickZValue(0) * Robot.oi.returnLeftSlider();
 
+    //
     halfPowerDrive = (OI.rightTrigger() || OI.leftTrigger() ) ? .75 :1;
+
+    //Detects if the swap controls button is being pushed and if controls are not already swapped, and swaps them to arcade drive
     swapControls= (OI.swapControls() && swapControls ==false) ? true : false;
 
 
