@@ -17,7 +17,7 @@ public class RightSideAuto extends CommandGroup {
   public RightSideAuto() {
     addSequential(new EncoderDriveToWithAngle(47, -47, 0, false));
     addSequential(new EncoderDriveToWithAngle(24, -26, -21, false));
-    addSequential(new EncoderDriveToWithAngle(40, -29, 85, false));
+    addSequential(new EncoderDriveToWithAngle(40, -29, 85, true));
     addSequential(new EncoderDriveToWithAngle(51, -41, 74, false));
     addSequential(new EncoderDriveToWithAngle(34, -33, 1, false));
 

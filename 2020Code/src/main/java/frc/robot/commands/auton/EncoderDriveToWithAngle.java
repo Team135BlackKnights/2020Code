@@ -78,18 +78,19 @@ public class EncoderDriveToWithAngle extends TimedCommand {
     double 
     rightP = 1,  leftP = 1;
     double 
-    angleP = 1;
+    angleP = 1.5;
 
     if (_shortDistance) {
-      minDrivePower = .20;
+      minDrivePower = .40;
       rightP = 1.5;
       leftP = 1.5;
       angleP = 1;
     }
 
 
-    rightPower = (minDrivePower * rightMinDirection) + (rightPower * rightP) - (anglePower * angleP);
-    leftPower = (minDrivePower * leftMinDirection) + (leftPower * leftP) - (anglePower * angleP);
+
+    rightPower = (minDrivePower * rightMinDirection) + (rightPower * rightP) + (anglePower * angleP);
+    leftPower = (minDrivePower * leftMinDirection) + (leftPower * leftP) + (anglePower * angleP);
 
     rightPower = Robot.drive.limit(rightPower, .8, -.8);
     leftPower = Robot.drive.limit(leftPower, .8, -.8);

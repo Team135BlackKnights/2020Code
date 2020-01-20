@@ -59,8 +59,8 @@ public class FalconDrive extends Subsystem implements RobotMap{
     
     configFalcon(frontLeftFX, true);
     configFalcon(rearLeftFX, true);
-    configFalcon(frontRightFX, false);
-    configFalcon(rearRightFX, false);
+    configFalcon(frontRightFX, true);
+    configFalcon(rearRightFX, true);
 
     leftSonar = new Ultrasonic(SENSORS.LEFT_SONAR_TRIG, SENSORS.LEFT_SONAR_ECHO);
     rightSonar = new Ultrasonic(SENSORS.RIGHT_SONAR_TRIG, SENSORS.RIGHT_SONAR_ECHO);
@@ -98,7 +98,7 @@ public class FalconDrive extends Subsystem implements RobotMap{
     falcon.setStatusFramePeriod(StatusFrame.Status_2_Feedback0,5, 100);
     falcon.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_50Ms,100);
     falcon.configVelocityMeasurementWindow(1,100);    
-    falcon.setSensorPhase(isLeft);
+    //falcon.setSensorPhase(isLeft);
   }
 
   public void setBrakeMode(NeutralMode neutralMode)
