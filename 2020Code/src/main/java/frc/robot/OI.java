@@ -26,7 +26,12 @@ public class OI implements RobotMap.KOI{
 	TOP_POV = 0 ,
 	RIGHT_POV = 1, 
 	BOTTOM_POV = 2,
-	LEFT_POV = 3;
+	LEFT_POV = 3,
+	TOP_RIGHT_POV = 4,
+	BOTTOM_RIGHT_POV = 5,
+	BOTTOM_LEFT_POV = 6, 
+	TOP_LEFT_POV = 7;
+
   public static Joystick[] joysticks = {leftJoystick, rightJoystick, manipJoystick};
 
   public static JoystickButton 
@@ -120,7 +125,16 @@ public double getThrottle(Joystick joystick)
 		switch(povDirection) {
 
 		case (TOP_POV):
-		if (povValue >= 315.0 || (povValue <= 45.0 && povValue != -1)) {
+		if (povValue >= 337.5 || (povValue <= 22.5 && povValue != -1)) {
+			povDirectionPressed = true;
+		}
+		else {
+			povDirectionPressed = false;
+		}
+		break;
+
+		case (TOP_RIGHT_POV):
+		if (povValue >= 22.5 && (povValue <= 67.5 )) {
 			povDirectionPressed = true;
 		}
 		else {
@@ -128,7 +142,16 @@ public double getThrottle(Joystick joystick)
 		}
 		break;
 	case (RIGHT_POV):
-		if (povValue >= 45.0 && povValue <= 135.0) {
+		if (povValue >= 67.5 && povValue <= 112.5) {
+			povDirectionPressed = true;
+		}
+		else {
+			povDirectionPressed = false;
+		}
+		break;
+
+		case (BOTTOM_RIGHT_POV):
+		if (povValue >= 112.5 && povValue <= 157.5) {
 			povDirectionPressed = true;
 		}
 		else {
@@ -136,7 +159,15 @@ public double getThrottle(Joystick joystick)
 		}
 		break;
 	case (BOTTOM_POV):
-		if (povValue >= 135.0 && povValue <= 225.0) {
+		if (povValue >= 157.5 && povValue <= 202.5) {
+			povDirectionPressed = true;
+		}
+		else {
+			povDirectionPressed = false;
+		}
+		break;
+	case (BOTTOM_LEFT_POV):
+		if (povValue >= 202.5 && povValue <= 247.5) {
 			povDirectionPressed = true;
 		}
 		else {
@@ -144,13 +175,22 @@ public double getThrottle(Joystick joystick)
 		}
 		break;
 	case (LEFT_POV):
-		if (povValue >= 225.0 && povValue <= 315.0) {
+		if (povValue >= 247.5 && povValue <= 337.5) {
 			povDirectionPressed = true;
 		}
 		else {
 			povDirectionPressed = false;
 		}
 		break;
+		case (TOP_LEFT_POV):
+		if (povValue >= 292.5 && povValue <= 292.5) {
+			povDirectionPressed = true;
+		}
+		else {
+			povDirectionPressed = false;
+		}
+		break;
+	
 	}
 	return povDirectionPressed;
 

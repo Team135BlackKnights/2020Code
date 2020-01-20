@@ -103,8 +103,9 @@ public interface RobotMap
       public double YellowGreenMax = .58;
       public double YellowBlueMin = .10;
       public double YellowBlueMax = .17;
-      
+
   }
+  
   public interface MOTORS 
   {
     
