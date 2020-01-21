@@ -146,7 +146,9 @@ public interface RobotMap
     public static final int 
     LIMIT_ID = 13,  
     WIND_UP_SPARK_ID = 15,
-    LIFT_UP_SPARK_ID = 15;
+    LIFT_UP_SPARK_ID = 16,
+    ENCODER_TICKS_PER_REVOLUTION = 4096;
+
 
   }
 }
