@@ -37,7 +37,7 @@ public class EncoderDriveWithSonar extends TimedCommand {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    SmartDashboard.putString("Command Running:", "Encoder Drive");
+    SmartDashboard.putString("Drive Command Running:", "Encoder Drive");
     SmartDashboard.putBoolean("Is Encoder Drive Finished", isFinished());
   }
 
@@ -107,7 +107,9 @@ public class EncoderDriveWithSonar extends TimedCommand {
     {
       Robot.drive.stopMotors();
     }
-    SmartDashboard.putString("Command Running:", "No Command Running");
+    SmartDashboard.putString("Command Finished: ", "Encoder Drive with Sonar");
+    SmartDashboard.putString("Drive Command Running:","No Command Running");
+
   }
 
   // Called when another command which requires one or more of the same

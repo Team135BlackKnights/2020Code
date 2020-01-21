@@ -25,7 +25,7 @@ public class targetTurret extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    SmartDashboard.putString("Command Running: ", "targetTurret");
+    SmartDashboard.putString("Turret Command Running: ", "targetTurret");
     Robot.turretlimelight.initLimelight(0, 0);
   }
 
@@ -53,15 +53,15 @@ public class targetTurret extends Command {
 
     boolean isPOVLeft, isPOVRight, isPOVUp, isPOVDown, isPOVTopRight, isPOVBottomRight, isPOVBottomLeft, isPOVTopLeft;
 
-    isPOVUp = Robot.oi.isPovDirectionPressed(Robot.oi.manipJoystick, 0);
-    isPOVRight = Robot.oi.isPovDirectionPressed(Robot.oi.manipJoystick, 1);
-    isPOVDown = Robot.oi.isPovDirectionPressed(Robot.oi.manipJoystick, 2);
-    isPOVLeft = Robot.oi.isPovDirectionPressed(Robot.oi.manipJoystick, 3);
+    isPOVUp = Robot.oi.isPovDirectionPressed(Robot.oi.MANIP_JOYSTICK, Robot.oi.TOP_POV);
+    isPOVRight = Robot.oi.isPovDirectionPressed(Robot.oi.MANIP_JOYSTICK, Robot.oi.RIGHT_POV);
+    isPOVDown = Robot.oi.isPovDirectionPressed(Robot.oi.MANIP_JOYSTICK, Robot.oi.BOTTOM_POV);
+    isPOVLeft = Robot.oi.isPovDirectionPressed(Robot.oi.MANIP_JOYSTICK, Robot.oi.LEFT_POV);
 
-    isPOVTopRight = Robot.oi.isPovDirectionPressed(Robot.oi.manipJoystick, 4);
-    isPOVBottomRight = Robot.oi.isPovDirectionPressed(Robot.oi.manipJoystick, 5);
-    isPOVBottomLeft = Robot.oi.isPovDirectionPressed(Robot.oi.manipJoystick, 6);
-    isPOVTopLeft = Robot.oi.isPovDirectionPressed(Robot.oi.manipJoystick, 7);
+    isPOVTopRight = Robot.oi.isPovDirectionPressed(Robot.oi.MANIP_JOYSTICK, Robot.oi.TOP_RIGHT_POV);
+    isPOVBottomRight = Robot.oi.isPovDirectionPressed(Robot.oi.MANIP_JOYSTICK, Robot.oi.BOTTOM_RIGHT_POV);
+    isPOVBottomLeft = Robot.oi.isPovDirectionPressed(Robot.oi.MANIP_JOYSTICK, Robot.oi.BOTTOM_LEFT_POV);
+    isPOVTopLeft = Robot.oi.isPovDirectionPressed(Robot.oi.MANIP_JOYSTICK, Robot.oi.TOP_LEFT_POV);
     
 
     if(isPOVUp)
@@ -132,11 +132,14 @@ public class targetTurret extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    SmartDashboard.putString("Command Finished: ", "targetTurret");
+    Robot.turret.stopTurret();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    this.end();
   }
 }

@@ -172,7 +172,7 @@ public class FalconDrive extends Subsystem implements RobotMap{
     lidar.reset();
   }
 
-  // Determines the distance being read by one of the two lidars
+  // Determines the distance being read by the lidar
   public double lidarDistance(Counter lidar)
   {
     double lidarDistance;
@@ -215,7 +215,7 @@ public class FalconDrive extends Subsystem implements RobotMap{
     return (getEncoderDistance(frontLeftFX) + getEncoderDistance(rearLeftFX))/2;
   }
 
-    //Finds the Left position of the encoders of the left drive group, and averages them in order to normalize the results
+    //Finds the right position of the encoders of the right drive group, and averages them in order to normalize the results
   public double getRightPos()
   {
     return (getEncoderDistance(frontRightFX) + getEncoderDistance(rearRightFX))/2;

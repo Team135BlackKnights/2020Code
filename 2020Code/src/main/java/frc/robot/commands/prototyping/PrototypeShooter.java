@@ -41,6 +41,7 @@ public class PrototypeShooter extends Command {
   @Override
   protected void end() {
     Robot.prototyping.runShooter(0,0);
+    
 
   }
 
