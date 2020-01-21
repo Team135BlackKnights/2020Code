@@ -8,7 +8,8 @@
 package frc.robot.subsystems;
  
 import edu.wpi.first.wpilibj.command.Subsystem;
- 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -87,9 +88,15 @@ public double ticksToRotations(double ticks)
 {
   return ticks/ENCODER_TICKS_PER_REVOLUTION;
 }
+
+public double ticksToInches(double ticks)
+{
+  return ticks/ENCODER_TICKS_PER_INCH;
+}
  
 public void printPosition()
 {
+  returnEncoderVelocity(liftRaiseEncoder);
    SmartDashboard.putNumber("LiftRaise Encoder Distance", getLiftEncoderPosition());
    SmartDashboard.putNumber("Winch Encoder Distance", getWinchEncoderPosition());
 }
@@ -134,7 +141,7 @@ public void printTemp()
   SmartDashboard.putNumber("LiftRaise Motor Temp", getLiftRaiseTemp());
   SmartDashboard.putNumber("Winch Motor Temp", getWinchTemp());
 }
- 
+
 public double getLiftRaiseVoltage()
 {
   return liftRaiseSpark.getBusVoltage();
@@ -144,7 +151,12 @@ public double getWinchVoltage()
 {
   return winchSpark.getBusVoltage();
 }
- 
+
+public void setLiftAndRaisePos(int endgamepos)
+{
+  
+}
+
 public void printVoltage()
 {
   SmartDashboard.putNumber("LiftRaise Motor Voltage", getLiftRaiseVoltage());

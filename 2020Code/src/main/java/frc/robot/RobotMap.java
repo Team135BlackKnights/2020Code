@@ -147,8 +147,8 @@ public interface RobotMap
     LIMIT_ID = 13,  
     WIND_UP_SPARK_ID = 15,
     LIFT_UP_SPARK_ID = 16,
-    ENCODER_TICKS_PER_REVOLUTION = 4096;
-
+    ENCODER_TICKS_PER_REVOLUTION = 4096,
+    ENCODER_TICKS_PER_INCH = 1; // Change once we know it
 
   }
 }
