@@ -27,7 +27,7 @@ import frc.robot.commands.drive.*;
 /**
  * Add your docs here.
  */
-public class FalconDrive extends Subsystem implements RobotMap{
+public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
 
   //
   public static FalconDrive instance; 
@@ -39,8 +39,8 @@ public class FalconDrive extends Subsystem implements RobotMap{
   public DifferentialDrive chassis; 
 
   //Declares Ultrasonic Sensors
-  public Ultrasonic rightSonar,leftSonar;
-  public  Counter testLidar; 
+  public Ultrasonic rearRightSonar, frontRightSonar, rearLeftSonar, frontLeftSonar, rearSonar;
+  public  Counter rearLidar; 
   public AHRS navx;
 
   // If instance is empty, creates a new FalconDrive to fill it
@@ -55,11 +55,11 @@ public class FalconDrive extends Subsystem implements RobotMap{
   public FalconDrive()
   {
     //Creates each individual motor, named for its position on the robot
-    frontLeftFX = new WPI_TalonFX(MOTORS.FRONT_LEFT_FALCON);
-    rearLeftFX = new WPI_TalonFX(MOTORS.REAR_LEFT_FALCON);
+    frontLeftFX = new WPI_TalonFX(FRONT_LEFT_FALCON);
+    rearLeftFX = new WPI_TalonFX(REAR_LEFT_FALCON);
 
-    frontRightFX = new WPI_TalonFX(MOTORS.FRONT_RIGHT_FALCON);
-    rearRightFX = new WPI_TalonFX(MOTORS.REAR_RIGHT_FALCON);
+    frontRightFX = new WPI_TalonFX(FRONT_RIGHT_FALCON);
+    rearRightFX = new WPI_TalonFX(REAR_RIGHT_FALCON);
     
     // *************************************
     configFalcon(frontLeftFX, true);
@@ -68,19 +68,27 @@ public class FalconDrive extends Subsystem implements RobotMap{
     configFalcon(rearRightFX, true);
 
     // Creates both Ultrasonic sensors
-    leftSonar = new Ultrasonic(SENSORS.LEFT_SONAR_TRIG, SENSORS.LEFT_SONAR_ECHO);
-    rightSonar = new Ultrasonic(SENSORS.RIGHT_SONAR_TRIG, SENSORS.RIGHT_SONAR_ECHO);
+    frontRightSonar = new Ultrasonic(FRONT_RIGHT_SONAR_TRIG, FRONT_RIGHT_SONAR_ECHO);
+    rearRightSonar = new Ultrasonic(REAR_RIGHT_SONAR_TRIG, REAR_RIGHT_SONAR_ECHO);
+
+    frontLeftSonar = new Ultrasonic(FRONT_LEFT_SONAR_TRIG, FRONT_LEFT_SONAR_ECHO);
+    rearLeftSonar = new Ultrasonic(REAR_LEFT_SONAR_TRIG, REAR_LEFT_SONAR_ECHO);
+
+    rearSonar = new Ultrasonic(REAR_SONAR_TRIG, REAR_SONAR_ECHO);
 
     //Sets the Ultrasonic Sensors so that they can function together
-    rightSonar.setAutomaticMode(true);
-    leftSonar.setAutomaticMode(true);
+    rearRightSonar.setAutomaticMode(true);
+    frontRightSonar.setAutomaticMode(true);
+    frontLeftSonar.setAutomaticMode(true);
+    rearLeftSonar.setAutomaticMode(true);
+    rearSonar.setAutomaticMode(true);
 
     // Initializes Lidar and runs its function
-    testLidar = new Counter(SENSORS.FRONT_LIDAR_ID);
-    initLidar(testLidar); 
+    rearLidar = new Counter(REAR_LIDAR);
+    initLidar(rearLidar); 
 
     //Declares a new Navx and immediately sets it to 0
-    navx = new AHRS(SENSORS.navXPort);
+    navx = new AHRS(navXPort);
     navx.reset();
 
     // Organizes the individual motors into groups based on location
@@ -288,15 +296,15 @@ public class FalconDrive extends Subsystem implements RobotMap{
 
   //Prints the distances found by each ultrasonic sensor in inches
   public void printUltrasonicValues() {
-    SmartDashboard.putNumber("right ultrasonic:", sonarDistance(rightSonar) );
-    SmartDashboard.putNumber("left ultrasonic:", sonarDistance(leftSonar) );
+    SmartDashboard.putNumber("right ultrasonic:", sonarDistance(rearRightSonar) );
+    SmartDashboard.putNumber("left ultrasonic:", sonarDistance(frontRightSonar) );
   }
   public double poofs = 2.54; //Constant for conversion between inches and centimeters
 
   //Prints the distance found by the lidar in inches
   public void printLidarValues()
   {
-    SmartDashboard.putNumber("test Lidar distance in", lidarDistance(testLidar)/poofs);
+    SmartDashboard.putNumber("test Lidar distance in", lidarDistance(rearLidar)/poofs);
   }
 
   //Periodic Loop

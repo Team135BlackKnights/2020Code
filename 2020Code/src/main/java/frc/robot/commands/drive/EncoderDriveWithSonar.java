@@ -60,7 +60,7 @@ public class EncoderDriveWithSonar extends TimedCommand {
     double 
     angleP = .3;   
 
-    actualDistanceFromWall = sonarDistance(Robot.drive.rightSonar);
+    actualDistanceFromWall = sonarDistance(Robot.drive.rearRightSonar);
 
 
     double minDrivePower = .26; 

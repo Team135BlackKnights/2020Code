@@ -59,7 +59,7 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL{
 
 
   //Initialization point
-  private ColorWheel()
+  public ColorWheel()
 
   {
      // Creates a color sensor in controlPanelColorSensor

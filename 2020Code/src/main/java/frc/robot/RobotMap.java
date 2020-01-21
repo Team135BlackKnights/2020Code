@@ -44,6 +44,25 @@ public interface RobotMap
       JOYSTICK_DEADBAND = .2;
   }
 
+  public interface DRIVE
+  {
+    final int FRONT_LEFT_FALCON = 1, FRONT_RIGHT_FALCON = 4,
+            REAR_LEFT_FALCON = 2,  REAR_RIGHT_FALCON = 3,
+
+            WHEEL_DIAMETER = 6,
+            ENCODER_TICKS_PER_REVOLUTION = 4096,
+            
+            FRONT_RIGHT_SONAR_TRIG = 0, FRONT_RIGHT_SONAR_ECHO = 1,
+            REAR_RIGHT_SONAR_TRIG = 2, REAR_RIGHT_SONAR_ECHO = 3,
+            FRONT_LEFT_SONAR_TRIG = 4, FRONT_LEFT_SONAR_ECHO = 5,
+            REAR_LEFT_SONAR_TRIG = 6, REAR_LEFT_SONAR_ECHO = 7,
+            REAR_SONAR_TRIG = 8, REAR_SONAR_ECHO = 9,
+            REAR_LIDAR = 12;
+
+            public SerialPort.Port navXPort = SerialPort.Port.kUSB;
+  
+  }
+
 
   public interface TURRET
   {
@@ -55,11 +74,11 @@ public interface RobotMap
 
       TILT_TALON_ID = 21,
 
-      LIDAR_ID = 9,
-      TRIP_SWITCH_ID = 10,
-      LEFT_LIMIT_ID = 11, 
-      RIGHT_LIMIT_ID = 12,
-      TILT_LIMIT_ID = 13,
+      LIDAR_ID = 13,
+      TRIP_SWITCH_ID = 14,
+      LEFT_LIMIT_ID = 16, 
+      RIGHT_LIMIT_ID = 17,
+      TILT_LIMIT_ID = 18,
       PIGEON_ID = 0,
 
       TOP_WHEEL_DIAMETER = 4,
@@ -105,7 +124,38 @@ public interface RobotMap
       public double YellowBlueMax = .17;
 
   }
+
+  public interface ENDGAME
+  {
+    public static final int 
+    LIMIT_ID = 19,  
+    WIND_UP_SPARK_ID = 16,
+    LIFT_UP_SPARK_ID = 17;
+
+  }
+
+  public interface INTAKE 
+  {
+    final int 
+      CONVEYOR_SPARK = 18,
+      ROLLER_SPARK = 19,
+
+      RAISE_LOWER = 0,
+
+      INTAKE_SONAR_TRIG = 10,
+      INTAKE_SONAR_ECHO = 11,
+
+      INTAKE_TRIP_SWITCH = 15;
+  }
   
+
+
+
+
+
+
+
+
   public interface MOTORS 
   {
     
@@ -118,15 +168,6 @@ public interface RobotMap
   final int BUTTON_CONTROL_TWO_TALON = 21, BUTTON_CONTROL_ONE_TALON = 22,
               MANIP_CONTROL_ONE_TALON = 23, MANIP_CONTROL_TWO_TALON = 24;
 
-  final int FRONT_LEFT_FALCON = 1, FRONT_RIGHT_FALCON = 4,
-            REAR_LEFT_FALCON = 2,  REAR_RIGHT_FALCON = 3; 
-  }
-  public interface CONSTANTS 
-  {
-  final int 
-      ENCODER_TICKS_PER_REVOLUTION = 4096,
-      WHEEL_DIAMETER = 6;
-
   }
   public interface SENSORS 
   {
@@ -138,15 +179,6 @@ public interface RobotMap
             INTAKE_TRIP_ID = 12, INTAKE_SONAR_TRIG = 13, 
             INTAKE_SONAR_ECHO = 14;
             public SerialPort.Port navXPort = SerialPort.Port.kUSB;
-
   }
 
-  public interface ENDGAME
-  {
-    public static final int 
-    LIMIT_ID = 13,  
-    WIND_UP_SPARK_ID = 15,
-    LIFT_UP_SPARK_ID = 15;
-
-  }
 }

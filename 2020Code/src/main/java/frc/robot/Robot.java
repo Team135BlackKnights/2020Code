@@ -30,6 +30,7 @@ public class Robot extends TimedRobot {
   //Dec Turret with turret
   public static Turret turret;
   //Dec OI with oi
+  public static Intake intake;
   public static OI oi;
 
   Command autonomousCommand;
@@ -38,24 +39,30 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-	SmartDashboard.putNumber("ENABLED", 1);
-	//Cam Drivers
-	drive = FalconDrive.getInstance();
-	//Camera Sensors for Turret (Outer/Inner Circle)
-	turretlimelight = TurretLimelight.getInstance();
-	//Camera Sensors for Intake (# of balls through intake)
-	intakeLimelight = IntakeLimelight.getInstance();
+	initKOPChassis();
+	//initRobot();
 
-	//prototyping = Prototyping.getInstance();
-
-	colorWheel = ColorWheel.getInstance();
-	//turret = Turret.getInstance();
-	oi = new OI();
-
-
-    
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
+  }
+  public void initKOPChassis()
+  {
+	drive = new FalconDrive();
+	prototyping = new Prototyping();
+	colorWheel = new ColorWheel();
+	oi = new OI();
+
+  }
+
+  public void initRobot()
+  {
+	  drive = new FalconDrive();
+	  turretlimelight = new TurretLimelight();
+	  intakeLimelight = new IntakeLimelight();
+	  turret = new Turret();
+	  intake = new Intake();
+	  colorWheel = new ColorWheel();
+	  oi = new OI();
   }
 
     //Initialize Shutdown
