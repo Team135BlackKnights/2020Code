@@ -86,6 +86,11 @@ public class Intake extends Subsystem implements RobotMap.INTAKE{
     conveyorSpark.set(power);
   }
 
+  public void resetConveyorEncoder()
+  {
+    conveyorEncoder.setPosition(0);
+  }
+
   public double getEncoderPosition(CANEncoder encoder)
   {
     return encoder.getPosition();
@@ -101,9 +106,9 @@ public class Intake extends Subsystem implements RobotMap.INTAKE{
     return encoder.getVelocity();
   }
 
-  public double getConveyorTravelDistance()
+  public double getConveyorRotations()
   {
-    return ticksToRotations(getEncoderPosition(conveyorEncoder)) * Math.PI * 4;
+    return ticksToRotations(getEncoderPosition(conveyorEncoder));
   }
 
   public void raiseLower(boolean position)

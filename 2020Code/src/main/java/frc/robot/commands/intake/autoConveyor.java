@@ -10,25 +10,24 @@ package frc.robot.commands.intake;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class runRoller extends Command {
-  public double _power;
-  public runRoller(double power) {
+public class autoConveyor extends Command {
+  public double _target;
+  public autoConveyor(double target) {
+    this._target = target; 
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    this._power = power;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() 
   {
-    Robot.intake.runRoller(_power);
+    
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -40,13 +39,11 @@ public class runRoller extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.intake.runRoller(0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    this.end();
   }
 }
