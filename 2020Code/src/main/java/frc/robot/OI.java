@@ -3,10 +3,11 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.auton.EncoderDriveToWithAngle;
+//import frc.robot.commands.auton.*;
 import frc.robot.commands.drive.*;
 import frc.robot.commands.drive.commandGroups.*;
 import frc.robot.commands.prototyping.*;
+import frc.robot.commands.turret.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -18,11 +19,11 @@ public class OI implements RobotMap.KOI{
   
   
   public static Joystick 
-    leftJoystick = new Joystick(LEFT_JOYSTICK),
-    rightJoystick = new Joystick(RIGHT_JOYSTICK),
-	manipJoystick = new Joystick(MANIP_JOYSTICK);
+    leftJoystick = new Joystick(RobotMap.KOI.LEFT_JOYSTICK),
+    rightJoystick = new Joystick(RobotMap.KOI.RIGHT_JOYSTICK),
+	manipJoystick = new Joystick(RobotMap.KOI.MANIP_JOYSTICK);
 	
-	public final static int 
+	public final int 
 	TOP_POV = 0 ,
 	RIGHT_POV = 1, 
 	BOTTOM_POV = 2,
@@ -30,7 +31,10 @@ public class OI implements RobotMap.KOI{
 	TOP_RIGHT_POV = 4,
 	BOTTOM_RIGHT_POV = 5,
 	BOTTOM_LEFT_POV = 6, 
-	TOP_LEFT_POV = 7;
+	TOP_LEFT_POV = 7,
+	LEFT_JOYSTICK = RobotMap.KOI.LEFT_JOYSTICK,
+	RIGHT_JOYSTICK = RobotMap.KOI.RIGHT_JOYSTICK,
+	MANIP_JOYSTICK = RobotMap.KOI.MANIP_JOYSTICK;
 
   public static Joystick[] joysticks = {leftJoystick, rightJoystick, manipJoystick};
 
@@ -39,6 +43,7 @@ public class OI implements RobotMap.KOI{
 	leftTrigger = new JoystickButton(leftJoystick, TRIGGER_BUTTON),
 	swapControlsButton = new JoystickButton(rightJoystick, HANDLE_TOP_RIGHT_BUTTON),
 	prototypeButtonOne = new JoystickButton(manipJoystick, TRIGGER_BUTTON),
+	fireShooterButton = new JoystickButton(manipJoystick, TRIGGER_BUTTON),
 	prototypeButtonTwo = new JoystickButton(manipJoystick, THUMB_BUTTON),
 	resetEncoderButton = new JoystickButton(rightJoystick, THUMB_BUTTON),
 	encoderDriveTestButton = new JoystickButton(leftJoystick, TRIGGER_BUTTON),
@@ -54,6 +59,8 @@ public class OI implements RobotMap.KOI{
 		prototypeButtonOne.toggleWhenPressed(new PrototypeButtonControlOne());
 		prototypeButtonTwo.toggleWhenPressed(new PrototypeButtonControlTwo());
 		turnToAngle90.whenPressed(new TurnToAngle(180));
+
+		fireShooterButton.toggleWhenPressed(new shootTurret(1600, 3800));
 
 		prototypeShooterButton.toggleWhenPressed(new PrototypeShooter(1600, 3800));
 		resetEncoderButton.whenPressed(new resetDriveEncoders());
@@ -113,14 +120,15 @@ public double getThrottle(Joystick joystick)
 		return DeadbandJoystickValue( -joysticks[joystickNumber].getZ() );
 	}
 
-	public double getPovAngle(Joystick joystick)
+	public double getPovAngle(int joystickID)
 	{
-		return joystick.getPOV();
+		return joysticks[joystickID].getPOV();
+		
 	}
 
-	public boolean isPovDirectionPressed(Joystick joystick, int povDirection)
+	public boolean isPovDirectionPressed(int joystickID, int povDirection)
 	{
-		double povValue = this.getPovAngle(joystick);
+		double povValue = this.getPovAngle(joystickID);
 		boolean povDirectionPressed = false;
 		switch(povDirection) {
 

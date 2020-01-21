@@ -8,8 +8,8 @@
 package frc.robot.commands.color;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import frc.robot.subsystems.ColorWheel;
 
 public class rotateWheelOfFortune extends Command {
 
@@ -24,7 +24,10 @@ public class rotateWheelOfFortune extends Command {
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {}
+  protected void initialize() {
+    SmartDashboard.putString("Control Panel Command Running:", "rotate Wheel of Fortune");
+
+  }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
@@ -58,6 +61,8 @@ public class rotateWheelOfFortune extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.colorWheel.stopControlPanel();
+    SmartDashboard.putString("Control Panel Command Running:", "No command Running");
   }
 
   // Called when another command which requires one or more of the same

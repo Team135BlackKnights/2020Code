@@ -29,7 +29,7 @@ public class TurnToAngle extends TimedCommand
 	protected void initialize() 
 	{
 		SmartDashboard.putNumber("AngletoTurnTO", this._angle);
-		SmartDashboard.putString("Command Running:","Turn To Angle");
+		SmartDashboard.putString("Drive Command Running:","Turn To Angle");
 
 	}
 
@@ -63,7 +63,9 @@ public class TurnToAngle extends TimedCommand
 
 	protected void end() {
 		Robot.drive.stopMotors();
-		SmartDashboard.putString("Command Running:","No Command Running");
+		SmartDashboard.putString("Command Finished: ", "Turn To Angle");
+		SmartDashboard.putString("Drive Command Running:","No Command Running");
+
 	}
 
 }

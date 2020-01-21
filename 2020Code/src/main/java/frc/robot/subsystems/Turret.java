@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.revrobotics.CANEncoder;
@@ -19,9 +20,10 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import frc.robot.commands.turret.*;
 /**
  * Add your docs here.
  */
@@ -35,6 +37,10 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
   public DigitalInput turretBallTripSwitch, turretLeftLimit, turretRightLimit, turretTiltLimit;
   public Counter turretLidar; 
   public PigeonIMU pidgey; 
+
+  public int turretBallCount = 0; 
+
+  public boolean lastBallState = false;
 
 
   public static Turret instance; 
@@ -60,10 +66,10 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     pidgey = new PigeonIMU(PIGEON_ID);
     initTalonSRX(tiltTalon);
 
-    initCANSparkMax(rotationSpark);
-    initCANSparkMax(bottomShooterSpark);
-    initCANSparkMax(topShooterSpark);
-    initCANSparkMax(ballFeederSpark);
+    initCANSparkMax(rotationSpark, IdleMode.kBrake);
+    initCANSparkMax(bottomShooterSpark, IdleMode.kCoast);
+    initCANSparkMax(topShooterSpark, IdleMode.kCoast);
+    initCANSparkMax(ballFeederSpark, IdleMode.kBrake);
 
     rotationEncoder = rotationSpark.getEncoder(EncoderType.kQuadrature, 4096);
     bottomShooterEncoder = bottomShooterSpark.getEncoder();
@@ -74,13 +80,28 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     resetAllTurretEncoders();
     resetPidgey();
 
+    
     System.out.println("Turret Initialized");
   }
 
-  public void initCANSparkMax(CANSparkMax spark)
+  public void turretCountBalls()
+  {
+    if(isBallInShooter()!=lastBallState && isBallInShooter()!=false)
+    {
+      turretBallCount++;
+    }
+    if(lastBallState!=isBallInShooter())
+    {
+      lastBallState = isBallInShooter();
+    }
+
+  }
+
+  public void initCANSparkMax(CANSparkMax spark, IdleMode mode)
   {
 		spark.setInverted(false);
     spark.enableVoltageCompensation(12);
+    spark.setIdleMode(mode);
   }
 
   public void initTalonSRX(WPI_TalonSRX talon)
@@ -93,7 +114,9 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     talon.configNominalOutputReverse(0);
     talon.configPeakOutputForward(1);
     talon.configPeakOutputReverse(-1);
+    talon.setNeutralMode(NeutralMode.Brake);
   }
+  
 
   public void resetTiltEncoder()
   {
@@ -170,7 +193,7 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     bottomShooterSpark.set(power);
   }
 
-  public void runShootersRPM(double topRPM, double bottomRPM)
+  public void runShooterRPM(double topRPM, double bottomRPM)
   {
     double maxRPM = 5676;
     double _topRPM, _bottomRPM;
@@ -254,13 +277,14 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
 
   public double getTopWheelRPM()
   {
-    return rotationsToInches(getSparkEncoderPosition(topShooterEncoder), TOP_WHEEL_DIAMETER);
+    return getSparkEncoderVelocity(topShooterEncoder);
   }
 
   public double getBottomWheelRPM()
   {
-    return rotationsToInches(getSparkEncoderPosition(bottomShooterEncoder), BOTTOM_WHEEL_DIAMETER);
+    return getSparkEncoderVelocity(bottomShooterEncoder);
   }
+
 
   public double getSparkPower(CANSparkMax spark)
   {
@@ -282,17 +306,79 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     return talon.getTemperature();
   }
 
+  public void printRotations()
+  {
+    SmartDashboard.putNumber("top Shooter Spark Position:", ticksToRotations(getSparkEncoderPosition(topShooterEncoder)));
+    SmartDashboard.putNumber("bottom Shooter Spark Position:", ticksToRotations(getSparkEncoderPosition(bottomShooterEncoder)));
+    SmartDashboard.putNumber("ball Feeder Spark Position:", ticksToRotations(getSparkEncoderPosition(ballFeederEncoder)));
+    SmartDashboard.putNumber("rotation spark Position:", ticksToRotations(getSparkEncoderPosition(rotationEncoder)));
+    SmartDashboard.putNumber("tilt talon Position:", ticksToRotations(getTalonPosition(tiltTalon)));
+  }
 
+  public void printShooterRPM()
+  {
+    SmartDashboard.putNumber("top shooter RPM", getTopWheelRPM());
+    SmartDashboard.putNumber("bottom shooter RPM", getBottomWheelRPM());
+  }
+
+  public void printOutputs()
+  {
+    SmartDashboard.putNumber("top Shooter Spark power:", getSparkPower(topShooterSpark));
+    SmartDashboard.putNumber("bottom Shooter Spark power:", getSparkPower(bottomShooterSpark));
+    SmartDashboard.putNumber("ball Feeder Spark power:", getSparkPower(ballFeederSpark));
+    SmartDashboard.putNumber("rotation spark power:", getSparkPower(rotationSpark));
+    SmartDashboard.putNumber("tilt talon power:", getTalonPower(tiltTalon));
+  }
+
+  public void printTemp()
+  {
+    SmartDashboard.putNumber("top Shooter Spark temp:", getSparkTemp(topShooterSpark));
+    SmartDashboard.putNumber("bottom Shooter Spark temp:", getSparkTemp(bottomShooterSpark));
+    SmartDashboard.putNumber("ball Feeder Spark temp:", getSparkTemp(ballFeederSpark));
+    SmartDashboard.putNumber("rotation spark temp:", getSparkTemp(rotationSpark));
+    SmartDashboard.putNumber("tilt talon temp:", getTalonTemp(tiltTalon));
+  }
+
+  public void stopShooter()
+  {
+    topShooterSpark.set(0);
+    bottomShooterSpark.set(0);
+  }
+
+  public void stopTurret()
+  {
+    rotationSpark.set(0);
+    tiltTalon.set(ControlMode.PercentOutput, 0);
+  }
+  public void stopFeeder()
+  {
+    ballFeederSpark.set(0);
+  }
+
+  public void stopAllTurretMotors()
+
+  {
+    stopShooter();
+    stopTurret();
+    stopFeeder();
+  }
   public double limit(double x, double upperLimit, double lowerLimit)
 	{	if(x >= upperLimit){ x = upperLimit;}
 		else if( x<=lowerLimit){ x = lowerLimit;}
 		return x;
-	}
+  }
+  
+  @Override
+  public void periodic() 
+  {
+    turretCountBalls();
+  }
 
 
 
   @Override
   public void initDefaultCommand() {
+    setDefaultCommand(new targetTurret());
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }

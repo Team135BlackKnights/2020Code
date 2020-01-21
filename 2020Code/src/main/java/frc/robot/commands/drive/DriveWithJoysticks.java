@@ -2,6 +2,7 @@
 package frc.robot.commands.drive;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.Robot;
 
@@ -20,6 +21,8 @@ public class DriveWithJoysticks extends Command {
   // Called just before this Command runs the first time and does nothing
   @Override
   protected void initialize() {
+    SmartDashboard.putString("Drive Command Running:","Drive with Joysticks");
+
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -67,11 +70,17 @@ public class DriveWithJoysticks extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.drive.stopMotors();
+    SmartDashboard.putString("Command Finished: ", "Drive With Joysticks");
+    SmartDashboard.putString("Drive Command Running:","No Command Running");
+
+
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    this.end();
   }
 }

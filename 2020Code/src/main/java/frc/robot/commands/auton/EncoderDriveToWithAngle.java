@@ -36,7 +36,7 @@ public class EncoderDriveToWithAngle extends TimedCommand {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    SmartDashboard.putString("Command Running:", "Encoder Drive");
+    SmartDashboard.putString("Drive Command Running:", "Encoder Drive");
     SmartDashboard.putBoolean("Is Encoder Drive Finished", isFinished());
   }
 
@@ -109,7 +109,8 @@ public class EncoderDriveToWithAngle extends TimedCommand {
   @Override
   protected void end() {
     Robot.drive.stopMotors();
-    SmartDashboard.putString("Command Running:", "No Command Running");
+    SmartDashboard.putString("Command Finished: ", "Encoder Drive to With Angle");
+		SmartDashboard.putString("Drive Command Running:","No Command Running");
 
   }
 
