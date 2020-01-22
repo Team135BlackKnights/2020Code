@@ -88,6 +88,11 @@ public double ticksToRotations(double ticks)
 {
   return ticks/4096;
 }
+
+public double ticksToInches(double ticks)
+{
+  return ticks/4096;
+}
  
 public void printPosition()
 {
@@ -136,7 +141,7 @@ public void printTemp()
   SmartDashboard.putNumber("LiftRaise Motor Temp", getLiftRaiseTemp());
   SmartDashboard.putNumber("Winch Motor Temp", getWinchTemp());
 }
- 
+
 public double getLiftRaiseVoltage()
 {
   return liftRaiseSpark.getBusVoltage();
@@ -146,7 +151,12 @@ public double getWinchVoltage()
 {
   return winchSpark.getBusVoltage();
 }
- 
+
+public void setLiftAndRaisePos(int endgamepos)
+{
+  
+}
+
 public void printVoltage()
 {
   SmartDashboard.putNumber("LiftRaise Motor Voltage", getLiftRaiseVoltage());
