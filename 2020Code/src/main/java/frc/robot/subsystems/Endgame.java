@@ -8,7 +8,8 @@
 package frc.robot.subsystems;
  
 import edu.wpi.first.wpilibj.command.Subsystem;
- 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -85,11 +86,12 @@ public double getWinchEncoderPosition()
 
 public double ticksToRotations(double ticks)
 {
-  return ticks/ENCODER_TICKS_PER_REVOLUTION;
+  return ticks/4096;
 }
  
 public void printPosition()
 {
+   
    SmartDashboard.putNumber("LiftRaise Encoder Distance", getLiftEncoderPosition());
    SmartDashboard.putNumber("Winch Encoder Distance", getWinchEncoderPosition());
 }

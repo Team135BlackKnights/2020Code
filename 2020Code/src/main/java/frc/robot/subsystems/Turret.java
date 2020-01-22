@@ -20,6 +20,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
@@ -32,7 +34,7 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
   // here. Call these from Commands.
 
   public WPI_TalonSRX tiltTalon; 
-  
+  public Relay targetingLight; 
   public CANSparkMax rotationSpark, bottomShooterSpark, topShooterSpark, ballFeederSpark;
   public CANEncoder rotationEncoder, bottomShooterEncoder, topShooterEncoder, ballFeederEncoder; 
   public DigitalInput turretBallTripSwitch, turretLeftLimit, turretRightLimit, turretTiltLimit;
@@ -53,6 +55,8 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
 
   public Turret()
   {
+    targetingLight = new Relay(TARGETING_LIGHT);
+  
     tiltTalon = new WPI_TalonSRX(TILT_TALON_ID);
     rotationSpark = new CANSparkMax(ROTATION_SPARK_ID, MotorType.kBrushless);
     bottomShooterSpark = new CANSparkMax(BOTTOM_SHOOTER_SPARK_ID, MotorType.kBrushless);
@@ -116,6 +120,15 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     talon.configPeakOutputForward(1);
     talon.configPeakOutputReverse(-1);
     talon.setNeutralMode(NeutralMode.Brake);
+  }
+
+  public void setLightOn()
+  {
+    targetingLight.set(Value.kOn);
+  }
+  public void setLightOff()
+  {
+    targetingLight.set(Value.kOff);
   }
   
 
