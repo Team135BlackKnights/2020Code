@@ -8,6 +8,7 @@ import frc.robot.commands.drive.*;
 import frc.robot.commands.drive.commandGroups.*;
 import frc.robot.commands.prototyping.*;
 import frc.robot.commands.turret.*;
+import frc.robot.commands.endgame.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -51,7 +52,7 @@ public class OI implements RobotMap.KOI{
 	gyroResetButton = new JoystickButton(leftJoystick, HANDLE_BOTTOM_RIGHT_BUTTON),
 	prototypeShooterButton = new JoystickButton(manipJoystick, HANDLE_BOTTOM_LEFT_BUTTON),
 	turnToAngle90 = new JoystickButton(rightJoystick, BASE_BOTTOM_RIGHT_BUTTON),
-	endgameLiftUp = new JoystickButton(rightJoystick, BASE_TOP_LEFT_BUTTON);
+	endgameWinchUp = new JoystickButton(rightJoystick, BASE_TOP_LEFT_BUTTON);
 
 	public OI()
 	{
@@ -67,6 +68,7 @@ public class OI implements RobotMap.KOI{
 		gyroResetButton.whenPressed(new resetGyro());
 		encoderDriveTestButton.whenPressed(new EncoderDrive(-50, 50, 2, false));
 		autoTestButton.whenPressed(new RightSideAuto());
+		endgameWinchUp.whenPressed(new runWinch(.65));
 		System.out.println("Operator Interface Initialized");
 
 	}

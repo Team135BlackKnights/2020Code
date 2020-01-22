@@ -31,6 +31,8 @@ public class Robot extends TimedRobot {
   public static Turret turret;
   //Dec OI with oi
   public static Intake intake;
+  //Dec Endgame with endgame
+  public static Endgame endgame;
   public static OI oi;
 
   Command autonomousCommand;
@@ -62,6 +64,7 @@ public class Robot extends TimedRobot {
 	  turret = new Turret();
 	  intake = new Intake();
 	  colorWheel = new ColorWheel();
+	  endgame = new Endgame();
 	  oi = new OI();
   }
 
