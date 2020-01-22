@@ -82,7 +82,8 @@ public interface RobotMap
       PIGEON_ID = 0,
 
       TOP_WHEEL_DIAMETER = 4,
-      BOTTOM_WHEEL_DIAMETER = 6; 
+      BOTTOM_WHEEL_DIAMETER = 6,
+      TARGETING_LIGHT = 0; 
 
   }
 
