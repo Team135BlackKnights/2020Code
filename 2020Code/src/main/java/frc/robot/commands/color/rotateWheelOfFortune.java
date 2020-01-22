@@ -41,12 +41,15 @@ public class rotateWheelOfFortune extends Command {
       Robot.colorWheel.getToColor(DesiredColor, .8);
       if (Robot.colorWheel.atDesiredRoations){ // If the wheel has been spun the desired amount, it is finished
         isFinished = true;
-      }
+        Robot.colorWheel.stopControlPanel();
+        }
+        
     }
     else { //If the desired color is no color, rotate the wheel four times at 80% power
       Robot.colorWheel.rotateColorWheel(.8, 4);
       if (Robot.colorWheel.checkForColor() != Robot.colorWheel.desiredColor) {
         isFinished = true;
+        Robot.colorWheel.stopControlPanel();
       }
     }
     

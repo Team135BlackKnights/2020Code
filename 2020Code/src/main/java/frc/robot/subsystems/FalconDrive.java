@@ -7,12 +7,14 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Counter;
@@ -33,6 +35,7 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
   public static FalconDrive instance; 
   //Declares four Falcon 500 Motors
   public WPI_TalonFX frontLeftFX, frontRightFX, rearLeftFX, rearRightFX;
+  public WPI_TalonSRX testEndgameMotor;
 
   //Declares Motor Controllers and Chassis
   public SpeedControllerGroup leftDriveSide, rightDriveSide; 
@@ -60,6 +63,8 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
 
     frontRightFX = new WPI_TalonFX(FRONT_RIGHT_FALCON);
     rearRightFX = new WPI_TalonFX(REAR_RIGHT_FALCON);
+
+    testEndgameMotor = new WPI_TalonSRX(24);
     
     // *************************************
     configFalcon(frontLeftFX, true);
@@ -107,6 +112,8 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
     
     System.out.println("Falcon Initialized"); // Outputs the text letting the user know that the Falcon has been initialized
 
+    testEndgameMotor.enableCurrentLimit(false);
+    testEndgameMotor.enableVoltageCompensation(true);
   }
 
   // Configures the settings of the Talon Motors
@@ -142,6 +149,10 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
   public void ArcadeDrive(double lateralPower, double rotationalPower)
   { 
     chassis.arcadeDrive(lateralPower, -rotationalPower);
+  }
+  public void runTest(double power)
+  {
+    testEndgameMotor.set(ControlMode.PercentOutput, power);
   }
 
   // Method sets the Chassis to Curvature Drive while pulling double arguements

@@ -22,7 +22,6 @@ public class Robot extends TimedRobot {
   //Declare ColorWheel with colorwheel
   public static ColorWheel colorWheel;
   //Dec Prototyping with prototyping
-  public static Prototyping prototyping;
   //Dec TurretLimelight with turretlimelight
   public static TurretLimelight  turretlimelight;
   //Dec IntakeLimelight with intakelimelight
@@ -50,7 +49,6 @@ public class Robot extends TimedRobot {
   public void initKOPChassis()
   {
 	drive = new FalconDrive();
-	prototyping = new Prototyping();
 	colorWheel = new ColorWheel();
 	oi = new OI();
 

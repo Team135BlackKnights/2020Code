@@ -32,7 +32,7 @@ public class DriveWithJoysticks extends Command {
     //Creates a value for each joystick's power based on the direction/power of the joystick and the max set by the slider
     JoystickYValue = Robot.oi.GetJoystickYValue(1) *  Robot.oi.returnRightSlider();
     RJoystickZValue = Robot.oi.GetJoystickZValue(0) * Robot.oi.returnLeftSlider();
-
+    double testJoystickPower = Robot.oi.GetJoystickYValue(2);
     //If the left or right triggers are pulled, the drive speed is set to 75% of normal, else it is 100%
     halfPowerDrive = (OI.rightThumb() || OI.leftThumb() ) ? .75 :1;
 
@@ -57,6 +57,8 @@ public class DriveWithJoysticks extends Command {
       else {
       Robot.drive.ArcadeDrive(lateralPower, rotationPower * .85);
       }
+
+      Robot.drive.runTest(-testJoystickPower);
     }
 
   

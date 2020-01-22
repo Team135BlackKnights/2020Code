@@ -7,7 +7,6 @@ import frc.robot.commands.color.rotateWheelOfFortune;
 //import frc.robot.commands.auton.*;
 import frc.robot.commands.drive.*;
 import frc.robot.commands.drive.commandGroups.*;
-import frc.robot.commands.prototyping.*;
 import frc.robot.commands.turret.*;
 import frc.robot.commands.endgame.*;
 
@@ -43,19 +42,8 @@ public class OI implements RobotMap.KOI{
   public static JoystickButton 
 	rightTrigger = new JoystickButton(rightJoystick, TRIGGER_BUTTON),
 	leftTrigger = new JoystickButton(leftJoystick, TRIGGER_BUTTON),
-	swapControlsButton = new JoystickButton(rightJoystick, HANDLE_TOP_RIGHT_BUTTON),
-	prototypeButtonOne = new JoystickButton(manipJoystick, TRIGGER_BUTTON),
-	fireShooterButton = new JoystickButton(manipJoystick, TRIGGER_BUTTON),
-	prototypeButtonTwo = new JoystickButton(manipJoystick, THUMB_BUTTON),
-	resetEncoderButton = new JoystickButton(rightJoystick, THUMB_BUTTON),
-	encoderDriveTestButton = new JoystickButton(leftJoystick, TRIGGER_BUTTON),
-	autoTestButton = new JoystickButton(leftJoystick, THUMB_BUTTON),
-	gyroResetButton = new JoystickButton(leftJoystick, HANDLE_BOTTOM_RIGHT_BUTTON),
-	prototypeShooterButton = new JoystickButton(manipJoystick, HANDLE_BOTTOM_LEFT_BUTTON),
-	turnToAngle90 = new JoystickButton(rightJoystick, BASE_BOTTOM_RIGHT_BUTTON),
-	endgameWinchUp = new JoystickButton(rightJoystick, BASE_TOP_LEFT_BUTTON);
 
-
+	
 	public static JoystickButton 
 		manipButton3 = new JoystickButton(manipJoystick, HANDLE_BOTTOM_LEFT_BUTTON),
 		rightThumb = new JoystickButton(rightJoystick, THUMB_BUTTON),
@@ -65,20 +53,6 @@ public class OI implements RobotMap.KOI{
 	public OI()
 	{
 		manipButton3.whenPressed(new rotateWheelOfFortune());
-		
-
-		prototypeButtonOne.toggleWhenPressed(new PrototypeButtonControlOne());
-		prototypeButtonTwo.toggleWhenPressed(new PrototypeButtonControlTwo());
-		turnToAngle90.whenPressed(new TurnToAngle(180));
-
-		fireShooterButton.toggleWhenPressed(new shootTurret(1600, 3800));
-
-		prototypeShooterButton.toggleWhenPressed(new PrototypeShooter(1600, 3800));
-		resetEncoderButton.whenPressed(new resetDriveEncoders());
-		gyroResetButton.whenPressed(new resetGyro());
-		encoderDriveTestButton.whenPressed(new EncoderDrive(-50, 50, 2, false));
-		autoTestButton.whenPressed(new RightSideAuto());
-		endgameWinchUp.whenPressed(new runWinch(.65));
 		System.out.println("Operator Interface Initialized");
 
 	}

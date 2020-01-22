@@ -4,6 +4,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -28,6 +30,7 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL{
    public String gameData, desiredColor;
    public int wheelRotations = 0;
    public boolean atDesiredRoations;
+   public WPI_TalonSRX testBoi; 
 
    //Mins and Maxes declared in RobotMap.CONTROL_PANEL
 //Checks if the color it is seeing is blue by checking it against the min and max tolerances of each color
@@ -66,6 +69,7 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL{
      controlPanelColorSensor = new ColorSensorV3(i2cPort);
      //Creates a SparkMax motor controller in rotatorSpark
      rotatorSpark = new CANSparkMax(ROTATOR_ID, MotorType.kBrushless);
+     testBoi = new WPI_TalonSRX(23);
 
      gameData = DriverStation.getInstance().getGameSpecificMessage(); // Gets the data sent by the FMS as to what color we need
      desiredColor = "No Color"; //Desired color is none
@@ -154,9 +158,24 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL{
   // Takes the desired color and power setting and if the current color isn't the desired color, rotate the panel
   public void getToColor(final String desiredColor, double power) {
       if (checkForColor() != desiredColor){
-         rotatorSpark.set(power);
+         detectedColor = controlPanelColorSensor.getColor();
+    
+         //Sets the current color to the current color(String)
+         currentColor = checkForColor();
+         //Counts color changes
+         countColor(); 
+      
+         //Prints to the screen
+         SmartDashboard.putString("Current Color", currentColor );
+         SmartDashboard.putNumber("ColorChanges:", colorChanges);
+         //rotatorSpark.set(power);
+         testBoi.set(ControlMode.PercentOutput, power);
       }
-      else stopControlPanel();//Stops the panel
+      else 
+      {
+         stopControlPanel();//Stops the panel
+      }
+
   }
 
   // Takes the desired number of rotations and power setting, and rotates the wheel that many times
@@ -164,8 +183,19 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL{
      colorChanges = 0; //Resets number of color changes to 0
 
      lastSeenColor = checkForColor(); //Sets the last seen color to the current color 
-     rotatorSpark.set(power); //Runs the motor at the desired power
-     while(wheelRotations < desiredRotations) { //While the number of rotations is less than we need, it continues to count colors and rotate the wheel
+     //rotatorSpark.set(power); //Runs the motor at the desired power
+     testBoi.set(power);
+     while(wheelRotations < desiredRotations) {
+      detectedColor = controlPanelColorSensor.getColor();
+    
+      //Sets the current color to the current color(String)
+      currentColor = checkForColor();
+      //Counts color changes
+      countColor(); 
+   
+      //Prints to the screen
+      SmartDashboard.putString("Current Color", currentColor );
+      SmartDashboard.putNumber("ColorChanges:", colorChanges); //While the number of rotations is less than we need, it continues to count colors and rotate the wheel
         countColor();
         wheelRotations = colorChanges / 8; //Calculates wheel rotations based on how many color changes its seen
      }
@@ -175,7 +205,8 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL{
   //To stop the control panel, the motor controller is set to 0 power
   public void stopControlPanel()
   {   
-     rotatorSpark.set( 0);
+     rotatorSpark.set(0);
+     testBoi.set(ControlMode.PercentOutput, 0);
   }
 
    public void printOut()
