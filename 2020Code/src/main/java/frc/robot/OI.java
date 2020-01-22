@@ -3,6 +3,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.color.rotateWheelOfFortune;
 //import frc.robot.commands.auton.*;
 import frc.robot.commands.drive.*;
 import frc.robot.commands.drive.commandGroups.*;
@@ -54,9 +55,18 @@ public class OI implements RobotMap.KOI{
 	turnToAngle90 = new JoystickButton(rightJoystick, BASE_BOTTOM_RIGHT_BUTTON),
 	endgameWinchUp = new JoystickButton(rightJoystick, BASE_TOP_LEFT_BUTTON);
 
+
+	public static JoystickButton 
+		manipButton3 = new JoystickButton(manipJoystick, HANDLE_BOTTOM_LEFT_BUTTON),
+		rightThumb = new JoystickButton(rightJoystick, THUMB_BUTTON),
+		leftThumb = new JoystickButton(leftJoystick, THUMB_BUTTON);
+
+
 	public OI()
 	{
+		manipButton3.whenPressed(new rotateWheelOfFortune());
 		
+
 		prototypeButtonOne.toggleWhenPressed(new PrototypeButtonControlOne());
 		prototypeButtonTwo.toggleWhenPressed(new PrototypeButtonControlTwo());
 		turnToAngle90.whenPressed(new TurnToAngle(180));
@@ -72,6 +82,8 @@ public class OI implements RobotMap.KOI{
 		System.out.println("Operator Interface Initialized");
 
 	}
+
+	
 //Returns the values for the sliders of the three joysticks 
 // adding a deadband so that it doesn't count .01 as still doing something
     public double returnManipSlider() {
@@ -91,14 +103,22 @@ public class OI implements RobotMap.KOI{
 public static boolean leftTrigger() {
   return leftTrigger.get();
 }
+
 public static boolean rightTrigger()
 {
   return rightTrigger.get();
 }
-public static boolean swapControls()
+
+public static boolean leftThumb()
 {
-	return swapControlsButton.get();
+	return leftThumb.get();
 }
+
+public static boolean rightThumb()
+{
+	return rightThumb.get();
+}
+
 
 public double getThrottle(Joystick joystick)
 {

@@ -7,38 +7,63 @@
 
 package frc.robot.commands.intake;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.TimedCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-public class autoConveyor extends Command {
-  public double _target;
-  public autoConveyor(double target) {
-    this._target = target; 
+
+
+public class runConveyorSetPos extends TimedCommand {
+  /**
+   * Add your docs here.
+   */
+  public double _targetPos;
+  public boolean isFinished;
+  public runConveyorSetPos(double targetPos) {
+    super(1);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    this._targetPos = targetPos;
+    this.isFinished = false;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+
+    SmartDashboard.putString("Intake Command Running: ", " RunConveyorSetPos");
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() 
   {
-    
+    double currentConveyorPos = Robot.intake.getConveyorRotations();
+    if(_targetPos+-2 !=currentConveyorPos)
+    {
+      Robot.intake.runConveyor(.65);
+ isFinished = false;
+    }
+    else
+    {
+      Robot.intake.runConveyor(0);
+ isFinished = true; 
+    }
   }
 
-  // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
-    return false;
+  protected boolean isFinished()
+  {
+    return isFinished;
   }
 
-  // Called once after isFinished returns true
+  // Called once after timeout
   @Override
-  protected void end() {
+  protected void end() 
+  {
+    Robot.intake.runConveyor(0);
+    SmartDashboard.putString("Intake Command Running:", "No command Running");
+    SmartDashboard.putString("Command Finished: ", "runConveyorSetToPos" + this._targetPos);
   }
 
   // Called when another command which requires one or more of the same

@@ -24,12 +24,12 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL{
    public Color detectedColor;
    public String currentColor;
    public int colorChanges = 0;
-   public String lastSeenColor = "Red";
+   public String lastSeenColor = "No Color";
    public String gameData, desiredColor;
    public int wheelRotations = 0;
    public boolean atDesiredRoations;
 
-
+   //Mins and Maxes declared in RobotMap.CONTROL_PANEL
 //Checks if the color it is seeing is blue by checking it against the min and max tolerances of each color
   public boolean IsBlue()
   {
@@ -67,10 +67,11 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL{
      //Creates a SparkMax motor controller in rotatorSpark
      rotatorSpark = new CANSparkMax(ROTATOR_ID, MotorType.kBrushless);
 
-     System.out.println("Color Wheel Initialized"); // Prints to screen
      gameData = DriverStation.getInstance().getGameSpecificMessage(); // Gets the data sent by the FMS as to what color we need
      desiredColor = "No Color"; //Desired color is none
      
+     System.out.println("Color Wheel Initialized"); // Prints to screen
+
   }
 
   public String gameColor()
