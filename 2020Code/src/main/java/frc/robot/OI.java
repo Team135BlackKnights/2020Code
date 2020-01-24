@@ -6,9 +6,10 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.color.rotateWheelOfFortune;
 //import frc.robot.commands.auton.*;
 import frc.robot.commands.drive.*;
-import frc.robot.commands.intake.*;
+import frc.robot.commands.auton.commandGroups.*;
 import frc.robot.commands.turret.*;
 import frc.robot.commands.endgame.*;
+import frc.robot.commands.intake.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -41,27 +42,34 @@ public class OI implements RobotMap.KOI{
 
   public static JoystickButton 
 	rightTrigger = new JoystickButton(rightJoystick, TRIGGER_BUTTON),
-	leftTrigger = new JoystickButton(leftJoystick, TRIGGER_BUTTON),
-
 	rightThumb = new JoystickButton(rightJoystick, THUMB_BUTTON),
-	leftThumb = new JoystickButton(leftJoystick, THUMB_BUTTON),
+	rightButton3 = new JoystickButton(rightJoystick, HANDLE_BOTTOM_LEFT_BUTTON),
+	
 
+	leftTrigger = new JoystickButton(leftJoystick, TRIGGER_BUTTON),
+	leftThumb = new JoystickButton(leftJoystick, THUMB_BUTTON),
 	leftButton11 = new JoystickButton(leftJoystick, BASE_BOTTOM_LEFT_BUTTON),
 
 	manipTrigger = new JoystickButton(manipJoystick, TRIGGER_BUTTON),
-	manipButton3 = new JoystickButton(manipJoystick, HANDLE_BOTTOM_LEFT_BUTTON);
-	
+	manipButton3 = new JoystickButton(manipJoystick, HANDLE_BOTTOM_LEFT_BUTTON),
+	manipButton7 = new JoystickButton(manipJoystick, BASE_TOP_LEFT_BUTTON),
+	manipButton8 = new JoystickButton(manipJoystick, BASE_TOP_RIGHT_BUTTON),
+	manipButton9 = new JoystickButton(manipJoystick, BASE_MIDDLE_LEFT_BUTTON),
+	manipButton11 = new JoystickButton(manipJoystick, BASE_BOTTOM_LEFT_BUTTON);
 
 
 	public OI()
 	{
+		rightButton3.whenPressed(new toggleLight(true));
 		
 		leftThumb.whenPressed(new shiftGears(true));
 		leftButton11.toggleWhenPressed(new toggleCompressor());
 
+		manipTrigger.whileHeld(new runRoller(.9));
 		manipButton3.whenPressed(new rotateWheelOfFortune());
-		manipTrigger.whenPressed(new runRoller(.9));
-		
+		manipButton9.whileHeld(new runRoller(-.9));
+		manipButton11.toggleWhenPressed(new moveIntake(true));
+		 
 		System.out.println("Operator Interface Initialized");
 
 	}
@@ -100,6 +108,16 @@ public static boolean leftThumb()
 public static boolean rightThumb()
 {
 	return rightThumb.get();
+}
+
+public boolean getManipButton7()
+{
+	return manipButton7.get();
+}
+
+public boolean getManipButton8()
+{
+	return manipButton8.get();
 }
 
 

@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -41,48 +40,49 @@ public static boolean liftUpButton;
  
 public Endgame()
 {
-  // Declares the Limit switch, winch and lift sparks, and their respective encoders
   limSwitch = new DigitalInput(LIMIT_ID);
   winchSpark = new CANSparkMax(WIND_UP_SPARK_ID, MotorType.kBrushless);
   liftRaiseSpark = new CANSparkMax(LIFT_UP_SPARK_ID, MotorType.kBrushless);
   liftRaiseEncoder = liftRaiseSpark.getEncoder();
   winchEncoder = winchSpark.getEncoder();
  
-
-  liftRaiseSpark.enableSoftLimit(SoftLimitDirection.kForward , true);
-  
   resetAllEndgameEncoders();
  
 }
  
- // Takes a double input and runs the provided spark at the specified power setting
+ 
+public void runWinchSpark(double power)
+{
+ winchSpark.set(power);
+}
 
 public void runLiftRaiseSpark(double power)
 {
   liftRaiseSpark.set(power);
 }
-
-public void runWinch(double power)
-{
-  winchSpark.set(power);
-}
  
-// Resets both encoders
 public void resetAllEndgameEncoders()
 {
-  resetEncoder(winchEncoder);
-  resetEncoder(liftRaiseEncoder);
+  resetWinchEncoder();
+  resetLiftEncoder();
 }
  
-// Resets the specified encoder
-public void resetEncoder(CANEncoder encoder){
-  encoder.setPosition(0);
+public void resetWinchEncoder(){
+  winchEncoder.setPosition(0);
 }
  
-// Returns the position of the specified encoder, 
-public double getEncoderPosition(CANEncoder encoder)
+public void resetLiftEncoder(){
+   liftRaiseEncoder.setPosition(0);
+}
+ 
+public double getWinchEncoderPosition()
 {
-  return encoder.getPosition();
+  return winchEncoder.getPosition();
+}
+
+public double getLiftRaiseEncoderPosition()
+{
+  return liftRaiseEncoder.getPosition();
 }
 
 public double ticksToRotations(double ticks)
@@ -90,63 +90,73 @@ public double ticksToRotations(double ticks)
   return ticks/4096;
 }
 
-public double ticksToInches(double ticks) // NEED TO UPDATE WITH ACTUAL CONVERSION RATE
+public double ticksToInches(double ticks)
 {
   return ticks/4096;
-}
-
-public double getLiftRaiseEncoderPosition()
-{
-  return getEncoderPosition(liftRaiseEncoder);
 }
  
 public void printPosition()
 {
    
-   SmartDashboard.putNumber("LiftRaise Encoder Distance", getEncoderPosition(liftRaiseEncoder));
-   SmartDashboard.putNumber("Winch Encoder Distance", getEncoderPosition(winchEncoder));
+   SmartDashboard.putNumber("LiftRaise Encoder Distance", getLiftRaiseEncoderPosition());
+   SmartDashboard.putNumber("Winch Encoder Distance", getWinchEncoderPosition());
 }
-
-public double getEncoderVelocity(CANEncoder encoder)
+ /*
+public double getLiftEncoderVelocity()
+{
+  return liftRaiseEncoder.getVelocity();
+}
+ 
+public double getWinchEncoderVelocity()
+{
+  return winchEncoder.getVelocity();
+}
+*/
+public double returnEncoderVelocity(CANEncoder encoder)
 {
    return encoder.getVelocity();
 }
-public double getRPM(CANEncoder encoder)
+public double getWinchRPM()
 {
-  return ticksToRotations(getEncoderVelocity(encoder));
+  return ticksToRotations(returnEncoderVelocity(winchEncoder));
 }
 
 public void printVelocity()
 {
-  SmartDashboard.putNumber("LiftRaise Encoder Velocity", getEncoderVelocity(liftRaiseEncoder));
-  SmartDashboard.putNumber("Winch Encoder Velocity", getEncoderVelocity(winchEncoder));
+  SmartDashboard.putNumber("LiftRaise Encoder Velocity", returnEncoderVelocity(liftRaiseEncoder));
+  SmartDashboard.putNumber("Winch Encoder Velocity", returnEncoderVelocity(winchEncoder));
 }
  
-public double getMotorTemp(CANSparkMax spark)
+public double getLiftRaiseTemp()
 {
-  return spark.getMotorTemperature();
+  return liftRaiseSpark.getMotorTemperature();
+}
+ 
+public double getWinchTemp()
+{
+  return winchSpark.getMotorTemperature();
 }
  
 public void printTemp()
 {
-  SmartDashboard.putNumber("LiftRaise Motor Temp", getMotorTemp(liftRaiseSpark));
-  SmartDashboard.putNumber("Winch Motor Temp", getMotorTemp(winchSpark));
+  SmartDashboard.putNumber("LiftRaise Motor Temp", getLiftRaiseTemp());
+  SmartDashboard.putNumber("Winch Motor Temp", getWinchTemp());
 }
 
-public double getVoltage(CANSparkMax spark)
+public double getLiftRaiseVoltage()
 {
-  return spark.getBusVoltage();
+  return liftRaiseSpark.getBusVoltage();
 }
-
-public void setLiftAndRaisePos(int endgamepos)
+ 
+public double getWinchVoltage()
 {
-  
+  return winchSpark.getBusVoltage();
 }
 
 public void printVoltage()
 {
-  SmartDashboard.putNumber("LiftRaise Motor Voltage", getVoltage(liftRaiseSpark));
-  SmartDashboard.putNumber("Winch Motor Voltage", getVoltage(winchSpark));
+  SmartDashboard.putNumber("LiftRaise Motor Voltage", getLiftRaiseVoltage());
+  SmartDashboard.putNumber("Winch Motor Voltage", getWinchVoltage());
 }
  
 public void printEverything()

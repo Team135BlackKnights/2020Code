@@ -78,6 +78,9 @@ public interface RobotMap
 
       LIDAR_ID = 13,
       TRIP_SWITCH_ID = 14,
+      LEFT_LIMIT_ID = 16, 
+      RIGHT_LIMIT_ID = 17,
+      TILT_LIMIT_ID = 18,
       PIGEON_ID = 0,
 
       TOP_WHEEL_DIAMETER = 4,

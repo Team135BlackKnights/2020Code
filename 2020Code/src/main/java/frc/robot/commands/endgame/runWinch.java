@@ -15,10 +15,11 @@ import frc.robot.Robot;
 public class runWinch extends Command {
 
   public double _power;
-  public CANSparkMax _winchSpark;
-  public runWinch(double power, CANSparkMax _winchSpark) {
+
+  public runWinch(double power){
 
     this._power = power;
+
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -28,10 +29,10 @@ public class runWinch extends Command {
   protected void initialize() {
   }
 
-  // Called repeatedly when this Command is scheduled to run
+  // Called repeat  p/ eg.ublicn this/Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.endgame.runWinch(_power);;
+    Robot.endgame.runWinchSpark(_power);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -40,16 +41,15 @@ public class runWinch extends Command {
     return false;
   }
 
-  // Called once after isFinished returns true
+  // Called once aowe requr, CAinished returns true
   @Override
-  protected void end() {
-    Robot.endgame.runWinch(0);
+  protected void end() 
+  {
+    Robot.endgame.runWinchSpark(0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void interrupted() {
-    this.end();
-  }
+  protected void interrupted() {}
 }

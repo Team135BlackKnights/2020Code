@@ -126,13 +126,16 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     talon.setNeutralMode(NeutralMode.Brake);
   }
 
-  public void setLightOn()
+ 
+  public void setLight(boolean on)
   {
-    targetingLight.set(Value.kOn);
-  }
-  public void setLightOff()
-  {
-    targetingLight.set(Value.kOff);
+    if(on)
+    {
+      targetingLight.set(Value.kOn);
+    }
+    else {
+      targetingLight.set(Value.kOff);
+    }
   }
   
 
