@@ -12,7 +12,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Ultrasonic;
@@ -33,7 +32,6 @@ public class Intake extends Subsystem implements RobotMap.INTAKE{
   public int currentBallCount;
   public boolean lastSwtichPosition;
   public Solenoid raiseLower;
-  public Compressor compressor;
 
   public static Intake getInstance(){
   if(instance == null)
@@ -55,12 +53,7 @@ public class Intake extends Subsystem implements RobotMap.INTAKE{
     conveyorEncoder = conveyorSpark.getEncoder();
 
     raiseLower = new Solenoid(RAISE_LOWER);
-    compressor = new Compressor();
-
-    compressor.setClosedLoopControl(true);
-    compressor.start();
-
-
+  
     intakeBallTripSwitch = new DigitalInput(INTAKE_TRIP_SWITCH);
     intakeSonar = new Ultrasonic(INTAKE_SONAR_TRIG, INTAKE_SONAR_ECHO);
 
@@ -116,25 +109,9 @@ public class Intake extends Subsystem implements RobotMap.INTAKE{
     raiseLower.set(position);
   }
 
-  public void setCompressorOff()
-  {
-    compressor.setClosedLoopControl(false);
-    compressor.stop();
-  }
-
-  public void setCompressorOn()
-  {
-    compressor.setClosedLoopControl(true);
-  }
-
   public boolean isRollerLowered()
   {
     return raiseLower.get();
-  }
-
-  public boolean isCompressorOn()
-  {
-    return compressor.getClosedLoopControl();
   }
 
   
