@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -47,6 +48,9 @@ public Endgame()
   liftRaiseEncoder = liftRaiseSpark.getEncoder();
   winchEncoder = winchSpark.getEncoder();
  
+
+  liftRaiseSpark.enableSoftLimit(SoftLimitDirection.kForward , true);
+  
   resetAllEndgameEncoders();
  
 }

@@ -155,28 +155,6 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL{
    }
   }
 
-  // Takes the desired color and power setting and if the current color isn't the desired color, rotate the panel
-  public void getToColor(final String desiredColor, double power) {
-      if (checkForColor() != desiredColor){
-         detectedColor = controlPanelColorSensor.getColor();
-    
-         //Sets the current color to the current color(String)
-         currentColor = checkForColor();
-         //Counts color changes
-         countColor(); 
-      
-         //Prints to the screen
-         SmartDashboard.putString("Current Color", currentColor );
-         SmartDashboard.putNumber("ColorChanges:", colorChanges);
-         //rotatorSpark.set(power);
-         testBoi.set(ControlMode.PercentOutput, power);
-      }
-      else 
-      {
-         stopControlPanel();//Stops the panel
-      }
-  }
-
   public void getToSpecifiedColor(String desiredColor)
   {
      double power;
@@ -189,33 +167,6 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL{
         power = 0;
      }
      rotatorSpark.set(power);
-  }
-
-  // Takes the desired number of rotations and power setting, and rotates the wheel that many times
-  public void rotateColorWheel(double power, int desiredRotations) {
-     colorChanges = 0; //Resets number of color changes to 0
-
-     lastSeenColor = checkForColor(); //Sets the last seen color to the current color 
-     //rotatorSpark.set(power); //Runs the motor at the desired power
-     testBoi.set(power);
-     while(wheelRotations < desiredRotations) {
-      detectedColor = controlPanelColorSensor.getColor();
-      testBoi.set(power);
-
-      //Sets the current color to the current color(String)
-      currentColor = checkForColor();
-      //Counts color changes
-      countColor(); 
-   
-      //Prints to the screen
-      SmartDashboard.putString("Current Color", currentColor );
-      SmartDashboard.putNumber("ColorChanges:", colorChanges); //While the number of rotations is less than we need, it continues to count colors and rotate the wheel
-        countColor();
-        wheelRotations = colorChanges / 8; //Calculates wheel rotations based on how many color changes its seen
-     }
-     testBoi.set(0);
-
-     atDesiredRoations = true; //After the above function ends, the desired rotations has been reached
   }
 
   public void rotateXRotations(int desiredRotations)
