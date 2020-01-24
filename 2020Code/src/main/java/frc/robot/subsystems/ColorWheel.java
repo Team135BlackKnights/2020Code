@@ -175,7 +175,20 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL{
       {
          stopControlPanel();//Stops the panel
       }
+  }
 
+  public void getToSpecifiedColor(String desiredColor)
+  {
+     double power;
+     if(checkForColor() != desiredColor)
+     {
+        power = .8;
+     }
+     else
+     {
+        power = 0;
+     }
+     rotatorSpark.set(power);
   }
 
   // Takes the desired number of rotations and power setting, and rotates the wheel that many times
@@ -203,6 +216,25 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL{
      testBoi.set(0);
 
      atDesiredRoations = true; //After the above function ends, the desired rotations has been reached
+  }
+
+  public void rotateXRotations(int desiredRotations)
+  {
+    double power;
+    atDesiredRoations = false;
+    colorChanges = 0;
+    wheelRotations = colorChanges/8;
+    if(wheelRotations <= desiredRotations)
+    {
+       power = .625;
+   atDesiredRoations = false;
+    }
+    else 
+    {
+      power = 0;
+      atDesiredRoations = true;
+    }
+    rotatorSpark.set(power);
   }
 
   //To stop the control panel, the motor controller is set to 0 power

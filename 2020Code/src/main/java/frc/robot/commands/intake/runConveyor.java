@@ -8,6 +8,7 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class runConveyor extends Command {
@@ -18,7 +19,9 @@ public class runConveyor extends Command {
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  protected void initialize() 
+  {
+    SmartDashboard.putString("Intake Commmand Running: ", " runConveyor");
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -56,6 +59,9 @@ public class runConveyor extends Command {
   @Override
   protected void end() 
   {
+    Robot.intake.runConveyor(0);
+    SmartDashboard.putString("Intake Command Running: ", "No Command Running");
+    SmartDashboard.putString("Command Finished: ", "runConveyor");
   }
 
   // Called when another command which requires one or more of the same

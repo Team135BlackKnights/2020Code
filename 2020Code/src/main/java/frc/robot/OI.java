@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.color.rotateWheelOfFortune;
 //import frc.robot.commands.auton.*;
 import frc.robot.commands.drive.*;
+
 import frc.robot.commands.drive.commandGroups.*;
 import frc.robot.commands.turret.*;
 import frc.robot.commands.endgame.*;
@@ -41,18 +42,19 @@ public class OI implements RobotMap.KOI{
 
   public static JoystickButton 
 	rightTrigger = new JoystickButton(rightJoystick, TRIGGER_BUTTON),
-	leftTrigger = new JoystickButton(leftJoystick, TRIGGER_BUTTON);
+	leftTrigger = new JoystickButton(leftJoystick, TRIGGER_BUTTON),
 
+	rightThumb = new JoystickButton(rightJoystick, THUMB_BUTTON),
+	leftThumb = new JoystickButton(leftJoystick, THUMB_BUTTON),
+
+	manipButton3 = new JoystickButton(manipJoystick, HANDLE_BOTTOM_LEFT_BUTTON);
 	
-	public static JoystickButton 
-		manipButton3 = new JoystickButton(manipJoystick, HANDLE_BOTTOM_LEFT_BUTTON),
-		rightThumb = new JoystickButton(rightJoystick, THUMB_BUTTON),
-		leftThumb = new JoystickButton(leftJoystick, THUMB_BUTTON);
 
 
 	public OI()
 	{
 		manipButton3.whenPressed(new rotateWheelOfFortune());
+		leftThumb.whenPressed(new shiftGears(true));
 		System.out.println("Operator Interface Initialized");
 
 	}

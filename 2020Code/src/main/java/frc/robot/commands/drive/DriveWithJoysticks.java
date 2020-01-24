@@ -21,7 +21,7 @@ public class DriveWithJoysticks extends Command {
   // Called just before this Command runs the first time and does nothing
   @Override
   protected void initialize() {
-    SmartDashboard.putString("Drive Command Running:","Drive with Joysticks");
+    SmartDashboard.putString("Drive Command Running: ","Drive with Joysticks");
 
   }
 
@@ -34,11 +34,11 @@ public class DriveWithJoysticks extends Command {
     RJoystickZValue = Robot.oi.GetJoystickZValue(0) * Robot.oi.returnLeftSlider();
     double testJoystickPower = Robot.oi.GetJoystickYValue(2);
     //If the left or right triggers are pulled, the drive speed is set to 75% of normal, else it is 100%
-    halfPowerDrive = (OI.leftThumb() ) ? .75 :1;
+    halfPowerDrive = (OI.leftThumb() ) ? .625 :1;
 
     //Detects if the swap controls button is being pushed and if controls are not already swapped, and swaps them to tank drive
 
-    boolean isReverseDirection = OI.rightTrigger() || OI.leftThumb();
+    boolean isReverseDirection = OI.rightTrigger() || OI.leftTrigger();
 
     
 
@@ -49,7 +49,6 @@ public class DriveWithJoysticks extends Command {
     lateralPower = JoystickYValue * halfPowerDrive;
     rotationPower = RJoystickZValue * halfPowerDrive;
     
-    //If swapControls is true, it uses TankDrive rather than the default Arcade Drive
    
       if(isReverseDirection){
         Robot.drive.ArcadeDrive(-lateralPower, -rotationPower * .85);

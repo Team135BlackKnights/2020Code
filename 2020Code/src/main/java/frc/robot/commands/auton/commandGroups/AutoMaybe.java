@@ -1,7 +1,7 @@
-package frc.robot.commands.drive.commandGroups;
+package frc.robot.commands.auton.commandGroups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.commands.auton.EncoderDriveToWithAngle;
+import frc.robot.commands.drive.EncoderDriveToWithAngle;
 
 public class AutoMaybe extends CommandGroup {
   /**

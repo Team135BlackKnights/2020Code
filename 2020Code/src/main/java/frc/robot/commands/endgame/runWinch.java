@@ -31,7 +31,7 @@ public class runWinch extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.endgame.runSpark(_power, _winchSpark);
+    Robot.endgame.runWinch(_power);;
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -43,7 +43,7 @@ public class runWinch extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.endgame.runSpark(0, _winchSpark);
+    Robot.endgame.runWinch(0);
   }
 
   // Called when another command which requires one or more of the same

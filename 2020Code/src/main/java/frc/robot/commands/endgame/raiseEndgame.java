@@ -38,11 +38,13 @@ public class raiseEndgame extends TimedCommand {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
+    //TODO KILL ALL WHILE LOOPS 
     while (Robot.endgame.getLiftRaiseEncoderPosition() < _target)
     {
       Robot.endgame.runLiftRaiseSpark(_power);
     }
+
+    // 
 
 
   }

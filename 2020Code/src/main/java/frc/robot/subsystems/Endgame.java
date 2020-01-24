@@ -52,9 +52,15 @@ public Endgame()
 }
  
  // Takes a double input and runs the provided spark at the specified power setting
-public void runSpark(double power, CANSparkMax spark)
+
+public void runLiftRaiseSpark(double power)
 {
- spark.set(power);
+  liftRaiseSpark.set(power);
+}
+
+public void runWinch(double power)
+{
+  winchSpark.set(power);
 }
  
 // Resets both encoders
@@ -83,6 +89,11 @@ public double ticksToRotations(double ticks)
 public double ticksToInches(double ticks) // NEED TO UPDATE WITH ACTUAL CONVERSION RATE
 {
   return ticks/4096;
+}
+
+public double getLiftRaiseEncoderPosition()
+{
+  return getEncoderPosition(liftRaiseEncoder);
 }
  
 public void printPosition()

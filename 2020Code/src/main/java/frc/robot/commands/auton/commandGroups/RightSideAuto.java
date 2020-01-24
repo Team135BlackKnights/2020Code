@@ -5,23 +5,24 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.drive.commandGroups;
+package frc.robot.commands.auton.commandGroups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.commands.auton.EncoderDriveToWithAngle;
+import frc.robot.commands.drive.EncoderDriveToWithAngle;
 
-public class MiddleAuto extends CommandGroup {
+public class RightSideAuto extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public MiddleAuto() {
-    addSequential(new EncoderDriveToWithAngle(21,-24,-26, false));
-    addSequential(new EncoderDriveToWithAngle(16,-20,-26, true));
-    addSequential(new EncoderDriveToWithAngle(39,-40,-19, true));
-    addSequential(new EncoderDriveToWithAngle(34,-48,-116, true));
-    addSequential(new EncoderDriveToWithAngle(59,-70,-97, false));
+  public RightSideAuto() {
+    addSequential(new EncoderDriveToWithAngle(47, -47, 0, false));
+    addSequential(new EncoderDriveToWithAngle(24, -26, -21, false));
+    addSequential(new EncoderDriveToWithAngle(40, -29, 85, true));
+    addSequential(new EncoderDriveToWithAngle(51, -41, 74, false));
+    addSequential(new EncoderDriveToWithAngle(34, -33, 1, false));
 
     // Add Commands here:
+
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());
     // these will run in order.
