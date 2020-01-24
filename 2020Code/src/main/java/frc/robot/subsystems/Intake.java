@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-
+import frc.robot.commands.intake.*;
 /**
  * Add your docs here.
  */
@@ -146,7 +146,8 @@ public class Intake extends Subsystem implements RobotMap.INTAKE{
 
   @Override
   public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
+    setDefaultCommand(new runConveyor());
+        // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
 }
