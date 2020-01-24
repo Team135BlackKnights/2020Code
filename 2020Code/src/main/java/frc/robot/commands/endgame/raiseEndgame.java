@@ -8,6 +8,7 @@
 package frc.robot.commands.endgame;
 
 import edu.wpi.first.wpilibj.command.TimedCommand;
+import frc.robot.Robot;
 
 /**
  * Add your docs here.
@@ -37,11 +38,13 @@ public class raiseEndgame extends TimedCommand {
   // Called once after timeout
   @Override
   protected void end() {
+    Robot.endgame.runWinch(0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    this.end();
   }
 }
