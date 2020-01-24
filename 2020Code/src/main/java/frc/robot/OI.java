@@ -41,7 +41,7 @@ public class OI implements RobotMap.KOI{
 
   public static JoystickButton 
 	rightTrigger = new JoystickButton(rightJoystick, TRIGGER_BUTTON),
-	leftTrigger = new JoystickButton(leftJoystick, TRIGGER_BUTTON),
+	leftTrigger = new JoystickButton(leftJoystick, TRIGGER_BUTTON);
 
 	
 	public static JoystickButton 

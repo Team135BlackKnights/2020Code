@@ -72,5 +72,7 @@ public class rotateWheelOfFortune extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    this.end();
   }
 }
+

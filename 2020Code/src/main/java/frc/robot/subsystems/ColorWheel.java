@@ -187,7 +187,8 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL{
      testBoi.set(power);
      while(wheelRotations < desiredRotations) {
       detectedColor = controlPanelColorSensor.getColor();
-    
+      testBoi.set(power);
+
       //Sets the current color to the current color(String)
       currentColor = checkForColor();
       //Counts color changes
@@ -199,6 +200,8 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL{
         countColor();
         wheelRotations = colorChanges / 8; //Calculates wheel rotations based on how many color changes its seen
      }
+     testBoi.set(0);
+
      atDesiredRoations = true; //After the above function ends, the desired rotations has been reached
   }
 

@@ -7,14 +7,16 @@
 
 package frc.robot.commands.endgame;
 
+import com.revrobotics.CANSparkMax;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class runWinch extends Command {
 
   public double _power;
-
-  public runWinch(double power) {
+  public CANSparkMax _winchSpark;
+  public runWinch(double power, CANSparkMax _winchSpark) {
 
     this._power = power;
     // Use requires() here to declare subsystem dependencies
@@ -29,7 +31,7 @@ public class runWinch extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.endgame.runWinch(_power);
+    Robot.endgame.runSpark(_power, _winchSpark);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -41,7 +43,7 @@ public class runWinch extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.endgame.runWinch(0);
+    Robot.endgame.runSpark(0, _winchSpark);
   }
 
   // Called when another command which requires one or more of the same
