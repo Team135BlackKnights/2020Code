@@ -18,6 +18,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Counter;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -36,6 +37,7 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
   //Declares four Falcon 500 Motors
   public WPI_TalonFX frontLeftFX, frontRightFX, rearLeftFX, rearRightFX;
   public WPI_TalonSRX testEndgameMotor;
+  public Solenoid shifter;
 
   //Declares Motor Controllers and Chassis
   public SpeedControllerGroup leftDriveSide, rightDriveSide; 
@@ -71,6 +73,8 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
     configFalcon(rearLeftFX, true);
     configFalcon(frontRightFX, true);
     configFalcon(rearRightFX, true);
+
+    shifter = new Solenoid(SHIFTER_ID);
 
     // Creates both Ultrasonic sensors
     frontRightSonar = new Ultrasonic(FRONT_RIGHT_SONAR_TRIG, FRONT_RIGHT_SONAR_ECHO);
@@ -126,7 +130,6 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
     falcon.setStatusFramePeriod(StatusFrame.Status_2_Feedback0,5, 100);
     falcon.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_50Ms,100);
     falcon.configVelocityMeasurementWindow(1,100);    
-    //falcon.setSensorPhase(isLeft);
   }
 
   // Sets the neutral input to brake all four motors
@@ -160,6 +163,7 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
   {
      chassis.curvatureDrive(xSpeed, zRotation, true);
   }
+  
  
   // Method Resets all motor encoders to zero, then prints true on the smart dashboard
   public void resetEncoders()
@@ -181,6 +185,11 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
   public double getEncoderVelocity(TalonFX falcon)
   {
     return falcon.getSelectedSensorVelocity();
+  }
+
+  public void shiftGears(boolean isHighGear)
+  {
+    shifter.set(isHighGear);
   }
 
   //Function to initialize the Lidar, Set the max period where it is still considered moving to 1 second

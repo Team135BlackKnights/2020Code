@@ -19,8 +19,13 @@ public class raiseEndgame extends TimedCommand {
    */
   
   public double _target;
-  public raiseEndgame(double timeout) {
+  public double _power;
+  public boolean isFinished;
+  public raiseEndgame(double timeout, double target, double power) {
     super(1);
+    _target = target * 4096;
+    _power = power;
+
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -33,12 +38,25 @@ public class raiseEndgame extends TimedCommand {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+
+    while (Robot.endgame.getLiftRaiseEncoderPosition() < _target)
+    {
+      Robot.endgame.runLiftRaiseSpark(_power);
+    }
+
+
+  }
+
+  @Override
+  protected boolean isFinished() {
+  
+    return super.isFinished();
   }
 
   // Called once after timeout
   @Override
   protected void end() {
-    Robot.endgame.runWinch(0);
+    Robot.endgame.runLiftRaiseSpark(0);
   }
 
   // Called when another command which requires one or more of the same

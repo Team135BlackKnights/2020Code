@@ -49,6 +49,8 @@ public interface RobotMap
     final int FRONT_LEFT_FALCON = 1, FRONT_RIGHT_FALCON = 4,
             REAR_LEFT_FALCON = 2,  REAR_RIGHT_FALCON = 3,
 
+            SHIFTER_ID = 0,
+
             WHEEL_DIAMETER = 6,
             ENCODER_TICKS_PER_REVOLUTION = 4096,
             

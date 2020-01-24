@@ -34,7 +34,7 @@ public class DriveWithJoysticks extends Command {
     RJoystickZValue = Robot.oi.GetJoystickZValue(0) * Robot.oi.returnLeftSlider();
     double testJoystickPower = Robot.oi.GetJoystickYValue(2);
     //If the left or right triggers are pulled, the drive speed is set to 75% of normal, else it is 100%
-    halfPowerDrive = (OI.rightThumb() || OI.leftThumb() ) ? .75 :1;
+    halfPowerDrive = (OI.leftThumb() ) ? .75 :1;
 
     //Detects if the swap controls button is being pushed and if controls are not already swapped, and swaps them to tank drive
 

@@ -11,8 +11,6 @@ import edu.wpi.first.wpilibj.command.TimedCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-
-
 public class runConveyorSetPos extends TimedCommand {
   /**
    * Add your docs here.
