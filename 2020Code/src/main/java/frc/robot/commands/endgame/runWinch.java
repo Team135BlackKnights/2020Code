@@ -7,7 +7,6 @@
 
 package frc.robot.commands.endgame;
 
-import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
