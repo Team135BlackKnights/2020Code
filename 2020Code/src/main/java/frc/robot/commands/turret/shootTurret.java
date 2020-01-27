@@ -35,10 +35,10 @@ public class shootTurret extends Command {
   @Override
   protected void execute() {
   
-    Robot.turret.topShooterSpark.set(-.75);
-    Robot.turret.bottomShooterSpark.set(.50);
+    //Robot.turret.topShooterSpark.set(-.75);
+    //Robot.turret.bottomShooterSpark.set(.50);
     
-    /*
+    
     if(Robot.turret.isBallInShooter())
     {
       Robot.turret.runShooterRPM(_topShooterRPM, _bottomShooterRPM);
@@ -65,7 +65,7 @@ public class shootTurret extends Command {
       Robot.turret.runShooterRPM(_topShooterRPM, _bottomShooterRPM);
       Robot.turret.runBallFeeder(.75);
     }
-    */
+    
   }
 
  
