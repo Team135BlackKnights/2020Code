@@ -63,6 +63,14 @@ public class OI implements RobotMap.KOI{
 
 	public OI()
 	{
+
+		
+		 
+		System.out.println("Operator Interface Initialized");
+	}
+
+	public void initCompControls()
+	{
 		rightButton3.whenPressed(new toggleLight(true));
 		
 		leftThumb.whenPressed(new shiftGears(true));
@@ -75,8 +83,6 @@ public class OI implements RobotMap.KOI{
 		manipButton10.whenPressed(new raiseEndgame(8));
 		manipButton11.toggleWhenPressed(new moveIntake(true));
 		manipButton12.whenPressed(new raiseEndgame(10));
-		 
-		System.out.println("Operator Interface Initialized");
 	}
 
 	
@@ -105,6 +111,11 @@ public static boolean rightTrigger()
   return rightTrigger.get();
 }
 
+public boolean manipTrigger()
+{
+	return manipTrigger.get();
+}
+
 public static boolean leftThumb()
 {
 	return leftThumb.get();
@@ -127,6 +138,11 @@ public boolean getManipButton7()
 public boolean getManipButton8()
 {
 	return manipButton8.get();
+}
+
+public boolean getButtonOutPut(int joystick, int buttonID)
+{
+	return joysticks[joystick].getRawButton(buttonID);
 }
 
 

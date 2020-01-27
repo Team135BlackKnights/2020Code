@@ -56,14 +56,14 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
 
   public Turret()
   {
-    //targetingLight = new Relay(TARGETING_LIGHT);
+    targetingLight = new Relay(TARGETING_LIGHT);
   
-   //tiltTalon = new WPI_TalonSRX(TILT_TALON_ID);
-    //rotationSpark = new CANSparkMax(ROTATION_SPARK_ID, MotorType.kBrushless);
-    bottomShooterSpark = new CANSparkMax(13, MotorType.kBrushless);
-    topShooterSpark = new CANSparkMax(15, MotorType.kBrushless);
-    //ballFeederSpark = new CANSparkMax(FEEDER_SPARK_ID, MotorType.kBrushless);
-/*
+   tiltTalon = new WPI_TalonSRX(TILT_TALON_ID);
+    rotationSpark = new CANSparkMax(ROTATION_SPARK_ID, MotorType.kBrushless);
+    bottomShooterSpark = new CANSparkMax(BOTTOM_SHOOTER_SPARK_ID, MotorType.kBrushless);
+    topShooterSpark = new CANSparkMax(TOP_SHOOTER_SPARK_ID, MotorType.kBrushless);
+    ballFeederSpark = new CANSparkMax(FEEDER_SPARK_ID, MotorType.kBrushless);
+
     turretBallTripSwitch = new DigitalInput(TRIP_SWITCH_ID);
     
     pidgey = new PigeonIMU(PIGEON_ID);
@@ -91,7 +91,7 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
 
     
     System.out.println("Turret Initialized");
-    */
+    
   }
 
   public void turretCountBalls()
@@ -217,7 +217,7 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
 
   public void runShooterRPM(double topRPM, double bottomRPM)
   {
-    double maxRPM = 5676;
+    double maxRPM = 4500;
     double _topRPM, _bottomRPM;
 
     _topRPM = topRPM/maxRPM;
@@ -393,6 +393,8 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
   @Override
   public void periodic() 
   {
+    printShooterRPM();
+    printOutputs();
     //turretCountBalls();
   }
 
@@ -400,6 +402,7 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
 
   @Override
   public void initDefaultCommand() {
+    setDefaultCommand(new turretTemp());
     //setDefaultCommand(new targetTurret());
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
