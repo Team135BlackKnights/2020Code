@@ -230,7 +230,7 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL {
          countColor();
 
          // Prints to the screen
-         if (OI.manipButton4.get())//if this button is pressed the spinning is canceled
+         if (OI.manipButton12.get())//if this button is pressed the spinning is canceled
          {break;} 
          countColor();
         wheelRotations = colorChanges / 8; //Calculates wheel rotations based on how many color changes its seen

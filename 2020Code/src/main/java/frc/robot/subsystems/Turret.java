@@ -16,6 +16,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.EncoderType;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Counter;
@@ -64,10 +65,7 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     //ballFeederSpark = new CANSparkMax(FEEDER_SPARK_ID, MotorType.kBrushless);
 /*
     turretBallTripSwitch = new DigitalInput(TRIP_SWITCH_ID);
-    turretLeftLimit = new DigitalInput(LEFT_LIMIT_ID);
-    turretRightLimit = new DigitalInput(RIGHT_LIMIT_ID);
-    turretTiltLimit = new DigitalInput(TILT_LIMIT_ID);
-
+    
     pidgey = new PigeonIMU(PIGEON_ID);
     initTalonSRX(tiltTalon);
 
@@ -81,6 +79,12 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     topShooterEncoder = topShooterSpark.getEncoder();
     ballFeederEncoder = ballFeederSpark.getEncoder();
     tiltTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+
+    rotationSpark.enableSoftLimit(SoftLimitDirection.kForward, true);
+    rotationSpark.enableSoftLimit(SoftLimitDirection.kReverse, true);
+
+    tiltTalon.configForwardSoftLimitEnable(true);
+    tiltTalon.configReverseSoftLimitEnable(true);
 
     resetAllTurretEncoders();
     resetPidgey();
@@ -123,13 +127,16 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     talon.setNeutralMode(NeutralMode.Brake);
   }
 
-  public void setLightOn()
+ 
+  public void setLight(boolean on)
   {
-    targetingLight.set(Value.kOn);
-  }
-  public void setLightOff()
-  {
-    targetingLight.set(Value.kOff);
+    if(on)
+    {
+      targetingLight.set(Value.kOn);
+    }
+    else {
+      targetingLight.set(Value.kOff);
+    }
   }
   
 

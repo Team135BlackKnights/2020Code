@@ -50,21 +50,21 @@ public class rotateWheelOfFortune extends Command {
     //Sets the desired color to the color given by the game
     String DesiredColor = Robot.colorWheel.gameColor();
     //If the desired color isn't empty, rotate the wheel at 80% power until it is detected 
-    if (DesiredColor != "No Color" ||true) {
+    if (DesiredColor != "No Color") {
       Robot.colorWheel.getToColor(DesiredColor, .3);
       if (Robot.colorWheel.atDesiredRoations){ // If the wheel has been spun the desired amount, it is finished
         isFinished = true;
         Robot.colorWheel.stopControlPanel();
         }
     }
-    else { //If the desired color is no color, rotate the wheel four times at 80% power
+    else {
+      //If the desired color is no color, rotate the wheel four times at 80% power
       Robot.colorWheel.rotateColorWheel(.8, 2.75);
       if (Robot.colorWheel.checkForColor() != Robot.colorWheel.desiredColor) {
         isFinished = true;
         Robot.colorWheel.stopControlPanel();
       }
     }
-    
   }
 
   // Make this return true when this Command no longer needs to run execute()

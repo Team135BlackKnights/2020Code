@@ -8,6 +8,7 @@
 package frc.robot.commands.endgame;
 
 import edu.wpi.first.wpilibj.command.TimedCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 /**
@@ -19,8 +20,11 @@ public class raiseEndgame extends TimedCommand {
    */
   
   public double _target;
-  public raiseEndgame(double timeout) {
+  public boolean isFinished;
+  public raiseEndgame(double target) {
     super(1);
+    _target = target;
+
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -28,17 +32,50 @@ public class raiseEndgame extends TimedCommand {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    isFinished = false;
+    SmartDashboard.putString("Endgame command Running: ", "raise Endgame" + _target);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  protected void execute() {   
+
+    double targetError = Robot.endgame.getLiftRaiseEncoderPosition() -_target;
+
+    double kP = 1;
+    double power = targetError/40;
+    double minPower = .25;
+    double minDirection = targetError>0 ? 1:-1;
+
+    power = ((minPower * minDirection) + (power * kP));
+    Robot.endgame.runLiftRaiseSpark(power);
+
+    if(Math.abs(power) <=2)
+    {
+      isFinished = true;
+    }
+    else 
+    {
+      isFinished = false;
+    }
+
+    // \/\/\/ UNKNOWN PURPOSE AND BROKE CODE, SO COMMENTED OUT
+   // if(Robot.oi.getManipThumb()
   }
 
-  // Called once after timeout
   @Override
-  protected void end() {
-    //Robot.endgame.runWinch(0);
+  protected boolean isFinished() {
+  
+    return isFinished;
+  }
+
+  @Override
+  protected void end() 
+  {
+    Robot.endgame.runLiftRaiseSpark(0);
+    SmartDashboard.putString("Endgame command Running: ", "No command Running");
+    SmartDashboard.putString("Command Finished: ", "raise Endgame" + _target);
+
   }
 
   // Called when another command which requires one or more of the same

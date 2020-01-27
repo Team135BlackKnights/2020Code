@@ -6,9 +6,9 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.color.rotateWheelOfFortune;
 //import frc.robot.commands.auton.*;
 import frc.robot.commands.drive.*;
-import frc.robot.commands.drive.commandGroups.*;
 import frc.robot.commands.turret.*;
 import frc.robot.commands.endgame.*;
+import frc.robot.commands.intake.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -40,29 +40,43 @@ public class OI implements RobotMap.KOI{
 
   public static JoystickButton 
 	rightTrigger = new JoystickButton(rightJoystick, TRIGGER_BUTTON),
-	leftTrigger = new JoystickButton(leftJoystick, TRIGGER_BUTTON);
-
+	rightThumb = new JoystickButton(rightJoystick, THUMB_BUTTON),
+	rightButton3 = new JoystickButton(rightJoystick, HANDLE_BOTTOM_LEFT_BUTTON),
 	
-	public static JoystickButton 
-		manipButton3 = new JoystickButton(manipJoystick, HANDLE_BOTTOM_LEFT_BUTTON),
-		manipButton4 = new JoystickButton(manipJoystick, 4),//cancels automatic rotation
-		manipButton5 = new JoystickButton(manipJoystick, 5),//manual forward spin
-		manipButton6 = new JoystickButton(manipJoystick, 6),//manual backward spin
-		allignWithControlPanel = new JoystickButton(manipJoystick, 1),
-		rightThumb = new JoystickButton(rightJoystick, THUMB_BUTTON),
-		leftThumb = new JoystickButton(leftJoystick, THUMB_BUTTON);
+
+	leftTrigger = new JoystickButton(leftJoystick, TRIGGER_BUTTON),
+	leftThumb = new JoystickButton(leftJoystick, THUMB_BUTTON),
+	leftButton11 = new JoystickButton(leftJoystick, BASE_BOTTOM_LEFT_BUTTON),
+
+	manipTrigger = new JoystickButton(manipJoystick, TRIGGER_BUTTON),
+	manipThumb = new JoystickButton(manipJoystick, THUMB_BUTTON),
+	manipButton3 = new JoystickButton(manipJoystick, HANDLE_BOTTOM_LEFT_BUTTON),
+	manipButton5 = new JoystickButton(manipJoystick, HANDLE_BOTTOM_RIGHT_BUTTON),
+	manipButton7 = new JoystickButton(manipJoystick, BASE_TOP_LEFT_BUTTON),
+	manipButton8 = new JoystickButton(manipJoystick, BASE_TOP_RIGHT_BUTTON),
+	manipButton9 = new JoystickButton(manipJoystick, BASE_MIDDLE_LEFT_BUTTON),
+	manipButton10 = new JoystickButton(manipJoystick, BASE_MIDDLE_RIGHT_BUTTON),
+	manipButton11 = new JoystickButton(manipJoystick, BASE_BOTTOM_LEFT_BUTTON),
+	manipButton12 = new JoystickButton(manipJoystick, BASE_BOTTOM_RIGHT_BUTTON);
 
 		
 
 	public OI()
 	{
-		manipButton3.whenPressed(new rotateWheelOfFortune(0));//automatic spin
-		manipButton5.whileHeld(new rotateWheelOfFortune(0.8));//manual forward spin
-		manipButton6.whileHeld(new rotateWheelOfFortune(-0.8));//manual backward spin
-		allignWithControlPanel.whenPressed(new TurnToAngle(0));
-		rightThumb.whileHeld(new shootTurret(1000, 1000));
-		System.out.println("Operator Interface Initialized");
+		rightButton3.whenPressed(new toggleLight(true));
+		
+		leftThumb.whenPressed(new shiftGears(true));
+		leftButton11.toggleWhenPressed(new toggleCompressor());
 
+		manipTrigger.whileHeld(new runRoller(.9));
+		manipButton3.whenPressed(new rotateWheelOfFortune(.4));
+		manipButton5.whileHeld(new runWinch(.675));
+		manipButton9.whileHeld(new runRoller(-.9));
+		manipButton10.whenPressed(new raiseEndgame(8));
+		manipButton11.toggleWhenPressed(new moveIntake(true));
+		manipButton12.whenPressed(new raiseEndgame(10));
+		 
+		System.out.println("Operator Interface Initialized");
 	}
 
 	
@@ -99,6 +113,20 @@ public static boolean leftThumb()
 public static boolean rightThumb()
 {
 	return rightThumb.get();
+}
+public boolean getManipThumb()
+{
+	return manipThumb.get();
+}
+
+public boolean getManipButton7()
+{
+	return manipButton7.get();
+}
+
+public boolean getManipButton8()
+{
+	return manipButton8.get();
 }
 
 

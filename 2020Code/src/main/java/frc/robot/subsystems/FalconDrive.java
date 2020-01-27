@@ -17,7 +17,9 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Counter;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -36,6 +38,9 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
   //Declares four Falcon 500 Motors
   public WPI_TalonFX frontLeftFX, frontRightFX, rearLeftFX, rearRightFX;
   public WPI_TalonSRX testEndgameMotor;
+  public Solenoid shifter;
+  public Compressor compressor;
+
 
   //Declares Motor Controllers and Chassis
   public SpeedControllerGroup leftDriveSide, rightDriveSide; 
@@ -72,6 +77,12 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
     configFalcon(frontRightFX, true);
     configFalcon(rearRightFX, true);
 
+    shifter = new Solenoid(SHIFTER_ID);
+    compressor = new Compressor();
+
+    compressor.setClosedLoopControl(true);
+    compressor.start();
+
     // Creates both Ultrasonic sensors
     frontRightSonar = new Ultrasonic(FRONT_RIGHT_SONAR_TRIG, FRONT_RIGHT_SONAR_ECHO);
     rearRightSonar = new Ultrasonic(REAR_RIGHT_SONAR_TRIG, REAR_RIGHT_SONAR_ECHO);
@@ -103,7 +114,6 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
     // Declares the chassis as a DifferentialDrive, with the arguments of the motor controller groups
     chassis = new DifferentialDrive(leftDriveSide, rightDriveSide);
 
-    
     chassis.setSafetyEnabled(false); //turns off system where if the motors don't recieve signal, the chassis learns about it and gets mad
     chassis.setMaxOutput(.98); // Maximum zoom is 98%
     
@@ -126,7 +136,6 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
     falcon.setStatusFramePeriod(StatusFrame.Status_2_Feedback0,5, 100);
     falcon.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_50Ms,100);
     falcon.configVelocityMeasurementWindow(1,100);    
-    //falcon.setSensorPhase(isLeft);
   }
 
   // Sets the neutral input to brake all four motors
@@ -138,13 +147,11 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
     rearRightFX.setNeutralMode(neutralMode);
 
   }
-
   // Method sets the Chassis to Tank Drive mode while pulling double arguements
   public void TankDrive(double leftPower, double rightPower)
   {
     chassis.tankDrive(leftPower, rightPower);
   }
-
   // Method sets the Chassis to Arcade Drive while pulling double arguements
   public void ArcadeDrive(double lateralPower, double rotationalPower)
   { 
@@ -160,6 +167,24 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
   {
      chassis.curvatureDrive(xSpeed, zRotation, true);
   }
+
+  public void setCompressorOff()
+  {
+    compressor.setClosedLoopControl(false);
+    compressor.stop();
+  }
+
+  public void setCompressorOn()
+  {
+    compressor.setClosedLoopControl(true);
+  }
+
+  public boolean isCompressorOn()
+  {
+    return compressor.getClosedLoopControl();
+  }
+
+  
  
   // Method Resets all motor encoders to zero, then prints true on the smart dashboard
   public void resetEncoders()
@@ -181,6 +206,11 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
   public double getEncoderVelocity(TalonFX falcon)
   {
     return falcon.getSelectedSensorVelocity();
+  }
+
+  public void shiftGears(boolean isHighGear)
+  {
+    shifter.set(isHighGear);
   }
 
   //Function to initialize the Lidar, Set the max period where it is still considered moving to 1 second

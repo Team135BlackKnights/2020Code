@@ -21,7 +21,6 @@ public class Robot extends TimedRobot {
   public static FalconDrive drive; 
   //Declare ColorWheel with colorwheel
   public static ColorWheel colorWheel;
-  //Dec Prototyping with prototyping
   //Dec TurretLimelight with turretlimelight
   public static TurretLimelight  turretlimelight;
   //Dec IntakeLimelight with intakelimelight

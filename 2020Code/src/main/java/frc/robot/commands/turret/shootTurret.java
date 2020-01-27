@@ -27,7 +27,7 @@ public class shootTurret extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    SmartDashboard.putString("Drive Command Running:","No Command Running");
+    SmartDashboard.putString("Turret Command Running:","Shoot Turret");
 
   }
 
@@ -73,7 +73,7 @@ public class shootTurret extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return isFinished;
   }
 
   // Called once after isFinished returns true
@@ -89,5 +89,6 @@ public class shootTurret extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    this.end();
   }
 }
