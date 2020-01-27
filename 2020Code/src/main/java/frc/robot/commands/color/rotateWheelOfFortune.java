@@ -14,17 +14,20 @@ import frc.robot.Robot;
 public class rotateWheelOfFortune extends Command {
 
   public boolean isFinished;
+  public double manualSpinSpeed;
 
-
-  public rotateWheelOfFortune() {
+  public rotateWheelOfFortune(double manualSpin) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Robot.colorWheel);
+    manualSpinSpeed = manualSpin;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    isFinished=false;
+
     SmartDashboard.putString("Control Panel Command Running:", "rotate Wheel of Fortune");
 
   }
@@ -32,21 +35,30 @@ public class rotateWheelOfFortune extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
+    if (manualSpinSpeed != 0)//if = 0, then command is not manual control and skip this block
+    {
+      Robot.colorWheel.rotatorSpark.set(manualSpinSpeed);
+      edu.wpi.first.wpilibj.Timer t = new edu.wpi.first.wpilibj.Timer();
+      t.start();
+      double starttime = t.get();
+      while ((t.get() - starttime) < .25 )//runs motor for .25 seconds
+      {}
+      Robot.colorWheel.rotatorSpark.set(0);
+      isFinished = true;
+      return;
+    }
     //Sets the desired color to the color given by the game
     String DesiredColor = Robot.colorWheel.gameColor();
-
     //If the desired color isn't empty, rotate the wheel at 80% power until it is detected 
-    if (DesiredColor != "No Color") {
-      Robot.colorWheel.getToColor(DesiredColor, .8);
+    if (DesiredColor != "No Color" ||true) {
+      Robot.colorWheel.getToColor(DesiredColor, .3);
       if (Robot.colorWheel.atDesiredRoations){ // If the wheel has been spun the desired amount, it is finished
         isFinished = true;
         Robot.colorWheel.stopControlPanel();
         }
-        
     }
     else { //If the desired color is no color, rotate the wheel four times at 80% power
-      Robot.colorWheel.rotateColorWheel(.8, 4);
+      Robot.colorWheel.rotateColorWheel(.8, 2.75);
       if (Robot.colorWheel.checkForColor() != Robot.colorWheel.desiredColor) {
         isFinished = true;
         Robot.colorWheel.stopControlPanel();
@@ -65,7 +77,9 @@ public class rotateWheelOfFortune extends Command {
   @Override
   protected void end() {
     Robot.colorWheel.stopControlPanel();
+    Robot.colorWheel.rotatorSpark.set(0);
     SmartDashboard.putString("Control Panel Command Running:", "No command Running");
+    Robot.colorWheel.atDesiredRoations=false;
   }
 
   // Called when another command which requires one or more of the same

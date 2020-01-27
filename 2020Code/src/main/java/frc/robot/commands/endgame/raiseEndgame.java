@@ -38,7 +38,7 @@ public class raiseEndgame extends TimedCommand {
   // Called once after timeout
   @Override
   protected void end() {
-    Robot.endgame.runWinch(0);
+    //Robot.endgame.runWinch(0);
   }
 
   // Called when another command which requires one or more of the same

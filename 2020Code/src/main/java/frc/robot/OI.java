@@ -18,7 +18,6 @@ import frc.robot.commands.endgame.*;
 public class OI implements RobotMap.KOI{
   public static OI instance;
   
-  
   public static Joystick 
     leftJoystick = new Joystick(RobotMap.KOI.LEFT_JOYSTICK),
     rightJoystick = new Joystick(RobotMap.KOI.RIGHT_JOYSTICK),
@@ -46,13 +45,22 @@ public class OI implements RobotMap.KOI{
 	
 	public static JoystickButton 
 		manipButton3 = new JoystickButton(manipJoystick, HANDLE_BOTTOM_LEFT_BUTTON),
+		manipButton4 = new JoystickButton(manipJoystick, 4),//cancels automatic rotation
+		manipButton5 = new JoystickButton(manipJoystick, 5),//manual forward spin
+		manipButton6 = new JoystickButton(manipJoystick, 6),//manual backward spin
+		allignWithControlPanel = new JoystickButton(manipJoystick, 1),
 		rightThumb = new JoystickButton(rightJoystick, THUMB_BUTTON),
 		leftThumb = new JoystickButton(leftJoystick, THUMB_BUTTON);
 
+		
 
 	public OI()
 	{
-		manipButton3.whenPressed(new rotateWheelOfFortune());
+		manipButton3.whenPressed(new rotateWheelOfFortune(0));//automatic spin
+		manipButton5.whileHeld(new rotateWheelOfFortune(0.8));//manual forward spin
+		manipButton6.whileHeld(new rotateWheelOfFortune(-0.8));//manual backward spin
+		allignWithControlPanel.whenPressed(new TurnToAngle(0));
+		rightThumb.whileHeld(new shootTurret(1000, 1000));
 		System.out.println("Operator Interface Initialized");
 
 	}
