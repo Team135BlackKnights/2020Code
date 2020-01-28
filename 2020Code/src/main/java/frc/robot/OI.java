@@ -78,14 +78,15 @@ public class OI implements RobotMap.KOI{
 	//	leftButton11.toggleWhenPressed(new toggleCompressor());
 
 		manipTrigger.whileHeld(new runRoller(.9));
+		manipThumb.whileHeld(new joystickEndgame());
 		
 		manipButton3.whenPressed(new rotateWheelOfFortune(.8));
 		//manipButton4.whileHeld(new runRoller(-.8));
 		manipButton5.whileHeld(new runWinch(.675));
 		manipButton9.whenPressed(new rotateWheelOfFortune(0));
 		manipButton10.whenPressed(new raiseEndgame(8));
-	//	manipButton11.toggleWhenPressed(new moveIntake(true));
-	//	manipButton12.whenPressed(new raiseEndgame(10));
+		manipButton11.toggleWhenPressed(new moveIntake(true));
+		manipButton12.whenPressed(new raiseEndgame(10));
 	}
 
 	
