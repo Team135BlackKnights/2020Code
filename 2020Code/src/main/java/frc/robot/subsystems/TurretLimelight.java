@@ -22,13 +22,13 @@ public class TurretLimelight extends Subsystem {
 	cameraModeEntry = TurretLimelightTable.getEntry("camMode"),
 	limelightPipelineEntry = TurretLimelightTable.getEntry("pipeline");
 
-	public static final int NUMBER_OF_LIMELIGHT_CHARACTERISTICS = 5,
+	public static final int 
 	VALID_TARGET = 0,
 	HORIZONTAL_OFFSET = 1,
 	VERTICAL_OFFSET = 2,
 	TARGET_AREA = 3,
 	TARGET_SKEW = 4;
-	public double[] limelightData = new double[NUMBER_OF_LIMELIGHT_CHARACTERISTICS];
+	public double[] limelightData = new double[5];
 
     public static int 
     LED_ON = 0, 

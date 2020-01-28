@@ -13,9 +13,9 @@ public class toggleCompressor extends InstantCommand {
 	protected void execute() {
 		isCompressorOn = !isCompressorOn;
 		if (isCompressorOn) {
-			Robot.drive.setCompressorOn();
+			//Robot.drive.setCompressorOn();
 		} else {
-			Robot.drive.setCompressorOff();
+			//Robot.drive.setCompressorOff();
 		}
 	}
 }

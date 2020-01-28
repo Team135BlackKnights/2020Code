@@ -50,14 +50,16 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
   public static Turret instance; 
 
   public static Turret getInstance() {
-  if(instance == null) { instance = new Turret(); }
-  return instance;}
+  if(instance == null) {
+     instance = new Turret(); 
+  }
+  return instance;
+  }
 
 
   public Turret()
   {
     targetingLight = new Relay(TARGETING_LIGHT);
-  
    tiltTalon = new WPI_TalonSRX(TILT_TALON_ID);
     rotationSpark = new CANSparkMax(ROTATION_SPARK_ID, MotorType.kBrushless);
     bottomShooterSpark = new CANSparkMax(BOTTOM_SHOOTER_SPARK_ID, MotorType.kBrushless);
@@ -132,10 +134,10 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
   {
     if(on)
     {
-      targetingLight.set(Value.kOn);
+      targetingLight.set(Value.kForward);
     }
     else {
-      targetingLight.set(Value.kOff);
+      targetingLight.set(Value.kOn);
     }
   }
   
@@ -393,8 +395,8 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
   @Override
   public void periodic() 
   {
-    printShooterRPM();
-    printOutputs();
+    //printShooterRPM();
+   // printOutputs();
     //turretCountBalls();
   }
 
@@ -402,7 +404,7 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new turretTemp());
+   // setDefaultCommand(new turretTemp());
     //setDefaultCommand(new targetTurret());
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());

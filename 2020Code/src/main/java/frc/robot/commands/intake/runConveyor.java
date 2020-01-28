@@ -38,25 +38,25 @@ public class runConveyor extends Command {
     }
 
     if(currentConveyorPos <= 7 && !(Robot.oi.getManipButton7() || Robot.oi.getManipButton8()))
-      {
-        conveyorPower = .65;
-        SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR NOT OVERWROTE");
-      }
-      else  if
-      (Robot.oi.getManipButton7())
-      {
-        conveyorPower = .65;
-        SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR GOING UP");
-      } else if (Robot.oi.getManipButton8())
-      {
-        conveyorPower = -.65;
-        SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR GOING DOWN");
-      }
-      else 
-      {
-        conveyorPower = 0;
-        SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR NOT OVERWROTE");
-      }
+    {
+      conveyorPower = .65;
+      SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR NOT OVERWROTE");
+    }
+    else if (Robot.oi.getManipButton7())
+    {
+      conveyorPower = .65;
+      SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR GOING UP");
+    } 
+    else if (Robot.oi.getManipButton8())
+    {
+      conveyorPower = -.65;
+      SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR GOING DOWN");
+    }
+    else 
+    {
+      conveyorPower = 0;
+      SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR NOT OVERWROTE");
+    }
       
     Robot.intake.runConveyor(conveyorPower);
   }

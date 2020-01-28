@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -77,7 +78,8 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL {
       // Creates a color sensor in controlPanelColorSensor
       controlPanelColorSensor = new ColorSensorV3(i2cPort);
       // Creates a SparkMax motor controller in rotatorSpark
-      rotatorSpark = new CANSparkMax(14, MotorType.kBrushless);
+      rotatorSpark = new CANSparkMax(15, MotorType.kBrushless);
+      initCANSparkMax(rotatorSpark, IdleMode.kBrake);
       testBoi = new WPI_TalonSRX(23);
       gameData = DriverStation.getInstance().getGameSpecificMessage(); // Gets the data sent by the FMS as to what color
                                                                        // we need
@@ -86,6 +88,13 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL {
       System.out.println("Color Wheel Initialized"); // Prints to screen
 
    }
+   
+   public void initCANSparkMax(CANSparkMax spark, IdleMode mode)
+  {
+		spark.setInverted(false);
+    spark.enableVoltageCompensation(12);
+    spark.setIdleMode(mode);
+  }
 
    public String gameColor() {
       // Checks if the gamedata has arrived yet by making sure its length is greater
@@ -185,6 +194,7 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL {
    public void getToColor(final String desiredColor, double power) {
       //SmartDashboard.putString("dictval", spinToWhatColor(desiredColor));
       String actualDesired = spinToWhatColor(desiredColor);
+      SmartDashboard.putString("actual Desired", actualDesired);
       if (checkForColor() != actualDesired) {
          detectedColor = controlPanelColorSensor.getColor();
          SmartDashboard.putString("funcout", checkForColor());
@@ -199,17 +209,20 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL {
          //SmartDashboard.putNumber("ColorChanges:", colorChanges);
          // rotatorSpark.set(power);
          rotatorSpark.set(power);
-      } else {
-         rotatorSpark.set(-.8);
+      } 
+     /* 
+      else {
+         rotatorSpark.set(-.6);
          edu.wpi.first.wpilibj.Timer t = new edu.wpi.first.wpilibj.Timer();
          t.start();
          double starttime = t.get();
-         while ((t.get() - starttime) < .1 )//runs motor for .25 seconds
+         while ((t.get() - starttime) < .01 )//runs motor for .25 seconds
          {}
          atDesiredRoations=true;
          stopControlPanel();// Stops the panel
       }
-      
+      */
+      else stopControlPanel();
 
    }
 
@@ -232,8 +245,10 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL {
          // Prints to the screen
          if (OI.manipButton12.get())//if this button is pressed the spinning is canceled
          {break;} 
-         countColor();
-        wheelRotations = colorChanges / 8; //Calculates wheel rotations based on how many color changes its seen
+         SmartDashboard.putNumber("Wheel Rotations", wheelRotations );
+         SmartDashboard.putNumber("ColorChanges:", colorChanges);
+         //countColor();
+         wheelRotations = colorChanges / 8; //Calculates wheel rotations based on how many color changes its seen
      }
      SmartDashboard.putNumber("Wheel Rotations", wheelRotations );
      SmartDashboard.putNumber("ColorChanges:", colorChanges); //While the number of rotations is less than we need, it continues to count colors and rotate the wheel

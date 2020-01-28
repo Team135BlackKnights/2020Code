@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
   {
 	drive = new FalconDrive();
 	colorWheel = new ColorWheel();
-	turret = new Turret();
+//	turret = new Turret();
 	oi = new OI();
 	
   }

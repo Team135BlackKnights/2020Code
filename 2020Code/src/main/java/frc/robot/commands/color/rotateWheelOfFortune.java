@@ -35,6 +35,8 @@ public class rotateWheelOfFortune extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    
+    
     if (manualSpinSpeed != 0)//if = 0, then command is not manual control and skip this block
     {
       Robot.colorWheel.rotatorSpark.set(manualSpinSpeed);
@@ -47,12 +49,14 @@ public class rotateWheelOfFortune extends Command {
       isFinished = true;
       return;
     }
+    
     //Sets the desired color to the color given by the game
     String DesiredColor = Robot.colorWheel.gameColor();
+    SmartDashboard.putString("FMS Readout", DesiredColor);
     //If the desired color isn't empty, rotate the wheel at 80% power until it is detected 
     if (DesiredColor != "No Color") {
-      Robot.colorWheel.getToColor(DesiredColor, .3);
-      if (Robot.colorWheel.atDesiredRoations){ // If the wheel has been spun the desired amount, it is finished
+      Robot.colorWheel.getToColor(DesiredColor, .25);
+      if (Robot.colorWheel.atDesiredRoations){ //2If the wheel has been spun the desired amount, it is finished
         isFinished = true;
         Robot.colorWheel.stopControlPanel();
         }

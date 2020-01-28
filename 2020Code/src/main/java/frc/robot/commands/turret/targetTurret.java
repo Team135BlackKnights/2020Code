@@ -70,49 +70,56 @@ public class targetTurret extends Command {
       tiltPower = .6;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
-    } else 
+    } 
+    else 
     if(isPOVRight)
     {
       rotationPower = .6;
       tiltPower = 0;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
-    } else 
+    } 
+    else 
     if(isPOVDown)
     {
       rotationPower = 0;
       tiltPower = -.6;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
-    } else
+    } 
+    else
     if(isPOVLeft)
     {
       rotationPower = -.6;
       tiltPower = 0;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
-    } else 
+    } 
+    else 
     if(isPOVTopRight)
     {
       rotationPower = .6;
       tiltPower = .6;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
-    } else 
+    } 
+    else 
     if(isPOVBottomRight)
     {
       rotationPower = .6;
       tiltPower = -.6;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
-    } else 
+    } 
+    else 
     if(isPOVBottomLeft)
     {
       rotationPower = -.6;
       tiltPower = -.6;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
-    } else 
+    } 
+    else 
     if(isPOVTopLeft)
     {
       rotationPower = -.6;

@@ -37,15 +37,15 @@ public class runConveyorSetPos extends TimedCommand {
   protected void execute() 
   {
     double currentConveyorPos = Robot.intake.getConveyorRotations();
-    if(_targetPos+-2 !=currentConveyorPos)
+    if((_targetPos - 2) != currentConveyorPos)
     {
       Robot.intake.runConveyor(.65);
- isFinished = false;
+      isFinished = false;
     }
     else
     {
       Robot.intake.runConveyor(0);
- isFinished = true; 
+      isFinished = true; 
     }
   }
 

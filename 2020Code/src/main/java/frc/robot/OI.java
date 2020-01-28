@@ -65,7 +65,8 @@ public class OI implements RobotMap.KOI{
 	{
 
 		
-		 
+		rightButton3.whenPressed(new toggleLight(true));
+		initCompControls();
 		System.out.println("Operator Interface Initialized");
 	}
 
@@ -73,33 +74,35 @@ public class OI implements RobotMap.KOI{
 	{
 		rightButton3.whenPressed(new toggleLight(true));
 		
-		leftThumb.whenPressed(new shiftGears(true));
-		leftButton11.toggleWhenPressed(new toggleCompressor());
+		//leftThumb.whenPressed(new shiftGears(true));
+	//	leftButton11.toggleWhenPressed(new toggleCompressor());
 
 		manipTrigger.whileHeld(new runRoller(.9));
-		manipButton3.whenPressed(new rotateWheelOfFortune(.4));
+		
+		manipButton3.whenPressed(new rotateWheelOfFortune(.8));
+		//manipButton4.whileHeld(new runRoller(-.8));
 		manipButton5.whileHeld(new runWinch(.675));
-		manipButton9.whileHeld(new runRoller(-.9));
+		manipButton9.whenPressed(new rotateWheelOfFortune(0));
 		manipButton10.whenPressed(new raiseEndgame(8));
-		manipButton11.toggleWhenPressed(new moveIntake(true));
-		manipButton12.whenPressed(new raiseEndgame(10));
+	//	manipButton11.toggleWhenPressed(new moveIntake(true));
+	//	manipButton12.whenPressed(new raiseEndgame(10));
 	}
 
 	
 //Returns the values for the sliders of the three joysticks 
 // adding a deadband so that it doesn't count .01 as still doing something
-    public double returnManipSlider() {
-		return (-((Math.abs(manipJoystick.getRawAxis(3)) < JOYSTICK_DEADBAND) ?
-			0 : manipJoystick.getRawAxis(3)) + 1) / 2;
-	}
-    public double returnLeftSlider() {
-		return (-((Math.abs(leftJoystick.getRawAxis(3)) < JOYSTICK_DEADBAND) ? 
-			0 : leftJoystick.getRawAxis(3)) + 1) / 2;
-	}
-	public double returnRightSlider() {
-		return (-((Math.abs(rightJoystick.getRawAxis(3)) < JOYSTICK_DEADBAND) ? 
-			0 : rightJoystick.getRawAxis(3)) + 1) / 2;
-	}
+public double returnManipSlider() {
+	return (-((Math.abs(manipJoystick.getRawAxis(3)) < JOYSTICK_DEADBAND) ?
+		0 : manipJoystick.getRawAxis(3)) + 1) / 2;
+}
+public double returnLeftSlider() {
+	return (-((Math.abs(leftJoystick.getRawAxis(3)) < JOYSTICK_DEADBAND) ? 
+		0 : leftJoystick.getRawAxis(3)) + 1) / 2;
+}
+public double returnRightSlider() {
+	return (-((Math.abs(rightJoystick.getRawAxis(3)) < JOYSTICK_DEADBAND) ? 
+		0 : rightJoystick.getRawAxis(3)) + 1) / 2;
+}
   
 //Get value of the triggers for the different joysticks
 public static boolean leftTrigger() {

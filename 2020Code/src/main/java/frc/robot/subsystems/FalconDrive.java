@@ -39,7 +39,7 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
   public WPI_TalonFX frontLeftFX, frontRightFX, rearLeftFX, rearRightFX;
   public WPI_TalonSRX testEndgameMotor;
   public Solenoid shifter;
-  public Compressor compressor;
+  //public Compressor compressor;
 
 
   //Declares Motor Controllers and Chassis
@@ -77,11 +77,11 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
     configFalcon(frontRightFX, true);
     configFalcon(rearRightFX, true);
 
-    shifter = new Solenoid(SHIFTER_ID);
-    compressor = new Compressor();
+   // shifter = new Solenoid(SHIFTER_ID);
+    //compressor = new Compressor();
 
-    compressor.setClosedLoopControl(true);
-    compressor.start();
+    //compressor.setClosedLoopControl(true);
+    //compressor.start();
 
     // Creates both Ultrasonic sensors
     frontRightSonar = new Ultrasonic(FRONT_RIGHT_SONAR_TRIG, FRONT_RIGHT_SONAR_ECHO);
@@ -170,18 +170,18 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
 
   public void setCompressorOff()
   {
-    compressor.setClosedLoopControl(false);
-    compressor.stop();
+    //compressor.setClosedLoopControl(false);
+    //compressor.stop();
   }
 
   public void setCompressorOn()
   {
-    compressor.setClosedLoopControl(true);
+    //compressor.setClosedLoopControl(true);
   }
 
   public boolean isCompressorOn()
   {
-    return compressor.getClosedLoopControl();
+    return false;//compressor.getClosedLoopControl();
   }
 
   

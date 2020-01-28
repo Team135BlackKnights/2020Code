@@ -101,7 +101,7 @@ public void printPosition()
    SmartDashboard.putNumber("LiftRaise Encoder Distance", getLiftRaiseEncoderPosition());
    SmartDashboard.putNumber("Winch Encoder Distance", getWinchEncoderPosition());
 }
- /*
+ 
 public double getLiftEncoderVelocity()
 {
   return liftRaiseEncoder.getVelocity();
@@ -111,7 +111,7 @@ public double getWinchEncoderVelocity()
 {
   return winchEncoder.getVelocity();
 }
-*/
+
 public double returnEncoderVelocity(CANEncoder encoder)
 {
    return encoder.getVelocity();
