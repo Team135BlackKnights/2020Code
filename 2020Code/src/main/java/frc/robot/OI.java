@@ -66,7 +66,7 @@ public class OI implements RobotMap.KOI{
 
 		
 		rightButton3.whenPressed(new toggleLight(true));
-		initCompControls();
+		//initCompControls();
 		System.out.println("Operator Interface Initialized");
 	}
 

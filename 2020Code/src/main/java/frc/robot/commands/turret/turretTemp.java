@@ -37,12 +37,11 @@ public class turretTemp extends Command {
     manipXpower = Robot.oi.GetJoystickXValue(2);
     manipZpower = Robot.oi.GetJoystickZValue(2);
     shooterRPM = shooterPower*4500;
-    Robot.turret.aimTurret(manipZpower, manipYpower);
+   // Robot.turret.aimTurret(manipZpower, manipYpower);
 
     boolean isTriggerPressed = Robot.oi.manipTrigger();
     boolean isThumbPressed = Robot.oi.getManipThumb();
-    double magicBoi = .4211;
-
+/*
     if(isTriggerPressed)
     {
       shooterPower = -shooterPower;
@@ -67,11 +66,28 @@ public class turretTemp extends Command {
     else{
       feederPower = .65;
     }
-    double botShooterRPM = shooterRPM*magicBoi;
+    */
 
-    Robot.turret.runShooterRPM(shooterRPM, botShooterRPM);
-    Robot.turret.runBallFeeder(feederPower);
-  }
+      if(isThumbPressed)
+      
+      {
+        Robot.turret.runShooterRPM(-2500, 3700);
+      Robot.turret.runBallFeeder(-.6);
+      }
+      else 
+      {
+        Robot.turret.runShooterRPM(0, 0);
+        Robot.turret.runBallFeeder(0);
+      }
+     
+    
+
+
+
+    }
+
+    //Robot.turret.runBallFeeder(feederPower);
+  
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
@@ -83,6 +99,7 @@ public class turretTemp extends Command {
   @Override
   protected void end() {
     Robot.turret.aimTurret(0, 0);
+    Robot.turret.stopAllTurretMotors();
 
   }
 

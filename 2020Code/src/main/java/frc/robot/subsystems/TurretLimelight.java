@@ -49,6 +49,7 @@ public class TurretLimelight extends Subsystem {
 		limelightData[VERTICAL_OFFSET] = verticalOffsetEntry.getDouble(0.0);
 		limelightData[TARGET_AREA] = targetAreaEntry.getDouble(0.0);
 		limelightData[TARGET_SKEW] = targetSkewEntry.getDouble(0.0);
+
 		return limelightData;
 	}
 
