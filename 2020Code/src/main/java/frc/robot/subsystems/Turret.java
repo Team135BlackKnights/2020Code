@@ -50,14 +50,16 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
   public static Turret instance; 
 
   public static Turret getInstance() {
-  if(instance == null) { instance = new Turret(); }
-  return instance;}
+  if(instance == null) {
+     instance = new Turret(); 
+  }
+  return instance;
+  }
 
 
   public Turret()
   {
     targetingLight = new Relay(TARGETING_LIGHT);
-  
     tiltTalon = new WPI_TalonSRX(TILT_TALON_ID);
     rotationSpark = new CANSparkMax(ROTATION_SPARK_ID, MotorType.kBrushless);
     bottomShooterSpark = new CANSparkMax(BOTTOM_SHOOTER_SPARK_ID, MotorType.kBrushless);
@@ -91,6 +93,7 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
 
     
     System.out.println("Turret Initialized");
+    
   }
 
   public void turretCountBalls()
@@ -131,10 +134,10 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
   {
     if(on)
     {
-      targetingLight.set(Value.kOn);
+      targetingLight.set(Value.kForward);
     }
     else {
-      targetingLight.set(Value.kOff);
+      targetingLight.set(Value.kOn);
     }
   }
   
@@ -208,6 +211,7 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     topShooterSpark.set(power);
   }
 
+
   public void runBottomShooter(double power)
   {
     limit(power, .9, -.9);
@@ -216,7 +220,7 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
 
   public void runShooterRPM(double topRPM, double bottomRPM)
   {
-    double maxRPM = 5676;
+    double maxRPM = 4500;
     double _topRPM, _bottomRPM;
 
     _topRPM = topRPM/maxRPM;
@@ -392,14 +396,17 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
   @Override
   public void periodic() 
   {
-    turretCountBalls();
+    //printShooterRPM();
+    printOutputs();
+    //turretCountBalls();
   }
 
 
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new targetTurret());
+    setDefaultCommand(new turretTemp());
+    //setDefaultCommand(new targetTurret());
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }

@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.SerialPort;
 public interface RobotMap 
 {
 
+
   public interface KOI 
   {
     public static final int 
@@ -59,7 +60,13 @@ public interface RobotMap
             FRONT_LEFT_SONAR_TRIG = 4, FRONT_LEFT_SONAR_ECHO = 5,
             REAR_LEFT_SONAR_TRIG = 6, REAR_LEFT_SONAR_ECHO = 7,
             REAR_SONAR_TRIG = 8, REAR_SONAR_ECHO = 9,
-            REAR_LIDAR = 12;
+            REAR_LIDAR = 12,
+
+            ksVolts = 1,
+            kvVoltSecondsPerMeter = 1,
+            kaVoltSecondsSquaredPerMeter = 1,
+
+            kDriveKinematics = 1;
 
             public SerialPort.Port navXPort = SerialPort.Port.kUSB;
   
@@ -85,6 +92,7 @@ public interface RobotMap
 
       TOP_WHEEL_DIAMETER = 4,
       BOTTOM_WHEEL_DIAMETER = 6,
+      
       TARGETING_LIGHT = 0; 
 
   }

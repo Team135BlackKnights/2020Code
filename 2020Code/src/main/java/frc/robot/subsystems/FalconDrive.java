@@ -24,6 +24,9 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.drive.*;
@@ -39,7 +42,7 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
   public WPI_TalonFX frontLeftFX, frontRightFX, rearLeftFX, rearRightFX;
   public WPI_TalonSRX testEndgameMotor;
   public Solenoid shifter;
-  public Compressor compressor;
+  //public Compressor compressor;
 
 
   //Declares Motor Controllers and Chassis
@@ -50,6 +53,8 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
   public Ultrasonic rearRightSonar, frontRightSonar, rearLeftSonar, frontLeftSonar, rearSonar;
   public  Counter rearLidar; 
   public AHRS navx;
+
+  public DifferentialDriveOdometry odometry; 
 
   // If instance is empty, creates a new FalconDrive to fill it
     public static FalconDrive getInstance()
@@ -77,11 +82,11 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
     configFalcon(frontRightFX, true);
     configFalcon(rearRightFX, true);
 
-    shifter = new Solenoid(SHIFTER_ID);
-    compressor = new Compressor();
+   // shifter = new Solenoid(SHIFTER_ID);
+    //compressor = new Compressor();
 
-    compressor.setClosedLoopControl(true);
-    compressor.start();
+    //compressor.setClosedLoopControl(true);
+    //compressor.start();
 
     // Creates both Ultrasonic sensors
     frontRightSonar = new Ultrasonic(FRONT_RIGHT_SONAR_TRIG, FRONT_RIGHT_SONAR_ECHO);
@@ -124,6 +129,19 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
 
     testEndgameMotor.enableCurrentLimit(false);
     testEndgameMotor.enableVoltageCompensation(true);
+
+    odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getAngle()));
+  }
+
+  public Pose2d getPose()
+  {
+    return odometry.getPoseMeters();
+  }
+
+  public void resetOdometry(Pose2d pose)
+  {
+    resetEncoders();
+    odometry.resetPosition(pose, Rotation2d.fromDegrees(getAngle()));
   }
 
   // Configures the settings of the Talon Motors
@@ -152,6 +170,15 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
   {
     chassis.tankDrive(leftPower, rightPower);
   }
+  
+  public void tankVolts(double leftVolts, double rightVolts)
+  {
+    frontLeftFX.setVoltage(leftVolts);
+    rearLeftFX.setVoltage(leftVolts);
+    frontRightFX.setVoltage(rightVolts);
+    rearRightFX.setVoltage(rightVolts);
+    chassis.feed();
+  }
   // Method sets the Chassis to Arcade Drive while pulling double arguements
   public void ArcadeDrive(double lateralPower, double rotationalPower)
   { 
@@ -170,18 +197,18 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
 
   public void setCompressorOff()
   {
-    compressor.setClosedLoopControl(false);
-    compressor.stop();
+    //compressor.setClosedLoopControl(false);
+    //compressor.stop();
   }
 
   public void setCompressorOn()
   {
-    compressor.setClosedLoopControl(true);
+    //compressor.setClosedLoopControl(true);
   }
 
   public boolean isCompressorOn()
   {
-    return compressor.getClosedLoopControl();
+    return false;//compressor.getClosedLoopControl();
   }
 
   

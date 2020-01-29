@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.color.rotateWheelOfFortune;
 //import frc.robot.commands.auton.*;
 import frc.robot.commands.drive.*;
-import frc.robot.commands.auton.commandGroups.*;
 import frc.robot.commands.turret.*;
 import frc.robot.commands.endgame.*;
 import frc.robot.commands.intake.*;
@@ -18,7 +17,6 @@ import frc.robot.commands.intake.*;
 
 public class OI implements RobotMap.KOI{
   public static OI instance;
-  
   
   public static Joystick 
     leftJoystick = new Joystick(RobotMap.KOI.LEFT_JOYSTICK),
@@ -51,44 +49,61 @@ public class OI implements RobotMap.KOI{
 	leftButton11 = new JoystickButton(leftJoystick, BASE_BOTTOM_LEFT_BUTTON),
 
 	manipTrigger = new JoystickButton(manipJoystick, TRIGGER_BUTTON),
+	manipThumb = new JoystickButton(manipJoystick, THUMB_BUTTON),
 	manipButton3 = new JoystickButton(manipJoystick, HANDLE_BOTTOM_LEFT_BUTTON),
+	manipButton5 = new JoystickButton(manipJoystick, HANDLE_BOTTOM_RIGHT_BUTTON),
 	manipButton7 = new JoystickButton(manipJoystick, BASE_TOP_LEFT_BUTTON),
 	manipButton8 = new JoystickButton(manipJoystick, BASE_TOP_RIGHT_BUTTON),
 	manipButton9 = new JoystickButton(manipJoystick, BASE_MIDDLE_LEFT_BUTTON),
-	manipButton11 = new JoystickButton(manipJoystick, BASE_BOTTOM_LEFT_BUTTON);
+	manipButton10 = new JoystickButton(manipJoystick, BASE_MIDDLE_RIGHT_BUTTON),
+	manipButton11 = new JoystickButton(manipJoystick, BASE_BOTTOM_LEFT_BUTTON),
+	manipButton12 = new JoystickButton(manipJoystick, BASE_BOTTOM_RIGHT_BUTTON);
 
+		
 
 	public OI()
 	{
+
+		
+		rightButton3.whenPressed(new toggleLight(true));
+		//initCompControls();
+		System.out.println("Operator Interface Initialized");
+	}
+
+	public void initCompControls()
+	{
 		rightButton3.whenPressed(new toggleLight(true));
 		
-		leftThumb.whenPressed(new shiftGears(true));
-		leftButton11.toggleWhenPressed(new toggleCompressor());
+		//leftThumb.whenPressed(new shiftGears(true));
+	//	leftButton11.toggleWhenPressed(new toggleCompressor());
 
 		manipTrigger.whileHeld(new runRoller(.9));
-		manipButton3.whenPressed(new rotateWheelOfFortune());
-		manipButton9.whileHeld(new runRoller(-.9));
+		manipThumb.whileHeld(new joystickEndgame());
+		
+		manipButton3.whenPressed(new rotateWheelOfFortune(.8));
+		//manipButton4.whileHeld(new runRoller(-.8));
+		manipButton5.whileHeld(new runWinch(.675));
+		manipButton9.whenPressed(new rotateWheelOfFortune(0));
+		manipButton10.whenPressed(new raiseEndgame(8));
 		manipButton11.toggleWhenPressed(new moveIntake(true));
-		 
-		System.out.println("Operator Interface Initialized");
-
+		manipButton12.whenPressed(new raiseEndgame(10));
 	}
 
 	
 //Returns the values for the sliders of the three joysticks 
 // adding a deadband so that it doesn't count .01 as still doing something
-    public double returnManipSlider() {
-		return (-((Math.abs(manipJoystick.getRawAxis(3)) < JOYSTICK_DEADBAND) ?
-			0 : manipJoystick.getRawAxis(3)) + 1) / 2;
-	}
-    public double returnLeftSlider() {
-		return (-((Math.abs(leftJoystick.getRawAxis(3)) < JOYSTICK_DEADBAND) ? 
-			0 : leftJoystick.getRawAxis(3)) + 1) / 2;
-	}
-	public double returnRightSlider() {
-		return (-((Math.abs(rightJoystick.getRawAxis(3)) < JOYSTICK_DEADBAND) ? 
-			0 : rightJoystick.getRawAxis(3)) + 1) / 2;
-	}
+public double returnManipSlider() {
+	return (-((Math.abs(manipJoystick.getRawAxis(3)) < JOYSTICK_DEADBAND) ?
+		0 : manipJoystick.getRawAxis(3)) + 1) / 2;
+}
+public double returnLeftSlider() {
+	return (-((Math.abs(leftJoystick.getRawAxis(3)) < JOYSTICK_DEADBAND) ? 
+		0 : leftJoystick.getRawAxis(3)) + 1) / 2;
+}
+public double returnRightSlider() {
+	return (-((Math.abs(rightJoystick.getRawAxis(3)) < JOYSTICK_DEADBAND) ? 
+		0 : rightJoystick.getRawAxis(3)) + 1) / 2;
+}
   
 //Get value of the triggers for the different joysticks
 public static boolean leftTrigger() {
@@ -100,6 +115,11 @@ public static boolean rightTrigger()
   return rightTrigger.get();
 }
 
+public boolean manipTrigger()
+{
+	return manipTrigger.get();
+}
+
 public static boolean leftThumb()
 {
 	return leftThumb.get();
@@ -108,6 +128,10 @@ public static boolean leftThumb()
 public static boolean rightThumb()
 {
 	return rightThumb.get();
+}
+public boolean getManipThumb()
+{
+	return manipThumb.get();
 }
 
 public boolean getManipButton7()
@@ -118,6 +142,11 @@ public boolean getManipButton7()
 public boolean getManipButton8()
 {
 	return manipButton8.get();
+}
+
+public boolean getButtonOutPut(int joystick, int buttonID)
+{
+	return joysticks[joystick].getRawButton(buttonID);
 }
 
 

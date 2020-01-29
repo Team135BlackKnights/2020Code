@@ -7,18 +7,11 @@
 
 package frc.robot.commands.endgame;
 
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class runWinch extends Command {
-
-  public double _power;
-
-  public runWinch(double power){
-
-    this._power = power;
-
+public class joystickEndgame extends Command {
+  public joystickEndgame() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -28,10 +21,10 @@ public class runWinch extends Command {
   protected void initialize() {
   }
 
-  // Called repeat  p/ eg.ublicn this/Command is scheduled to run
+  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.endgame.runWinchSpark(_power);
+    Robot.endgame.runLiftRaiseSpark(Robot.oi.GetJoystickYValue(2));
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -40,15 +33,14 @@ public class runWinch extends Command {
     return false;
   }
 
-  // Called once aowe requr, CAinished returns true
+  // Called once after isFinished returns true
   @Override
-  protected void end() 
-  {
-    Robot.endgame.runWinchSpark(0);
+  protected void end() {
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void interrupted() {}
+  protected void interrupted() {
+  }
 }

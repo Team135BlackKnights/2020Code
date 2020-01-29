@@ -68,52 +68,78 @@ public class targetTurret extends Command {
     {
       rotationPower = 0;
       tiltPower = .6;
-    } else 
+      SmartDashboard.putString("Turret State:", "Driver Override");
+
+    } 
+    else 
     if(isPOVRight)
     {
       rotationPower = .6;
       tiltPower = 0;
-    } else 
+      SmartDashboard.putString("Turret State:", "Driver Override");
+
+    } 
+    else 
     if(isPOVDown)
     {
       rotationPower = 0;
       tiltPower = -.6;
-    } else
+      SmartDashboard.putString("Turret State:", "Driver Override");
+
+    } 
+    else
     if(isPOVLeft)
     {
       rotationPower = -.6;
       tiltPower = 0;
-    } else 
+      SmartDashboard.putString("Turret State:", "Driver Override");
+
+    } 
+    else 
     if(isPOVTopRight)
     {
       rotationPower = .6;
       tiltPower = .6;
-    } else 
+      SmartDashboard.putString("Turret State:", "Driver Override");
+
+    } 
+    else 
     if(isPOVBottomRight)
     {
       rotationPower = .6;
       tiltPower = -.6;
-    } else 
+      SmartDashboard.putString("Turret State:", "Driver Override");
+
+    } 
+    else 
     if(isPOVBottomLeft)
     {
       rotationPower = -.6;
       tiltPower = -.6;
-    } else 
+      SmartDashboard.putString("Turret State:", "Driver Override");
+
+    } 
+    else 
     if(isPOVTopLeft)
     {
       rotationPower = -.6;
       tiltPower = .6;
+      SmartDashboard.putString("Turret State:", "Driver Override");
+
     }
     else 
     if(targetExist)
     {
       rotationPower = (rotationPower * rP) + (minPower* rotationDirection);
       tiltPower = (tiltPower * tP) + (minPower);
+      SmartDashboard.putString("Turret State:", "Auto Targetting");
     }
     else 
     {
       rotationPower = 0;
       tiltPower = 0;
+      SmartDashboard.putString("Turret State:", "No Target");
+
     }
 
 
