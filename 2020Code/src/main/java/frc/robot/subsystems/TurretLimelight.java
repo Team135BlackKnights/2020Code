@@ -1,10 +1,11 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
-
+import frc.robot.util.*;
 //import frc.robot.commands.*;
 
 public class TurretLimelight extends Subsystem {
@@ -21,7 +22,7 @@ public class TurretLimelight extends Subsystem {
 	ledModeEntry = TurretLimelightTable.getEntry("ledMode"),
 	cameraModeEntry = TurretLimelightTable.getEntry("camMode"),
 	limelightPipelineEntry = TurretLimelightTable.getEntry("pipeline");
-
+	public MovingAverage _targetArea = new MovingAverage(5);
 	public static final int 
 	VALID_TARGET = 0,
 	HORIZONTAL_OFFSET = 1,
@@ -42,6 +43,10 @@ public class TurretLimelight extends Subsystem {
     BALL_PIPELINE = 1, 
     VISION_PIPELINE = 2;
 	
+	public double getAveragedArea()
+	{
+		return _targetArea.process((float)limelightData[TARGET_AREA]);
+	}
 
 	public double[] GetLimelightData() { // creating an array so we can get to any of the values that we need from network tables
 		limelightData[VALID_TARGET] = validTargetEntry.getDouble(0.0);
@@ -73,6 +78,7 @@ public class TurretLimelight extends Subsystem {
 	@Override
 	public void periodic() 	
 	{
+		SmartDashboard.putNumber("Averaged Area", getAveragedArea());
 	//	SmartDashboard.putNumber(" Horizontal offset", GetLimelightData()[HORIZONTAL_OFFSET]);
 	//	SmartDashboard.putNumber(" Vertical Offset", limelightData[VERTICAL_OFFSET]);
 	//	SmartDashboard.putBoolean("Target Exist", limelightData[0] >=1);
