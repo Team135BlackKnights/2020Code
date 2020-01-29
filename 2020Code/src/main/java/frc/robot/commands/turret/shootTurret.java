@@ -79,10 +79,9 @@ public class shootTurret extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    //Robot.turret.runShooterRPM(0, 0);
+    Robot.turret.runShooterRPM(0, 0);
     //Robot.turret.runBallFeeder(0);
-    Robot.turret.bottomShooterSpark.set(0);
-    Robot.turret.topShooterSpark.set(0);
+    
   }
 
   // Called when another command which requires one or more of the same
