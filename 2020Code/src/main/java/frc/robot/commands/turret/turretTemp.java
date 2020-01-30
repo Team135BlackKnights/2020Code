@@ -67,11 +67,11 @@ public class turretTemp extends Command {
       feederPower = .65;
     }
     */
-
+    double topRPM = 2200;
       if(isThumbPressed)
-      
+  
       {
-        Robot.turret.runShooterRPM(-2500, 3700);
+      //  Robot.turret.runShooterRPM(-topRPM, topRPM*3/2);
       Robot.turret.runBallFeeder(-.6);
       }
       else 

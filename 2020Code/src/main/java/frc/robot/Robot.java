@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
   public void initKOPChassis()
   {
 	drive = new FalconDrive();
-	colorWheel = new ColorWheel();
+	//colorWheel = new ColorWheel();
 	turret = new Turret();
 	turretlimelight = new TurretLimelight();
 	oi = new OI();

@@ -81,6 +81,7 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     topShooterEncoder = topShooterSpark.getEncoder();
     ballFeederEncoder = ballFeederSpark.getEncoder();
     tiltTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+    //ballFeederSpark.setSmartCurrentLimit(30);
 
     rotationSpark.enableSoftLimit(SoftLimitDirection.kForward, true);
     rotationSpark.enableSoftLimit(SoftLimitDirection.kReverse, true);

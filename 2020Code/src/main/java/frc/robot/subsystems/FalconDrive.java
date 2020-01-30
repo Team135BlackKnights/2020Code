@@ -170,8 +170,8 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
   {
     chassis.tankDrive(leftPower, rightPower);
   }
-  
-  public void tankVolts(double leftVolts, double rightVolts)
+
+  private void tankVolts(double leftVolts, double rightVolts)
   {
     frontLeftFX.setVoltage(leftVolts);
     rearLeftFX.setVoltage(leftVolts);

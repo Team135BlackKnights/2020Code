@@ -72,7 +72,7 @@ public class DriveWithTrajectory extends TimedCommand {
         getPose(),
         //two numbers of ramsete controller are adjustment variables first is any number not negative and second is between 0 and 1
         new RamseteController(1, .5),
-        //The bellow Constanst need to be found after the robot is built...
+        //The below Constanst need to be found after the robot is built...
         //https://docs.wpilib.org/en/latest/docs/software/examples-tutorials/trajectory-tutorial/characterizing-drive.html
 
         new SimpleMotorFeedforward(RobotMap.DRIVE.ksVolts,
@@ -83,15 +83,29 @@ public class DriveWithTrajectory extends TimedCommand {
         new PIDController(.6, 0, 0),
         new PIDController(.6, 0, 0),
         // RamseteCommand passes volts to the callback
-        Robot.drive::tankVolts(),
+        Robot.drive::tankVolts,
         Robot.drive
     );
 
+
+    
 }
 
+public void tankVolts(double leftVolts, double rightVolts)
+{
+  Robot.drive.frontLeftFX.setVoltage(leftVolts);
+  Robot.drive.rearLeftFX.setVoltage(leftVolts);
+  Robot.drive.frontRightFX.setVoltage(rightVolts);
+  Robot.drive.rearRightFX.setVoltage(rightVolts);
+  Robot.drive.chassis.feed();
+}
+
+
+
+
 public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-  double leftEncoderVelocity = Robot.drive.getEncoderVelocity(Robot.drive.frontLeftFX) + Robot.drive.getEncoderVelocity(Robot.drive.rearLeftFX);
-  double rightEncoderVelocity = Robot.drive.getEncoderVelocity(Robot.drive.frontRightFX) + Robot.drive.getEncoderVelocity(Robot.drive.rearRightFX);
+  double leftEncoderVelocity = (Robot.drive.getEncoderVelocity(Robot.drive.frontLeftFX) + Robot.drive.getEncoderVelocity(Robot.drive.rearLeftFX)) / 2;
+  double rightEncoderVelocity = (Robot.drive.getEncoderVelocity(Robot.drive.frontRightFX) + Robot.drive.getEncoderVelocity(Robot.drive.rearRightFX)) / 2;
   return new DifferentialDriveWheelSpeeds(leftEncoderVelocity, rightEncoderVelocity);
 }
 
