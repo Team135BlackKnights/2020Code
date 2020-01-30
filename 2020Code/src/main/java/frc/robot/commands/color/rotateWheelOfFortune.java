@@ -29,7 +29,7 @@ public class rotateWheelOfFortune extends Command {
     isFinished=false;
 
     SmartDashboard.putString("Control Panel Command Running:", "rotate Wheel of Fortune");
-
+    Robot.colorWheel.moveExtend(true);
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -84,6 +84,8 @@ public class rotateWheelOfFortune extends Command {
     Robot.colorWheel.rotatorSpark.set(0);
     SmartDashboard.putString("Control Panel Command Running:", "No command Running");
     Robot.colorWheel.atDesiredRoations=false;
+    Robot.colorWheel.moveExtend(false);
+
   }
 
   // Called when another command which requires one or more of the same

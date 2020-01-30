@@ -17,6 +17,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.OI;
 import frc.robot.RobotMap;
@@ -27,6 +28,8 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL {
    public ColorSensorV3 controlPanelColorSensor;
    private final I2C.Port i2cPort = I2C.Port.kOnboard;
    public CANSparkMax rotatorSpark;
+   public Solenoid extendSolenoid;
+
    public static ColorWheel instance;
    public Color detectedColor;
    public String currentColor;
@@ -79,6 +82,8 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL {
       controlPanelColorSensor = new ColorSensorV3(i2cPort);
       // Creates a SparkMax motor controller in rotatorSpark
       rotatorSpark = new CANSparkMax(15, MotorType.kBrushless);
+      extendSolenoid = new Solenoid(2);
+      
       initCANSparkMax(rotatorSpark, IdleMode.kBrake);
       testBoi = new WPI_TalonSRX(23);
       gameData = DriverStation.getInstance().getGameSpecificMessage(); // Gets the data sent by the FMS as to what color
@@ -87,6 +92,8 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL {
 
       System.out.println("Color Wheel Initialized"); // Prints to screen
 
+      moveExtend(false);
+
    }
    
    public void initCANSparkMax(CANSparkMax spark, IdleMode mode)
@@ -94,6 +101,11 @@ public class ColorWheel extends Subsystem implements RobotMap.CONTROL_PANEL {
 		spark.setInverted(false);
     spark.enableVoltageCompensation(12);
     spark.setIdleMode(mode);
+  }
+  public void moveExtend(Boolean pos)
+  {
+  extendSolenoid.set(pos);
+
   }
 
    public String gameColor() {
