@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.drive.*;
@@ -170,14 +171,19 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
   {
     chassis.tankDrive(leftPower, rightPower);
   }
-
-  private void tankVolts(double leftVolts, double rightVolts)
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    double leftEncoderVelocity = (getEncoderVelocity(frontLeftFX) + getEncoderVelocity(rearLeftFX)) / 2;
+    double rightEncoderVelocity = (getEncoderVelocity(frontRightFX) + getEncoderVelocity(rearRightFX)) / 2;
+    return new DifferentialDriveWheelSpeeds(leftEncoderVelocity, rightEncoderVelocity);
+  }
+  public void tankVolts(double leftVolts, double rightVolts)
   {
     frontLeftFX.setVoltage(leftVolts);
     rearLeftFX.setVoltage(leftVolts);
     frontRightFX.setVoltage(rightVolts);
     rearRightFX.setVoltage(rightVolts);
     chassis.feed();
+    
   }
   // Method sets the Chassis to Arcade Drive while pulling double arguements
   public void ArcadeDrive(double lateralPower, double rotationalPower)

@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -64,11 +65,13 @@ public interface RobotMap
 
             ksVolts = 1,
             kvVoltSecondsPerMeter = 1,
-            kaVoltSecondsSquaredPerMeter = 1,
+            kaVoltSecondsSquaredPerMeter = 1;
 
-            kDriveKinematics = 1;
+           // kDriveKinematics = 1;
 
             public SerialPort.Port navXPort = SerialPort.Port.kUSB;
+            public static final DifferentialDriveKinematics kDriveKinematics =
+        new DifferentialDriveKinematics(.7);
   
   }
 
