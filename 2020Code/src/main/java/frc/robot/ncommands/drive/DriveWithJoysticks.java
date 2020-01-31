@@ -24,8 +24,7 @@ public class DriveWithJoysticks extends CommandBase {
 
   public DriveWithJoysticks(FalconDrive subsystem, 
   DoubleSupplier lateral, DoubleSupplier rotational, 
-  BooleanSupplier halfPower, BooleanSupplier reversePower
-  ) 
+  BooleanSupplier halfPower, BooleanSupplier reversePower) 
   {
     drive = subsystem;
     addRequirements(drive);
