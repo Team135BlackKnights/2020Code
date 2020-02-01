@@ -8,16 +8,13 @@
 package frc.robot.nsubsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import frc.robot.RobotMap;
-import edu.wpi.first.wpilibj.DigitalInput;
 
 public class Endgame extends SubsystemBase implements RobotMap.ENDGAME{
   /**

@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.command.Subsystem;
 
 import java.util.Dictionary;
 import java.util.Enumeration;
@@ -29,7 +28,6 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.OI;
-import frc.robot.RobotMap;
 
 public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL{
   /**

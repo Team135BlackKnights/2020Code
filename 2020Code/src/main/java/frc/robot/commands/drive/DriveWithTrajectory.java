@@ -61,7 +61,7 @@ public class DriveWithTrajectory extends TimedCommand {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
+/*
     final double currentHeading = getHeading();
     final String trajectoryJSON = "paths/YourPath.wpilib.json";
     try {
@@ -94,7 +94,7 @@ var rightController = new PIDController(.6, 0, 0);
         new SimpleMotorFeedforward(RobotMap.DRIVE.ksVolts,
                                    RobotMap.DRIVE.kvVoltSecondsPerMeter,
                                    RobotMap.DRIVE.kaVoltSecondsSquaredPerMeter),
-                                   */
+                                   
         RobotMap.DRIVE.kDriveKinematics,
        // getWheelSpeeds(),
       //  leftController,
@@ -108,7 +108,7 @@ var rightController = new PIDController(.6, 0, 0);
         //Working version (Supposedly)
         //https://github.com/wpilibsuite/allwpilib/blob/master/wpilibNewCommands/src/main/java/edu/wpi/first/wpilibj2/command/RamseteCommand.java
     );
-
+*/
 }
 
 /*
