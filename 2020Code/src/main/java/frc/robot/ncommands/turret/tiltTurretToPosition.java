@@ -14,15 +14,17 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.Turret;
 
 public class tiltTurretToPosition extends CommandBase {
+  //declare required subsystem
   Turret turret;
-  double tiltPosition, tiltTicks,positionError, desiredTicks;
-  /**
-   * Creates a new tiltTurretToAngle.
-   */
+  //variables used in calulating the power required
+  double tiltTicks,positionError, desiredTicks;
+  
+  //required input of the subsystem and the desired location
   public tiltTurretToPosition(Turret subsystem, double _desiredTicks) {
+
+    //Assign values to public locations
     turret = subsystem;
     desiredTicks = _desiredTicks;
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -33,27 +35,28 @@ public class tiltTurretToPosition extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    //find the current position
     tiltTicks = turret.getTalonPosition(turret.tiltTalon);
-    tiltPosition = turret.ticksToRotations(turret.getTalonPosition(turret.tiltTalon));
 
+    //Find the error based off current and where it should be
     positionError = Math.abs(tiltTicks - desiredTicks);
-    boolean runForward = tiltTicks < desiredTicks;
-		double runModifier = runForward ? -1: 1;
-		double minPower = .3;
-		double P, I, D;
-		P = .52;
-		I = 0; 
-		D = 0;
-  
 
-    double power = (runModifier * minPower) + (positionError/90 * P);
+    //Determin minimum power direction
+    boolean runForward = tiltTicks < desiredTicks;
+    double runModifier = runForward ? -1: 1;
     
+    //variables for tuning
+		double minPower = .3;
+		double P;
+		P = .52;
+	
+    //power based off minimum power and how far off it still is then limit it
+    double power = (runModifier * minPower) + (positionError/90 * P);
     turret.limit(power, .7, -.7);
 
+    //set the power
     turret.tiltTalon.set(ControlMode.PercentOutput, power);
-		SmartDashboard.putNumber("angle error", positionError);
-
-  
+		SmartDashboard.putNumber("Turret tilt error", positionError);
   }
 
 

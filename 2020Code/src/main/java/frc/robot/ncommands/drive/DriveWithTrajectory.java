@@ -49,10 +49,7 @@ public class DriveWithTrajectory extends CommandBase {
 
   public DriveWithTrajectory(FalconDrive subsystem) {
     drive = subsystem;
-
-
     addRequirements(drive);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
