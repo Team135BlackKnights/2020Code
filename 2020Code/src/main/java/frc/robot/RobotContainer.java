@@ -291,56 +291,8 @@ public static JoystickButton
   
       public Command getAutonomousCommand() {
 
-        drive.resetEncoders();
-        drive.resetHeading();
-        drive.resetOdometry();
-    
-        TrajectoryConfig config = new TrajectoryConfig(3.97350993, 2);
-    
-        config.setKinematics(drive.getKinematics());
-    
-        Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-          Arrays.asList(
-            new Pose2d(), 
-            new Pose2d(3, -2, Rotation2d.fromDegrees(0))
-            ), 
-          config
-        );
-    
-        RamseteController disabledRamsete = new RamseteController() {
-          @Override
-          public ChassisSpeeds calculate(Pose2d currentPose, Pose2d poseRef, double linearVelocityRefMeters,
-                 double angularVelocityRefRadiansPerSecond) {
-            return new ChassisSpeeds(linearVelocityRefMeters, 0.0, angularVelocityRefRadiansPerSecond);
-          }
-        };
-    
-      
-      var m_leftReference = NetworkTableInstance.getDefault().getTable("troubleshooting").getEntry("left_reference");
-      var m_leftMeasurement = NetworkTableInstance.getDefault().getTable("troubleshooting").getEntry("left_measurement");
-      var m_rightReference = NetworkTableInstance.getDefault().getTable("troubleshooting").getEntry("right_reference");
-      var m_rightMeasurement = NetworkTableInstance.getDefault().getTable("troubleshooting").getEntry("right_measurement");
-    
-        RamseteCommand command = new RamseteCommand(
-          trajectory,
-          m_driveSubsystem::getPose,
-          disabledRamsete,//new RamseteController(2.0, 0.7),
-          m_driveSubsystem.getFeedForward(),
-          m_driveSubsystem.getKinematics(),
-          m_driveSubsystem::getWheelSpeeds,
-          m_driveSubsystem.getLeftPIDController(),
-          m_driveSubsystem.getRightPIDController(),
-          (leftVolts, rightVolts) -> {
-            m_driveSubsystem.set(leftVolts, rightVolts);
-    
-            m_leftMeasurement.setNumber(m_driveSubsystem.getFeedForward().calculate(m_driveSubsystem.getWheelSpeeds().leftMetersPerSecond));
-            m_leftReference.setNumber(leftVolts);
-    
-            m_rightMeasurement.setNumber(m_driveSubsystem.getFeedForward().calculate(m_driveSubsystem.getWheelSpeeds().rightMetersPerSecond));
-            m_rightReference.setNumber(-rightVolts);
-        },//m_driveSubsystem::set,
-          m_driveSubsystem
-        );
+        return null;
+      } 
 
 
 
@@ -350,7 +302,7 @@ public static JoystickButton
    * @return the command to run in autonomous
    */
   
-}
+
   
 
 }

@@ -24,13 +24,29 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Units;
 
 public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE{
   /**
    * Creates a new FalconDrive.
    */
+  public static final double distBetweenWheelsInches = 23;//26.84603809585759;
+  public static final double gearRatio = 1 / 13.85;
+  public static final double wheelDiameterInches = 6.375;//18;
+  public static final double wheelCircumferenceInches = wheelDiameterInches * Math.PI;
+  public static final double encoderTicksPerRev = 2048;
+  DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading());
+
+  DifferentialDriveOdometry m_odometry;
+
+  Pose2d pose;
+
+
   public WPI_TalonFX frontLeftFX, frontRightFX, rearLeftFX, rearRightFX;
   public Solenoid shifter;
   public Compressor compressor;
@@ -320,6 +336,19 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE{
 
   @Override
   public void periodic() {
+    pose = odometry.update(getHeading(), getLeftPos() / encoderTicksPerRev * gearRatio * Units.inchesToMeters(wheelCircumferenceInches), getRightPos() / encoderTicksPerRev * gearRatio * Units.inchesToMeters(wheelCircumferenceInches));
+
     // This method will be called once per scheduler run
   }
+  
+  public Pose2d getPose() {
+    return m_odometry.getPoseMeters();
+  }
+  public void resetOdometry() {
+    odometry.resetPosition(new Pose2d(), getHeading());
+  }
+  public Rotation2d getHeading() {
+    return Rotation2d.fromDegrees(Math.IEEEremainder(navx.getYaw(), 360.0d));
+  }
+  
 }
