@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.util;
 
 /**
@@ -57,19 +50,18 @@ public class KeatonJoystick {
     public boolean getJoystickButtonValue(int buttonID)
     {
         return _joystick.getRawButton(buttonID);
-    }
-
+	}
+	
     public double getJoystickThrottle()
     {
         return _joystick.getThrottle();
-    }
-
+	}
+	
     public boolean isPovDirectionPressed(int povDirection)
 	{
 		double povValue = getPovAngle();
 		boolean povDirectionPressed = false;
 		switch(povDirection) {
-
 		case (TOP_POV):
 		if (povValue >= 337.5 || (povValue <= 22.5 && povValue != -1)) {
 			povDirectionPressed = true;
@@ -136,12 +128,7 @@ public class KeatonJoystick {
 			povDirectionPressed = false;
 		}
 		break;
-	
 	}
 	return povDirectionPressed;
-
 	}
-
-
-    
 }
