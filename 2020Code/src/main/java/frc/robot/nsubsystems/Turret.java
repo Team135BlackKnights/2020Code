@@ -236,7 +236,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
   {
     return turretRightLimit.get();
   }
-
+//Tilt is 256 for encoder ticks per revolution
   public boolean isAtTiltLimit()
   {
     return turretTiltLimit.get();
@@ -302,7 +302,10 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
   {
     return talon.getTemperature();
   }
+  public double ticksToInches(CANEncoder encoder, double WheelDiameter) {
+    return rotationsToInches(ticksToRotations(getSparkEncoderPosition(encoder)), WheelDiameter);
 
+  }
   public void printRotations()
   {
     SmartDashboard.putNumber("top Shooter Spark Position:", ticksToRotations(getSparkEncoderPosition(topShooterEncoder)));

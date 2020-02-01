@@ -7,18 +7,20 @@
 
 package frc.robot.ncommands.drive;
 
-import java.util.Arrays;
+import java.io.IOException;
+import java.nio.file.Path;
 
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -39,6 +41,7 @@ public class DriveWithTrajectory extends CommandBase {
   public static final double kD = 0.0;
   DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(distBetweenWheelsInches));
   SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(kS, kV, kA);
+  Trajectory trajectory;
 
   
 
@@ -68,13 +71,13 @@ public class DriveWithTrajectory extends CommandBase {
     
     config.setKinematics(getKinematics());
     
-    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-      Arrays.asList(
-        new Pose2d(), 
-        new Pose2d(3, -2, Rotation2d.fromDegrees(0))
-        ), 
-      config
-    );
+    final String trajectoryJSON = "paths/YourPath.wpilib.json";
+    try {
+      final Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    } catch (final IOException ex) {
+      SmartDashboard.putString("Unable to open trajectory: ","");
+    }
     
     RamseteController disabledRamsete = new RamseteController() {
       @Override
