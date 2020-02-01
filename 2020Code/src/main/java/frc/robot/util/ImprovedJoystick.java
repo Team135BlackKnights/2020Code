@@ -6,7 +6,7 @@ package frc.robot.util;
 import edu.wpi.first.wpilibj.Joystick;
 
 
-public class KeatonJoystick {
+public class ImprovedJoystick {
     public Joystick _joystick;
     public double _deadband;
 
@@ -20,12 +20,12 @@ public class KeatonJoystick {
 	BOTTOM_LEFT_POV = 6, 
     TOP_LEFT_POV = 7;
 
-    public KeatonJoystick(Joystick joystick, double deadband)
+    public ImprovedJoystick(Joystick joystick, double deadband)
     {
         this._joystick = joystick;
         this._deadband = deadband;
     }
-    public KeatonJoystick(Joystick joystick)
+    public ImprovedJoystick(Joystick joystick)
     {
         this._joystick = joystick;
         this._deadband = .2;

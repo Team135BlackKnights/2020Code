@@ -8,13 +8,33 @@
 
 package frc.robot;
 
+import java.util.Arrays;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
-
+import frc.robot.commands.endgame.joystickEndgame;
+import frc.robot.commands.turret.toggleLight;
+import frc.robot.commands.turret.turretTemp;
+import frc.robot.ncommands.color.rotateWheelOfFortune;
+import frc.robot.ncommands.drive.DriveWithJoysticks;
+import frc.robot.ncommands.drive.shiftGears;
+import frc.robot.ncommands.drive.toggleCompressor;
+import frc.robot.ncommands.endgame.raiseEndgame;
+import frc.robot.ncommands.endgame.runEndgameWithJoystick;
+import frc.robot.ncommands.endgame.runWinch;
+import frc.robot.ncommands.intake.moveIntake;
+import frc.robot.ncommands.intake.runConveyor;
+import frc.robot.ncommands.intake.runRoller;
+import frc.robot.ncommands.turret.TargetTurret;
+import frc.robot.ncommands.turret.ToggleLight;
+import frc.robot.ncommands.turret.TurretTest;
 import frc.robot.nsubsystems.*;
 
 /**
@@ -27,6 +47,9 @@ public class RobotContainer implements RobotMap{
   // The robot's subsystems and commands are defined here...
   private final FalconDrive drive = new FalconDrive();
   private final Turret turret = new Turret();
+  private final Intake intake = new Intake();
+  private final Endgame endgame = new Endgame();
+  private final ColorWheel colorWheel = new ColorWheel();
   private final TurretLimelight turretLimelight = TurretLimelight.getInstance();
   private final IntakeLimelight intakeLimelight = IntakeLimelight.getInstance();
   
@@ -64,7 +87,8 @@ public static JoystickButton
 
 	manipTrigger = new JoystickButton(manipJoystick, KOI.TRIGGER_BUTTON),
 	manipThumb = new JoystickButton(manipJoystick, KOI.THUMB_BUTTON),
-	manipButton3 = new JoystickButton(manipJoystick, KOI.HANDLE_BOTTOM_LEFT_BUTTON),
+    manipButton3 = new JoystickButton(manipJoystick, KOI.HANDLE_BOTTOM_LEFT_BUTTON),
+    manipButton4 = new JoystickButton(manipJoystick, KOI.HANDLE_BOTTOM_RIGHT_BUTTON),
 	manipButton5 = new JoystickButton(manipJoystick, KOI.HANDLE_BOTTOM_RIGHT_BUTTON),
 	manipButton7 = new JoystickButton(manipJoystick, KOI.BASE_TOP_LEFT_BUTTON),
 	manipButton8 = new JoystickButton(manipJoystick, KOI.BASE_TOP_RIGHT_BUTTON),
@@ -77,10 +101,17 @@ public static JoystickButton
 
 
   public RobotContainer() {
+      
+    drive.setDefaultCommand(new DriveWithJoysticks(drive, leftJoystick, rightJoystick));
+    intake.setDefaultCommand(new runConveyor(intake, manipJoystick));
+    //turret.setDefaultCommand(new TargetTurret(turret, turretLimelight, manipJoystick));
+    turret.setDefaultCommand(new TurretTest(turret, manipJoystick));
+
     // Configure the button bindings
     configureButtonBindings();
    
   }
+
 
   /**
    * Use this method to define your button->command mappings.  Buttons can be created by
@@ -90,22 +121,22 @@ public static JoystickButton
    */
 
   private void configureButtonBindings() 
-  {/*
-    rightButton3.whenPressed(new toggleLight(true));
-    //leftThumb.whenPressed(new shiftGears(true));
-//	leftButton11.toggleWhenPressed(new toggleCompressor());
+  {
+    rightButton3.whenPressed(new ToggleLight(turret));
+    leftThumb.whenPressed(new shiftGears(drive));
+	leftButton11.toggleWhenPressed(new toggleCompressor(drive));
 
-    manipTrigger.whileHeld(new runRoller(.9));
-    manipThumb.whileHeld(new joystickEndgame());
+    manipTrigger.whileHeld(new runRoller(intake, .9));
+    manipThumb.whileHeld(new runEndgameWithJoystick(endgame, manipJoystick));
     
-    manipButton3.whenPressed(new rotateWheelOfFortune(.8));
-    //manipButton4.whileHeld(new runRoller(-.8));
-    manipButton5.whileHeld(new runWinch(.675));
-    manipButton9.whenPressed(new rotateWheelOfFortune(0));
-    manipButton10.whenPressed(new raiseEndgame(8));
-    manipButton11.toggleWhenPressed(new moveIntake(true));
-    manipButton12.whenPressed(new raiseEndgame(10));
-    */
+    manipButton3.whenPressed(new rotateWheelOfFortune(colorWheel, .8));
+    manipButton4.whileHeld(new runRoller(intake, -.8));
+    manipButton5.whileHeld(new runWinch(endgame, .675));
+    manipButton9.whenPressed(new rotateWheelOfFortune(colorWheel, 0));
+    manipButton10.whenPressed(new raiseEndgame(endgame, 8));
+    manipButton11.toggleWhenPressed(new moveIntake(intake));
+    manipButton12.whenPressed(new raiseEndgame(endgame, 10));
+    
   }
 
   public static boolean leftTrigger() {
@@ -258,6 +289,59 @@ public static JoystickButton
   
       }
   
+      public Command getAutonomousCommand() {
+
+        drive.resetEncoders();
+        drive.resetHeading();
+        drive.resetOdometry();
+    
+        TrajectoryConfig config = new TrajectoryConfig(3.97350993, 2);
+    
+        config.setKinematics(drive.getKinematics());
+    
+        Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+          Arrays.asList(
+            new Pose2d(), 
+            new Pose2d(3, -2, Rotation2d.fromDegrees(0))
+            ), 
+          config
+        );
+    
+        RamseteController disabledRamsete = new RamseteController() {
+          @Override
+          public ChassisSpeeds calculate(Pose2d currentPose, Pose2d poseRef, double linearVelocityRefMeters,
+                 double angularVelocityRefRadiansPerSecond) {
+            return new ChassisSpeeds(linearVelocityRefMeters, 0.0, angularVelocityRefRadiansPerSecond);
+          }
+        };
+    
+      
+      var m_leftReference = NetworkTableInstance.getDefault().getTable("troubleshooting").getEntry("left_reference");
+      var m_leftMeasurement = NetworkTableInstance.getDefault().getTable("troubleshooting").getEntry("left_measurement");
+      var m_rightReference = NetworkTableInstance.getDefault().getTable("troubleshooting").getEntry("right_reference");
+      var m_rightMeasurement = NetworkTableInstance.getDefault().getTable("troubleshooting").getEntry("right_measurement");
+    
+        RamseteCommand command = new RamseteCommand(
+          trajectory,
+          m_driveSubsystem::getPose,
+          disabledRamsete,//new RamseteController(2.0, 0.7),
+          m_driveSubsystem.getFeedForward(),
+          m_driveSubsystem.getKinematics(),
+          m_driveSubsystem::getWheelSpeeds,
+          m_driveSubsystem.getLeftPIDController(),
+          m_driveSubsystem.getRightPIDController(),
+          (leftVolts, rightVolts) -> {
+            m_driveSubsystem.set(leftVolts, rightVolts);
+    
+            m_leftMeasurement.setNumber(m_driveSubsystem.getFeedForward().calculate(m_driveSubsystem.getWheelSpeeds().leftMetersPerSecond));
+            m_leftReference.setNumber(leftVolts);
+    
+            m_rightMeasurement.setNumber(m_driveSubsystem.getFeedForward().calculate(m_driveSubsystem.getWheelSpeeds().rightMetersPerSecond));
+            m_rightReference.setNumber(-rightVolts);
+        },//m_driveSubsystem::set,
+          m_driveSubsystem
+        );
+
 
 
   /**
@@ -265,9 +349,7 @@ public static JoystickButton
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    Command nope = null;
-return nope;
+  
 }
   
 

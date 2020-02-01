@@ -10,12 +10,16 @@ package frc.robot.ncommands.drive;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.FalconDrive;
 
-public class shiftGears extends CommandBase {
-  private static boolean solenoidPosition = true;
+public class DriveWithTrajectory extends CommandBase {
   FalconDrive drive;
-  
-  public shiftGears(FalconDrive subsystem) {
+  /**
+   * Creates a new DriveWithTrajectory.
+   */
+  public DriveWithTrajectory(FalconDrive subsystem) {
     drive = subsystem;
+
+
+    addRequirements(drive);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -27,8 +31,6 @@ public class shiftGears extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    solenoidPosition = !solenoidPosition;
-		drive.shiftGears(solenoidPosition);
   }
 
   // Called once the command ends or is interrupted.
@@ -39,6 +41,6 @@ public class shiftGears extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

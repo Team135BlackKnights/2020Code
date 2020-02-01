@@ -10,28 +10,28 @@ package frc.robot.ncommands.drive;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.*;
+import frc.robot.util.ImprovedJoystick;
 
 public class DriveWithJoysticks extends CommandBase {
   private final FalconDrive drive;
-  private final DoubleSupplier lateralSupply, rotationalSupply;
-  private final BooleanSupplier halfSupply, reverseSupply;
+  
+  ImprovedJoystick _leftJoystick, _rightJoystick;
   /**
    * Creates a new DriveWithJoysticks.
    */
 
   public DriveWithJoysticks(FalconDrive subsystem, 
-  DoubleSupplier lateral, DoubleSupplier rotational, 
-  BooleanSupplier halfPower, BooleanSupplier reversePower) 
+  Joystick leftJoystick, Joystick rightJoystick) 
   {
     drive = subsystem;
     addRequirements(drive);
-    lateralSupply = lateral;
-    rotationalSupply = rotational;
-    halfSupply = halfPower;
-    reverseSupply = reversePower;
+    _leftJoystick = new ImprovedJoystick(leftJoystick);
+    _rightJoystick = new ImprovedJoystick(rightJoystick);
+    
 
 
     
@@ -55,10 +55,10 @@ public class DriveWithJoysticks extends CommandBase {
      
      //Declare the power based off the correct stick and, if it is active, lowered power mode to drive slower.
     
-     lateralPower = lateralSupply.getAsDouble();
-     rotationPower = rotationalSupply.getAsDouble();
-     isReversed = reverseSupply.getAsBoolean();
-     isHalfPower = halfSupply.getAsBoolean();
+     lateralPower = _leftJoystick.getJoystickAxis(0);
+     rotationPower =  _rightJoystick.getJoystickAxis(2);
+     isHalfPower = _leftJoystick.getJoystickButtonValue(2);
+     isReversed = (_leftJoystick.getJoystickButtonValue(1)||_rightJoystick.getJoystickButtonValue(1));
 
      if(isHalfPower)
      {

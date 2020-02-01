@@ -5,7 +5,6 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -13,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.*;
 
@@ -99,7 +99,8 @@ public class Robot extends TimedRobot {
 	//Run Tele
 	@Override
 	public void teleopPeriodic() {
-		Scheduler.getInstance().run();
+		CommandScheduler.getInstance().run();
+		//Scheduler.getInstance().run();
 		
 	}
 

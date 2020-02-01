@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.*;
-import frc.robot.util.KeatonJoystick;
+import frc.robot.util.ImprovedJoystick;
 
 public class TargetTurret extends CommandBase {
   /**
@@ -19,14 +19,14 @@ public class TargetTurret extends CommandBase {
    */
   private final Turret turret;
   private final TurretLimelight turretLimelight;
-  private final KeatonJoystick _joystick;
+  private final ImprovedJoystick _joystick;
   public double horizontalOffset, verticalOffset, targetArea, anglularOffset;
   public boolean targetExist;
 
 
   public TargetTurret(Turret turretSubsystem, TurretLimelight limelightSubsystem, Joystick joystick) 
   {
-    _joystick = new KeatonJoystick(joystick);
+    _joystick = new ImprovedJoystick(joystick);
     turret = turretSubsystem;
     turretLimelight = limelightSubsystem;
     addRequirements(turret);

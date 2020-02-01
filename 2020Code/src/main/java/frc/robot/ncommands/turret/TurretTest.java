@@ -12,17 +12,17 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.*;
-import frc.robot.util.KeatonJoystick;
+import frc.robot.util.ImprovedJoystick;
 
 public class TurretTest extends CommandBase {
   /**
    * Creates a new TurretTest.
    */
   private final Turret turret; 
-  public KeatonJoystick _joystick;
+  public ImprovedJoystick _joystick;
   public TurretTest(Turret subsystem, Joystick joystick) {
     turret = subsystem;
-    _joystick = new KeatonJoystick(joystick);
+    _joystick = new ImprovedJoystick(joystick);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

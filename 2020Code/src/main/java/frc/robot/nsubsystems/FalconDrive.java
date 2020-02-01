@@ -9,6 +9,7 @@ package frc.robot.nsubsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
+import frc.robot.util.ImprovedJoystick;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -42,6 +43,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE{
   public Ultrasonic rearRightSonar, frontRightSonar, rearLeftSonar, frontLeftSonar, rearSonar;
   public AHRS navx;
 
+  ImprovedJoystick leftJoystick, rightJoystick;
 
   public FalconDrive() 
   {
@@ -160,6 +162,9 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE{
   {
     //compressor.setClosedLoopControl(false);
     //compressor.stop();
+  }
+  public void stopMotors() {
+    chassis.tankDrive(0, 0);
   }
 
   public void setCompressorOn()

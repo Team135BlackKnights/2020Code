@@ -11,18 +11,18 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.Endgame;
-import frc.robot.util.KeatonJoystick;
+import frc.robot.util.ImprovedJoystick;
 
 public class runEndgameWithJoystick extends CommandBase {
   /**
    * Creates a new runEndgameWithJoystick.
    */
   private final Endgame endgame;
-  private final KeatonJoystick _joystick;
+  private final ImprovedJoystick _joystick;
   public runEndgameWithJoystick(Endgame subsystem, Joystick joystick) {
     // Use addRequirements() here to declare subsystem dependencies.
   endgame = subsystem;
-  _joystick = new KeatonJoystick(joystick);
+  _joystick = new ImprovedJoystick(joystick);
 
   addRequirements(endgame);
   }

@@ -11,18 +11,18 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.*;
-import frc.robot.util.KeatonJoystick;
+import frc.robot.util.ImprovedJoystick;
 
 public class runConveyor extends CommandBase {
   /**
    * Creates a new runConveyor.
    */
   private final Intake intake;
-  private KeatonJoystick _joystick;
+  private ImprovedJoystick _joystick;
   
   public runConveyor(Intake subsystem, Joystick joystick) {
     intake = subsystem;
-    _joystick = new KeatonJoystick(joystick);
+    _joystick = new ImprovedJoystick(joystick);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
