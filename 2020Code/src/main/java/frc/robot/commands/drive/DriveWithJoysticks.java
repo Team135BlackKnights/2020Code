@@ -51,13 +51,12 @@ public class DriveWithJoysticks extends Command {
     
    
       if(isReverseDirection){
-        Robot.drive.ArcadeDrive(-lateralPower, -rotationPower * .85);
+        Robot.drive.ArcadeDrive(lateralPower, -rotationPower * .85);
       }
       else {
-      Robot.drive.ArcadeDrive(lateralPower, rotationPower * .85);
+      Robot.drive.ArcadeDrive(-lateralPower, rotationPower * .85);
       }
 
-      Robot.drive.runTest(-testJoystickPower);
     }
 
   

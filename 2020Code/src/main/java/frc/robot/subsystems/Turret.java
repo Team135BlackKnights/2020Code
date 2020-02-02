@@ -38,7 +38,7 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
   public Relay targetingLight; 
   public CANSparkMax rotationSpark, bottomShooterSpark, topShooterSpark, ballFeederSpark;
   public CANEncoder rotationEncoder, bottomShooterEncoder, topShooterEncoder, ballFeederEncoder; 
-  public DigitalInput turretBallTripSwitch, turretLeftLimit, turretRightLimit, turretTiltLimit;
+ // public DigitalInput turretBallTripSwitch, turretLeftLimit, turretRightLimit, turretTiltLimit;
   public Counter turretLidar; 
   public PigeonIMU pidgey; 
 
@@ -66,7 +66,7 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     topShooterSpark = new CANSparkMax(TOP_SHOOTER_SPARK_ID, MotorType.kBrushless);
     ballFeederSpark = new CANSparkMax(FEEDER_SPARK_ID, MotorType.kBrushless);
 
-    turretBallTripSwitch = new DigitalInput(TRIP_SWITCH_ID);
+    //turretBallTripSwitch = new DigitalInput(TRIP_SWITCH_ID);
     
     pidgey = new PigeonIMU(PIGEON_ID);
     initTalonSRX(tiltTalon);
@@ -76,18 +76,18 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     initCANSparkMax(topShooterSpark, IdleMode.kCoast);
     initCANSparkMax(ballFeederSpark, IdleMode.kBrake);
 
-    rotationEncoder = rotationSpark.getEncoder(EncoderType.kQuadrature, 4096);
+    //rotationEncoder = rotationSpark.getEncoder(EncoderType.kQuadrature, 4096);
     bottomShooterEncoder = bottomShooterSpark.getEncoder();
     topShooterEncoder = topShooterSpark.getEncoder();
     ballFeederEncoder = ballFeederSpark.getEncoder();
-    tiltTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+    //tiltTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
     //ballFeederSpark.setSmartCurrentLimit(30);
-
+    /*
     rotationSpark.enableSoftLimit(SoftLimitDirection.kForward, true);
     rotationSpark.enableSoftLimit(SoftLimitDirection.kReverse, true);
-
-    tiltTalon.configForwardSoftLimitEnable(true);
-    tiltTalon.configReverseSoftLimitEnable(true);
+*/
+    //tiltTalon.configForwardSoftLimitEnable(true);
+    //tiltTalon.configReverseSoftLimitEnable(true);
 
     resetAllTurretEncoders();
     resetPidgey();
@@ -96,7 +96,7 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     System.out.println("Turret Initialized");
     
   }
-
+/*
   public void turretCountBalls()
   {
     if(isBallInShooter()!=lastBallState && isBallInShooter()!=false)
@@ -109,7 +109,7 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     }
 
   }
-
+*/
   public void initCANSparkMax(CANSparkMax spark, IdleMode mode)
   {
 		spark.setInverted(false);
@@ -161,7 +161,7 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
 
   public void resetRotationEncoder()
   {
-    rotationEncoder.setPosition(0);
+    //rotationEncoder.setPosition(0);
   }
 
   public void resetAllTurretEncoders()
@@ -174,7 +174,7 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
 
   public void runTilt(double power)
   {
-    
+    /*
     if(isAtTiltLimit())
     {
       limit(power, 0, -.9);
@@ -183,13 +183,14 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     {
       limit(power, .9, -.9);
     }
+*/
+ // limit(power, .9, -.9);
 
     tiltTalon.set(ControlMode.PercentOutput, power);
-
-  }
+    }
 
   public void runRotation(double power)
-  {
+  {/*
     if(isAtLeftLimit())
     {
       limit(power, .9, 0);
@@ -199,8 +200,9 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
     }
     else 
     {
-      limit(power, .9, -.9);
-    }
+      */
+      //limit(power, .9, -.9);
+   // }
 
     rotationSpark.set(power);
 
@@ -241,11 +243,12 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
      runTilt(tiltPower);
      runRotation(rotationPower);
   }
+  
   public boolean isBallInShooter()
   {
-    return turretBallTripSwitch.get();
+    return false;//turretBallTripSwitch.get();
   }
-
+/*
   public boolean isAtLeftLimit()
   {
     return turretLeftLimit.get();
@@ -260,7 +263,7 @@ public class Turret extends Subsystem implements RobotMap.TURRET{
   {
     return turretTiltLimit.get();
   }
-
+*/
   public double getPigeonHeading()
   {
     return pidgey.getFusedHeading();

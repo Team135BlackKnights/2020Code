@@ -32,14 +32,13 @@ public class turretTemp extends Command {
 
     double manipYpower, manipZpower, manipXpower,shooterPower, shooterRPM;
 
-    shooterPower= Robot.oi.returnManipSlider();
+    //shooterPower= Robot.oi.returnManipSlider();
     manipYpower = Robot.oi.GetJoystickYValue(2);
     manipXpower = Robot.oi.GetJoystickXValue(2);
     manipZpower = Robot.oi.GetJoystickZValue(2);
-    shooterRPM = shooterPower*4500;
-   // Robot.turret.aimTurret(manipZpower, manipYpower);
+    //shooterRPM = shooterPower*4500;
 
-    boolean isTriggerPressed = Robot.oi.manipTrigger();
+    //boolean isTriggerPressed = Robot.oi.manipTrigger();
     boolean isThumbPressed = Robot.oi.getManipThumb();
 /*
     if(isTriggerPressed)
@@ -71,7 +70,7 @@ public class turretTemp extends Command {
       if(isThumbPressed)
   
       {
-      //  Robot.turret.runShooterRPM(-topRPM, topRPM*3/2);
+      Robot.turret.runShooterRPM(-topRPM, topRPM*3/2);
       Robot.turret.runBallFeeder(-.6);
       }
       else 
@@ -79,6 +78,9 @@ public class turretTemp extends Command {
         Robot.turret.runShooterRPM(0, 0);
         Robot.turret.runBallFeeder(0);
       }
+
+      Robot.turret.aimTurret(-manipZpower/5, manipYpower);
+
      
     
 

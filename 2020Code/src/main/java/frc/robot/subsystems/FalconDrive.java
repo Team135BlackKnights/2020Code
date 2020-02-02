@@ -41,7 +41,6 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
   public static FalconDrive instance; 
   //Declares four Falcon 500 Motors
   public WPI_TalonFX frontLeftFX, frontRightFX, rearLeftFX, rearRightFX;
-  public WPI_TalonSRX testEndgameMotor;
   public Solenoid shifter;
   //public Compressor compressor;
 
@@ -74,8 +73,6 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
 
     frontRightFX = new WPI_TalonFX(FRONT_RIGHT_FALCON);
     rearRightFX = new WPI_TalonFX(REAR_RIGHT_FALCON);
-
-    testEndgameMotor = new WPI_TalonSRX(24);
     
     // *************************************
     configFalcon(frontLeftFX, true);
@@ -128,8 +125,6 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
     
     System.out.println("Falcon Initialized"); // Outputs the text letting the user know that the Falcon has been initialized
 
-    testEndgameMotor.enableCurrentLimit(false);
-    testEndgameMotor.enableVoltageCompensation(true);
 
     odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getAngle()));
   }
@@ -189,10 +184,6 @@ public class FalconDrive extends Subsystem implements RobotMap.DRIVE{
   public void ArcadeDrive(double lateralPower, double rotationalPower)
   { 
     chassis.arcadeDrive(lateralPower, -rotationalPower);
-  }
-  public void runTest(double power)
-  {
-    testEndgameMotor.set(ControlMode.PercentOutput, power);
   }
 
   // Method sets the Chassis to Curvature Drive while pulling double arguements
