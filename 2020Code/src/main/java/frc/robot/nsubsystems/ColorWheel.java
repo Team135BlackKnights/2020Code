@@ -27,7 +27,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DriverStation;
-import frc.robot.OI;
 
 public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL{
   /**
@@ -55,7 +54,8 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL{
 controlPanelColorSensor = new ColorSensorV3(i2cPort);
 // Creates a SparkMax motor controller in rotatorSpark
 rotatorSpark = new CANSparkMax(ROTATOR_ID, MotorType.kBrushless);
-extendSolenoid = new Solenoid(2);
+extendSolenoid = new Solenoid(1);
+//TODO set in robotmap 
 
 initCANSparkMax(rotatorSpark, IdleMode.kBrake);
 testBoi = new WPI_TalonSRX(23);
@@ -258,8 +258,7 @@ moveExtend(false);
          countColor();
 
          // Prints to the screen
-         if (OI.manipButton12.get())//if this button is pressed the spinning is canceled
-         {break;} 
+
          SmartDashboard.putNumber("Wheel Rotations", wheelRotations );
          SmartDashboard.putNumber("ColorChanges:", colorChanges);
          //countColor();

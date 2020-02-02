@@ -64,7 +64,7 @@ public class DriveWithTrajectory extends CommandBase {
   public Command runRamsete() {
     drive.resetEncoders();
     drive.getAngle();
-    drive.resetOdometry();
+    //drive.resetOdometry();
     
     TrajectoryConfig config = new TrajectoryConfig(3.97350993, 2);
     

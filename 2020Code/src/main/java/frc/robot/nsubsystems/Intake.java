@@ -45,9 +45,9 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE{
     raiseLower = new Solenoid(RAISE_LOWER);
   
     intakeBallTripSwitch = new DigitalInput(INTAKE_TRIP_SWITCH);
-    intakeSonar = new Ultrasonic(INTAKE_SONAR_TRIG, INTAKE_SONAR_ECHO);
+    //intakeSonar = new Ultrasonic(INTAKE_SONAR_TRIG, INTAKE_SONAR_ECHO);
 
-    intakeSonar.setAutomaticMode(true);
+    //intakeSonar.setAutomaticMode(true);
     lastSwtichPosition = false;
     currentBallCount = 0;
     System.out.println("Intake Initialized");
@@ -113,7 +113,8 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE{
 
   public double getIntakeSonarDistanceIn()
   {
-    return intakeSonar.getRangeInches();
+    //return intakeSonar.getRangeInches();
+    return 0;
   }
 
   public void intakeBallCount()

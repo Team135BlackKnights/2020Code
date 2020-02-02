@@ -35,7 +35,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
   public Relay targetingLight; 
   public CANSparkMax rotationSpark, bottomShooterSpark, topShooterSpark, ballFeederSpark;
   public CANEncoder rotationEncoder, bottomShooterEncoder, topShooterEncoder, ballFeederEncoder; 
-  public DigitalInput turretBallTripSwitch, turretLeftLimit, turretRightLimit, turretTiltLimit;
+  public DigitalInput turretBallTripSwitch;
   public Counter turretLidar; 
 
   public int turretBallCount = 0; 
@@ -60,7 +60,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
     initCANSparkMax(topShooterSpark, IdleMode.kCoast);
     initCANSparkMax(ballFeederSpark, IdleMode.kBrake);
 
-    rotationEncoder = rotationSpark.getEncoder(EncoderType.kQuadrature, 4096);
+    rotationEncoder = rotationSpark.getEncoder(EncoderType.kQuadrature, 64);
     bottomShooterEncoder = bottomShooterSpark.getEncoder();
     topShooterEncoder = topShooterSpark.getEncoder();
     ballFeederEncoder = ballFeederSpark.getEncoder();
@@ -69,8 +69,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
 
     rotationSpark.enableSoftLimit(SoftLimitDirection.kForward, true);
     rotationSpark.enableSoftLimit(SoftLimitDirection.kReverse, true);
-
-    tiltTalon.configForwardSoftLimitEnable(true);
+    
     tiltTalon.configReverseSoftLimitEnable(true);
 
     resetAllTurretEncoders();
@@ -156,32 +155,15 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
   public void runTilt(double power)
   {
     
-    if(isAtTiltLimit())
-    {
-      limit(power, 0, -.9);
-    }
-    else 
-    {
-      limit(power, .9, -.9);
-    }
-
+    limit(power, .9, -.9);
     tiltTalon.set(ControlMode.PercentOutput, power);
 
   }
 
   public void runRotation(double power)
   {
-    if(isAtLeftLimit())
-    {
-      limit(power, .9, 0);
-    }
-    else if (isAtRightLimit()){
-      limit(power,0, -.9);
-    }
-    else 
-    {
-      limit(power, .9, -.9);
-    }
+    
+    limit(power, .9, -.9);
 
     rotationSpark.set(power);
 
@@ -227,20 +209,9 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
     return turretBallTripSwitch.get();
   }
 
-  public boolean isAtLeftLimit()
-  {
-    return turretLeftLimit.get();
-  }
-
-  public boolean isAtRightLimit()
-  {
-    return turretRightLimit.get();
-  }
-//Tilt is 256 for encoder ticks per revolution
-  public boolean isAtTiltLimit()
-  {
-    return turretTiltLimit.get();
-  }
+  
+//Tilt is 64 for encoder ticks per revolution
+  
 
   public double getSparkEncoderPosition(CANEncoder encoder)
   {

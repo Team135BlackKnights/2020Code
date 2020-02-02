@@ -48,8 +48,8 @@ public interface RobotMap
 
   public interface DRIVE
   {
-    final int FRONT_LEFT_FALCON = 1, FRONT_RIGHT_FALCON = 4,
-            REAR_LEFT_FALCON = 2,  REAR_RIGHT_FALCON = 3,
+    final int FRONT_LEFT_FALCON = 3, FRONT_RIGHT_FALCON = 1,
+            REAR_LEFT_FALCON = 4,  REAR_RIGHT_FALCON = 2,
 
             SHIFTER_ID = 0,
 
@@ -154,7 +154,7 @@ public interface RobotMap
       CONVEYOR_SPARK = 18,
       ROLLER_SPARK = 19,
 
-      RAISE_LOWER = 0,
+      RAISE_LOWER = 2,
 
       INTAKE_SONAR_TRIG = 10,
       INTAKE_SONAR_ECHO = 11,

@@ -23,6 +23,7 @@ public class TurretTest extends CommandBase {
   public TurretTest(Turret subsystem, Joystick joystick) {
     turret = subsystem;
     _joystick = new ImprovedJoystick(joystick);
+    addRequirements(turret);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

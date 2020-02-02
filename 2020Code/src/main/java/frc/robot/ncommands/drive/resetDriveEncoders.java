@@ -24,7 +24,7 @@ public class resetDriveEncoders extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Robot.drive.resetEncoders();
+    drive.resetEncoders();
 
   }
 

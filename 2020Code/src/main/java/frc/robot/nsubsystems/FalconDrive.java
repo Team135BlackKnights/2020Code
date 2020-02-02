@@ -40,7 +40,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE{
   public static final double wheelDiameterInches = 6.375;//18;
   public static final double wheelCircumferenceInches = wheelDiameterInches * Math.PI;
   public static final double encoderTicksPerRev = 2048;
-  DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading());
+ // DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading());
 
   DifferentialDriveOdometry m_odometry;
 
@@ -117,7 +117,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE{
  resetEncoders(); //Calls method to reset the internal encoders of the motors
  setBrakeMode(NeutralMode.Brake); // Calls method which makes it so that when the input is neutral, the motors will brake
  
- System.out.println("Falcon Initialized"); // Outputs the text letting the user know that the Falcon has been initialized
+ System.out.println("Falcon Drive Initialized"); // Outputs the text letting the user know that the Falcon has been initialized
 
   }
 
@@ -336,7 +336,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE{
 
   @Override
   public void periodic() {
-    pose = odometry.update(getHeading(), getLeftPos() / encoderTicksPerRev * gearRatio * Units.inchesToMeters(wheelCircumferenceInches), getRightPos() / encoderTicksPerRev * gearRatio * Units.inchesToMeters(wheelCircumferenceInches));
+  //  pose = odometry.update(getHeading(), getLeftPos() / encoderTicksPerRev * gearRatio * Units.inchesToMeters(wheelCircumferenceInches), getRightPos() / encoderTicksPerRev * gearRatio * Units.inchesToMeters(wheelCircumferenceInches));
 
     // This method will be called once per scheduler run
   }
@@ -344,11 +344,14 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE{
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
   }
+  /*
   public void resetOdometry() {
     odometry.resetPosition(new Pose2d(), getHeading());
   }
+  */
+  /*
   public Rotation2d getHeading() {
     return Rotation2d.fromDegrees(Math.IEEEremainder(navx.getYaw(), 360.0d));
   }
-  
+  */
 }

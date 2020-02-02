@@ -40,8 +40,8 @@ public class RobotContainer implements RobotMap{
   private final FalconDrive drive = new FalconDrive();
   private final Turret turret = new Turret();
   private final Intake intake = new Intake();
-  private final Endgame endgame = new Endgame();
-  private final ColorWheel colorWheel = new ColorWheel();
+ private final Endgame endgame = new Endgame();
+ private final ColorWheel colorWheel = new ColorWheel();
   private final TurretLimelight turretLimelight = TurretLimelight.getInstance();
   private final IntakeLimelight intakeLimelight = IntakeLimelight.getInstance();
   
@@ -95,7 +95,7 @@ public static JoystickButton
   public RobotContainer() {
       
     drive.setDefaultCommand(new DriveWithJoysticks(drive, leftJoystick, rightJoystick));
-    intake.setDefaultCommand(new runConveyor(intake, manipJoystick));
+    //intake.setDefaultCommand(new runConveyor(intake, manipJoystick));
     //turret.setDefaultCommand(new TargetTurret(turret, turretLimelight, manipJoystick));
     turret.setDefaultCommand(new TurretTest(turret, manipJoystick));
 

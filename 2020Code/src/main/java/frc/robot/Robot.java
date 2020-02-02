@@ -13,11 +13,10 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.*;
 
 
 public class Robot extends TimedRobot {
-  //Dec FalconDrivers with drive
+ /* //Dec FalconDrivers with drive
   public static FalconDrive drive; 
   //Declare ColorWheel with colorwheel
   public static ColorWheel colorWheel;
@@ -32,40 +31,22 @@ public class Robot extends TimedRobot {
   //Dec Endgame with endgame
   public static Endgame endgame;
   public static OI oi;
-
+*/
+  public RobotContainer container;
   Command autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 
   @Override
   public void robotInit() {
-	initKOPChassis();
+	  container = new RobotContainer();
+	//initKOPChassis();
 	//initRobot();
 
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
   }
-  public void initKOPChassis()
-  {
-	drive = new FalconDrive();
-	//colorWheel = new ColorWheel();
-	turret = new Turret();
-	turretlimelight = new TurretLimelight();
-	oi = new OI();
-	
-  }
-
-  public void initRobot()
-  {
-	  drive = new FalconDrive();
-	  turretlimelight = new TurretLimelight();
-	  intakeLimelight = new IntakeLimelight();
-	  turret = new Turret();
-	  intake = new Intake();
-	  colorWheel = new ColorWheel();
-	  endgame = new Endgame();
-	  oi = new OI();
-  }
+ 
 
     //Initialize Shutdown
  	@Override

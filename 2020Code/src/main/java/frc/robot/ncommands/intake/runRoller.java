@@ -37,7 +37,7 @@ public class runRoller extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Robot.intake.runRoller(0);
+    intake.runRoller(0);
   }
 
   // Returns true when the command should end.
