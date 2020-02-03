@@ -80,7 +80,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE{
  compressor = new Compressor();
 
  compressor.setClosedLoopControl(false);
- //compressor.start();
+ compressor.start();
 
  // Creates four Ultrasonic sensors
  frontRightSonar = new Ultrasonic(FRONT_RIGHT_SONAR_TRIG, FRONT_RIGHT_SONAR_ECHO);
@@ -176,8 +176,8 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE{
 
   public void setCompressorOff()
   {
-    //compressor.setClosedLoopControl(false);
-    //compressor.stop();
+    compressor.setClosedLoopControl(false);
+    compressor.stop();
   }
   public void stopMotors() {
     chassis.tankDrive(0, 0);
@@ -185,12 +185,12 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE{
 
   public void setCompressorOn()
   {
-    //compressor.setClosedLoopControl(true);
+    compressor.setClosedLoopControl(true);
   }
 
   public boolean isCompressorOn()
   {
-    return false;//compressor.getClosedLoopControl();
+    return compressor.getClosedLoopControl();
   }
 
   
