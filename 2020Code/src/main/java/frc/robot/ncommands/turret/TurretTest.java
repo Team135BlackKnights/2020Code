@@ -48,7 +48,7 @@ public class TurretTest extends CommandBase {
     if(isTriggerPressed)
     {
       topRPM = 2200;
-      feederPower = .6;
+      feederPower = .8;
     }
     else 
     {
@@ -57,9 +57,9 @@ public class TurretTest extends CommandBase {
     }
     bottomRPM = topRPM*3/2;
 
-    turret.aimTurret(manipZpower, manipYpower);
-    turret.runShooterRPM(topRPM, bottomRPM);
-    turret.runBallFeeder(feederPower);
+    turret.aimTurret(manipZpower/25, -manipYpower/3);
+    turret.runShooterRPM(-topRPM, bottomRPM);
+    turret.runBallFeeder(-feederPower);
   }
 
   // Called once the command ends or is interrupted.

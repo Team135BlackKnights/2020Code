@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANDigitalInput;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.EncoderType;
@@ -35,6 +36,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
   public Relay targetingLight; 
   public CANSparkMax rotationSpark, bottomShooterSpark, topShooterSpark, ballFeederSpark;
   public CANEncoder rotationEncoder, bottomShooterEncoder, topShooterEncoder, ballFeederEncoder; 
+  public CANDigitalInput leftRotationLimit, rightRotationLimit;
   public DigitalInput turretBallTripSwitch;
   public Counter turretLidar; 
 
@@ -60,17 +62,16 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
     initCANSparkMax(topShooterSpark, IdleMode.kCoast);
     initCANSparkMax(ballFeederSpark, IdleMode.kBrake);
 
-    rotationEncoder = rotationSpark.getEncoder(EncoderType.kQuadrature, 64);
-    bottomShooterEncoder = bottomShooterSpark.getEncoder();
+   //rotationEncoder = rotationSpark.getAlternateEncoder();
+   rotationEncoder = rotationSpark.getEncoder();
+   bottomShooterEncoder = bottomShooterSpark.getEncoder();
     topShooterEncoder = topShooterSpark.getEncoder();
     ballFeederEncoder = ballFeederSpark.getEncoder();
     tiltTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-    //ballFeederSpark.setSmartCurrentLimit(30);
-
-    rotationSpark.enableSoftLimit(SoftLimitDirection.kForward, true);
-    rotationSpark.enableSoftLimit(SoftLimitDirection.kReverse, true);
+  //  rotationSpark.enableSoftLimit(SoftLimitDirection.kForward, true);
+    //rotationSpark.enableSoftLimit(SoftLimitDirection.kReverse, true);
     
-    tiltTalon.configReverseSoftLimitEnable(true);
+   // tiltTalon.configReverseSoftLimitEnable(true);
 
     resetAllTurretEncoders();
     
@@ -92,6 +93,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
 
   public void initCANSparkMax(CANSparkMax spark, IdleMode mode)
   {
+    spark.restoreFactoryDefaults();
 		spark.setInverted(false);
     spark.enableVoltageCompensation(12);
     spark.setIdleMode(mode);
@@ -101,6 +103,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
   {
     talon.configReverseSoftLimitEnable(false);
     talon.configForwardSoftLimitEnable(false);
+    talon.enableCurrentLimit(false);
     talon.enableVoltageCompensation(true);
     talon.setSensorPhase(true);
     talon.configNominalOutputForward(0);
@@ -341,6 +344,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
 
   @Override
   public void periodic() {
+    printTemp();
     // This method will be called once per scheduler run
   }
 }

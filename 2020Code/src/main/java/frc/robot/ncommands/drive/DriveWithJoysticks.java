@@ -49,12 +49,12 @@ public class DriveWithJoysticks extends CommandBase {
      //Creates a value for each joystick's power based on the direction/power of the joystick and the max set by the slider
   
      double lateralPower, rotationPower;
-     boolean isReversed, isHalfPower;
+     boolean isReversed = false, isHalfPower;
      
      //Declare the power based off the correct stick and, if it is active, lowered power mode to drive slower.
     
-     lateralPower = _leftJoystick.getJoystickAxis(0);
-     rotationPower =  _rightJoystick.getJoystickAxis(2);
+     lateralPower = _rightJoystick.getJoystickAxis(1);
+     rotationPower =  _leftJoystick.getJoystickAxis(2);
      isHalfPower = _leftJoystick.getJoystickButtonValue(2);
      isReversed = (_leftJoystick.getJoystickButtonValue(1)||_rightJoystick.getJoystickButtonValue(1));
 
@@ -66,10 +66,10 @@ public class DriveWithJoysticks extends CommandBase {
      
     
        if(isReversed){
-         drive.ArcadeDrive(-lateralPower, -rotationPower * .85);
+         drive.ArcadeDrive(lateralPower, rotationPower * .85);
        }
        else {
-       drive.ArcadeDrive(lateralPower, rotationPower * .85);
+       drive.ArcadeDrive(-lateralPower, -rotationPower * .85);
        }
  
      }

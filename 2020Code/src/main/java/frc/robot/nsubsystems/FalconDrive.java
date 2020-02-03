@@ -79,8 +79,8 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE{
  shifter = new Solenoid(SHIFTER_ID);
  compressor = new Compressor();
 
- compressor.setClosedLoopControl(true);
- compressor.start();
+ compressor.setClosedLoopControl(false);
+ //compressor.start();
 
  // Creates four Ultrasonic sensors
  frontRightSonar = new Ultrasonic(FRONT_RIGHT_SONAR_TRIG, FRONT_RIGHT_SONAR_ECHO);
