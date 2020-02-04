@@ -74,7 +74,7 @@ public class TargetTurret extends CommandBase {
 
     double rotationDirection = horizontalOffset > 0 ? -1: 1;
     boolean isPOVLeft, isPOVRight, isPOVUp, isPOVDown, isPOVTopRight, isPOVBottomRight, isPOVBottomLeft, isPOVTopLeft;
-    boolean isTrigger = _joystick.getJoystickButtonValue(1);
+    boolean isTrigger = _joystick.getJoystickButtonValue(2);
     double topRPM = 2200;
     double bottomRPM = topRPM*3/2;
     double totalError =+ horizontalOffset;
@@ -91,8 +91,8 @@ public class TargetTurret extends CommandBase {
     SmartDashboard.putNumber("Distance to Target Ft: ", distToTargetFt);
 
     double velocity = Math.pow(((-9.8066 * distToTarget)/(Math.asin(2 * turretAngle))), 1/2);
-    
-
+    double  RPM = velocity / (3 * 0.10472);    
+/*
     if(isTrigger)
     {
       turret.runShooterRPM(topRPM, bottomRPM);
@@ -103,7 +103,7 @@ public class TargetTurret extends CommandBase {
       turret.runShooterRPM(-0, 0);
       turret.runBallFeeder(0);
     }
-
+*/
     isPOVUp = _joystick.isPovDirectionPressed(0);
     isPOVRight = _joystick.isPovDirectionPressed(1);
     isPOVDown = _joystick.isPovDirectionPressed(2);

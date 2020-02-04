@@ -23,33 +23,25 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE{
   /**
    * Creates a new Intake.
    */
-  public CANSparkMax rollerSpark, conveyorSpark;
-  public CANEncoder rollerEncoder, conveyorEncoder;
-  public DigitalInput intakeBallTripSwitch;
+  public CANSparkMax rollerSpark;
+  public CANEncoder rollerEncoder;
   public Ultrasonic intakeSonar;
-  public int currentBallCount;
-  public boolean lastSwtichPosition;
   public Solenoid raiseLower;
 
   public Intake() 
   {
     rollerSpark = new CANSparkMax(ROLLER_SPARK , MotorType.kBrushless);
-    conveyorSpark = new CANSparkMax(CONVEYOR_SPARK, MotorType.kBrushless);
 
     initCANSparkMax(rollerSpark, IdleMode.kCoast);
-    initCANSparkMax(conveyorSpark, IdleMode.kBrake);
 
     rollerEncoder = rollerSpark.getEncoder();
-    conveyorEncoder = conveyorSpark.getEncoder();
 
     raiseLower = new Solenoid(RAISE_LOWER);
   
-    intakeBallTripSwitch = new DigitalInput(INTAKE_TRIP_SWITCH);
    // intakeSonar = new Ultrasonic(8, 9);
 
     //intakeSonar.setAutomaticMode(true);
-    lastSwtichPosition = false;
-    currentBallCount = 0;
+    
     System.out.println("Intake Initialized");
   }
 
@@ -63,16 +55,6 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE{
   public void runRoller(double power)
   {
     rollerSpark.set(power);
-  }
-
-  public void runConveyor(double power)
-  {
-    conveyorSpark.set(power);
-  }
-
-  public void resetConveyorEncoder()
-  {
-    conveyorEncoder.setPosition(0);
   }
 
   public double getEncoderPosition(CANEncoder encoder)
@@ -90,11 +72,11 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE{
     return encoder.getVelocity();
   }
 
-  public double getConveyorRotations()
+  public double getIntakeSonarDistanceIn()
   {
-    return ticksToRotations(getEncoderPosition(conveyorEncoder));
+    return intakeSonar.getRangeInches();
   }
-
+  
   public void raiseLower(boolean position)
   {
     raiseLower.set(position);
@@ -105,34 +87,10 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE{
     return raiseLower.get();
   }
 
-  
-  public boolean isBallAtTripSwitch()
-  {
-    return intakeBallTripSwitch.get();
-  }
-
-  public double getIntakeSonarDistanceIn()
-  {
-    return 1;//intakeSonar.getRangeInches();
-  
-  }
-
-  public void intakeBallCount()
-  {
-      if(isBallAtTripSwitch()!= lastSwtichPosition && isBallAtTripSwitch()!=false)
-      {
-        currentBallCount++;
-      }
-      if(lastSwtichPosition!=isBallAtTripSwitch())
-      {
-        lastSwtichPosition = isBallAtTripSwitch();
-      }
-  }
 
 
   @Override
   public void periodic() {
-    intakeBallCount();
     // This method will be called once per scheduler run
   }
 }

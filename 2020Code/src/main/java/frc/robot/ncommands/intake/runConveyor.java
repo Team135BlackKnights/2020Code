@@ -17,11 +17,11 @@ public class runConveyor extends CommandBase {
   /**
    * Creates a new runConveyor.
    */
-  private final Intake intake;
+  private final Storage storage;
   private ImprovedJoystick _joystick;
   
-  public runConveyor(Intake subsystem, Joystick joystick) {
-    intake = subsystem;
+  public runConveyor(Storage subsystem, Joystick joystick) {
+    storage = subsystem;
     _joystick = new ImprovedJoystick(joystick);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -38,8 +38,8 @@ public class runConveyor extends CommandBase {
   @Override
   public void execute() {
 
-    boolean isBallTrip = intake.isBallAtTripSwitch();
-    double currentConveyPos = intake.getConveyorRotations();
+    boolean isBallTrip = storage.isBallAtTripSwitch();
+    double currentConveyPos = storage.getConveyorRotations();
     double conveyorPower = 0;
     boolean isButton7, isButton8;
 
@@ -47,7 +47,7 @@ public class runConveyor extends CommandBase {
     isButton8 = _joystick.getJoystickButtonValue(8);
     if(isBallTrip)
     {
-      intake.resetConveyorEncoder();
+      storage.resetConveyorEncoder();
     }
     if(currentConveyPos <= 7 && !(isButton7 || isButton8))
     {
@@ -70,7 +70,7 @@ public class runConveyor extends CommandBase {
       SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR NOT OVERWROTE");
     }
       
-    intake.runConveyor(conveyorPower);
+    storage.runConveyor(conveyorPower);
   }
 
   // Called once the command ends or is interrupted.

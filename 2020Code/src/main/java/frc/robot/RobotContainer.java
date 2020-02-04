@@ -96,8 +96,8 @@ public static JoystickButton
       
     drive.setDefaultCommand(new DriveWithJoysticks(drive, leftJoystick, rightJoystick));
     //intake.setDefaultCommand(new runConveyor(intake, manipJoystick));
-   turret.setDefaultCommand(new TargetTurret(turret, turretLimelight, manipJoystick));
-    //turret.setDefaultCommand(new TurretTest(turret, manipJoystick));
+   //turret.setDefaultCommand(new TargetTurret(turret, turretLimelight, manipJoystick));
+    turret.setDefaultCommand(new TurretTest(turret, manipJoystick));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -118,7 +118,7 @@ public static JoystickButton
     leftThumb.whenPressed(new shiftGears(drive));
 	leftButton11.toggleWhenPressed(new toggleCompressor(drive));
 
-    manipTrigger.whileHeld(new runRoller(intake, .9));
+    manipTrigger.whileHeld(new runRoller(intake, .3));
     manipThumb.whileHeld(new runEndgameWithJoystick(endgame, manipJoystick));
     
     manipButton3.whenPressed(new rotateWheelOfFortune(colorWheel, .8));

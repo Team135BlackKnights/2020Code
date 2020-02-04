@@ -44,7 +44,7 @@ public class TurretTest extends CommandBase {
 
     boolean isTriggerPressed;
     isTriggerPressed =  _joystick.getJoystickButtonValue(1);
-    
+    /*
     if(isTriggerPressed)
     {
       topRPM = 2200;
@@ -55,6 +55,9 @@ public class TurretTest extends CommandBase {
       topRPM = 0;
       feederPower = 0;
     }
+    */
+    topRPM = 0;
+    feederPower = 0;
     bottomRPM = topRPM*3/2;
 
     turret.aimTurret(manipZpower/25, -manipYpower/3);

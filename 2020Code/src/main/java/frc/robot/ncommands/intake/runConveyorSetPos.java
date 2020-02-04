@@ -15,11 +15,11 @@ public class runConveyorSetPos extends CommandBase {
   /**
    * Creates a new runConveyorSetPos.
    */
-  private final Intake intake;
+  private final Storage storage;
   private final double _targetPos;
   private boolean isFinished = false;
-  public runConveyorSetPos(Intake subsystem, double targetPos) {
-    intake = subsystem;
+  public runConveyorSetPos(Storage subsystem, double targetPos) {
+    storage = subsystem;
     this._targetPos = targetPos;
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -34,15 +34,15 @@ public class runConveyorSetPos extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double currentConveyPos = intake.getConveyorRotations();
+    double currentConveyPos = storage.getConveyorRotations();
     if((_targetPos)!=currentConveyPos)
     {
-      intake.runConveyor(.65);
+      storage.runConveyor(.65);
       isFinished = false;
     }
     else 
     {
-      intake.runConveyor(0);
+      storage.runConveyor(0);
       isFinished = true;
     }
   }
