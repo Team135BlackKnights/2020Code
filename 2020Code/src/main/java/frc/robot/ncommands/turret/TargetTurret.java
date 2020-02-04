@@ -8,6 +8,8 @@
 package frc.robot.ncommands.turret;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.*;
@@ -22,6 +24,9 @@ public class TargetTurret extends CommandBase {
   private final ImprovedJoystick _joystick;
   public double horizontalOffset, verticalOffset, targetArea, anglularOffset;
   public boolean targetExist;
+  public double startTime;
+  public double time;
+  public double loopRuns; 
 
 
   public TargetTurret(Turret turretSubsystem, TurretLimelight limelightSubsystem, Joystick joystick) 
@@ -31,6 +36,7 @@ public class TargetTurret extends CommandBase {
     turretLimelight = limelightSubsystem;
     addRequirements(turret);
     addRequirements(turretLimelight);
+    
 
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -39,6 +45,8 @@ public class TargetTurret extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    startTime = Timer.getMatchTime();
+    loopRuns = 1;
     
     SmartDashboard.putString("Turret Command Running: ", "targetTurret");
     turretLimelight.initLimelight(0, 0);
@@ -47,6 +55,9 @@ public class TargetTurret extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    time = Timer.getMatchTime();
+    double _time = time - startTime;
     targetExist = turretLimelight.GetLimelightData()[0] >= 1 ? true : false;
     verticalOffset = turretLimelight.GetLimelightData()[2];
     horizontalOffset = turretLimelight.GetLimelightData()[1];
@@ -55,9 +66,9 @@ public class TargetTurret extends CommandBase {
   
     double rotationPower, tiltPower;
 
-    double rP = 1, tP = 1;
+    double rP = .38, tP = 1, rI = .012;
 
-    rotationPower = horizontalOffset/60;
+    rotationPower = horizontalOffset/80;
     tiltPower = -verticalOffset/8;
 
     double minPower = .3;
@@ -65,10 +76,14 @@ public class TargetTurret extends CommandBase {
     double rotationDirection = horizontalOffset > 0 ? -1: 1;
     boolean isPOVLeft, isPOVRight, isPOVUp, isPOVDown, isPOVTopRight, isPOVBottomRight, isPOVBottomLeft, isPOVTopLeft;
     boolean isTrigger = _joystick.getJoystickButtonValue(1);
-
+    double topRPM = 2200;
+    double bottomRPM = topRPM*3/2;
+    double totalError =+ horizontalOffset;
+    
+    double rIntegral = (totalError/loopRuns*20)/50;
     if(isTrigger)
     {
-      turret.runShooterRPM(-2200, 2200*3/2);
+      turret.runShooterRPM(topRPM, bottomRPM);
       turret.runBallFeeder(-.8);
     }
     else 
@@ -153,7 +168,7 @@ public class TargetTurret extends CommandBase {
     else 
     if(targetExist)
     {
-      rotationPower = (rotationPower * rP);
+      rotationPower = (rotationPower * rP) + (rIntegral * rI);
       tiltPower = (tiltPower * tP);
       SmartDashboard.putString("Turret State:", "Auto Targetting");
     }
@@ -168,6 +183,7 @@ public class TargetTurret extends CommandBase {
     SmartDashboard.putNumber("Target Turret Tilt Power:", tiltPower);
 
   turret.aimTurret(rotationPower, tiltPower);
+  loopRuns =+ loopRuns;
 
   }
 

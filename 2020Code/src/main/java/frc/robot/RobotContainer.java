@@ -94,9 +94,9 @@ public static JoystickButton
 
   public RobotContainer() {
       
-    //drive.setDefaultCommand(new DriveWithJoysticks(drive, leftJoystick, rightJoystick));
+    drive.setDefaultCommand(new DriveWithJoysticks(drive, leftJoystick, rightJoystick));
     //intake.setDefaultCommand(new runConveyor(intake, manipJoystick));
-    //turret.setDefaultCommand(new TargetTurret(turret, turretLimelight, manipJoystick));
+    turret.setDefaultCommand(new TargetTurret(turret, turretLimelight, manipJoystick));
     //turret.setDefaultCommand(new TurretTest(turret, manipJoystick));
 
     // Configure the button bindings

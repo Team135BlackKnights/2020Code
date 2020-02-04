@@ -89,7 +89,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE{
  frontLeftSonar = new Ultrasonic(FRONT_LEFT_SONAR_TRIG, FRONT_LEFT_SONAR_ECHO);
  rearLeftSonar = new Ultrasonic(REAR_LEFT_SONAR_TRIG, REAR_LEFT_SONAR_ECHO);
 
- rearSonar = new Ultrasonic(REAR_SONAR_TRIG, REAR_SONAR_ECHO);
+ rearSonar = new Ultrasonic(10, 11);
 
  //Sets the Ultrasonic Sensors so that they can function together
  rearRightSonar.setAutomaticMode(true);

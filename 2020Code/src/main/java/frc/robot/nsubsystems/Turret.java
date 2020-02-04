@@ -62,6 +62,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
     initCANSparkMax(topShooterSpark, IdleMode.kCoast);
     initCANSparkMax(ballFeederSpark, IdleMode.kBrake);
 
+    topShooterSpark.setInverted(true);
    //rotationEncoder = rotationSpark.getAlternateEncoder();
    rotationEncoder = rotationSpark.getEncoder();
    bottomShooterEncoder = bottomShooterSpark.getEncoder();
@@ -344,7 +345,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
 
   @Override
   public void periodic() {
-    printTemp();
+   //printTemp();
+   printRotations();
     // This method will be called once per scheduler run
   }
 }
