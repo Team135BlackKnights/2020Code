@@ -8,7 +8,6 @@
 package frc.robot.ncommands.turret;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -81,6 +80,19 @@ public class TargetTurret extends CommandBase {
     double totalError =+ horizontalOffset;
     
     double rIntegral = (totalError/loopRuns*20)/50;
+    double turretAngle = turret.tiltTicksToAngle();
+    SmartDashboard.putNumber("turret Angle", turretAngle);
+    double limelightHeight = Math.sin(turretAngle)*5;
+    double hypotTarget = -turretLimelight.hpotToTarget(98, limelightHeight,  turretAngle);
+    double distToTarget = -turretLimelight.distToTarget(98, limelightHeight, turretAngle);
+    SmartDashboard.putNumber("distance to Target: ", distToTarget);
+    SmartDashboard.putNumber("hypot target", hypotTarget);
+    double distToTargetFt = distToTarget/12;
+    SmartDashboard.putNumber("Distance to Target Ft: ", distToTargetFt);
+
+    double velocity = Math.pow(((-9.8066 * distToTarget)/(Math.asin(2 * turretAngle))), 1/2);
+    
+
     if(isTrigger)
     {
       turret.runShooterRPM(topRPM, bottomRPM);

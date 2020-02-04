@@ -8,7 +8,6 @@
 package frc.robot.ncommands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
 import frc.robot.nsubsystems.Intake;
 
 public class runRoller extends CommandBase {

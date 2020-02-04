@@ -28,7 +28,7 @@ public class runWinch extends CommandBase {
   @Override
   public void initialize() {
     
-    SmartDashboard.putString("Endgame command Running: ", "runWinch" + _power);
+    SmartDashboard.putString("Endgame command Running: ", "runWinch " + _power);
 
   }
 

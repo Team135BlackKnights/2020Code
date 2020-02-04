@@ -8,7 +8,6 @@
 package frc.robot.ncommands.drive;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
 import frc.robot.nsubsystems.FalconDrive;
 
 public class resetDriveEncoders extends CommandBase {

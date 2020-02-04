@@ -57,6 +57,15 @@ public class TurretLimelight extends SubsystemBase {
 	{
 		return _targetArea.process((float)limelightData[TARGET_AREA]);
 	}
+	
+	public double distToTarget(double targetHeight,double limelightHeightAdjust, double limelightAngle)
+	{
+		return ((targetHeight-(34.375+ limelightHeightAdjust))/Math.tan(90-limelightAngle));
+	}
+	public double hpotToTarget(double targetHeight, double limelightHeightAdjust, double limelightAngle)
+	{
+		return ((targetHeight - (34.375 + limelightHeightAdjust))/Math.sin(90-limelightAngle));
+	}
 
 	public double[] GetLimelightData() { // creating an array so we can get to any of the values that we need from network tables
 		limelightData[VALID_TARGET] = validTargetEntry.getDouble(0.0);
@@ -89,6 +98,7 @@ public class TurretLimelight extends SubsystemBase {
 	public void periodic() 	
 	{
 		SmartDashboard.putNumber("Averaged Area", getAveragedArea());
+		SmartDashboard.putNumber("Area", limelightData[3]);
 	//	SmartDashboard.putNumber(" Horizontal offset", GetLimelightData()[HORIZONTAL_OFFSET]);
 	//	SmartDashboard.putNumber(" Vertical Offset", limelightData[VERTICAL_OFFSET]);
 	//	SmartDashboard.putBoolean("Target Exist", limelightData[0] >=1);

@@ -53,7 +53,7 @@ public class RotateTurretToAngle extends CommandBase {
   @Override
   public void execute() {
     //Going from encoder ticks to the angle of another wheel
-    encoderWheelCurrentInches = turret.ticksToInches(turret.rotationEncoder, encoderWheelDiameter);
+    //encoderWheelCurrentInches = turret.ticksToInches(turret.rotationEncoder, encoderWheelDiameter);
     turretWheelCurrentInches = encoderWheelCurrentInches;
     turretWheelPercent = turretWheelCurrentInches / turretWheelCircumference;
     currentAngle = 360 * turretWheelPercent;
