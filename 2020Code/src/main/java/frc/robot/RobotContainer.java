@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.ncommands.color.rotateWheelOfFortune;
 import frc.robot.ncommands.drive.DriveWithJoysticks;
+import frc.robot.ncommands.drive.resetDriveEncoders;
 import frc.robot.ncommands.drive.shiftGears;
 import frc.robot.ncommands.drive.toggleCompressor;
 import frc.robot.ncommands.endgame.raiseEndgame;
@@ -71,17 +72,24 @@ public static JoystickButton
 	rightTrigger = new JoystickButton(rightJoystick, KOI.TRIGGER_BUTTON),
 	rightThumb = new JoystickButton(rightJoystick, KOI.THUMB_BUTTON),
 	rightButton3 = new JoystickButton(rightJoystick, KOI.HANDLE_BOTTOM_LEFT_BUTTON),
-	
+  
+  
 
 	leftTrigger = new JoystickButton(leftJoystick, KOI.TRIGGER_BUTTON),
-    leftThumb = new JoystickButton(leftJoystick, KOI.THUMB_BUTTON),
+  leftThumb = new JoystickButton(leftJoystick, KOI.THUMB_BUTTON),
     
-	leftButton11 = new JoystickButton(leftJoystick, KOI.BASE_BOTTOM_LEFT_BUTTON),
+  leftButton7 = new JoystickButton(leftJoystick, KOI.BASE_TOP_LEFT_BUTTON),
+  leftButton8 = new JoystickButton(leftJoystick, KOI.BASE_TOP_RIGHT_BUTTON),
+  leftButton9 = new JoystickButton(leftJoystick, KOI.BASE_MIDDLE_LEFT_BUTTON),
+  leftButton10 = new JoystickButton(leftJoystick, KOI.BASE_MIDDLE_RIGHT_BUTTON),
+  leftButton11 = new JoystickButton(leftJoystick, KOI.BASE_BOTTOM_LEFT_BUTTON),
+  leftButton12 = new JoystickButton(leftJoystick, KOI.BASE_BOTTOM_RIGHT_BUTTON),
+
 
 	manipTrigger = new JoystickButton(manipJoystick, KOI.TRIGGER_BUTTON),
 	manipThumb = new JoystickButton(manipJoystick, KOI.THUMB_BUTTON),
-    manipButton3 = new JoystickButton(manipJoystick, KOI.HANDLE_BOTTOM_LEFT_BUTTON),
-    manipButton4 = new JoystickButton(manipJoystick, KOI.HANDLE_BOTTOM_RIGHT_BUTTON),
+  manipButton3 = new JoystickButton(manipJoystick, KOI.HANDLE_BOTTOM_LEFT_BUTTON),
+  manipButton4 = new JoystickButton(manipJoystick, KOI.HANDLE_BOTTOM_RIGHT_BUTTON),
 	manipButton5 = new JoystickButton(manipJoystick, KOI.HANDLE_BOTTOM_RIGHT_BUTTON),
 	manipButton7 = new JoystickButton(manipJoystick, KOI.BASE_TOP_LEFT_BUTTON),
 	manipButton8 = new JoystickButton(manipJoystick, KOI.BASE_TOP_RIGHT_BUTTON),
@@ -115,7 +123,12 @@ public static JoystickButton
     rightButton3.whenPressed(new ToggleLight(turret));
 
     leftThumb.whenPressed(new shiftGears(drive));
-	leftButton11.toggleWhenPressed(new toggleCompressor(drive));
+    leftButton7.whenPressed(new resetDriveEncoders(drive));
+    leftButton8.whenPressed(new resetDriveEncoders(drive));
+    leftButton9.whenPressed(new resetDriveEncoders(drive));
+    leftButton10.whenPressed(new resetDriveEncoders(drive));
+	  leftButton11.toggleWhenPressed(new toggleCompressor(drive));
+    leftButton12.whenPressed(new resetDriveEncoders(drive));
 
     manipTrigger.whileHeld(new ShootTurret(turret, 2200, 3400));
     manipThumb.whileHeld(new runEndgameWithJoystick(endgame, manipJoystick));
