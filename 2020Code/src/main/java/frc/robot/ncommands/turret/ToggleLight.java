@@ -15,7 +15,7 @@ public class ToggleLight extends CommandBase {
    * Creates a new ToggleLight.
    */
   private final Turret turret; 
-  public boolean lightOn;
+  private boolean lightOn;
   public ToggleLight(Turret subsystem) {
     turret = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.

@@ -17,7 +17,7 @@ public class ShootTurret extends CommandBase {
    */
   private final Turret turret;
   private final double topShooterDesired, bottomShooterDesired;
-  public boolean isFinished;
+  private boolean isFinished;
 
   public ShootTurret(Turret subsystem, double topShooterRPM, double bottomShooterRPM) 
   {

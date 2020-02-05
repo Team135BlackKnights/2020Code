@@ -20,12 +20,12 @@ public class TargetTurret extends CommandBase {
   private final Turret turret;
   private final TurretLimelight turretLimelight;
   private final ImprovedJoystick _joystick;
-  public double horizontalOffset, verticalOffset, targetArea, anglularOffset;
-  public boolean targetExist;
-  public double startTime;
-  public double time;
-  public double loopRuns; 
-  public boolean targetTurret; 
+  private double horizontalOffset, verticalOffset, targetArea, anglularOffset;
+  private boolean targetExist;
+  private double startTime;
+  private double time;
+  private double loopRuns; 
+  private boolean targetTurret;
 
 
   public TargetTurret(Turret turretSubsystem, TurretLimelight limelightSubsystem, Joystick joystick) 
