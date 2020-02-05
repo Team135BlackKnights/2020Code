@@ -49,7 +49,7 @@ public void runWinchSpark(double power)
 
 public void runLiftRaiseSpark(double power)
 {
-  limit(power, .4, -.4);
+  limit(power, .5, -.5);
 
   liftRaiseSpark.set(power);
 }
@@ -93,10 +93,6 @@ public void printPosition()
    
    SmartDashboard.putNumber("LiftRaise Encoder Distance", getLiftRaiseEncoderPosition());
    SmartDashboard.putNumber("Winch Encoder Distance", getWinchEncoderPosition());
-}
-public void printTicks()
-{
-//  SmartDashboard.putNumber("liftRaise Ticks ", ticksToRotations(getLiftRaiseEncoderPosition()));
 }
  
 public double getLiftEncoderVelocity()

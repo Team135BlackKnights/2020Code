@@ -131,7 +131,7 @@ public static JoystickButton
     manipButton9.whenPressed(new rotateWheelOfFortune(colorWheel, 0));
     manipButton10.whenPressed(new raiseEndgame(endgame, 98));
     manipButton11.toggleWhenPressed(new moveIntake(intake));
-    manipButton12.whenPressed(new raiseEndgame(endgame, 75));
+    manipButton12.whenPressed(new raiseEndgame(endgame, 15));
     
   }
 

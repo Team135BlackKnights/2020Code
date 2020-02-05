@@ -30,7 +30,7 @@ public class raiseEndgame extends CommandBase {
   @Override
   public void initialize() {
 
-    SmartDashboard.putString("Endgame command Running: ", "raise Endgame" + _target);
+    SmartDashboard.putString("Endgame command Running: ", "raise Endgame " + _target);
 
   }
 
@@ -41,10 +41,10 @@ public class raiseEndgame extends CommandBase {
     double currentLiftPos, kp, power, minPower, minDirection;
 
     currentLiftPos = endgame.getLiftRaiseEncoderPosition();
-    targetError = currentLiftPos - _target;
+    targetError = _target-currentLiftPos;
 
     power = targetError/90;
-    minPower = .25;
+    minPower = .15;
     minDirection = targetError > 0 ? 1:-1;
     kp = 1; 
 
@@ -52,7 +52,7 @@ public class raiseEndgame extends CommandBase {
 
     power = (minPower + (power * kp));
     endgame.runLiftRaiseSpark(power);
-    
+    SmartDashboard.putNumber("Raise Endgame target Error ", targetError);
     SmartDashboard.putNumber("Raise Endgame power: ", power);
   }
 

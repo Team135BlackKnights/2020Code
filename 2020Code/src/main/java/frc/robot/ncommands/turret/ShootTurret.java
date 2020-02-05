@@ -62,7 +62,7 @@ public class ShootTurret extends CommandBase {
 
     double ballFeederPower;
 
-    ballFeederPower = -.5;
+    ballFeederPower = -.6;
 
     turret.runShooterPower(topInput, bottomInput);
     turret.runBallFeeder(ballFeederPower);
