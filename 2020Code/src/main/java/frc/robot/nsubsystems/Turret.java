@@ -165,7 +165,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
   public void runRotation(double power)
   {
     
-    limit(power, .9, -.9);
+    limit(power, .45, -.45);
 
     rotationSpark.set(power);
 
@@ -183,17 +183,10 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
     limit(power, .9, -.9);
     bottomShooterSpark.set(power);
   }
-
-  public void runShooterRPM(double topRPM, double bottomRPM)
+  public void runShooterPower(double topPower, double bottomPower)
   {
-    double maxRPM = 4500;
-    double _topRPM, _bottomRPM;
-
-    _topRPM = topRPM/maxRPM;
-    _bottomRPM = bottomRPM/maxRPM;
-
-    runTopShooter(_topRPM);
-    runBottomShooter(_bottomRPM);
+    runTopShooter(topPower);
+    runBottomShooter(bottomPower);
   }
 
   public void runBallFeeder(double power)
@@ -222,7 +215,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
 
   public double tiltTicksToAngle()
   {
-    return (getTalonPosition(tiltTalon)*360/256) + 50;
+    return 180-((getTalonPosition(tiltTalon)*360/256) + 90);
   }
   public double getSparkEncoderVelocity(CANEncoder encoder)
   {
@@ -352,7 +345,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
   @Override
   public void periodic() {
    //printTemp();
-   resetPos();
+    resetPos();
+   printShooterRPM();
    printTiltPos();
     // This method will be called once per scheduler run
   }

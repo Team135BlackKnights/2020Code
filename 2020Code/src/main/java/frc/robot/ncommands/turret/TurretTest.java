@@ -56,13 +56,13 @@ public class TurretTest extends CommandBase {
       feederPower = 0;
     }
     */
-    topRPM = 0;
+    topRPM = manipYpower;
     feederPower = 0;
     bottomRPM = topRPM*3/2;
 
     turret.aimTurret(manipZpower/25, -manipYpower/3);
-    turret.runShooterRPM(-topRPM, bottomRPM);
-    turret.runBallFeeder(-feederPower);
+   // turret.runShooterPower(-topRPM, bottomRPM);
+   // turret.runBallFeeder(-feederPower);
   }
 
   // Called once the command ends or is interrupted.

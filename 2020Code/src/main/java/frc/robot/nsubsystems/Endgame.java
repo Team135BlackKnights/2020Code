@@ -92,6 +92,10 @@ public void printPosition()
    SmartDashboard.putNumber("LiftRaise Encoder Distance", getLiftRaiseEncoderPosition());
    SmartDashboard.putNumber("Winch Encoder Distance", getWinchEncoderPosition());
 }
+public void printTicks()
+{
+//  SmartDashboard.putNumber("liftRaise Ticks ", ticksToRotations(getLiftRaiseEncoderPosition()));
+}
  
 public double getLiftEncoderVelocity()
 {
@@ -156,6 +160,8 @@ public void printEverything()
 
   @Override
   public void periodic() {
+    printPosition();
+    //printTicks();
     // This method will be called once per scheduler run
   }
 }

@@ -108,7 +108,6 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE{
 
  // Declares the chassis as a DifferentialDrive, with the arguments of the motor controller groups
  chassis = new DifferentialDrive(leftDriveSide, rightDriveSide);
-
  chassis.setSafetyEnabled(false); //turns off system where if the motors don't recieve signal, the chassis learns about it and gets mad
  chassis.setMaxOutput(.98); // Maximum zoom is 98%
  
@@ -163,7 +162,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE{
   // Method sets the Chassis to Arcade Drive while pulling double arguements
   public void ArcadeDrive(double lateralPower, double rotationalPower)
   { 
-    chassis.arcadeDrive(lateralPower, -rotationalPower);
+    chassis.arcadeDrive(lateralPower, rotationalPower);
   }
 
   // Method sets the Chassis to Curvature Drive while pulling double arguements

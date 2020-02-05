@@ -24,6 +24,7 @@ import frc.robot.ncommands.endgame.runWinch;
 import frc.robot.ncommands.intake.moveIntake;
 import frc.robot.ncommands.intake.runConveyor;
 import frc.robot.ncommands.intake.runRoller;
+import frc.robot.ncommands.turret.ShootTurret;
 import frc.robot.ncommands.turret.TargetTurret;
 import frc.robot.ncommands.turret.ToggleLight;
 import frc.robot.ncommands.turret.TurretTest;
@@ -40,8 +41,8 @@ public class RobotContainer implements RobotMap{
   private final FalconDrive drive = new FalconDrive();
   private final Turret turret = new Turret();
   private final Intake intake = new Intake();
- private final Endgame endgame = new Endgame();
- private final ColorWheel colorWheel = new ColorWheel();
+  private final Endgame endgame = new Endgame();
+  private final ColorWheel colorWheel = new ColorWheel();
   private final TurretLimelight turretLimelight = TurretLimelight.getInstance();
   
 
@@ -73,7 +74,8 @@ public static JoystickButton
 	
 
 	leftTrigger = new JoystickButton(leftJoystick, KOI.TRIGGER_BUTTON),
-	leftThumb = new JoystickButton(leftJoystick, KOI.THUMB_BUTTON),
+    leftThumb = new JoystickButton(leftJoystick, KOI.THUMB_BUTTON),
+    
 	leftButton11 = new JoystickButton(leftJoystick, KOI.BASE_BOTTOM_LEFT_BUTTON),
 
 	manipTrigger = new JoystickButton(manipJoystick, KOI.TRIGGER_BUTTON),
@@ -94,8 +96,8 @@ public static JoystickButton
   public RobotContainer() {
     drive.setDefaultCommand(new DriveWithJoysticks(drive, leftJoystick, rightJoystick));
     //intake.setDefaultCommand(new runConveyor(intake, manipJoystick));
-    //turret.setDefaultCommand(new TargetTurret(turret, turretLimelight, manipJoystick));
-    turret.setDefaultCommand(new TurretTest(turret, manipJoystick));
+    turret.setDefaultCommand(new TargetTurret(turret, turretLimelight, manipJoystick));
+    //turret.setDefaultCommand(new TurretTest(turret, manipJoystick));
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -115,16 +117,16 @@ public static JoystickButton
     leftThumb.whenPressed(new shiftGears(drive));
 	leftButton11.toggleWhenPressed(new toggleCompressor(drive));
 
-    manipTrigger.whileHeld(new runRoller(intake, .3));
+    manipTrigger.whileHeld(new ShootTurret(turret, 2200, 3400));
     manipThumb.whileHeld(new runEndgameWithJoystick(endgame, manipJoystick));
     
     manipButton3.whenPressed(new rotateWheelOfFortune(colorWheel, .8));
-    manipButton4.whileHeld(new runRoller(intake, -.8));
+    manipButton4.whileHeld(new runRoller(intake, .4));
     manipButton5.whileHeld(new runWinch(endgame, .675));
     manipButton9.whenPressed(new rotateWheelOfFortune(colorWheel, 0));
-    manipButton10.whenPressed(new raiseEndgame(endgame, 8));
+    manipButton10.whenPressed(new raiseEndgame(endgame, 98));
     manipButton11.toggleWhenPressed(new moveIntake(intake));
-    manipButton12.whenPressed(new raiseEndgame(endgame, 10));
+    manipButton12.whenPressed(new raiseEndgame(endgame, 75));
     
   }
 

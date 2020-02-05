@@ -69,7 +69,7 @@ public class DriveWithJoysticks extends CommandBase {
          drive.ArcadeDrive(lateralPower, rotationPower * .85);
        }
        else {
-       drive.ArcadeDrive(-lateralPower, -rotationPower * .85);
+       drive.ArcadeDrive(-lateralPower, rotationPower * .85);
        }
  
      }

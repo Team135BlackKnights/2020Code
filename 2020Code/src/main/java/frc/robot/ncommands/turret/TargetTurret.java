@@ -44,7 +44,6 @@ public class TargetTurret extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    startTime = Timer.getMatchTime();
     loopRuns = 1;
     
     SmartDashboard.putString("Turret Command Running: ", "targetTurret");
@@ -55,8 +54,6 @@ public class TargetTurret extends CommandBase {
   @Override
   public void execute() {
 
-    time = Timer.getMatchTime();
-    double _time = time - startTime;
     targetExist = turretLimelight.GetLimelightData()[0] >= 1 ? true : false;
     verticalOffset = turretLimelight.GetLimelightData()[2];
     horizontalOffset = turretLimelight.GetLimelightData()[1];
@@ -70,9 +67,9 @@ public class TargetTurret extends CommandBase {
     rotationPower = horizontalOffset/80;
     tiltPower = -verticalOffset/8;
 
-    double minPower = .3;
+    double minPower = .00;
 
-    double rotationDirection = horizontalOffset > 0 ? -1: 1;
+    double rotationDirection = horizontalOffset > 0 ? 1: -1;
     boolean isPOVLeft, isPOVRight, isPOVUp, isPOVDown, isPOVTopRight, isPOVBottomRight, isPOVBottomLeft, isPOVTopLeft;
     boolean isTrigger = _joystick.getJoystickButtonValue(2);
     double topRPM = 2200;
@@ -80,6 +77,7 @@ public class TargetTurret extends CommandBase {
     double totalError =+ horizontalOffset;
     
     double rIntegral = (totalError/loopRuns*20)/50;
+
     double turretAngle = turret.tiltTicksToAngle();
     SmartDashboard.putNumber("turret Angle", turretAngle);
     double limelightHeight = Math.sin(turretAngle)*5;
@@ -92,18 +90,7 @@ public class TargetTurret extends CommandBase {
 
     double velocity = Math.pow(((-9.8066 * distToTarget)/(Math.asin(2 * turretAngle))), 1/2);
     double  RPM = velocity / (3 * 0.10472);    
-/*
-    if(isTrigger)
-    {
-      turret.runShooterRPM(topRPM, bottomRPM);
-      turret.runBallFeeder(-.8);
-    }
-    else 
-    {
-      turret.runShooterRPM(-0, 0);
-      turret.runBallFeeder(0);
-    }
-*/
+
     isPOVUp = _joystick.isPovDirectionPressed(0);
     isPOVRight = _joystick.isPovDirectionPressed(1);
     isPOVDown = _joystick.isPovDirectionPressed(2);
@@ -124,7 +111,7 @@ public class TargetTurret extends CommandBase {
     else 
     if(isPOVRight)
     {
-      rotationPower = .6;
+      rotationPower = .5;
       tiltPower = 0;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
@@ -140,7 +127,7 @@ public class TargetTurret extends CommandBase {
     else
     if(isPOVLeft)
     {
-      rotationPower = .3;
+      rotationPower = -.5;
       tiltPower = 0;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
@@ -148,7 +135,7 @@ public class TargetTurret extends CommandBase {
     else 
     if(isPOVTopRight)
     {
-      rotationPower = -.3;
+      rotationPower = .5;
       tiltPower = .6;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
@@ -156,7 +143,7 @@ public class TargetTurret extends CommandBase {
     else 
     if(isPOVBottomRight)
     {
-      rotationPower = -.3;
+      rotationPower = .5;
       tiltPower = -.6;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
@@ -164,7 +151,7 @@ public class TargetTurret extends CommandBase {
     else 
     if(isPOVBottomLeft)
     {
-      rotationPower = .3;
+      rotationPower = -.5;
       tiltPower = -.6;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
@@ -172,7 +159,7 @@ public class TargetTurret extends CommandBase {
     else 
     if(isPOVTopLeft)
     {
-      rotationPower = .3;
+      rotationPower = -.5;
       tiltPower = .6;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
@@ -180,7 +167,7 @@ public class TargetTurret extends CommandBase {
     else 
     if(targetExist)
     {
-      rotationPower = (rotationPower * rP) + (rIntegral * rI);
+      rotationPower = (rotationPower * rP) + (rIntegral * rI) + (minPower * rotationDirection);
       tiltPower = (tiltPower * tP);
       SmartDashboard.putString("Turret State:", "Auto Targetting");
     }
@@ -191,6 +178,7 @@ public class TargetTurret extends CommandBase {
       SmartDashboard.putString("Turret State:", "No Target");
 
     }
+    SmartDashboard.putNumber("INtegral", rIntegral * rI);
     SmartDashboard.putNumber("Target Turret Rotation Power:", rotationPower);
     SmartDashboard.putNumber("Target Turret Tilt Power:", tiltPower);
 

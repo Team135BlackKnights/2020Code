@@ -32,7 +32,7 @@ public class TurretLimelight extends SubsystemBase {
 	ledModeEntry = TurretLimelightTable.getEntry("ledMode"),
 	cameraModeEntry = TurretLimelightTable.getEntry("camMode"),
 	limelightPipelineEntry = TurretLimelightTable.getEntry("pipeline");
-	public MovingAverage _targetArea = new MovingAverage(5);
+	public MovingAverage _targetArea = new MovingAverage(100);
 	public static final int 
 	VALID_TARGET = 0,
 	HORIZONTAL_OFFSET = 1,
@@ -60,11 +60,15 @@ public class TurretLimelight extends SubsystemBase {
 	
 	public double distToTarget(double targetHeight,double limelightHeightAdjust, double limelightAngle)
 	{
-		return ((targetHeight-(34.375+ limelightHeightAdjust))/Math.tan(90-limelightAngle));
+		return ((targetHeight-(34.375+ limelightHeightAdjust))/Math.tan(limelightAngle));
 	}
 	public double hpotToTarget(double targetHeight, double limelightHeightAdjust, double limelightAngle)
 	{
-		return ((targetHeight - (34.375 + limelightHeightAdjust))/Math.sin(90-limelightAngle));
+		return ((targetHeight - (34.375 + limelightHeightAdjust))/Math.sin(limelightAngle));
+	}
+	public double distBois()
+	{
+		return (358.6526*Math.pow(.5327, getAveragedArea()));
 	}
 
 	public double[] GetLimelightData() { // creating an array so we can get to any of the values that we need from network tables
@@ -99,6 +103,8 @@ public class TurretLimelight extends SubsystemBase {
 	{
 		SmartDashboard.putNumber("Averaged Area", getAveragedArea());
 		SmartDashboard.putNumber("Area", limelightData[3]);
+		SmartDashboard.putNumber("Distance in? ", distBois());
+		SmartDashboard.putNumber("Distance ft? ", distBois()/12);
 	//	SmartDashboard.putNumber(" Horizontal offset", GetLimelightData()[HORIZONTAL_OFFSET]);
 	//	SmartDashboard.putNumber(" Vertical Offset", limelightData[VERTICAL_OFFSET]);
 	//	SmartDashboard.putBoolean("Target Exist", limelightData[0] >=1);
