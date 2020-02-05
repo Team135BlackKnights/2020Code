@@ -25,6 +25,7 @@ public class TargetTurret extends CommandBase {
   public double startTime;
   public double time;
   public double loopRuns; 
+  public boolean targetTurret; 
 
 
   public TargetTurret(Turret turretSubsystem, TurretLimelight limelightSubsystem, Joystick joystick) 
@@ -44,7 +45,7 @@ public class TargetTurret extends CommandBase {
   @Override
   public void initialize() {
     loopRuns = 1;
-    
+    targetTurret = true;
     SmartDashboard.putString("Turret Command Running: ", "targetTurret");
     turretLimelight.initLimelight(0, 0);
   }
@@ -96,12 +97,12 @@ public class TargetTurret extends CommandBase {
     isPOVTopLeft = _joystick.isPovDirectionPressed(7);
     
 
-    boolean targetTurret; 
-    targetTurret = true;
+   
     if(_joystick.getJoystickButtonValue(6))
     {
       targetTurret = !targetTurret;
     }
+    SmartDashboard.putBoolean("Auto Targeting turret: ", targetTurret);
 
     if(isPOVUp)
     {
