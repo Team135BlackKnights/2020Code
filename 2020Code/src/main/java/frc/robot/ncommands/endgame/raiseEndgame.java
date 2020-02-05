@@ -18,6 +18,7 @@ public class raiseEndgame extends CommandBase {
   private final Endgame endgame;
   private double _target;
   private boolean isFinished;
+  private double targetError;
   public raiseEndgame(Endgame subsystem, double target) 
   {
     endgame = subsystem;
@@ -38,7 +39,7 @@ public class raiseEndgame extends CommandBase {
   @Override
   public void execute() 
   {
-    double currentLiftPos, targetError, kp, power, minPower, minDirection;
+    double currentLiftPos, kp, power, minPower, minDirection;
 
     currentLiftPos = endgame.getLiftRaiseEncoderPosition();
     targetError = currentLiftPos - _target;
@@ -52,14 +53,7 @@ public class raiseEndgame extends CommandBase {
 
     power = (minPower + (power * kp));
     endgame.runLiftRaiseSpark(power);
-    if(Math.abs(targetError) <= 2)
-    {
-      isFinished = true;
-    }
-    else 
-    {
-      isFinished = false;
-    }
+    
     SmartDashboard.putNumber("Raise Endgame power: ", power);
   }
 
@@ -72,6 +66,6 @@ public class raiseEndgame extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return isFinished;
+    return Math.abs(targetError) <= 2;
   }
 }

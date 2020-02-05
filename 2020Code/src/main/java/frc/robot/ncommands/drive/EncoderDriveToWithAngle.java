@@ -13,9 +13,9 @@ import frc.robot.nsubsystems.FalconDrive;
 
 public class EncoderDriveToWithAngle extends CommandBase {
   FalconDrive drive;
-  public double _leftTarget, _rightTarget, _angleDesired;
-  public double leftError, rightError, angleError;
-  public boolean _shortDistance;
+  private double _leftTarget, _rightTarget, _angleDesired;
+  private double leftError, rightError, angleError;
+  private boolean _shortDistance;
 
   /**
    * Creates a new EncoderDriveToWithAngle.

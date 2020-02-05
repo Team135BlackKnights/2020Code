@@ -16,10 +16,10 @@ import frc.robot.util.ImprovedJoystick;
 
 public class EncoderDriveWithSonar extends CommandBase {
   FalconDrive drive;
-  public double _leftTarget, _rightTarget, _distanceFromWall,
+  private double _leftTarget, _rightTarget, _distanceFromWall,
               leftError, rightError, _tolerance;
-  public double actualDistanceFromWall;
-  public boolean _stopWhenDone;
+  private double actualDistanceFromWall;
+  private boolean _stopWhenDone;
   private ImprovedJoystick _joystick;
   /**
    * Creates a new EncoderDriveWithSonar.

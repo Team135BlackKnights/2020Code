@@ -29,17 +29,17 @@ import frc.robot.nsubsystems.FalconDrive;
 
 public class DriveWithTrajectory extends CommandBase {
   FalconDrive drive;
-  public static final double distBetweenWheelsInches = 23;//26.84603809585759;
-  public static final double gearRatio = 1 / 13.85;
-  public static final double wheelDiameterInches = 6.375;//18;
-  public static final double wheelCircumferenceInches = wheelDiameterInches * Math.PI;
-  public static final double encoderTicksPerRev = 2048;
+  private static final double distBetweenWheelsInches = 23;//26.84603809585759;
+  private static final double gearRatio = 1 / 13.85;
+  private static final double wheelDiameterInches = 6.375;//18;
+  private static final double wheelCircumferenceInches = wheelDiameterInches * Math.PI;
+  private static final double encoderTicksPerRev = 2048;
 
-  public static final double kS = 0.358;
-  public static final double kV = 3.02;
-  public static final double kA = 0.249;
-  public static final double kP = 0.0;//0.0405;
-  public static final double kD = 0.0;
+  private static final double kS = 0.358;
+  private static final double kV = 3.02;
+  private static final double kA = 0.249;
+  private static final double kP = 0.0;//0.0405;
+  private static final double kD = 0.0;
   DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(distBetweenWheelsInches));
   SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(kS, kV, kA);
   Trajectory trajectory;
