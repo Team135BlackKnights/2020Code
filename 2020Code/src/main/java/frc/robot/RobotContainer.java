@@ -43,7 +43,6 @@ public class RobotContainer implements RobotMap{
  private final Endgame endgame = new Endgame();
  private final ColorWheel colorWheel = new ColorWheel();
   private final TurretLimelight turretLimelight = TurretLimelight.getInstance();
-  private final IntakeLimelight intakeLimelight = IntakeLimelight.getInstance();
   
 
 
@@ -93,15 +92,12 @@ public static JoystickButton
 
 
   public RobotContainer() {
-      
     drive.setDefaultCommand(new DriveWithJoysticks(drive, leftJoystick, rightJoystick));
     //intake.setDefaultCommand(new runConveyor(intake, manipJoystick));
-   //turret.setDefaultCommand(new TargetTurret(turret, turretLimelight, manipJoystick));
+    //turret.setDefaultCommand(new TargetTurret(turret, turretLimelight, manipJoystick));
     turret.setDefaultCommand(new TurretTest(turret, manipJoystick));
-
     // Configure the button bindings
     configureButtonBindings();
-   
   }
 
 
@@ -115,6 +111,7 @@ public static JoystickButton
   private void configureButtonBindings() 
   {
     rightButton3.whenPressed(new ToggleLight(turret));
+
     leftThumb.whenPressed(new shiftGears(drive));
 	leftButton11.toggleWhenPressed(new toggleCompressor(drive));
 
@@ -142,50 +139,50 @@ public static JoystickButton
   
   public boolean manipTrigger()
   {
-      return manipTrigger.get();
+    return manipTrigger.get();
   }
   
   public static boolean leftThumb()
   {
-      return leftThumb.get();
+    return leftThumb.get();
   }
   
   public static boolean rightThumb()
   {
-      return rightThumb.get();
+    return rightThumb.get();
   }
   public boolean getManipThumb()
   {
-      return manipThumb.get();
+    return manipThumb.get();
   }
   
   public boolean getManipButton7()
   {
-      return manipButton7.get();
+    return manipButton7.get();
   }
   
   public boolean getManipButton8()
   {
-      return manipButton8.get();
+    return manipButton8.get();
   }
   
   public boolean getButtonOutPut(int joystick, int buttonID)
   {
-      return joysticks[joystick].getRawButton(buttonID);
+    return joysticks[joystick].getRawButton(buttonID);
   }
   
   
   public double getThrottle(Joystick joystick)
   {
-      return joystick.getThrottle();
+    return joystick.getThrottle();
   }
   
   
   
   
   //returns value of the given joystick with a deadband applied
-      private double DeadbandJoystickValue(double joystickValue) {
-          return (Math.abs(joystickValue) < KOI.JOYSTICK_DEADBAND ? 0.0 : joystickValue);
+    private double DeadbandJoystickValue(double joystickValue) {
+        return (Math.abs(joystickValue) < KOI.JOYSTICK_DEADBAND ? 0.0 : joystickValue);
       }
       public double GetJoystickYValue(int joystickNumber) {
           return DeadbandJoystickValue( -joysticks[joystickNumber].getY() );
