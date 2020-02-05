@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.Turret;
 
 public class RotateTurretToAngle extends CommandBase {
-  public double _desiredAngle;
+  private double _desiredAngle;
   Turret turret;
   
   //Using wheel size...

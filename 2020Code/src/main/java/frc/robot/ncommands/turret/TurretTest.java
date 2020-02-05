@@ -19,7 +19,7 @@ public class TurretTest extends CommandBase {
    * Creates a new TurretTest.
    */
   private final Turret turret; 
-  public ImprovedJoystick _joystick;
+  private ImprovedJoystick _joystick;
   public TurretTest(Turret subsystem, Joystick joystick) {
     turret = subsystem;
     _joystick = new ImprovedJoystick(joystick);
