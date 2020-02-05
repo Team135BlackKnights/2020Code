@@ -56,6 +56,10 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE{
     rollerSpark.set(power);
   }
 
+  public void resetEncoders() {
+    rollerEncoder.setPosition(0);
+  }
+
   public double getEncoderPosition(CANEncoder encoder)
   {
     return encoder.getPosition();

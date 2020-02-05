@@ -20,15 +20,19 @@ import frc.robot.ncommands.drive.resetDriveEncoders;
 import frc.robot.ncommands.drive.shiftGears;
 import frc.robot.ncommands.drive.toggleCompressor;
 import frc.robot.ncommands.endgame.raiseEndgame;
+import frc.robot.ncommands.endgame.resetEndgameEncoders;
 import frc.robot.ncommands.endgame.runEndgameWithJoystick;
 import frc.robot.ncommands.endgame.runWinch;
 import frc.robot.ncommands.intake.moveIntake;
+import frc.robot.ncommands.intake.resetIntakeEncoders;
 import frc.robot.ncommands.intake.runConveyor;
 import frc.robot.ncommands.intake.runRoller;
+import frc.robot.ncommands.storage.resetStorageEncoders;
 import frc.robot.ncommands.turret.ShootTurret;
 import frc.robot.ncommands.turret.TargetTurret;
 import frc.robot.ncommands.turret.ToggleLight;
 import frc.robot.ncommands.turret.TurretTest;
+import frc.robot.ncommands.turret.resetTurretEncoder;
 import frc.robot.nsubsystems.*;
 
 /**
@@ -39,6 +43,7 @@ import frc.robot.nsubsystems.*;
  */
 public class RobotContainer implements RobotMap{
   // The robot's subsystems and commands are defined here...
+  private final Storage storage = new Storage();
   private final FalconDrive drive = new FalconDrive();
   private final Turret turret = new Turret();
   private final Intake intake = new Intake();
@@ -124,11 +129,11 @@ public static JoystickButton
 
     leftThumb.whenPressed(new shiftGears(drive));
     leftButton7.whenPressed(new resetDriveEncoders(drive));
-    leftButton8.whenPressed(new resetDriveEncoders(drive));
-    leftButton9.whenPressed(new resetDriveEncoders(drive));
-    leftButton10.whenPressed(new resetDriveEncoders(drive));
-	  leftButton11.toggleWhenPressed(new toggleCompressor(drive));
-    leftButton12.whenPressed(new resetDriveEncoders(drive));
+    leftButton8.whenPressed(new resetEndgameEncoders(endgame));
+    leftButton9.whenPressed(new resetIntakeEncoders(intake));
+    leftButton10.whenPressed(new resetStorageEncoders(storage));
+	leftButton11.toggleWhenPressed(new toggleCompressor(drive));
+    leftButton12.whenPressed(new resetTurretEncoder(turret));
 
     manipTrigger.whileHeld(new ShootTurret(turret, 2200, 3400));
     manipThumb.whileHeld(new runEndgameWithJoystick(endgame, manipJoystick));

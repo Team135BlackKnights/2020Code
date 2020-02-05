@@ -43,7 +43,7 @@ public class raiseEndgame extends CommandBase {
     currentLiftPos = endgame.getLiftRaiseEncoderPosition();
     targetError = currentLiftPos - _target;
 
-    power = targetError/40;
+    power = targetError/90;
     minPower = .25;
     minDirection = targetError > 0 ? 1:-1;
     kp = 1; 
@@ -60,6 +60,7 @@ public class raiseEndgame extends CommandBase {
     {
       isFinished = false;
     }
+    SmartDashboard.putNumber("Raise Endgame power: ", power);
   }
 
   // Called once the command ends or is interrupted.
