@@ -43,12 +43,13 @@ public class DriveWithTrajectory extends CommandBase {
   DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(distBetweenWheelsInches));
   SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(kS, kV, kA);
   Trajectory trajectory;
-
+  final String trajectoryJSON;
   
 
 
-  public DriveWithTrajectory(FalconDrive subsystem) {
+  public DriveWithTrajectory(FalconDrive subsystem, String filePath) {
     drive = subsystem;
+    trajectoryJSON = filePath;
     addRequirements(drive);
   }
 
@@ -60,7 +61,8 @@ public class DriveWithTrajectory extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {runRamsete();}
+
   public Command runRamsete() {
     drive.resetEncoders();
     drive.getAngle();
@@ -70,7 +72,7 @@ public class DriveWithTrajectory extends CommandBase {
     
     config.setKinematics(getKinematics());
     
-    final String trajectoryJSON = "paths/YourPath.wpilib.json";
+    //final String trajectoryJSON = "paths/YourPath.wpilib.json";
     try {
       final Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
       trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
@@ -118,6 +120,7 @@ public class DriveWithTrajectory extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    
     return false;
   }     
 }
