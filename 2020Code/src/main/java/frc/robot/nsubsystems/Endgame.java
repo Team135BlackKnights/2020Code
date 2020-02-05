@@ -49,6 +49,8 @@ public void runWinchSpark(double power)
 
 public void runLiftRaiseSpark(double power)
 {
+  limit(power, .4, -.4);
+
   liftRaiseSpark.set(power);
 }
  
@@ -148,6 +150,12 @@ public void printVoltage()
   SmartDashboard.putNumber("LiftRaise Motor Voltage", getVoltage(liftRaiseSpark));
   SmartDashboard.putNumber("Winch Motor Voltage", getVoltage(winchSpark));
 }
+
+public double limit(double x, double upperLimit, double lowerLimit)
+	{	if(x >= upperLimit){ x = upperLimit;}
+		else if( x<=lowerLimit){ x = lowerLimit;}
+		return x;
+  }
  
 public void printEverything()
 {

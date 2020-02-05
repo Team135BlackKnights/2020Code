@@ -94,6 +94,12 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE{
 
   }
 
+  public double limit(double x, double upperLimit, double lowerLimit)
+	{	if(x >= upperLimit){ x = upperLimit;}
+		else if( x<=lowerLimit){ x = lowerLimit;}
+		return x;
+  }
+
   @Override
   public void periodic() {
     intakeBallCount();

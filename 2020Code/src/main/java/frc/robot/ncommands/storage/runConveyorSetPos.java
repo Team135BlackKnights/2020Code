@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.ncommands.intake;
+package frc.robot.ncommands.storage;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -27,7 +27,7 @@ public class runConveyorSetPos extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putString("Intake Command Running: ", " RunConveyorSetPos");
+    SmartDashboard.putString("Conveyor Command Running: ", " RunConveyorSetPos");
 
   }
 

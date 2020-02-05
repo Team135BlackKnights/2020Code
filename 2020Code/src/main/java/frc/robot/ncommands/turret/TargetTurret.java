@@ -8,7 +8,6 @@
 package frc.robot.ncommands.turret;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.*;
@@ -71,9 +70,7 @@ public class TargetTurret extends CommandBase {
 
     double rotationDirection = horizontalOffset > 0 ? 1: -1;
     boolean isPOVLeft, isPOVRight, isPOVUp, isPOVDown, isPOVTopRight, isPOVBottomRight, isPOVBottomLeft, isPOVTopLeft;
-    boolean isTrigger = _joystick.getJoystickButtonValue(2);
-    double topRPM = 2200;
-    double bottomRPM = topRPM*3/2;
+   
     double totalError =+ horizontalOffset;
     
     double rIntegral = (totalError/loopRuns*20)/50;
@@ -88,9 +85,6 @@ public class TargetTurret extends CommandBase {
     double distToTargetFt = distToTarget/12;
     SmartDashboard.putNumber("Distance to Target Ft: ", distToTargetFt);
 
-    double velocity = Math.pow(((-9.8066 * distToTarget)/(Math.asin(2 * turretAngle))), 1/2);
-    double  RPM = velocity / (3 * 0.10472);    
-
     isPOVUp = _joystick.isPovDirectionPressed(0);
     isPOVRight = _joystick.isPovDirectionPressed(1);
     isPOVDown = _joystick.isPovDirectionPressed(2);
@@ -101,6 +95,14 @@ public class TargetTurret extends CommandBase {
     isPOVBottomLeft = _joystick.isPovDirectionPressed(6);
     isPOVTopLeft = _joystick.isPovDirectionPressed(7);
     
+
+    boolean targetTurret; 
+    targetTurret = true;
+    if(_joystick.getJoystickButtonValue(6))
+    {
+      targetTurret = !targetTurret;
+    }
+
     if(isPOVUp)
     {
       rotationPower = 0;
@@ -165,7 +167,7 @@ public class TargetTurret extends CommandBase {
 
     }
     else 
-    if(targetExist)
+    if(targetExist && targetTurret)
     {
       rotationPower = (rotationPower * rP) + (rIntegral * rI) + (minPower * rotationDirection);
       tiltPower = (tiltPower * tP);
@@ -176,8 +178,9 @@ public class TargetTurret extends CommandBase {
       rotationPower = 0;
       tiltPower = 0;
       SmartDashboard.putString("Turret State:", "No Target");
-
     }
+
+
     SmartDashboard.putNumber("INtegral", rIntegral * rI);
     SmartDashboard.putNumber("Target Turret Rotation Power:", rotationPower);
     SmartDashboard.putNumber("Target Turret Tilt Power:", tiltPower);

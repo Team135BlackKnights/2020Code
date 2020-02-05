@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.ncommands.intake;
+package frc.robot.ncommands.storage;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,7 +30,7 @@ public class runConveyor extends CommandBase {
   @Override
   public void initialize() {
     
-    SmartDashboard.putString("Intake Commmand Running: ", " runConveyor");
+    SmartDashboard.putString("Conveyor Commmand Running: ", " runConveyor");
 
   }
 
