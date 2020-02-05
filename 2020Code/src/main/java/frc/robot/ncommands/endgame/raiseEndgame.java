@@ -17,7 +17,6 @@ public class raiseEndgame extends CommandBase {
    */
   private final Endgame endgame;
   private double _target;
-  private boolean isFinished;
   private double targetError;
   public raiseEndgame(Endgame subsystem, double target) 
   {
@@ -30,7 +29,7 @@ public class raiseEndgame extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    isFinished = false;
+
     SmartDashboard.putString("Endgame command Running: ", "raise Endgame" + _target);
 
   }
