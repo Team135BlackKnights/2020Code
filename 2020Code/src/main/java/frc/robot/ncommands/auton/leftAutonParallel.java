@@ -36,7 +36,6 @@ public class leftAutonParallel extends ParallelCommandGroup {
     intake = intakesubsystem;
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    // TODO:: make a check for wether or not the path exists
     if (drive.doesPathExist("paths/YourPath.wpilib.json")) {
       parallel(new DriveWithTrajectory(drive, "paths/YourPath.wpilib.json"));
     }

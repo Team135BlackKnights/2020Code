@@ -67,7 +67,7 @@ public class RotateTurretToAngle extends CommandBase {
     SmartDashboard.putNumber("turret wheel angle", currentAngle);
 
     //Angle error for how far off it currently is
-    angleError = Math.abs(_desiredAngle-currentAngle);
+    angleError = _desiredAngle-currentAngle;
     //determine the direction of min power
     double turnModifer = angleError > 0 ? 1: -1;
 

@@ -186,7 +186,6 @@ moveExtend(false);
    public String spinToWhatColor(String FMScolor)
    {
       Dictionary colors = new Hashtable<>(); 
-  
       colors.put("Red", "Blue"); 
       colors.put("Green", "Yellow"); 
       colors.put("Blue", "Red"); 
