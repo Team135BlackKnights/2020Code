@@ -50,7 +50,7 @@ public class RotateTurretToAngle extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putString("Turret Command Running:","Rotate turret TO angle " + _desiredAngle);
+    SmartDashboard.putString("Turret Command Running:","Rotate turret to angle " + _desiredAngle);
 
   }
 
@@ -58,19 +58,18 @@ public class RotateTurretToAngle extends CommandBase {
   @Override
   public void execute() {
     //Going from encoder ticks to the angle of another wheel
-   // encoderWheelCurrentInches = turret.ticksToInches(turret.rotationEncoder, encoderWheelDiameter);
+    // encoderWheelCurrentInches = turret.ticksToInches(turret.rotationEncoder, encoderWheelDiameter);
     encoderWheelCurrentInches = turret.getRotationTicks() * encoderWheelCircumference;
     turretWheelCurrentInches = encoderWheelCurrentInches;
     turretWheelPercent = turretWheelCurrentInches / turretWheelCircumference;
     currentAngle = 360 * turretWheelPercent;
 
-    SmartDashboard.putNumber("turret wheel angle", _desiredAngle);
+    SmartDashboard.putNumber("turret wheel angle", currentAngle);
 
-  //Angle error for how far off it currently is
+    //Angle error for how far off it currently is
     angleError = Math.abs(_desiredAngle-currentAngle);
     //determine the direction of min power
-		boolean turnLeft  = currentAngle < _desiredAngle; 
-    double turnModifer = turnLeft ? 1: -1;
+    double turnModifer = angleError > 0 ? 1: -1;
 
     //Variables for tuning
     double minPower = .3;

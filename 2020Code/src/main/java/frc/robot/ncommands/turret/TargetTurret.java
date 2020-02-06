@@ -22,8 +22,6 @@ public class TargetTurret extends CommandBase {
   private final ImprovedJoystick _joystick;
   private double horizontalOffset, verticalOffset, targetArea, anglularOffset;
   private boolean targetExist;
-  private double startTime;
-  private double time;
   private double loopRuns; 
   private boolean targetTurret;
 

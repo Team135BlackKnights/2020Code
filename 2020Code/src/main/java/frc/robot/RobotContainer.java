@@ -119,13 +119,13 @@ public static JoystickButton
     leftButton8.whenPressed(new resetEndgameEncoders(endgame));
     leftButton9.whenPressed(new resetIntakeEncoders(intake));
     leftButton10.whenPressed(new resetStorageEncoders(storage));
-	leftButton11.toggleWhenPressed(new toggleCompressor(drive));
+	  leftButton11.toggleWhenPressed(new toggleCompressor(drive));
     leftButton12.whenPressed(new resetTurretEncoder(turret));
 
     manipTrigger.whileHeld(new ShootTurret(turret, 2200, 3400));
     manipThumb.whileHeld(new runEndgameWithJoystick(endgame, manipJoystick));
     
-    manipButton3.whenPressed(new RotateTurretToAngle(turret, 90));
+    manipButton3.whenPressed(new RotateTurretToAngle(turret, -90));
     manipButton4.whileHeld(new runRoller(intake, .4));
     manipButton5.whileHeld(new runWinch(endgame, .675));
     manipButton9.whenPressed(new rotateWheelOfFortune(colorWheel, 0));

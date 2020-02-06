@@ -32,7 +32,6 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 
 public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
@@ -339,7 +338,8 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   public boolean doesPathExist(String path) {
     try {
       final Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(path);
-      Trajectory trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+      //I understand that the line below isn't doing anything but it needs to run to see if it works
+      TrajectoryUtil.fromPathweaverJson(trajectoryPath);
       return true;
     } catch (final IOException ex) {
       SmartDashboard.putString("Unable to open trajectory: ","");
