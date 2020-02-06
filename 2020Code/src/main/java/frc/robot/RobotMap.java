@@ -86,12 +86,11 @@ public interface RobotMap
 
       TILT_TALON_ID = 21,
 
-      LIDAR_ID = 13,
       TRIP_SWITCH_ID = 14,
-      LEFT_LIMIT_ID = 16, 
-      RIGHT_LIMIT_ID = 17,
-      TILT_LIMIT_ID = 18,
-      PIGEON_ID = 0,
+      LEFT_LIMIT_ID = 19, 
+      RIGHT_LIMIT_ID = 20,
+      ROTATION_ENCODER_A = 17,
+      ROTATION_ENCODER_B = 18,
 
       TOP_WHEEL_DIAMETER = 4,
       BOTTOM_WHEEL_DIAMETER = 6,
@@ -160,39 +159,6 @@ public interface RobotMap
       INTAKE_SONAR_ECHO = 11,
 
       INTAKE_TRIP_SWITCH = 15;
-  }
-  
-
-
-
-
-
-
-
-
-  public interface MOTORS 
-  {
-    
-  final int FRONT_LEFT_SPARK_ID = 12,    FRONT_RIGHT_SPARK_ID = 13,
-              REAR_LEFT_SPARK_ID = 11,     REAR_RIGHT_SPARK_ID  = 14;
-    
-  final int SPINNER_TALON_ID = 6,
-              TURRET_TALON_ID = 4;
-
-  final int BUTTON_CONTROL_TWO_TALON = 21, BUTTON_CONTROL_ONE_TALON = 22,
-              MANIP_CONTROL_ONE_TALON = 23, MANIP_CONTROL_TWO_TALON = 24;
-
-  }
-  public interface SENSORS 
-  {
-  final int RIGHT_SONAR_TRIG = 0, RIGHT_SONAR_ECHO = 1,
-            LEFT_SONAR_TRIG = 2, LEFT_SONAR_ECHO = 3,
-
-            FRONT_LIDAR_ID = 8, BACK_LIDAR_ID = 9,
-            TURRET_LIDAR = 10,  SHOOTER_TRIP_ID = 11,
-            INTAKE_TRIP_ID = 12, INTAKE_SONAR_TRIG = 13, 
-            INTAKE_SONAR_ECHO = 14;
-            public SerialPort.Port navXPort = SerialPort.Port.kUSB;
   }
 
 }

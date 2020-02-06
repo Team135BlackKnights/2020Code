@@ -125,7 +125,7 @@ public static JoystickButton
     manipTrigger.whileHeld(new ShootTurret(turret, 2200, 3400));
     manipThumb.whileHeld(new runEndgameWithJoystick(endgame, manipJoystick));
     
-    manipButton3.whenPressed(new rotateWheelOfFortune(colorWheel, .8));
+    manipButton3.whenPressed(new RotateTurretToAngle(turret, 90));
     manipButton4.whileHeld(new runRoller(intake, .4));
     manipButton5.whileHeld(new runWinch(endgame, .675));
     manipButton9.whenPressed(new rotateWheelOfFortune(colorWheel, 0));

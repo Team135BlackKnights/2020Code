@@ -52,6 +52,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
     ballFeederSpark = new CANSparkMax(FEEDER_SPARK_ID, MotorType.kBrushless);
 
     turretBallTripSwitch = new DigitalInput(TRIP_SWITCH_ID);
+    forwardRotationLimit = new DigitalInput(LEFT_LIMIT_ID);
+    reverseRotationLimit = new DigitalInput(RIGHT_LIMIT_ID);
     
     initTalonSRX(tiltTalon);
 
@@ -61,14 +63,13 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
     initCANSparkMax(ballFeederSpark, IdleMode.kBrake);
 
     topShooterSpark.setInverted(true);
-     bottomShooterEncoder = bottomShooterSpark.getEncoder();
+    bottomShooterEncoder = bottomShooterSpark.getEncoder();
     topShooterEncoder = topShooterSpark.getEncoder();
     ballFeederEncoder = ballFeederSpark.getEncoder();
     tiltTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-  //  rotationSpark.enableSoftLimit(SoftLimitDirection.kForward, true);
-    //rotationSpark.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    
-   // tiltTalon.configReverseSoftLimitEnable(true);
+    rotationEncoder = new Encoder(ROTATION_ENCODER_A, ROTATION_ENCODER_B);
+  
+    rotationEncoder.setDistancePerPulse(64);
 
     resetAllTurretEncoders();
     
@@ -108,16 +109,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
     talon.configPeakOutputForward(1);
     talon.configPeakOutputReverse(-1);
     talon.setNeutralMode(NeutralMode.Brake);
-  }
-  public void resetPos()
-  {
-    if(tiltTalon.isRevLimitSwitchClosed() ==1 )
-    {
-      tiltTalon.setSelectedSensorPosition(0);
-    }
-  }
-
- 
+  } 
   public void setLight(boolean on)
   {
     if(on)
@@ -146,6 +138,11 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
     ballFeederEncoder.setPosition(0);
   }
 
+  public void resetRotationEncoder( )
+  {
+    rotationEncoder.reset();
+  }
+
   public void resetAllTurretEncoders()
   {
   //  resetTiltEncoder();
@@ -157,23 +154,34 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
   public void runTilt(double power)
   {
     
-    limit(power, .9, -.9);
+    power = limit(power, .9, -.9);
     tiltTalon.set(ControlMode.PercentOutput, power);
 
   }
 
   public void runRotation(double power)
   {
-    
-    limit(power, .45, -.45);
+    if(getForwardRotationLimit())
+    {
+      power =  limit(power, 0, -.45);
+    }
+    else if(getReverseRotationLimit())
+    {
+      power = limit(power, .45, 0);
+    }
+    else 
+    {
+     power = limit(power, .45, -.45);
+    }
 
+    SmartDashboard.putNumber("Rotation Power", power);
     rotationSpark.set(power);
 
   }
   
   public void runTopShooter(double power)
   {
-    limit(power, .9, -.9);
+    power = limit(power, .9, -.9);
     topShooterSpark.set(power);
   }
 
@@ -199,18 +207,48 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
      runTilt(tiltPower);
      runRotation(rotationPower);
   }
+
   public boolean isBallInShooter()
   {
     return turretBallTripSwitch.get();
   }
+  public boolean getForwardRotationLimit()
+  {
+    return forwardRotationLimit.get();
+  }
 
-  
+  public boolean getReverseRotationLimit()
+  {
+    return reverseRotationLimit.get();
+  }
+
+  public void autoResetRotation()
+  {
+    if(getForwardRotationLimit())
+    {
+      resetRotationEncoder();
+    }
+  }
+
+  public void autoResetTiltEncoder()
+  {
+    if(tiltTalon.isRevLimitSwitchClosed() ==1 )
+    {
+      tiltTalon.setSelectedSensorPosition(0);
+    }
+  }  
 //Tilt is 256 for encoder ticks per revolution
-  
-
   public double getSparkEncoderPosition(CANEncoder encoder)
   {
     return encoder.getPosition();
+  }
+  public double getRotationTicks()
+  {
+    return rotationEncoder.getDistance()/64;
+  }
+  public double getRotationRate()
+  {
+    return rotationEncoder.getRate();
   }
 
   public double tiltTicksToAngle()
@@ -251,6 +289,10 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
   {
     return getSparkEncoderVelocity(bottomShooterEncoder);
   }
+  public double getFeederRPM()
+  {
+    return getSparkEncoderVelocity(ballFeederEncoder);
+  }
 
 
   public double getSparkPower(CANSparkMax spark)
@@ -281,8 +323,14 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
     SmartDashboard.putNumber("top Shooter Spark Position:", ticksToRotations(getSparkEncoderPosition(topShooterEncoder), 4096));
     SmartDashboard.putNumber("bottom Shooter Spark Position:", ticksToRotations(getSparkEncoderPosition(bottomShooterEncoder), 4096));
     SmartDashboard.putNumber("ball Feeder Spark Position:", ticksToRotations(getSparkEncoderPosition(ballFeederEncoder), 4096));
-  //  SmartDashboard.putNumber("rotation spark Position:", ticksToRotations(getSparkEncoderPosition(rotationEncoder), 64));
+    SmartDashboard.putNumber("rotation  Position:", getRotationTicks());
     SmartDashboard.putNumber("tilt talon Position:", ticksToRotations(getTalonPosition(tiltTalon), 64));
+  }
+  public void printStates()
+  {
+    SmartDashboard.putBoolean("is Ball in Turret:" , isBallInShooter());
+    SmartDashboard.putBoolean("is Rotation at Forward limit", getForwardRotationLimit());
+    SmartDashboard.putBoolean("is Rotation at Reverse limit", getReverseRotationLimit());
   }
   public void printTiltPos()
   {
@@ -293,6 +341,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
   {
     SmartDashboard.putNumber("top shooter RPM", getTopWheelRPM());
     SmartDashboard.putNumber("bottom shooter RPM", getBottomWheelRPM());
+    SmartDashboard.putNumber("feeder RPM", getFeederRPM());
   }
 
   public void printOutputs()
@@ -324,29 +373,37 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
     rotationSpark.set(0);
     tiltTalon.set(ControlMode.PercentOutput, 0);
   }
+
   public void stopFeeder()
   {
     ballFeederSpark.set(0);
   }
 
   public void stopAllTurretMotors()
-
   {
     stopShooter();
     stopTurret();
     stopFeeder();
   }
+
   public double limit(double x, double upperLimit, double lowerLimit)
 	{	if(x >= upperLimit){ x = upperLimit;}
 		else if( x<=lowerLimit){ x = lowerLimit;}
 		return x;
   }
 
+  public void autoResetEncoders()
+  {
+    autoResetRotation();
+    autoResetTiltEncoder();
+  }
+
   @Override
   public void periodic() {
    //printTemp();
-    resetPos();
-   printShooterRPM();
+   autoResetEncoders();
+   printRotations();
+   printStates();
    printTiltPos();
     // This method will be called once per scheduler run
   }

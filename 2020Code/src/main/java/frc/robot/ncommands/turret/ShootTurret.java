@@ -38,35 +38,42 @@ public class ShootTurret extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   
+    double feederMax = 4500;
+
+    double feederDesired = -.25*feederMax;
 
     double topShooterActual = turret.getTopWheelRPM();
     double bottomShooterActual = turret.getBottomWheelRPM();
-
+    double feederActual = turret.getFeederRPM();
+  
     double topShooterError = topShooterDesired-topShooterActual;
     double bottomShooterError = bottomShooterDesired-bottomShooterActual;
+    double feederError = feederDesired-feederActual;
+
 
     double topPower = topShooterDesired+topShooterError;
     double bottomPower = bottomShooterDesired+bottomShooterError;
+    double feederPower = feederDesired+feederError;
 
     topPower = topPower/5600;
     bottomPower = bottomPower/5200;
+    feederPower = feederPower/ feederMax;
 
-    double tP, bP;
+
+    double tP, bP, fP; 
 
     tP = 1;
     bP = 1;
+    fP = 1; 
+
 
     double topInput = topPower*tP;
     double bottomInput = bottomPower*bP;
-
-    double ballFeederPower;
-
-    ballFeederPower = -.6;
+    double feederInput = feederPower*fP;
 
     turret.runShooterPower(topInput, bottomInput);
-    turret.runBallFeeder(ballFeederPower);
-
+    turret.runBallFeeder(feederInput);
+    //turret.runBallFeeder(1);
     /*
     if(turret.isBallInShooter())
     {

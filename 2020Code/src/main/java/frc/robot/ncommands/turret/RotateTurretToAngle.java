@@ -35,6 +35,8 @@ public class RotateTurretToAngle extends CommandBase {
 
   double rotationPower;
   double angleError;
+  boolean isFinished;
+  
 
   //require input of subsystem and the desired angle
   public RotateTurretToAngle(Turret subsystem, double Angle) {
@@ -42,27 +44,33 @@ public class RotateTurretToAngle extends CommandBase {
     //assign values to public locations
     turret = subsystem;
     _desiredAngle = Angle;
+  
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    SmartDashboard.putString("Turret Command Running:","Rotate turret TO angle " + _desiredAngle);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     //Going from encoder ticks to the angle of another wheel
-    //encoderWheelCurrentInches = turret.ticksToInches(turret.rotationEncoder, encoderWheelDiameter);
+   // encoderWheelCurrentInches = turret.ticksToInches(turret.rotationEncoder, encoderWheelDiameter);
+    encoderWheelCurrentInches = turret.getRotationTicks() * encoderWheelCircumference;
     turretWheelCurrentInches = encoderWheelCurrentInches;
     turretWheelPercent = turretWheelCurrentInches / turretWheelCircumference;
     currentAngle = 360 * turretWheelPercent;
 
+    SmartDashboard.putNumber("turret wheel angle", _desiredAngle);
+
   //Angle error for how far off it currently is
-    angleError = Math.abs(currentAngle - _desiredAngle);
+    angleError = Math.abs(_desiredAngle-currentAngle);
     //determine the direction of min power
 		boolean turnLeft  = currentAngle < _desiredAngle; 
-    double turnModifer = turnLeft ? -1: 1;
+    double turnModifer = turnLeft ? 1: -1;
 
     //Variables for tuning
     double minPower = .3;
@@ -70,11 +78,12 @@ public class RotateTurretToAngle extends CommandBase {
 		P = .52;
 
     //Find the overal power based off minimum power and the distance off then limit it
-    rotationPower = (turnModifer * minPower)+ (angleError/90* P);
-    turret.limit(rotationPower, .7, -.7);
-    
+    rotationPower = (turnModifer * minPower) + (angleError/90* P);
+    //rotationPower = turret.limit(rotationPower, .7, -.7);
+    isFinished = Math.abs(angleError) < 2;
     //set the power
-    turret.rotationSpark.set(rotationPower);
+    SmartDashboard.putNumber("Rotate Turret Rotation Power", rotationPower);
+    turret.runRotation(rotationPower);
     SmartDashboard.putNumber("Turret rotation angle error", angleError);
   }
 
@@ -88,6 +97,6 @@ public class RotateTurretToAngle extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return  (Math.abs(angleError) <= 2);
+    return  isFinished;
   }
 }
