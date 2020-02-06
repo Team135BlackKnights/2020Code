@@ -39,10 +39,11 @@ public class tiltTurretToPosition extends CommandBase {
     tiltTicks = turret.getTalonPosition(turret.tiltTalon);
 
     //Find the error based off current and where it should be
-    positionError = desiredTicks - tiltTicks;
+    positionError = Math.abs(tiltTicks - desiredTicks);
 
     //Determin minimum power direction
-    double runModifier = positionError > 0 ? 1: -1;
+    boolean runForward = tiltTicks < desiredTicks;
+    double runModifier = runForward ? -1: 1;
     
     //variables for tuning
 		double minPower = .3;
@@ -54,7 +55,6 @@ public class tiltTurretToPosition extends CommandBase {
     turret.limit(power, .7, -.7);
 
     //set the power
-    
     turret.tiltTalon.set(ControlMode.PercentOutput, power);
 		SmartDashboard.putNumber("Turret tilt error", positionError);
   }
