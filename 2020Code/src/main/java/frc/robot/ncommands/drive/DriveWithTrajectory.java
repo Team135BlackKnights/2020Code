@@ -104,6 +104,8 @@ public class DriveWithTrajectory extends CommandBase {
           drive);
       return command;
 }
+
+  
   public DifferentialDriveKinematics getKinematics() {
    return kinematics;
   }
