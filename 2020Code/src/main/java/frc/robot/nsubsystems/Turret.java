@@ -42,25 +42,6 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
 
   public boolean lastBallState = false;
 
-
-  //Using wheel size...
-  public double turretWheelDiameter = 12.8;
-  //find the circumference of the wheel...
-  public double turretWheelCircumference = turretWheelDiameter * Math.PI;
-  //find the current location of the turret
-  public double turretWheelCurrentInches = 0;
-  //find the percentage based off the circumference and current location....
-  public double turretWheelPercent = turretWheelCurrentInches / turretWheelCircumference;
-
-  //Do it again for the other wheel
-  public double encoderWheelDiameter = 1.4;
-  public double encoderWheelCircumference = encoderWheelDiameter * Math.PI;
-  public double encoderWheelCurrentInches = 0;
-  public double encoderWheelPercent = encoderWheelCurrentInches / encoderWheelCircumference;
-
-  //Can use the percentage to find the current angle by mulitplying by 360
-  public double currentAngle = 360 * turretWheelPercent;
-
   public Turret() 
   {
     targetingLight = new Relay(TARGETING_LIGHT);
@@ -182,15 +163,15 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
   {
     if(getForwardRotationLimit())
     {
-      power =  limit(power, 0, -.35);
+      power =  limit(power, 0, -.45);
     }
     else if(getReverseRotationLimit())
     {
-      power = limit(power, .35, 0);
+      power = limit(power, .45, 0);
     }
     else 
     {
-     power = limit(power, .35, -.35);
+     power = limit(power, .45, -.45);
     }
 
     SmartDashboard.putNumber("Rotation Power", power);
@@ -268,11 +249,6 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
   public double getRotationRate()
   {
     return rotationEncoder.getRate();
-  }
-  
-  public double getRotationAngle()
-  {
-    return getRotationTicks()*(360/512);
   }
 
   public double tiltTicksToAngle()
@@ -421,24 +397,14 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
     autoResetRotation();
     autoResetTiltEncoder();
   }
-  public void findRotationAngle() {
 
-    encoderWheelCurrentInches = getRotationTicks() * encoderWheelCircumference; //64 ticks per rotation
-    turretWheelCurrentInches = encoderWheelCurrentInches;
-    turretWheelPercent = turretWheelCurrentInches / turretWheelCircumference;
-    currentAngle = 360 * turretWheelPercent;
-    SmartDashboard.putNumber("Rotation Angle", currentAngle);
-  }
   @Override
   public void periodic() {
-   SmartDashboard.putNumber("Ticks To Degrees", getRotationAngle());
-   findRotationAngle();
    //printTemp();
    autoResetEncoders();
    printRotations();
    printStates();
    printTiltPos();
-  // SmartDashboard.p
     // This method will be called once per scheduler run
   }
 }

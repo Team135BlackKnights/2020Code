@@ -15,7 +15,23 @@ public class RotateTurretToAngle extends CommandBase {
   private double _desiredAngle;
   Turret turret;
   
-  
+  //Using wheel size...
+  double turretWheelDiameter = 12.8;
+  //find the circumference of the wheel...
+  double turretWheelCircumference = turretWheelDiameter * Math.PI;
+  //find the current location of the turret
+  double turretWheelCurrentInches = 0;
+  //find the percentage based off the circumference and current location....
+  double turretWheelPercent = turretWheelCurrentInches / turretWheelCircumference;
+
+  //Do it again for the other wheel
+  double encoderWheelDiameter = 1.4;
+  double encoderWheelCircumference = encoderWheelDiameter * Math.PI;
+  double encoderWheelCurrentInches = 0;
+  double encoderWheelPercent = encoderWheelCurrentInches / encoderWheelCircumference;
+
+  //Can use the percentage to find the current angle by mulitplying by 360
+  double currentAngle = 360 * turretWheelPercent;
 
   double rotationPower;
   double angleError;
@@ -43,13 +59,16 @@ public class RotateTurretToAngle extends CommandBase {
   public void execute() {
     //Going from encoder ticks to the angle of another wheel
     // encoderWheelCurrentInches = turret.ticksToInches(turret.rotationEncoder, encoderWheelDiameter);
-    
+    encoderWheelCurrentInches = turret.getRotationTicks() * encoderWheelCircumference;
+    turretWheelCurrentInches = encoderWheelCurrentInches;
+    turretWheelPercent = turretWheelCurrentInches / turretWheelCircumference;
+    currentAngle = 360 * turretWheelPercent;
 
-    SmartDashboard.putNumber("turret wheel angle", turret.currentAngle);
+    SmartDashboard.putNumber("turret wheel angle", currentAngle);
 
     //Angle error for how far off it currently is
     //TODO:: Test angle error now that the absolute value isn't being taken from it so we can get a negative rotation
-    angleError = _desiredAngle-turret.currentAngle;
+    angleError = _desiredAngle-currentAngle;
     //determine the direction of min power
     double turnModifer = angleError > 0 ? 1: -1;
 
