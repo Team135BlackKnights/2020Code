@@ -20,8 +20,7 @@ public class Endgame extends SubsystemBase implements RobotMap.ENDGAME{
   
   public CANSparkMax winchSpark, liftRaiseSpark;
   public CANEncoder liftRaiseEncoder, winchEncoder; 
-  public Endgame() 
-  {
+  public Endgame() {
     winchSpark = new CANSparkMax(WIND_UP_SPARK_ID, MotorType.kBrushless);
     liftRaiseSpark = new CANSparkMax(LIFT_UP_SPARK_ID, MotorType.kBrushless);
     liftRaiseEncoder = liftRaiseSpark.getEncoder();
@@ -42,13 +41,12 @@ public class Endgame extends SubsystemBase implements RobotMap.ENDGAME{
    
 public void runWinchSpark(double power)
 {
- winchSpark.set(power);
+  winchSpark.set(power);
 }
 
 public void runLiftRaiseSpark(double power)
 {
   limit(power, .5, -.5);
-
   liftRaiseSpark.set(power);
 }
  
@@ -63,7 +61,7 @@ public void resetWinchEncoder(){
 }
  
 public void resetLiftEncoder(){
-   liftRaiseEncoder.setPosition(0);
+  liftRaiseEncoder.setPosition(0);
 }
  
 public double getWinchEncoderPosition()
@@ -89,8 +87,8 @@ public double ticksToInches(double ticks)
 public void printPosition()
 {
    
-   SmartDashboard.putNumber("LiftRaise Encoder Distance", getLiftRaiseEncoderPosition());
-   SmartDashboard.putNumber("Winch Encoder Distance", getWinchEncoderPosition());
+  SmartDashboard.putNumber("LiftRaise Encoder Distance", getLiftRaiseEncoderPosition());
+  SmartDashboard.putNumber("Winch Encoder Distance", getWinchEncoderPosition());
 }
  
 public double getLiftEncoderVelocity()
@@ -145,8 +143,8 @@ public void printVoltage()
   SmartDashboard.putNumber("Winch Motor Voltage", getVoltage(winchSpark));
 }
 
-public double limit(double x, double upperLimit, double lowerLimit)
-	{	if(x >= upperLimit){ x = upperLimit;}
+public double limit(double x, double upperLimit, double lowerLimit){	
+  if(x >= upperLimit){ x = upperLimit;}
 		else if( x<=lowerLimit){ x = lowerLimit;}
 		return x;
   }
@@ -164,6 +162,6 @@ public void printEverything()
   public void periodic() {
     printPosition();
     //printTicks();
-    // This method will be called once per scheduler run
+    //This method will be called once per scheduler run
   }
 }

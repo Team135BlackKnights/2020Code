@@ -83,19 +83,20 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE{
   public void intakeBallCount()
   {
     
-      if(isBallAtTripSwitch()!= lastSwtichPosition && isBallAtTripSwitch()!=false)
-      {
-        currentBallCount++;
-      }
-      if(lastSwtichPosition!=isBallAtTripSwitch())
-      {
-        lastSwtichPosition = isBallAtTripSwitch();
-      }
+    if(isBallAtTripSwitch()!= lastSwtichPosition && isBallAtTripSwitch()!=false)
+    {
+      currentBallCount++;
+    }
+    if(lastSwtichPosition!=isBallAtTripSwitch())
+    {
+      lastSwtichPosition = isBallAtTripSwitch();
+    }
 
   }
 
   public double limit(double x, double upperLimit, double lowerLimit)
-	{	if(x >= upperLimit){ x = upperLimit;}
+	{	
+    if(x >= upperLimit){ x = upperLimit;}
 		else if( x<=lowerLimit){ x = lowerLimit;}
 		return x;
   }

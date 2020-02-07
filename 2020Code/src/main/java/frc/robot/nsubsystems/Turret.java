@@ -127,8 +127,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
 
   public void resetShooterEncoders()
   {
-     bottomShooterEncoder.setPosition(0);
-     topShooterEncoder.setPosition(0);
+    bottomShooterEncoder.setPosition(0);
+    topShooterEncoder.setPosition(0);
   }
  
   public void resetBallFeederEncoder()
@@ -143,7 +143,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
 
   public void resetAllTurretEncoders()
   {
-  //  resetTiltEncoder();
+    //resetTiltEncoder();
     resetShooterEncoders();
     resetBallFeederEncoder();
     //resetRotationEncoder();;
@@ -158,7 +158,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
   }
 
   public void runRotation(double power)
-  {/*
+  {
+    /*
     if(getForwardRotationLimit())
     {
       power =  limit(power, 0, -.45);
@@ -169,8 +170,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
     }
     else 
     {
-      */
-     power = limit(power, .45, -.45);
+    */
+    power = limit(power, .45, -.45);
   //  }
 
     SmartDashboard.putNumber("Rotation Power", power);
@@ -203,8 +204,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
 
   public void aimTurret(double rotationPower, double tiltPower)
   {
-     runTilt(tiltPower);
-     runRotation(rotationPower);
+    runTilt(tiltPower);
+    runRotation(rotationPower);
   }
 
   public boolean isBallInShooter()
@@ -236,7 +237,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
       tiltTalon.setSelectedSensorPosition(0);
     }
   }  
-//Tilt is 256 for encoder ticks per revolution
+
   public double getSparkEncoderPosition(CANEncoder encoder)
   {
     return encoder.getPosition();
@@ -266,7 +267,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
 
   public double getTalonVelocity(WPI_TalonSRX talon)
   {
-     return talon.getSelectedSensorVelocity();
+    return talon.getSelectedSensorVelocity();
   }
 
   public double ticksToRotations(double ticks, double ppr)
@@ -296,7 +297,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
 
   public double getSparkPower(CANSparkMax spark)
   {
-     return spark.getAppliedOutput();
+    return spark.getAppliedOutput();
   }
 
   public double getTalonPower(WPI_TalonSRX talon)
