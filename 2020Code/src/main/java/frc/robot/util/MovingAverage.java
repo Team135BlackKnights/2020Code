@@ -43,13 +43,14 @@ public class MovingAverage {
 		_sum += d;
 
 		/* if full, pop one */
-		if (_cnt >= _cap)
+		if (_cnt >= _cap) {
 			pop();
-
+		}
 		/* push new one */
 		_d[_in] = d;
-		if (++_in >= _cap)
+		if (++_in >= _cap) {
 			_in = 0;
+		}
 		++_cnt;
 
 		/* calc new min - slow */
@@ -64,8 +65,9 @@ public class MovingAverage {
 		_sum -= d;
 
 		/* pop it */
-		if (++_ou >= _cap)
+		if (++_ou >= _cap) {
 			_ou = 0;
+		}
 		--_cnt;
 	}
 
@@ -78,12 +80,13 @@ public class MovingAverage {
 			float d = _d[ou];
 
 			/* process sample */
-			if (_min > d)
+			if (_min > d) {
 				_min = d;
-
+			}
 			/* iterate */
-			if (++ou >= _cnt)
+			if (++ou >= _cnt) {
 				ou = 0;
+			}
 			--cnt;
 		}
 	}

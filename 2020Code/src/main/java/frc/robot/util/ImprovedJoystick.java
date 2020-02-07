@@ -61,72 +61,72 @@ public class ImprovedJoystick {
 		boolean povDirectionPressed = false;
 		switch(povDirection) {
 		case (TOP_POV):
-		if (povValue >= 337.5 || (povValue <= 22.5 && povValue != -1)) {
-			povDirectionPressed = true;
-		}
-		else {
-			povDirectionPressed = false;
-		}
-		break;
+			if (povValue >= 337.5 || (povValue <= 22.5 && povValue != -1)) {
+				povDirectionPressed = true;
+			}
+			else {
+				povDirectionPressed = false;
+			}
+			break;
 
 		case (TOP_RIGHT_POV):
-		if (povValue >= 22.5 && (povValue <= 67.5 )) {
-			povDirectionPressed = true;
-		}
-		else {
-			povDirectionPressed = false;
-		}
-		break;
-	case (RIGHT_POV):
-		if (povValue >= 67.5 && povValue <= 112.5) {
-			povDirectionPressed = true;
-		}
-		else {
-			povDirectionPressed = false;
-		}
-		break;
+			if (povValue >= 22.5 && (povValue <= 67.5 )) {
+				povDirectionPressed = true;
+			}
+			else {
+				povDirectionPressed = false;
+			}
+			break;
+		case (RIGHT_POV):
+			if (povValue >= 67.5 && povValue <= 112.5) {
+				povDirectionPressed = true;
+			}
+			else {
+				povDirectionPressed = false;
+			}
+			break;
 
 		case (BOTTOM_RIGHT_POV):
-		if (povValue >= 112.5 && povValue <= 157.5) {
-			povDirectionPressed = true;
-		}
-		else {
-			povDirectionPressed = false;
-		}
-		break;
-	case (BOTTOM_POV):
-		if (povValue >= 157.5 && povValue <= 202.5) {
-			povDirectionPressed = true;
-		}
-		else {
-			povDirectionPressed = false;
-		}
-		break;
-	case (BOTTOM_LEFT_POV):
-		if (povValue >= 202.5 && povValue <= 247.5) {
-			povDirectionPressed = true;
-		}
-		else {
-			povDirectionPressed = false;
-		}
-		break;
-	case (LEFT_POV):
-		if (povValue >= 247.5 && povValue <= 337.5) {
-			povDirectionPressed = true;
-		}
-		else {
-			povDirectionPressed = false;
-		}
-		break;
+			if (povValue >= 112.5 && povValue <= 157.5) {
+				povDirectionPressed = true;
+			}
+			else {
+				povDirectionPressed = false;
+			}
+			break;
+		case (BOTTOM_POV):
+			if (povValue >= 157.5 && povValue <= 202.5) {
+				povDirectionPressed = true;
+			}
+			else {
+				povDirectionPressed = false;
+			}
+			break;
+		case (BOTTOM_LEFT_POV):
+			if (povValue >= 202.5 && povValue <= 247.5) {
+				povDirectionPressed = true;
+			}
+			else {
+				povDirectionPressed = false;
+			}
+			break;
+		case (LEFT_POV):
+			if (povValue >= 247.5 && povValue <= 337.5) {
+				povDirectionPressed = true;
+			}
+			else {
+				povDirectionPressed = false;
+			}
+			break;
 		case (TOP_LEFT_POV):
-		if (povValue >= 292.5 && povValue <= 292.5) {
-			povDirectionPressed = true;
+			if (povValue >= 292.5 && povValue <= 292.5) {
+				povDirectionPressed = true;
+			}
+			else {
+				povDirectionPressed = false;
+			}
+			break;
 		}
-		else {
-			povDirectionPressed = false;
-		}
-		break;
-	}
 	return povDirectionPressed;
 	}
 }
