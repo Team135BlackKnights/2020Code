@@ -17,6 +17,8 @@ public class TargetTurret extends CommandBase {
   /**
    * Creates a new TargetTurret.
    */
+  double tiltPowerPreset = .6;
+  double rotationPowerPreset = .25;
   private final Turret turret;
   private final TurretLimelight turretLimelight;
   private final ImprovedJoystick _joystick;
@@ -108,14 +110,14 @@ public class TargetTurret extends CommandBase {
     if(isPOVUp)
     {
       rotationPower = 0;
-      tiltPower = .6;
+      tiltPower = tiltPowerPreset;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
     } 
     else 
     if(isPOVRight)
     {
-      rotationPower = .25;
+      rotationPower = rotationPowerPreset;
       tiltPower = 0;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
@@ -124,14 +126,14 @@ public class TargetTurret extends CommandBase {
     if(isPOVDown)
     {
       rotationPower = 0;
-      tiltPower = -.6;
+      tiltPower = -tiltPowerPreset;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
     } 
     else
     if(isPOVLeft)
     {
-      rotationPower = -.25;
+      rotationPower = -rotationPowerPreset;
       tiltPower = 0;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
@@ -139,32 +141,32 @@ public class TargetTurret extends CommandBase {
     else 
     if(isPOVTopRight)
     {
-      rotationPower = .25;
-      tiltPower = .6;
+      rotationPower = rotationPowerPreset;
+      tiltPower = tiltPowerPreset;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
     } 
     else 
     if(isPOVBottomRight)
     {
-      rotationPower = .25;
-      tiltPower = -.6;
+      rotationPower = rotationPowerPreset;
+      tiltPower = -tiltPowerPreset;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
     } 
     else 
     if(isPOVBottomLeft)
     {
-      rotationPower = -.25;
-      tiltPower = -.6;
+      rotationPower = -rotationPowerPreset;
+      tiltPower = -tiltPowerPreset;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
     } 
     else 
     if(isPOVTopLeft)
     {
-      rotationPower = -.25;
-      tiltPower = .6;
+      rotationPower = -rotationPowerPreset;
+      tiltPower = tiltPowerPreset;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
     }
