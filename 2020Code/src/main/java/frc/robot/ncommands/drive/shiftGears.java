@@ -16,7 +16,6 @@ public class shiftGears extends CommandBase {
   
   public shiftGears(FalconDrive subsystem) {
     drive = subsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

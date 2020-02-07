@@ -11,15 +11,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.Intake;
 
 public class runRoller extends CommandBase {
-  /**
-   * Creates a new runRoller.
-   */
+  
   private final Intake intake;
   private final double _power;
   public runRoller(Intake subsystem, double power) {
     intake = subsystem; 
     _power = power;
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

@@ -11,14 +11,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.*;
 
 public class moveIntake extends CommandBase {
-  /**
-   * Creates a new moveIntake.
-   */
+ 
   private final Intake intake;
   private static boolean solenoidPosition = true;
   public moveIntake(Intake subsystem) {
      intake = subsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

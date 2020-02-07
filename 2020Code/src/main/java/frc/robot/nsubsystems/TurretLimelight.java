@@ -16,10 +16,8 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import frc.robot.util.*;
 
 public class TurretLimelight extends SubsystemBase {
-  /**
-   * Creates a new TurretLimelight.
-   */
-  private static TurretLimelight instance;
+  
+  	private static TurretLimelight instance;
 	
 	NetworkTableInstance networkTableInstance = NetworkTableInstance.getDefault();
 	NetworkTable TurretLimelightTable = networkTableInstance.getTable("limelight-turret");

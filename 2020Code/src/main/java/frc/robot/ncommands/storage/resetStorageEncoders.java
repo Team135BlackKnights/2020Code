@@ -12,12 +12,9 @@ import frc.robot.nsubsystems.Storage;
 
 public class resetStorageEncoders extends CommandBase {
   Storage storage;
-  /**
-   * Creates a new resetStorageEncoders.
-   */
+  
   public resetStorageEncoders(Storage subsystem) {
     storage = subsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

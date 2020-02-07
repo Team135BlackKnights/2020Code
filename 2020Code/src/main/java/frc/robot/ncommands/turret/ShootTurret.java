@@ -12,9 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.*;
 
 public class ShootTurret extends CommandBase {
-  /**
-   * Creates a new ShootTurret.
-   */
+
   private final Turret turret;
   private final double topShooterDesired, bottomShooterDesired;
   private boolean isFinished;
@@ -24,7 +22,6 @@ public class ShootTurret extends CommandBase {
     turret = subsystem;
     topShooterDesired = topShooterRPM;
     bottomShooterDesired = bottomShooterRPM;
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

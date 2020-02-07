@@ -17,11 +17,9 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import frc.robot.RobotMap;
 
 public class Endgame extends SubsystemBase implements RobotMap.ENDGAME{
-  /**
-   * Creates a new Endgame.
-   */
+  
   public CANSparkMax winchSpark, liftRaiseSpark;
-public CANEncoder liftRaiseEncoder, winchEncoder; 
+  public CANEncoder liftRaiseEncoder, winchEncoder; 
   public Endgame() 
   {
     winchSpark = new CANSparkMax(WIND_UP_SPARK_ID, MotorType.kBrushless);

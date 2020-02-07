@@ -14,16 +14,13 @@ import frc.robot.nsubsystems.*;
 import frc.robot.util.ImprovedJoystick;
 
 public class runConveyor extends CommandBase {
-  /**
-   * Creates a new runConveyor.
-   */
+  
   private final Storage storage;
   private ImprovedJoystick _joystick;
   
   public runConveyor(Storage subsystem, Joystick joystick) {
     storage = subsystem;
     _joystick = new ImprovedJoystick(joystick);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

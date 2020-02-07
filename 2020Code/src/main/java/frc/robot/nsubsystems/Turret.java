@@ -27,9 +27,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
 public class Turret extends SubsystemBase implements RobotMap.TURRET{
-  /**
-   * Creates a new Turret.
-   */
+ 
   public WPI_TalonSRX tiltTalon; 
   public Relay targetingLight; 
   public CANSparkMax rotationSpark, bottomShooterSpark, topShooterSpark, ballFeederSpark;

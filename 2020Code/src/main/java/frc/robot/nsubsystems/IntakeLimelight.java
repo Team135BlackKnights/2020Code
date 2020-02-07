@@ -14,9 +14,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 
 public class IntakeLimelight extends SubsystemBase {
-  /**
-   * Creates a new IntakeLimelight.
-   */
+  
   private static IntakeLimelight instance;
 	
 	NetworkTableInstance networkTableInstance = NetworkTableInstance.getDefault();

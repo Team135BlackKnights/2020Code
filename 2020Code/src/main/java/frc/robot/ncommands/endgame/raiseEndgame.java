@@ -12,9 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.Endgame;
 
 public class raiseEndgame extends CommandBase {
-  /**
-   * Creates a new raiseEndgame.
-   */
+  
   private final Endgame endgame;
   private double _target;
   private double targetError;
@@ -23,7 +21,6 @@ public class raiseEndgame extends CommandBase {
     endgame = subsystem;
     _target = target;
     addRequirements(endgame);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

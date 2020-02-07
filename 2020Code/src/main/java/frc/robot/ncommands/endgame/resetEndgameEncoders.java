@@ -12,12 +12,9 @@ import frc.robot.nsubsystems.Endgame;
 
 public class resetEndgameEncoders extends CommandBase {
   Endgame endgame;
-  /**
-   * Creates a new resetEndgameEncoders.
-   */
+ 
   public resetEndgameEncoders(Endgame subsystem) {
     endgame = subsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

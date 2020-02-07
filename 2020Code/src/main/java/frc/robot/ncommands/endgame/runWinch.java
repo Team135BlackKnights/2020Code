@@ -12,16 +12,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.Endgame;
 
 public class runWinch extends CommandBase {
-  /**
-   * Creates a new runWinch.
-   */
+  
   private final Endgame endgame; 
   private double _power;
   public runWinch(Endgame subsystem, double power) 
   {
     endgame = subsystem;
     _power = power;
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

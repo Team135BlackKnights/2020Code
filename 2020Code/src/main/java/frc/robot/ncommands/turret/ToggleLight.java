@@ -11,14 +11,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.*;
 
 public class ToggleLight extends CommandBase {
-  /**
-   * Creates a new ToggleLight.
-   */
+  
   private final Turret turret; 
   private boolean lightOn;
   public ToggleLight(Turret subsystem) {
     turret = subsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

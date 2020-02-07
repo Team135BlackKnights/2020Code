@@ -13,12 +13,9 @@ import frc.robot.nsubsystems.FalconDrive;
 public class toggleCompressor extends CommandBase {
   private static boolean isCompressorOn = true;
   FalconDrive drive;
-  /**
-   * Creates a new toggleCompressor.
-   */
+  
   public toggleCompressor(FalconDrive subsystem) {
     drive = subsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

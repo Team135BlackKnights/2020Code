@@ -14,15 +14,12 @@ import frc.robot.nsubsystems.Endgame;
 import frc.robot.util.ImprovedJoystick;
 
 public class runEndgameWithJoystick extends CommandBase {
-  /**
-   * Creates a new runEndgameWithJoystick.
-   */
+  
   private final Endgame endgame;
   private final ImprovedJoystick _joystick;
   public runEndgameWithJoystick(Endgame subsystem, Joystick joystick) {
-    // Use addRequirements() here to declare subsystem dependencies.
-  endgame = subsystem;
-  _joystick = new ImprovedJoystick(joystick);
+    endgame = subsystem;
+    _joystick = new ImprovedJoystick(joystick);
 
   addRequirements(endgame);
   }

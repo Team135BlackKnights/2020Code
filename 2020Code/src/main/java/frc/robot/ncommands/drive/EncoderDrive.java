@@ -20,9 +20,7 @@ public class EncoderDrive extends CommandBase {
   private boolean _stopWhenDone;
   private double actualDistanceFromWall;
   private ImprovedJoystick _joystick;
-  /**
-   * Creates a new EncoderDrive.
-   */
+  
   public EncoderDrive(FalconDrive subsystem, double leftTarget, double rightTarget, double tolerance, boolean stopWhenDone, Joystick joystick) {
     drive = subsystem;
     _joystick = new ImprovedJoystick(joystick);
@@ -31,7 +29,6 @@ public class EncoderDrive extends CommandBase {
     this._tolerance = tolerance;
     this._stopWhenDone = stopWhenDone;
     addRequirements(drive);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

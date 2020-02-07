@@ -12,16 +12,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.*;
 
 public class runConveyorSetPos extends CommandBase {
-  /**
-   * Creates a new runConveyorSetPos.
-   */
+  
   private final Storage storage;
   private final double _targetPos;
   private boolean isFinished = false;
   public runConveyorSetPos(Storage subsystem, double targetPos) {
     storage = subsystem;
     this._targetPos = targetPos;
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

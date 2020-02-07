@@ -14,9 +14,7 @@ import frc.robot.nsubsystems.*;
 import frc.robot.util.ImprovedJoystick;
 
 public class TargetTurret extends CommandBase {
-  /**
-   * Creates a new TargetTurret.
-   */
+  
   double tiltPowerPreset = .6;
   double rotationPowerPreset = .25;
   private final Turret turret;
@@ -36,10 +34,6 @@ public class TargetTurret extends CommandBase {
     turretLimelight = limelightSubsystem;
     addRequirements(turret);
     addRequirements(turretLimelight);
-    
-
-
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

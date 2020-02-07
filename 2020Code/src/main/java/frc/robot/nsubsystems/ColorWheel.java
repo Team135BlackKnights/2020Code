@@ -29,10 +29,8 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL{
-  /**
-   * Creates a new ColorWheel.
-   */
-  public ColorSensorV3 controlPanelColorSensor;
+  
+   public ColorSensorV3 controlPanelColorSensor;
    private final I2C.Port i2cPort = I2C.Port.kOnboard;
    public CANSparkMax rotatorSpark;
    public Solenoid extendSolenoid;
@@ -55,7 +53,6 @@ controlPanelColorSensor = new ColorSensorV3(i2cPort);
 // Creates a SparkMax motor controller in rotatorSpark
 rotatorSpark = new CANSparkMax(ROTATOR_ID, MotorType.kBrushless);
 extendSolenoid = new Solenoid(1);
-//TODO set in robotmap 
 
 initCANSparkMax(rotatorSpark, IdleMode.kBrake);
 testBoi = new WPI_TalonSRX(23);

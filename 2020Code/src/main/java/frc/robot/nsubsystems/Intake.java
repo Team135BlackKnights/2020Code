@@ -20,9 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
 public class Intake extends SubsystemBase implements RobotMap.INTAKE{
-  /**
-   * Creates a new Intake.
-   */
+  
   public CANSparkMax rollerSpark;
   public CANEncoder rollerEncoder;
   public Ultrasonic intakeSonar;

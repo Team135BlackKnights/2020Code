@@ -15,16 +15,13 @@ import frc.robot.nsubsystems.*;
 import frc.robot.util.ImprovedJoystick;
 
 public class TurretTest extends CommandBase {
-  /**
-   * Creates a new TurretTest.
-   */
+  
   private final Turret turret; 
   private ImprovedJoystick _joystick;
   public TurretTest(Turret subsystem, Joystick joystick) {
     turret = subsystem;
     _joystick = new ImprovedJoystick(joystick);
     addRequirements(turret);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

@@ -35,9 +35,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 
 public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
-  /**
-   * Creates a new FalconDrive.
-   */
+  
   public static final double distBetweenWheelsInches = 23;// 26.84603809585759;
   public static final double gearRatio = 1 / 13.85;
   public static final double wheelDiameterInches = 6.375;// 18;

@@ -12,12 +12,9 @@ import frc.robot.nsubsystems.FalconDrive;
 
 public class resetDriveEncoders extends CommandBase {
   FalconDrive drive;
-  /**
-   * Creates a new resetDriveEncoders.
-   */
+  
   public resetDriveEncoders(FalconDrive subsystem) {
     drive = subsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

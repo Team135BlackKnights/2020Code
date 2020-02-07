@@ -21,9 +21,7 @@ public class EncoderDriveWithSonar extends CommandBase {
   private double actualDistanceFromWall;
   private boolean _stopWhenDone;
   private ImprovedJoystick _joystick;
-  /**
-   * Creates a new EncoderDriveWithSonar.
-   */
+  
   public EncoderDriveWithSonar(FalconDrive subsystem, double leftTarget, double rightTarget, double tolerance, double distanceFromWall, boolean stopWhenDone, Joystick joystick) {
     drive = subsystem;
     _joystick = new ImprovedJoystick(joystick);
@@ -33,7 +31,6 @@ public class EncoderDriveWithSonar extends CommandBase {
     this._distanceFromWall = distanceFromWall;
     this._stopWhenDone = stopWhenDone;
     addRequirements(drive);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

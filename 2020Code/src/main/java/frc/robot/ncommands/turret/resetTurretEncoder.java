@@ -12,12 +12,9 @@ import frc.robot.nsubsystems.Turret;
 
 public class resetTurretEncoder extends CommandBase {
   Turret turret;
-  /**
-   * Creates a new resetTurretEncoder.
-   */
+  
   public resetTurretEncoder(Turret subsystem) {
     turret = subsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

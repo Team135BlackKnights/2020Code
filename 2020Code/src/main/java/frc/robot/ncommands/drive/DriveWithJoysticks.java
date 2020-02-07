@@ -18,9 +18,7 @@ public class DriveWithJoysticks extends CommandBase {
   private final FalconDrive drive;
   
   ImprovedJoystick _leftJoystick, _rightJoystick;
-  /**
-   * Creates a new DriveWithJoysticks.
-   */
+  
 
   public DriveWithJoysticks(FalconDrive subsystem, 
   Joystick leftJoystick, Joystick rightJoystick) 
@@ -29,11 +27,6 @@ public class DriveWithJoysticks extends CommandBase {
     addRequirements(drive);
     _leftJoystick = new ImprovedJoystick(leftJoystick);
     _rightJoystick = new ImprovedJoystick(rightJoystick);
-    
-
-
-    
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

@@ -17,9 +17,7 @@ public class EncoderDriveToWithAngle extends CommandBase {
   private double leftError, rightError, angleError;
   private boolean _shortDistance;
 
-  /**
-   * Creates a new EncoderDriveToWithAngle.
-   */
+  
   public EncoderDriveToWithAngle(FalconDrive subsystem, double leftTarget, double rightTarget, double angleDesired, boolean shortDistance) {
     drive = subsystem;
     this._shortDistance = shortDistance;
@@ -27,7 +25,6 @@ public class EncoderDriveToWithAngle extends CommandBase {
     this._rightTarget = rightTarget;
     this._angleDesired = angleDesired;
     addRequirements(drive);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

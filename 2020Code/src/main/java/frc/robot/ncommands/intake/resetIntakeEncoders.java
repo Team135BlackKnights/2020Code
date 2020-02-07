@@ -12,12 +12,9 @@ import frc.robot.nsubsystems.Intake;
 
 public class resetIntakeEncoders extends CommandBase {
   Intake intake;
-  /**
-   * Creates a new resetIntakeEncoders.
-   */
+  
   public resetIntakeEncoders(Intake subsystem) {
     intake = subsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
