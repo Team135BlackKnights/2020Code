@@ -16,6 +16,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
 public class Intake extends SubsystemBase implements RobotMap.INTAKE{
@@ -90,10 +91,21 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE{
     return raiseLower.get();
   }
 
+  public double getRollerPower()
+  {
+    return rollerSpark.getAppliedOutput();
+  }
+
+  public void printIntakeStuff()
+  {
+    SmartDashboard.putBoolean("is Intake Lower", isRollerLowered());
+    SmartDashboard.putNumber("intake roller position", getEncoderPosition(rollerEncoder));
+  }
 
 
   @Override
   public void periodic() {
+    
     // This method will be called once per scheduler run
   }
 }

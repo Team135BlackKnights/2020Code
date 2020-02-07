@@ -115,7 +115,7 @@ public class TargetTurret extends CommandBase {
     else 
     if(isPOVRight)
     {
-      rotationPower = .5;
+      rotationPower = .25;
       tiltPower = 0;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
@@ -131,7 +131,7 @@ public class TargetTurret extends CommandBase {
     else
     if(isPOVLeft)
     {
-      rotationPower = -.5;
+      rotationPower = -.25;
       tiltPower = 0;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
@@ -139,7 +139,7 @@ public class TargetTurret extends CommandBase {
     else 
     if(isPOVTopRight)
     {
-      rotationPower = .5;
+      rotationPower = .25;
       tiltPower = .6;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
@@ -147,7 +147,7 @@ public class TargetTurret extends CommandBase {
     else 
     if(isPOVBottomRight)
     {
-      rotationPower = .5;
+      rotationPower = .25;
       tiltPower = -.6;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
@@ -155,7 +155,7 @@ public class TargetTurret extends CommandBase {
     else 
     if(isPOVBottomLeft)
     {
-      rotationPower = -.5;
+      rotationPower = -.25;
       tiltPower = -.6;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
@@ -163,7 +163,7 @@ public class TargetTurret extends CommandBase {
     else 
     if(isPOVTopLeft)
     {
-      rotationPower = -.5;
+      rotationPower = -.25;
       tiltPower = .6;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
