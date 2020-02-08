@@ -151,10 +151,9 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
 
   public void runTilt(double power)
   {
-    
     power = limit(power, .9, -.9);
     tiltTalon.set(ControlMode.PercentOutput, power);
-    }
+  }
 
   public void runRotation(double power)
   {
@@ -172,10 +171,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
     */
     power = limit(power, .45, -.45);
   //  }
-
     SmartDashboard.putNumber("Rotation Power", power);
     rotationSpark.set(power);
-
   }
   
   public void runTopShooter(double power)
