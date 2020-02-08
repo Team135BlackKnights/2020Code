@@ -209,97 +209,85 @@ public static JoystickButton
   
       public boolean isPovDirectionPressed(int joystickID, int povDirection)
       {
-          double povValue = this.getPovAngle(joystickID);
-          boolean povDirectionPressed = false;
-          switch(povDirection) {
+        double povValue = this.getPovAngle(joystickID);
+        boolean povDirectionPressed = false;
+        switch(povDirection) {
   
-          case (TOP_POV):
+        case (TOP_POV):
           if (povValue >= 337.5 || (povValue <= 22.5 && povValue != -1)) {
-              povDirectionPressed = true;
+            povDirectionPressed = true;
           }
           else {
-              povDirectionPressed = false;
+            povDirectionPressed = false;
           }
           break;
   
-          case (TOP_RIGHT_POV):
+        case (TOP_RIGHT_POV):
           if (povValue >= 22.5 && (povValue <= 67.5 )) {
-              povDirectionPressed = true;
+            povDirectionPressed = true;
           }
           else {
-              povDirectionPressed = false;
+            povDirectionPressed = false;
           }
           break;
-      case (RIGHT_POV):
-          if (povValue >= 67.5 && povValue <= 112.5) {
-              povDirectionPressed = true;
+        case (RIGHT_POV):
+          if (povValue >= 67.5 && povValue <= 112.5) {              
+            povDirectionPressed = true;
           }
           else {
-              povDirectionPressed = false;
+            povDirectionPressed = false;
           }
           break;
   
-          case (BOTTOM_RIGHT_POV):
+        case (BOTTOM_RIGHT_POV):
           if (povValue >= 112.5 && povValue <= 157.5) {
-              povDirectionPressed = true;
+            povDirectionPressed = true;
           }
           else {
-              povDirectionPressed = false;
+            povDirectionPressed = false;
           }
           break;
-      case (BOTTOM_POV):
+        case (BOTTOM_POV):
           if (povValue >= 157.5 && povValue <= 202.5) {
-              povDirectionPressed = true;
+            povDirectionPressed = true;
           }
           else {
-              povDirectionPressed = false;
+            povDirectionPressed = false;
           }
           break;
-      case (BOTTOM_LEFT_POV):
+        case (BOTTOM_LEFT_POV):
           if (povValue >= 202.5 && povValue <= 247.5) {
-              povDirectionPressed = true;
+            povDirectionPressed = true;
           }
           else {
-              povDirectionPressed = false;
+            povDirectionPressed = false;
           }
           break;
-      case (LEFT_POV):
+        case (LEFT_POV):
           if (povValue >= 247.5 && povValue <= 337.5) {
-              povDirectionPressed = true;
+            povDirectionPressed = true;
           }
           else {
-              povDirectionPressed = false;
+            povDirectionPressed = false;
           }
           break;
-          case (TOP_LEFT_POV):
+        case (TOP_LEFT_POV):
           if (povValue >= 292.5 && povValue <= 292.5) {
-              povDirectionPressed = true;
+            povDirectionPressed = true;
           }
           else {
-              povDirectionPressed = false;
+            povDirectionPressed = false;
           }
           break;
       
-      }
-      return povDirectionPressed;
+    }
+    return povDirectionPressed;
   
-      }
+  }
   
-      public Command getAutonomousCommand() {
+  public Command getAutonomousCommand() {
 
-        return null;
-      } 
-
-
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  
-
-  
-
+    return null;
+  } 
 }
 
