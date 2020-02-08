@@ -73,7 +73,7 @@ public class TargetTurret extends CommandBase {
 
     double turretAngle = turret.tiltTicksToAngle();
     SmartDashboard.putNumber("turret Angle", turretAngle);
-    double limelightHeight = Math.sin(turretAngle)*5;
+    double limelightHeight = (Math.sin(turretAngle)*5)+32.5;
     double hypotTarget = -turretLimelight.hpotToTarget(98, limelightHeight,  turretAngle);
     double distToTarget = -turretLimelight.distToTarget(98, limelightHeight, turretAngle);
     SmartDashboard.putNumber("distance to Target: ", distToTarget);

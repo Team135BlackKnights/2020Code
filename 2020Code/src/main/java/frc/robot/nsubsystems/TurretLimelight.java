@@ -58,11 +58,11 @@ public class TurretLimelight extends SubsystemBase {
 	
 	public double distToTarget(double targetHeight,double limelightHeightAdjust, double limelightAngle)
 	{
-		return ((targetHeight-(34.375+ limelightHeightAdjust))/Math.tan(limelightAngle));
+		return ((targetHeight-limelightHeightAdjust)/Math.tan(limelightAngle));
 	}
 	public double hpotToTarget(double targetHeight, double limelightHeightAdjust, double limelightAngle)
 	{
-		return ((targetHeight - (34.375 + limelightHeightAdjust))/Math.sin(limelightAngle));
+		return ((targetHeight - limelightHeightAdjust)/Math.sin(limelightAngle));
 	}
 	public double distBois()
 	{
