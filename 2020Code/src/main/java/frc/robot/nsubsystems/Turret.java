@@ -26,22 +26,21 @@ import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
-public class Turret extends SubsystemBase implements RobotMap.TURRET{
- 
-  public WPI_TalonSRX tiltTalon; 
-  public Relay targetingLight; 
+public class Turret extends SubsystemBase implements RobotMap.TURRET {
+
+  public WPI_TalonSRX tiltTalon;
+  public Relay targetingLight;
   public CANSparkMax rotationSpark, bottomShooterSpark, topShooterSpark, ballFeederSpark;
-  public CANEncoder bottomShooterEncoder, topShooterEncoder, ballFeederEncoder; 
+  public CANEncoder bottomShooterEncoder, topShooterEncoder, ballFeederEncoder;
   public DigitalInput turretBallTripSwitch, forwardRotationLimit, reverseRotationLimit;
   public Encoder rotationEncoder;
-  public Counter turretLidar; 
+  public Counter turretLidar;
 
-  public int turretBallCount = 0; 
+  public int turretBallCount = 0;
 
   public boolean lastBallState = false;
 
-  public Turret() 
-  {
+  public Turret() {
     targetingLight = new Relay(TARGETING_LIGHT);
     tiltTalon = new WPI_TalonSRX(TILT_TALON_ID);
     rotationSpark = new CANSparkMax(ROTATION_SPARK_ID, MotorType.kBrushless);
@@ -52,7 +51,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
     turretBallTripSwitch = new DigitalInput(TRIP_SWITCH_ID);
     forwardRotationLimit = new DigitalInput(LEFT_LIMIT_ID);
     reverseRotationLimit = new DigitalInput(RIGHT_LIMIT_ID);
-    
+
     initTalonSRX(tiltTalon);
 
     initCANSparkMax(rotationSpark, IdleMode.kBrake);
@@ -66,37 +65,29 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
     ballFeederEncoder = ballFeederSpark.getEncoder();
     tiltTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
     rotationEncoder = new Encoder(ROTATION_ENCODER_A, ROTATION_ENCODER_B);
-  
+
     rotationEncoder.setDistancePerPulse(64);
 
     resetAllTurretEncoders();
-    
+
     System.out.println("Turret Initialized");
   }
-/*
-  public void turretCountBalls()
-  {
-    if(isBallInShooter()!=lastBallState && isBallInShooter()!=false)
-    {
-      turretBallCount++;
-    }
-    if(lastBallState!=isBallInShooter())
-    {
-      lastBallState = isBallInShooter();
-    }
 
-  }
-*/
-  public void initCANSparkMax(CANSparkMax spark, IdleMode mode)
-  {
+  /*
+   * public void turretCountBalls() { if(isBallInShooter()!=lastBallState &&
+   * isBallInShooter()!=false) { turretBallCount++; }
+   * if(lastBallState!=isBallInShooter()) { lastBallState = isBallInShooter(); }
+   * 
+   * }
+   */
+  public void initCANSparkMax(CANSparkMax spark, IdleMode mode) {
     spark.restoreFactoryDefaults();
-		spark.setInverted(false);
+    spark.setInverted(false);
     spark.enableVoltageCompensation(12);
     spark.setIdleMode(mode);
   }
 
-  public void initTalonSRX(WPI_TalonSRX talon)
-  {
+  public void initTalonSRX(WPI_TalonSRX talon) {
     talon.configReverseSoftLimitEnable(false);
     talon.configForwardSoftLimitEnable(false);
     talon.enableCurrentLimit(false);
@@ -107,240 +98,201 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
     talon.configPeakOutputForward(1);
     talon.configPeakOutputReverse(-1);
     talon.setNeutralMode(NeutralMode.Brake);
-  } 
-  public void setLight(boolean on)
-  {
-    if(on)
-    {
+  }
+
+  public void setLight(boolean on) {
+    if (on) {
       targetingLight.set(Value.kForward);
-    }
-    else {
+    } else {
       targetingLight.set(Value.kOn);
     }
   }
-  
 
-  public void resetTiltEncoder()
-  {
+  public void resetTiltEncoder() {
     tiltTalon.setSelectedSensorPosition(0);
   }
 
-  public void resetShooterEncoders()
-  {
+  public void resetShooterEncoders() {
     bottomShooterEncoder.setPosition(0);
     topShooterEncoder.setPosition(0);
   }
- 
-  public void resetBallFeederEncoder()
-  {
+
+  public void resetBallFeederEncoder() {
     ballFeederEncoder.setPosition(0);
   }
 
-  public void resetRotationEncoder( )
-  {
+  public void resetRotationEncoder() {
     rotationEncoder.reset();
   }
 
-  public void resetAllTurretEncoders()
-  {
-    //resetTiltEncoder();
+  public void resetAllTurretEncoders() {
+    // resetTiltEncoder();
     resetShooterEncoders();
     resetBallFeederEncoder();
-    //resetRotationEncoder();;
+    // resetRotationEncoder();;
   }
 
-  public void runTilt(double power)
-  {
+  public void runTilt(double power) {
     power = limit(power, .9, -.9);
     tiltTalon.set(ControlMode.PercentOutput, power);
   }
 
-  public void runRotation(double power)
-  {
+  public void runRotation(double power) {
     /*
-    if(getForwardRotationLimit())
-    {
-      power =  limit(power, 0, -.45);
-    }
-    else if(getReverseRotationLimit())
-    {
-      power = limit(power, .45, 0);
-    }
-    else 
-    {
-    */
+     * if(getForwardRotationLimit()) { power = limit(power, 0, -.45); } else
+     * if(getReverseRotationLimit()) { power = limit(power, .45, 0); } else {
+     */
     power = limit(power, .45, -.45);
-  //  }
+    // }
     SmartDashboard.putNumber("Rotation Power", power);
     rotationSpark.set(power);
   }
-  
-  public void runTopShooter(double power)
-  {
+
+  public void runTopShooter(double power) {
     power = limit(power, .9, -.9);
     topShooterSpark.set(power);
   }
 
-
-  public void runBottomShooter(double power)
-  {
+  public void runBottomShooter(double power) {
     limit(power, .9, -.9);
     bottomShooterSpark.set(power);
   }
-  public void runShooterPower(double topPower, double bottomPower)
-  {
+
+  public void runShooterPower(double topPower, double bottomPower) {
     runTopShooter(topPower);
     runBottomShooter(bottomPower);
   }
 
-  public void runBallFeeder(double power)
-  {
+  public void runBallFeeder(double power) {
     ballFeederSpark.set(power);
   }
 
-  public void aimTurret(double rotationPower, double tiltPower)
-  {
+  public void aimTurret(double rotationPower, double tiltPower) {
     runTilt(tiltPower);
     runRotation(rotationPower);
   }
-  public boolean isBallInShooter()
-  {
-    return false;//turretBallTripSwitch.get();
+
+  public boolean isBallInShooter() {
+    return false;// turretBallTripSwitch.get();
   }
-  public boolean getForwardRotationLimit()
-  {
+
+  public boolean getForwardRotationLimit() {
     return forwardRotationLimit.get();
   }
 
-  public boolean getReverseRotationLimit()
-  {
+  public boolean getReverseRotationLimit() {
     return reverseRotationLimit.get();
   }
 
-  public void autoResetRotation()
-  {
-    if(getForwardRotationLimit())
-    {
+  public void autoResetRotation() {
+    if (getForwardRotationLimit()) {
       resetRotationEncoder();
     }
   }
 
-  public void autoResetTiltEncoder()
-  {
-    if(tiltTalon.isRevLimitSwitchClosed() ==1 )
-    {
+  public void autoResetTiltEncoder() {
+    if (tiltTalon.isRevLimitSwitchClosed() == 1) {
       tiltTalon.setSelectedSensorPosition(0);
     }
-  }  
+  }
 
-  public double getSparkEncoderPosition(CANEncoder encoder)
-  {
+  public double getSparkEncoderPosition(CANEncoder encoder) {
     return encoder.getPosition();
   }
-  public double getRotationTicks()
-  {
-    return rotationEncoder.getDistance()/64;
+
+  public double getRotationTicks() {
+    return rotationEncoder.getDistance() / 64;
   }
-  public double getRotationRate()
-  {
+
+  public double getRotationRate() {
     return rotationEncoder.getRate();
   }
 
-  public double tiltTicksToAngle()
-  {
-    return 180-((getTalonPosition(tiltTalon)*360/256) + 90);
+  public double tiltTicksToAngle() {
+    return 180 - ((getTalonPosition(tiltTalon) * 360 / 256) + 90);
   }
-  public double getSparkEncoderVelocity(CANEncoder encoder)
-  {
+
+  public double getSparkEncoderVelocity(CANEncoder encoder) {
     return encoder.getVelocity();
   }
-  
-  public double getTalonPosition(WPI_TalonSRX talon)
-  {
+
+  public double getTalonPosition(WPI_TalonSRX talon) {
     return talon.getSelectedSensorPosition();
   }
 
-  public double getTalonVelocity(WPI_TalonSRX talon)
-  {
+  public double getTalonVelocity(WPI_TalonSRX talon) {
     return talon.getSelectedSensorVelocity();
   }
 
-  public double ticksToRotations(double ticks, double ppr)
-  {
-    return ticks/ppr;
+  public double ticksToRotations(double ticks, double ppr) {
+    return ticks / ppr;
   }
 
-  public double rotationsToInches(double rotations, double wheelDiameter)
-  {
+  public double rotationsToInches(double rotations, double wheelDiameter) {
     return rotations * wheelDiameter * Math.PI;
   }
 
-  public double getTopWheelRPM()
-  {
+  public double getTopWheelRPM() {
     return getSparkEncoderVelocity(topShooterEncoder);
   }
 
-  public double getBottomWheelRPM()
-  {
+  public double getBottomWheelRPM() {
     return getSparkEncoderVelocity(bottomShooterEncoder);
   }
-  public double getFeederRPM()
-  {
+
+  public double getFeederRPM() {
     return getSparkEncoderVelocity(ballFeederEncoder);
   }
 
-
-  public double getSparkPower(CANSparkMax spark)
-  {
+  public double getSparkPower(CANSparkMax spark) {
     return spark.getAppliedOutput();
   }
 
-  public double getTalonPower(WPI_TalonSRX talon)
-  {
+  public double getTalonPower(WPI_TalonSRX talon) {
     return talon.get();
   }
 
-  public double getSparkTemp(CANSparkMax spark)
-  {
+  public double getSparkTemp(CANSparkMax spark) {
     return spark.getMotorTemperature();
   }
-  
-  public double getTalonTemp(WPI_TalonSRX talon)
-  {
+
+  public double getTalonTemp(WPI_TalonSRX talon) {
     return talon.getTemperature();
   }
-  public double ticksToInches(CANEncoder encoder,double ppr ,double WheelDiameter) {
+
+  public double ticksToInches(CANEncoder encoder, double ppr, double WheelDiameter) {
     return rotationsToInches(ticksToRotations(getSparkEncoderPosition(encoder), ppr), WheelDiameter);
 
   }
-  public void printRotations()
-  {
-    SmartDashboard.putNumber("top Shooter Spark Position:", ticksToRotations(getSparkEncoderPosition(topShooterEncoder), 4096));
-    SmartDashboard.putNumber("bottom Shooter Spark Position:", ticksToRotations(getSparkEncoderPosition(bottomShooterEncoder), 4096));
-    SmartDashboard.putNumber("ball Feeder Spark Position:", ticksToRotations(getSparkEncoderPosition(ballFeederEncoder), 4096));
+
+  public void printRotations() {
+    SmartDashboard.putNumber("top Shooter Spark Position:",
+        ticksToRotations(getSparkEncoderPosition(topShooterEncoder), 4096));
+    SmartDashboard.putNumber("bottom Shooter Spark Position:",
+        ticksToRotations(getSparkEncoderPosition(bottomShooterEncoder), 4096));
+    SmartDashboard.putNumber("ball Feeder Spark Position:",
+        ticksToRotations(getSparkEncoderPosition(ballFeederEncoder), 4096));
     SmartDashboard.putNumber("rotation  Position:", getRotationTicks());
     SmartDashboard.putNumber("tilt talon Position:", ticksToRotations(getTalonPosition(tiltTalon), 64));
   }
-  public void printStates()
-  {
-    SmartDashboard.putBoolean("is Ball in Turret:" , isBallInShooter());
+
+  public void printStates() {
+    SmartDashboard.putBoolean("is Ball in Turret:", isBallInShooter());
     SmartDashboard.putBoolean("is Rotation at Forward limit", getForwardRotationLimit());
     SmartDashboard.putBoolean("is Rotation at Reverse limit", getReverseRotationLimit());
   }
-  public void printTiltPos()
-  {
+
+  public void printTiltPos() {
     SmartDashboard.putNumber("TIlt ticks", getTalonPosition(tiltTalon));
   }
 
-  public void printShooterRPM()
-  {
+  public void printShooterRPM() {
     SmartDashboard.putNumber("top shooter RPM", getTopWheelRPM());
     SmartDashboard.putNumber("bottom shooter RPM", getBottomWheelRPM());
     SmartDashboard.putNumber("feeder RPM", getFeederRPM());
   }
 
-  public void printOutputs()
-  {
+  public void printOutputs() {
     SmartDashboard.putNumber("top Shooter Spark power:", getSparkPower(topShooterSpark));
     SmartDashboard.putNumber("bottom Shooter Spark power:", getSparkPower(bottomShooterSpark));
     SmartDashboard.putNumber("ball Feeder Spark power:", getSparkPower(ballFeederSpark));
@@ -348,8 +300,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
     SmartDashboard.putNumber("tilt talon power:", getTalonPower(tiltTalon));
   }
 
-  public void printTemp()
-  {
+  public void printTemp() {
     SmartDashboard.putNumber("top Shooter Spark temp:", getSparkTemp(topShooterSpark));
     SmartDashboard.putNumber("bottom Shooter Spark temp:", getSparkTemp(bottomShooterSpark));
     SmartDashboard.putNumber("ball Feeder Spark temp:", getSparkTemp(ballFeederSpark));
@@ -357,51 +308,49 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
     SmartDashboard.putNumber("tilt talon temp:", getTalonTemp(tiltTalon));
   }
 
-  public void stopShooter()
-  {
+  public void stopShooter() {
     topShooterSpark.set(0);
     bottomShooterSpark.set(0);
   }
 
-  public void stopTurret()
-  {
+  public void stopTurret() {
     rotationSpark.set(0);
     tiltTalon.set(ControlMode.PercentOutput, 0);
   }
 
-  public void stopFeeder()
-  {
+  public void stopFeeder() {
     ballFeederSpark.set(0);
   }
 
-  public void stopAllTurretMotors()
-  {
+  public void stopAllTurretMotors() {
     stopShooter();
     stopTurret();
     stopFeeder();
   }
 
-  public double limit(double x, double upperLimit, double lowerLimit)
-	{	if(x >= upperLimit){ x = upperLimit;}
-		else if( x<=lowerLimit){ x = lowerLimit;}
-		return x;
+  public double limit(double x, double upperLimit, double lowerLimit) {
+    if (x >= upperLimit) {
+      x = upperLimit;
+    } else if (x <= lowerLimit) {
+      x = lowerLimit;
+    }
+    return x;
   }
 
-  public void autoResetEncoders()
-  {
+  public void autoResetEncoders() {
     autoResetRotation();
     autoResetTiltEncoder();
   }
 
   @Override
   public void periodic() {
-   //printTemp();
-   //autoResetEncoders();
-   SmartDashboard.putNumber("Rotation Ticks", getRotationTicks());
-   SmartDashboard.putNumber("Rotation Ticks With Conversion",getRotationTicks() * (360/512));
-   printRotations();
-   printStates();
-   printTiltPos();
+    // printTemp();
+    // autoResetEncoders();
+    SmartDashboard.putNumber("Rotation Ticks", getRotationTicks());
+    SmartDashboard.putNumber("Rotation Ticks With Conversion", getRotationTicks() * (360 / 512));
+    printRotations();
+    printStates();
+    printTiltPos();
     // This method will be called once per scheduler run
   }
 }

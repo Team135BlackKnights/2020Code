@@ -12,7 +12,7 @@ import frc.robot.nsubsystems.Turret;
 
 public class resetTurretEncoder extends CommandBase {
   Turret turret;
-  
+
   public resetTurretEncoder(Turret subsystem) {
     turret = subsystem;
   }

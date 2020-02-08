@@ -19,39 +19,36 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
-public class Intake extends SubsystemBase implements RobotMap.INTAKE{
-  
+public class Intake extends SubsystemBase implements RobotMap.INTAKE {
+
   public CANSparkMax rollerSpark;
   public CANEncoder rollerEncoder;
   public Ultrasonic intakeSonar;
   public Solenoid raiseLower;
 
-  public Intake() 
-  {
-    rollerSpark = new CANSparkMax(ROLLER_SPARK , MotorType.kBrushless);
+  public Intake() {
+    rollerSpark = new CANSparkMax(ROLLER_SPARK, MotorType.kBrushless);
 
     initCANSparkMax(rollerSpark, IdleMode.kCoast);
 
     rollerEncoder = rollerSpark.getEncoder();
 
     raiseLower = new Solenoid(RAISE_LOWER);
-  
-    //intakeSonar = new Ultrasonic(8, 9);
 
-    //intakeSonar.setAutomaticMode(true);
-    
+    // intakeSonar = new Ultrasonic(8, 9);
+
+    // intakeSonar.setAutomaticMode(true);
+
     System.out.println("Intake Initialized");
   }
 
-  public void initCANSparkMax(CANSparkMax spark, IdleMode mode)
-  {
-		spark.setInverted(false);
+  public void initCANSparkMax(CANSparkMax spark, IdleMode mode) {
+    spark.setInverted(false);
     spark.enableVoltageCompensation(12);
     spark.setIdleMode(mode);
   }
 
-  public void runRoller(double power)
-  {
+  public void runRoller(double power) {
     rollerSpark.set(power);
   }
 
@@ -59,51 +56,42 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE{
     rollerEncoder.setPosition(0);
   }
 
-  public double getEncoderPosition(CANEncoder encoder)
-  {
+  public double getEncoderPosition(CANEncoder encoder) {
     return encoder.getPosition();
   }
 
-  public double ticksToRotations(double ticks)
-  {
-    return ticks/4096;
+  public double ticksToRotations(double ticks) {
+    return ticks / 4096;
   }
 
-  public double getEncoderVelocity(CANEncoder encoder)
-  {
+  public double getEncoderVelocity(CANEncoder encoder) {
     return encoder.getVelocity();
   }
 
-  public double getIntakeSonarDistanceIn()
-  {
+  public double getIntakeSonarDistanceIn() {
     return intakeSonar.getRangeInches();
   }
-  
-  public void raiseLower(boolean position)
-  {
+
+  public void raiseLower(boolean position) {
     raiseLower.set(position);
   }
 
-  public boolean isRollerLowered()
-  {
+  public boolean isRollerLowered() {
     return raiseLower.get();
   }
 
-  public double getRollerPower()
-  {
+  public double getRollerPower() {
     return rollerSpark.getAppliedOutput();
   }
 
-  public void printIntakeStuff()
-  {
+  public void printIntakeStuff() {
     SmartDashboard.putBoolean("is Intake Lower", isRollerLowered());
     SmartDashboard.putNumber("intake roller position", getEncoderPosition(rollerEncoder));
   }
 
-
   @Override
   public void periodic() {
-    
+
     // This method will be called once per scheduler run
   }
 }

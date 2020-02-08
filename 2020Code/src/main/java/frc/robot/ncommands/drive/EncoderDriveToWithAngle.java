@@ -17,8 +17,8 @@ public class EncoderDriveToWithAngle extends CommandBase {
   private double leftError, rightError, angleError;
   private boolean _shortDistance;
 
-  
-  public EncoderDriveToWithAngle(FalconDrive subsystem, double leftTarget, double rightTarget, double angleDesired, boolean shortDistance) {
+  public EncoderDriveToWithAngle(FalconDrive subsystem, double leftTarget, double rightTarget, double angleDesired,
+      boolean shortDistance) {
     drive = subsystem;
     this._shortDistance = shortDistance;
     this._leftTarget = leftTarget;
@@ -32,7 +32,7 @@ public class EncoderDriveToWithAngle extends CommandBase {
   public void initialize() {
     SmartDashboard.putString("Drive Command Running:", "Encoder Drive");
     SmartDashboard.putBoolean("Is Encoder Drive Finished", isFinished());
-  
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -40,40 +40,34 @@ public class EncoderDriveToWithAngle extends CommandBase {
   public void execute() {
     double currentLeftPos = drive.getLeftPos();
     double currentRightPos = drive.getRightPos();
-    
-    SmartDashboard.putNumber("Left Target:", _leftTarget );
-    SmartDashboard.putNumber("Right Target:", _rightTarget );
 
+    SmartDashboard.putNumber("Left Target:", _leftTarget);
+    SmartDashboard.putNumber("Right Target:", _rightTarget);
 
     leftError = currentLeftPos - _leftTarget;
     rightError = currentRightPos - _rightTarget;
 
     double leftPower, rightPower;
-    leftPower = leftError/55;
-    rightPower = rightError/55;
+    leftPower = leftError / 55;
+    rightPower = rightError / 55;
 
-    SmartDashboard.putNumber("Left Error:", leftError );
-    SmartDashboard.putNumber("Right Error:", rightError );
-
-
+    SmartDashboard.putNumber("Left Error:", leftError);
+    SmartDashboard.putNumber("Right Error:", rightError);
 
     double currentAngle = drive.getAngle();
-    //angleError = Math.abs(_angleDesired - currentAngle);
+    // angleError = Math.abs(_angleDesired - currentAngle);
     angleError = _angleDesired - currentAngle;
     SmartDashboard.putNumber("Angle Error", angleError);
 
     double anglePower;
-    anglePower = angleError/ 70;
+    anglePower = angleError / 70;
 
-
-    double leftMinDirection = leftError > 0 ? 1: -1;
-    double rightMinDirection = rightError > 0 ? 1: -1;
+    double leftMinDirection = leftError > 0 ? 1 : -1;
+    double rightMinDirection = rightError > 0 ? 1 : -1;
 
     double minDrivePower = .40;
-    double 
-    rightP = 1,  leftP = 1;
-    double 
-    angleP = 1.5;
+    double rightP = 1, leftP = 1;
+    double angleP = 1.5;
 
     if (_shortDistance) {
       minDrivePower = .40;
@@ -81,8 +75,6 @@ public class EncoderDriveToWithAngle extends CommandBase {
       leftP = 1.5;
       angleP = 1;
     }
-
-
 
     rightPower = (minDrivePower * rightMinDirection) + (rightPower * rightP) + (anglePower * angleP);
     leftPower = (minDrivePower * leftMinDirection) + (leftPower * leftP) + (anglePower * angleP);
@@ -100,13 +92,13 @@ public class EncoderDriveToWithAngle extends CommandBase {
   public void end(boolean interrupted) {
     drive.stopMotors();
     SmartDashboard.putString("Command Finished: ", "Encoder Drive to With Angle");
-		SmartDashboard.putString("Drive Command Running:","No Command Running");
+    SmartDashboard.putString("Drive Command Running:", "No Command Running");
 
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (Math.abs(leftError) <= 1 && Math.abs(rightError) <= 1) && Math.abs(angleError) <= 3; 
+    return (Math.abs(leftError) <= 1 && Math.abs(rightError) <= 1) && Math.abs(angleError) <= 3;
   }
 }

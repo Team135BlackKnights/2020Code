@@ -15,8 +15,9 @@ import frc.robot.nsubsystems.FalconDrive;
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class resetGyro extends InstantCommand {
   private static FalconDrive drive;
+
   public resetGyro(FalconDrive subsystem) {
-    drive =  subsystem;
+    drive = subsystem;
   }
 
   // Called when the command is initially scheduled.

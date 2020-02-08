@@ -12,11 +12,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.Endgame;
 
 public class runWinch extends CommandBase {
-  
-  private final Endgame endgame; 
+
+  private final Endgame endgame;
   private double _power;
-  public runWinch(Endgame subsystem, double power) 
-  {
+
+  public runWinch(Endgame subsystem, double power) {
     endgame = subsystem;
     _power = power;
   }
@@ -24,7 +24,7 @@ public class runWinch extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+
     SmartDashboard.putString("Endgame command Running: ", "runWinch " + _power);
 
   }

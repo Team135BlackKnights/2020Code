@@ -12,7 +12,7 @@ import frc.robot.nsubsystems.Intake;
 
 public class resetIntakeEncoders extends CommandBase {
   Intake intake;
-  
+
   public resetIntakeEncoders(Intake subsystem) {
     intake = subsystem;
   }

@@ -14,7 +14,7 @@ import frc.robot.nsubsystems.*;
 import frc.robot.util.ImprovedJoystick;
 
 public class TargetTurret extends CommandBase {
-  
+
   double tiltPowerPreset = .6;
   double rotationPowerPreset = .25;
   private final Turret turret;
@@ -22,13 +22,12 @@ public class TargetTurret extends CommandBase {
   private final ImprovedJoystick _joystick;
   private double horizontalOffset, verticalOffset, targetArea, anglularOffset;
   private boolean targetExist;
-  private double loopRuns; 
+  private double loopRuns;
   private boolean targetTurret;
 
   private long furtherTime = 0;
 
-  public TargetTurret(Turret turretSubsystem, TurretLimelight limelightSubsystem, Joystick joystick) 
-  {
+  public TargetTurret(Turret turretSubsystem, TurretLimelight limelightSubsystem, Joystick joystick) {
     _joystick = new ImprovedJoystick(joystick);
     turret = turretSubsystem;
     turretLimelight = limelightSubsystem;
@@ -48,37 +47,36 @@ public class TargetTurret extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
     targetExist = turretLimelight.GetLimelightData()[0] >= 1 ? true : false;
     verticalOffset = turretLimelight.GetLimelightData()[2];
     horizontalOffset = turretLimelight.GetLimelightData()[1];
     anglularOffset = turretLimelight.GetLimelightData()[4];
     targetArea = turretLimelight.GetLimelightData()[3];
-  
+
     double rotationPower, tiltPower;
 
     double rP = .38, tP = 1, rI = .012;
 
-    rotationPower = horizontalOffset/80;
-    tiltPower = -verticalOffset/8;
+    rotationPower = horizontalOffset / 80;
+    tiltPower = -verticalOffset / 8;
 
     double minPower = .00;
 
-    double rotationDirection = horizontalOffset > 0 ? 1: -1;
+    double rotationDirection = horizontalOffset > 0 ? 1 : -1;
     boolean isPOVLeft, isPOVRight, isPOVUp, isPOVDown, isPOVTopRight, isPOVBottomRight, isPOVBottomLeft, isPOVTopLeft;
-   
-    double totalError =+ horizontalOffset;
-    
-    double rIntegral = (totalError/loopRuns*20)/50;
+
+    double totalError = +horizontalOffset;
+
+    double rIntegral = (totalError / loopRuns * 20) / 50;
 
     double turretAngle = turret.tiltTicksToAngle();
     SmartDashboard.putNumber("turret Angle", turretAngle);
-    double limelightHeight = (Math.sin(turretAngle)*5)+32.5;
-    double hypotTarget = -turretLimelight.hpotToTarget(98, limelightHeight,  turretAngle);
+    double limelightHeight = (Math.sin(turretAngle) * 5) + 32.5;
+    double hypotTarget = -turretLimelight.hpotToTarget(98, limelightHeight, turretAngle);
     double distToTarget = -turretLimelight.distToTarget(98, limelightHeight, turretAngle);
     SmartDashboard.putNumber("distance to Target: ", distToTarget);
     SmartDashboard.putNumber("hypot target", hypotTarget);
-    double distToTargetFt = distToTarget/12;
+    double distToTargetFt = distToTarget / 12;
     SmartDashboard.putNumber("Distance to Target Ft: ", distToTargetFt);
 
     isPOVUp = _joystick.isPovDirectionPressed(0);
@@ -90,101 +88,71 @@ public class TargetTurret extends CommandBase {
     isPOVBottomRight = _joystick.isPovDirectionPressed(5);
     isPOVBottomLeft = _joystick.isPovDirectionPressed(6);
     isPOVTopLeft = _joystick.isPovDirectionPressed(7);
-    
+
     long timeNow = System.currentTimeMillis();
 
-   
-    if(_joystick.getJoystickButtonValue(6) && timeNow >= furtherTime)
-    {
+    if (_joystick.getJoystickButtonValue(6) && timeNow >= furtherTime) {
       furtherTime = timeNow + 50;
       targetTurret = !targetTurret;
     }
     SmartDashboard.putBoolean("Auto Targeting turret: ", targetTurret);
 
-    if(isPOVUp)
-    {
+    if (isPOVUp) {
       rotationPower = 0;
       tiltPower = tiltPowerPreset;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
-    } 
-    else 
-    if(isPOVRight)
-    {
+    } else if (isPOVRight) {
       rotationPower = rotationPowerPreset;
       tiltPower = 0;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
-    } 
-    else 
-    if(isPOVDown)
-    {
+    } else if (isPOVDown) {
       rotationPower = 0;
       tiltPower = -tiltPowerPreset;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
-    } 
-    else
-    if(isPOVLeft)
-    {
+    } else if (isPOVLeft) {
       rotationPower = -rotationPowerPreset;
       tiltPower = 0;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
-    } 
-    else 
-    if(isPOVTopRight)
-    {
+    } else if (isPOVTopRight) {
       rotationPower = rotationPowerPreset;
       tiltPower = tiltPowerPreset;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
-    } 
-    else 
-    if(isPOVBottomRight)
-    {
+    } else if (isPOVBottomRight) {
       rotationPower = rotationPowerPreset;
       tiltPower = -tiltPowerPreset;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
-    } 
-    else 
-    if(isPOVBottomLeft)
-    {
+    } else if (isPOVBottomLeft) {
       rotationPower = -rotationPowerPreset;
       tiltPower = -tiltPowerPreset;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
-    } 
-    else 
-    if(isPOVTopLeft)
-    {
+    } else if (isPOVTopLeft) {
       rotationPower = -rotationPowerPreset;
       tiltPower = tiltPowerPreset;
       SmartDashboard.putString("Turret State:", "Driver Override");
 
-    }
-    else 
-    if(targetExist && targetTurret)
-    {
+    } else if (targetExist && targetTurret) {
       rotationPower = (rotationPower * rP) + (rIntegral * rI) + (minPower * rotationDirection);
       tiltPower = (tiltPower * tP);
       SmartDashboard.putString("Turret State:", "Auto Targetting");
-    }
-    else 
-    {
+    } else {
       rotationPower = 0;
       tiltPower = 0;
       SmartDashboard.putString("Turret State:", "No Target");
     }
 
-
     SmartDashboard.putNumber("INtegral", rIntegral * rI);
     SmartDashboard.putNumber("Target Turret Rotation Power:", rotationPower);
     SmartDashboard.putNumber("Target Turret Tilt Power:", tiltPower);
 
-  turret.aimTurret(rotationPower, tiltPower);
-  loopRuns =+ loopRuns;
+    turret.aimTurret(rotationPower, tiltPower);
+    loopRuns = +loopRuns;
 
   }
 

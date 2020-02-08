@@ -28,8 +28,8 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 
-public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL{
-  
+public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL {
+
    public ColorSensorV3 controlPanelColorSensor;
    private final I2C.Port i2cPort = I2C.Port.kOnboard;
    public CANSparkMax rotatorSpark;
@@ -46,67 +46,65 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL{
    public WPI_TalonSRX testBoi;
    public CANSparkMax spark;
 
-  public ColorWheel() 
-  {
-   // Creates a color sensor in controlPanelColorSensor
-   controlPanelColorSensor = new ColorSensorV3(i2cPort);
-   // Creates a SparkMax motor controller in rotatorSpark
-   rotatorSpark = new CANSparkMax(ROTATOR_ID, MotorType.kBrushless);
-   extendSolenoid = new Solenoid(1);
+   public ColorWheel() {
+      // Creates a color sensor in controlPanelColorSensor
+      controlPanelColorSensor = new ColorSensorV3(i2cPort);
+      // Creates a SparkMax motor controller in rotatorSpark
+      rotatorSpark = new CANSparkMax(ROTATOR_ID, MotorType.kBrushless);
+      extendSolenoid = new Solenoid(1);
 
-   initCANSparkMax(rotatorSpark, IdleMode.kBrake);
-   testBoi = new WPI_TalonSRX(23);
-   // Gets the data sent by the FMS as to what color we need
-   gameData = DriverStation.getInstance().getGameSpecificMessage(); 
+      initCANSparkMax(rotatorSpark, IdleMode.kBrake);
+      testBoi = new WPI_TalonSRX(23);
+      // Gets the data sent by the FMS as to what color we need
+      gameData = DriverStation.getInstance().getGameSpecificMessage();
 
-   desiredColor = "No Color"; // Desired color is none
+      desiredColor = "No Color"; // Desired color is none
 
-   System.out.println("Color Wheel Initialized"); // Prints to screen
+      System.out.println("Color Wheel Initialized"); // Prints to screen
 
-   moveExtend(false);
+      moveExtend(false);
    }
 
+   public boolean IsBlue() {
+      return ((red() >= BlueRedMin && red() <= BlueRedMax) && (green() >= BlueGreenMin && green() <= BlueGreenMax)
+            && (blue() >= BlueBlueMin && blue() <= BlueBlueMax));
+   }
 
-  public boolean IsBlue() {
-    return ((red() >= BlueRedMin && red() <= BlueRedMax) && (green() >= BlueGreenMin && green() <= BlueGreenMax)
-          && (blue() >= BlueBlueMin && blue() <= BlueBlueMax));
- }
+   // Checks if the color it is seeing is red by checking it against the min and
+   // max tolerances of each color
 
- // Checks if the color it is seeing is red by checking it against the min and
- // max tolerances of each color
+   public boolean IsRed() {
+      return ((red() >= RedRedMin && red() <= RedRedMax) && (green() >= RedGreenMin && green() <= RedGreenMax)
+            && (blue() >= RedBlueMin && blue() <= RedBlueMax));
+   }
 
- public boolean IsRed() {
-    return ((red() >= RedRedMin && red() <= RedRedMax) && (green() >= RedGreenMin && green() <= RedGreenMax)
-          && (blue() >= RedBlueMin && blue() <= RedBlueMax));
- }
+   // Checks if the color it is seeing is green by checking it against the min and
+   // max tolerances of each color
 
- // Checks if the color it is seeing is green by checking it against the min and
- // max tolerances of each color
+   public boolean IsGreen() {
+      return ((red() >= GreenRedMin && red() <= GreenRedMax) && (green() >= GreenGreenMin && green() <= GreenGreenMax)
+            && (blue() >= GreenBlueMin && blue() <= GreenBlueMax));
+   }
 
- public boolean IsGreen() {
-    return ((red() >= GreenRedMin && red() <= GreenRedMax) && (green() >= GreenGreenMin && green() <= GreenGreenMax)
-          && (blue() >= GreenBlueMin && blue() <= GreenBlueMax));
- }
+   // Checks if the color it is seeing is yellow by checking it against the min and
+   // max tolerances of each color
 
- // Checks if the color it is seeing is yellow by checking it against the min and
- // max tolerances of each color
+   public boolean IsYellow() {
+      return ((red() >= YellowRedMin && red() <= YellowRedMax)
+            && (green() >= YellowGreenMin && green() <= YellowGreenMax)
+            && (blue() >= YellowBlueMin && blue() <= YellowBlueMax));
+   }
 
- public boolean IsYellow() {
-    return ((red() >= YellowRedMin && red() <= YellowRedMax) && (green() >= YellowGreenMin && green() <= YellowGreenMax)
-          && (blue() >= YellowBlueMin && blue() <= YellowBlueMax));
- }
+   public void initCANSparkMax(CANSparkMax spark, IdleMode mode) {
+      spark.setInverted(false);
+      spark.enableVoltageCompensation(12);
+      spark.setIdleMode(mode);
+   }
 
- public void initCANSparkMax(CANSparkMax spark, IdleMode mode)
-  {
-	spark.setInverted(false);
-   spark.enableVoltageCompensation(12);
-   spark.setIdleMode(mode);
-  }
-  public void moveExtend(Boolean pos)
-  {
-   extendSolenoid.set(pos);
+   public void moveExtend(Boolean pos) {
+      extendSolenoid.set(pos);
 
-  }
+   }
 
    public String gameColor() {
       // Checks if the gamedata has arrived yet by making sure its length is greater
@@ -170,8 +168,9 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL{
    public void countColor() {
 
       SmartDashboard.putString("Last Seen Color:", lastSeenColor); // Prints the last seen color to dash
-      if ((checkForColor() != lastSeenColor) && (checkForColor() != "No Color")) { 
-         // if the current color is not the last seen color and it isn't No Color, add 1 to the count
+      if ((checkForColor() != lastSeenColor) && (checkForColor() != "No Color")) {
+         // if the current color is not the last seen color and it isn't No Color, add 1
+         // to the count
          colorChanges++;
       }
       if (currentColor != "No Color") { // If the current color isn't no color, put it into last seen
@@ -179,30 +178,27 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL{
       }
    }
 
-   public String spinToWhatColor(String FMScolor)
-   {
-      Dictionary colors = new Hashtable<>(); 
-      colors.put("Red", "Blue"); 
-      colors.put("Green", "Yellow"); 
-      colors.put("Blue", "Red"); 
-      colors.put("Yellow", "Green"); 
+   public String spinToWhatColor(String FMScolor) {
+      Dictionary colors = new Hashtable<>();
+      colors.put("Red", "Blue");
+      colors.put("Green", "Yellow");
+      colors.put("Blue", "Red");
+      colors.put("Yellow", "Green");
       Enumeration values = colors.elements();
-      for (Enumeration k = colors.keys(); k.hasMoreElements();) 
-      { 
-         
-         if(k.nextElement() == FMScolor)
-         {
+      for (Enumeration k = colors.keys(); k.hasMoreElements();) {
+
+         if (k.nextElement() == FMScolor) {
             return values.nextElement().toString();
          }
          values.nextElement();
-      } 
+      }
       return "Error";
    }
 
    // Takes the desired color and power setting and if the current color isn't the
    // desired color, rotate the panel
    public void getToColor(final String desiredColor, double power) {
-      //SmartDashboard.putString("dictval", spinToWhatColor(desiredColor));
+      // SmartDashboard.putString("dictval", spinToWhatColor(desiredColor));
       String actualDesired = spinToWhatColor(desiredColor);
       SmartDashboard.putString("actual Desired", actualDesired);
       if (checkForColor() != actualDesired) {
@@ -215,24 +211,19 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL{
          countColor();
 
          // Prints to the screen
-         //SmartDashboard.putString("Current Color", currentColor);
-         //SmartDashboard.putNumber("ColorChanges:", colorChanges);
+         // SmartDashboard.putString("Current Color", currentColor);
+         // SmartDashboard.putNumber("ColorChanges:", colorChanges);
          // rotatorSpark.set(power);
          rotatorSpark.set(power);
-      } 
-      /* 
-      else {
-         rotatorSpark.set(-.6);
-         edu.wpi.first.wpilibj.Timer t = new edu.wpi.first.wpilibj.Timer();
-         t.start();
-         double starttime = t.get();
-         while ((t.get() - starttime) < .01 )//runs motor for .25 seconds
-         {}
-         atDesiredRoations=true;
-         stopControlPanel();// Stops the panel
       }
-      */
-      else stopControlPanel();
+      /*
+       * else { rotatorSpark.set(-.6); edu.wpi.first.wpilibj.Timer t = new
+       * edu.wpi.first.wpilibj.Timer(); t.start(); double starttime = t.get(); while
+       * ((t.get() - starttime) < .01 )//runs motor for .25 seconds {}
+       * atDesiredRoations=true; stopControlPanel();// Stops the panel }
+       */
+      else
+         stopControlPanel();
 
    }
 
@@ -254,64 +245,63 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL{
 
          // Prints to the screen
 
-         SmartDashboard.putNumber("Wheel Rotations", wheelRotations );
+         SmartDashboard.putNumber("Wheel Rotations", wheelRotations);
          SmartDashboard.putNumber("ColorChanges:", colorChanges);
-         //countColor();
-         wheelRotations = colorChanges / 8; //Calculates wheel rotations based on how many color changes its seen
+         // countColor();
+         wheelRotations = colorChanges / 8; // Calculates wheel rotations based on how many color changes its seen
       }
-      SmartDashboard.putNumber("Wheel Rotations", wheelRotations );
-      SmartDashboard.putNumber("ColorChanges:", colorChanges); //While the number of rotations is less than we need, it continues to count colors and rotate the wheel
+      SmartDashboard.putNumber("Wheel Rotations", wheelRotations);
+      SmartDashboard.putNumber("ColorChanges:", colorChanges); // While the number of rotations is less than we need, it
+                                                               // continues to count colors and rotate the wheel
 
       rotatorSpark.set(0);
       wheelRotations = 0;
-      atDesiredRoations = true; //After the above function ends, the desired rotations has been reached
-  }
+      atDesiredRoations = true; // After the above function ends, the desired rotations has been reached
+   }
 
-  //To stop the control panel, the motor controller is set to 0 power
-  public void stopControlPanel()
-  {   
+   // To stop the control panel, the motor controller is set to 0 power
+   public void stopControlPanel() {
       rotatorSpark.set(0);
       testBoi.set(ControlMode.PercentOutput, 0);
-  }
+   }
 
-   public void printOut()
-  {
-   //Sets detected color to the current color seen by the color sensor(An RGB value)
-   detectedColor = controlPanelColorSensor.getColor();
-   //Sets current color to the color currently seen by the sensor(In string form)
-   currentColor = checkForColor();
-   //Runs the function to count colors
-   countColor();
+   public void printOut() {
+      // Sets detected color to the current color seen by the color sensor(An RGB
+      // value)
+      detectedColor = controlPanelColorSensor.getColor();
+      // Sets current color to the color currently seen by the sensor(In string form)
+      currentColor = checkForColor();
+      // Runs the function to count colors
+      countColor();
 
-   //Prints the different color values, the current color, the number of color changes, and the desired color to smart dash
-   SmartDashboard.putNumber("color red",red());
-   SmartDashboard.putNumber("color green",green());
-   SmartDashboard.putNumber("color blue  ",blue());
-    
-   SmartDashboard.putString("Current Color", currentColor );
-   SmartDashboard.putNumber("ColorChanges:", colorChanges);
+      // Prints the different color values, the current color, the number of color
+      // changes, and the desired color to smart dash
+      SmartDashboard.putNumber("color red", red());
+      SmartDashboard.putNumber("color green", green());
+      SmartDashboard.putNumber("color blue  ", blue());
 
-   SmartDashboard.putString("Desired Color ", desiredColor);
-  }
-  
-  //Pulls the game specific message from driver station
-  public String gameMessage = DriverStation.getInstance().getGameSpecificMessage();
+      SmartDashboard.putString("Current Color", currentColor);
+      SmartDashboard.putNumber("ColorChanges:", colorChanges);
 
+      SmartDashboard.putString("Desired Color ", desiredColor);
+   }
 
-  @Override
-  public void periodic() 
-  {
-   detectedColor = controlPanelColorSensor.getColor();
-    
-   //Sets the current color to the current color(String)
-   currentColor = checkForColor();
-   //Counts color changes
-   countColor(); 
+   // Pulls the game specific message from driver station
+   public String gameMessage = DriverStation.getInstance().getGameSpecificMessage();
 
-   //Prints to the screen
-   SmartDashboard.putString("Current Color", currentColor );
-   SmartDashboard.putNumber("ColorChanges:", colorChanges);
-   // This method will be called once per scheduler run
-  }
- 
+   @Override
+   public void periodic() {
+      detectedColor = controlPanelColorSensor.getColor();
+
+      // Sets the current color to the current color(String)
+      currentColor = checkForColor();
+      // Counts color changes
+      countColor();
+
+      // Prints to the screen
+      SmartDashboard.putString("Current Color", currentColor);
+      SmartDashboard.putNumber("ColorChanges:", colorChanges);
+      // This method will be called once per scheduler run
+   }
+
 }

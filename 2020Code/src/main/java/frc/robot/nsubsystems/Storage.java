@@ -16,14 +16,13 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
-public class Storage extends SubsystemBase implements RobotMap.INTAKE{
-  
+public class Storage extends SubsystemBase implements RobotMap.INTAKE {
+
   public CANSparkMax conveyorSpark;
   public CANEncoder conveyorEncoder;
   public DigitalInput intakeBallTripSwitch;
   public int currentBallCount;
   public boolean lastSwtichPosition;
-
 
   public Storage() {
     conveyorSpark = new CANSparkMax(CONVEYOR_SPARK, MotorType.kBrushless);
@@ -36,65 +35,54 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE{
     System.out.println("Storage Initialized");
   }
 
-  public void initCANSparkMax(CANSparkMax spark, IdleMode mode)
-  {
-		spark.setInverted(false);
+  public void initCANSparkMax(CANSparkMax spark, IdleMode mode) {
+    spark.setInverted(false);
     spark.enableVoltageCompensation(12);
     spark.setIdleMode(mode);
   }
 
-  public void runConveyor(double power)
-  {
+  public void runConveyor(double power) {
     conveyorSpark.set(power);
   }
 
-  public double getEncoderPosition(CANEncoder encoder)
-  {
+  public double getEncoderPosition(CANEncoder encoder) {
     return encoder.getPosition();
   }
 
-  public double ticksToRotations(double ticks)
-  {
-    return ticks/4096;
+  public double ticksToRotations(double ticks) {
+    return ticks / 4096;
   }
 
-  public void resetConveyorEncoder()
-  {
+  public void resetConveyorEncoder() {
     conveyorEncoder.setPosition(0);
   }
 
-  public double getConveyorRotations()
-  {
+  public double getConveyorRotations() {
     return ticksToRotations(getEncoderPosition(conveyorEncoder));
   }
 
-  public boolean isBallAtTripSwitch()
-  {
+  public boolean isBallAtTripSwitch() {
     return intakeBallTripSwitch.get();
   }
 
-  
-  
+  public void intakeBallCount() {
 
-  public void intakeBallCount()
-  {
-    
-    if(isBallAtTripSwitch()!= lastSwtichPosition && isBallAtTripSwitch()!=false)
-    {
+    if (isBallAtTripSwitch() != lastSwtichPosition && isBallAtTripSwitch() != false) {
       currentBallCount++;
     }
-    if(lastSwtichPosition!=isBallAtTripSwitch())
-    {
+    if (lastSwtichPosition != isBallAtTripSwitch()) {
       lastSwtichPosition = isBallAtTripSwitch();
     }
 
   }
 
-  public double limit(double x, double upperLimit, double lowerLimit)
-	{	
-    if(x >= upperLimit){ x = upperLimit;}
-		else if( x<=lowerLimit){ x = lowerLimit;}
-		return x;
+  public double limit(double x, double upperLimit, double lowerLimit) {
+    if (x >= upperLimit) {
+      x = upperLimit;
+    } else if (x <= lowerLimit) {
+      x = lowerLimit;
+    }
+    return x;
   }
 
   @Override

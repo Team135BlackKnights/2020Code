@@ -15,13 +15,13 @@ import frc.robot.util.ImprovedJoystick;
 
 public class EncoderDrive extends CommandBase {
   FalconDrive drive;
-  private double _leftTarget, _rightTarget, _distanceFromWall,
-              leftError, rightError, _tolerance;
+  private double _leftTarget, _rightTarget, _distanceFromWall, leftError, rightError, _tolerance;
   private boolean _stopWhenDone;
   private double actualDistanceFromWall;
   private ImprovedJoystick _joystick;
-  
-  public EncoderDrive(FalconDrive subsystem, double leftTarget, double rightTarget, double tolerance, boolean stopWhenDone, Joystick joystick) {
+
+  public EncoderDrive(FalconDrive subsystem, double leftTarget, double rightTarget, double tolerance,
+      boolean stopWhenDone, Joystick joystick) {
     drive = subsystem;
     _joystick = new ImprovedJoystick(joystick);
     this._leftTarget = leftTarget;
@@ -36,7 +36,7 @@ public class EncoderDrive extends CommandBase {
   public void initialize() {
     SmartDashboard.putString("Drive Command Running:", "Encoder Drive");
     SmartDashboard.putBoolean("Is Encoder Drive Finished", isFinished());
-  
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -45,30 +45,27 @@ public class EncoderDrive extends CommandBase {
     double currentLeftPos = drive.getLeftPos();
     double currentRightPos = drive.getRightPos();
 
-    leftError = currentLeftPos-_leftTarget;
+    leftError = currentLeftPos - _leftTarget;
     rightError = currentRightPos - _rightTarget;
 
     double leftPower, rightPower;
-    leftPower = leftError/60;
-    rightPower = rightError/60;
+    leftPower = leftError / 60;
+    rightPower = rightError / 60;
 
-    double 
-    leftP = 1.4,  rightP = 1.4;
-    
-    double minDrivePower = .26; 
-    double leftMinAlt = leftError > 0 ? 1: -1;
-    double rightMinAlt = rightError > 0 ? 1: -1;
+    double leftP = 1.4, rightP = 1.4;
+
+    double minDrivePower = .26;
+    double leftMinAlt = leftError > 0 ? 1 : -1;
+    double rightMinAlt = rightError > 0 ? 1 : -1;
     double leftMinPower = minDrivePower * leftMinAlt;
     double rightMinPower = minDrivePower * rightMinAlt;
-    
 
     leftPower = drive.limit(leftPower, .45, -.45);
     rightPower = drive.limit(rightPower, .45, -.45);
 
-    
-      leftPower = drive.limit((leftPower *leftP) + leftMinPower, .7, -.7);
-      rightPower = drive.limit((rightPower * rightP) +rightMinPower , .7, -.7);
-    
+    leftPower = drive.limit((leftPower * leftP) + leftMinPower, .7, -.7);
+    rightPower = drive.limit((rightPower * rightP) + rightMinPower, .7, -.7);
+
     SmartDashboard.putNumber("Encoder Drive Left Power", leftPower);
     SmartDashboard.putNumber("Encoder Drive Right Power", rightPower);
 
@@ -78,17 +75,17 @@ public class EncoderDrive extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if(this._stopWhenDone)
-    {
+    if (this._stopWhenDone) {
       drive.stopMotors();
     }
     SmartDashboard.putString("Command Finished: ", "Encoder Drive");
-    SmartDashboard.putString("Drive Command Running:","No Command Running");
+    SmartDashboard.putString("Drive Command Running:", "No Command Running");
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (Math.abs(leftError) <= _tolerance && Math.abs(rightError) <=_tolerance) ||
-    _joystick.getJoystickAxis(2) >.2 ;  }
+    return (Math.abs(leftError) <= _tolerance && Math.abs(rightError) <= _tolerance)
+        || _joystick.getJoystickAxis(2) > .2;
+  }
 }

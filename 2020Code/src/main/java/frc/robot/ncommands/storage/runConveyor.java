@@ -14,10 +14,10 @@ import frc.robot.nsubsystems.*;
 import frc.robot.util.ImprovedJoystick;
 
 public class runConveyor extends CommandBase {
-  
+
   private final Storage storage;
   private ImprovedJoystick _joystick;
-  
+
   public runConveyor(Storage subsystem, Joystick joystick) {
     storage = subsystem;
     _joystick = new ImprovedJoystick(joystick);
@@ -26,7 +26,7 @@ public class runConveyor extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+
     SmartDashboard.putString("Conveyor Commmand Running: ", " runConveyor");
 
   }
@@ -42,31 +42,23 @@ public class runConveyor extends CommandBase {
 
     isButton7 = _joystick.getJoystickButtonValue(7);
     isButton8 = _joystick.getJoystickButtonValue(8);
-    if(isBallTrip)
-    {
+    if (isBallTrip) {
       storage.resetConveyorEncoder();
     }
-    if(currentConveyPos <= 7 && !(isButton7 || isButton8))
-    {
+    if (currentConveyPos <= 7 && !(isButton7 || isButton8)) {
       conveyorPower = .65;
       SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR NOT OVERWROTE");
-    }
-    else if (isButton7)
-    {
+    } else if (isButton7) {
       conveyorPower = .65;
       SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR GOING UP");
-    } 
-    else if (isButton8)
-    {
+    } else if (isButton8) {
       conveyorPower = -.65;
       SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR GOING DOWN");
-    }
-    else 
-    {
+    } else {
       conveyorPower = 0;
       SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR NOT OVERWROTE");
     }
-      
+
     storage.runConveyor(conveyorPower);
   }
 

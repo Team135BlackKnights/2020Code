@@ -12,10 +12,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.*;
 
 public class runConveyorSetPos extends CommandBase {
-  
+
   private final Storage storage;
   private final double _targetPos;
   private boolean isFinished = false;
+
   public runConveyorSetPos(Storage subsystem, double targetPos) {
     storage = subsystem;
     this._targetPos = targetPos;
@@ -32,13 +33,10 @@ public class runConveyorSetPos extends CommandBase {
   @Override
   public void execute() {
     double currentConveyPos = storage.getConveyorRotations();
-    if((_targetPos)!=currentConveyPos)
-    {
+    if ((_targetPos) != currentConveyPos) {
       storage.runConveyor(.65);
       isFinished = false;
-    }
-    else 
-    {
+    } else {
       storage.runConveyor(0);
       isFinished = true;
     }

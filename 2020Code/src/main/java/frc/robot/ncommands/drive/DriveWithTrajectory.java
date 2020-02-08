@@ -35,12 +35,11 @@ public class DriveWithTrajectory extends CommandBase {
   private static final double kV = 3.02;
   private static final double kA = 0.249;
 
-  DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(distBetweenWheelsInches));
+  DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(
+      Units.inchesToMeters(distBetweenWheelsInches));
   SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(kS, kV, kA);
   Trajectory trajectory;
   final String trajectoryJSON;
-  
-
 
   public DriveWithTrajectory(FalconDrive subsystem, String filePath) {
     drive = subsystem;
@@ -56,55 +55,52 @@ public class DriveWithTrajectory extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {runRamsete();}
+  public void execute() {
+    runRamsete();
+  }
 
   public Command runRamsete() {
     drive.resetEncoders();
     drive.getAngle();
-    //drive.resetOdometry();
-    
+    // drive.resetOdometry();
+
     TrajectoryConfig config = new TrajectoryConfig(3.97350993, 2);
-    
+
     config.setKinematics(getKinematics());
-    
-    //final String trajectoryJSON = "paths/YourPath.wpilib.json";
+
+    // final String trajectoryJSON = "paths/YourPath.wpilib.json";
     try {
       final Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
       trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
     } catch (final IOException ex) {
-      SmartDashboard.putString("Unable to open trajectory: ","");
+      SmartDashboard.putString("Unable to open trajectory: ", "");
     }
-    
+
     RamseteController disabledRamsete = new RamseteController() {
       @Override
-        public ChassisSpeeds calculate(Pose2d currentPose, Pose2d poseRef, double linearVelocityRefMeters,
-           double angularVelocityRefRadiansPerSecond) {
-          return new ChassisSpeeds(linearVelocityRefMeters, 0.0, angularVelocityRefRadiansPerSecond);
-        }
-      };
-    
-      
-        var leftController = new PIDController(.6, 0, 0);
-        var rightController = new PIDController(.6, 0, 0);
-        RamseteCommand command = new RamseteCommand(
-          trajectory,
-          drive::getPose,
-          disabledRamsete,//new RamseteController(2.0, 0.7),
-          getFeedForward(),
-          getKinematics(),
-          drive::getWheelSpeeds,
-          leftController,
-          rightController,
-          (leftVolts, rightVolts) -> {drive.tankVolts(leftVolts, rightVolts);},//m_driveSubsystem::set,
-          drive);
-      return command;
-}
+      public ChassisSpeeds calculate(Pose2d currentPose, Pose2d poseRef, double linearVelocityRefMeters,
+          double angularVelocityRefRadiansPerSecond) {
+        return new ChassisSpeeds(linearVelocityRefMeters, 0.0, angularVelocityRefRadiansPerSecond);
+      }
+    };
 
-  
-  public DifferentialDriveKinematics getKinematics() {
-   return kinematics;
+    var leftController = new PIDController(.6, 0, 0);
+    var rightController = new PIDController(.6, 0, 0);
+    RamseteCommand command = new RamseteCommand(trajectory, drive::getPose, disabledRamsete, // new
+                                                                                             // RamseteController(2.0,
+                                                                                             // 0.7),
+        getFeedForward(), getKinematics(), drive::getWheelSpeeds, leftController, rightController,
+        (leftVolts, rightVolts) -> {
+          drive.tankVolts(leftVolts, rightVolts);
+        }, // m_driveSubsystem::set,
+        drive);
+    return command;
   }
-  
+
+  public DifferentialDriveKinematics getKinematics() {
+    return kinematics;
+  }
+
   public SimpleMotorFeedforward getFeedForward() {
     return feedForward;
   }
@@ -117,9 +113,7 @@ public class DriveWithTrajectory extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    
-    return false;
-  }     
-}
 
-        
+    return false;
+  }
+}
