@@ -1,11 +1,3 @@
-/**
- * MovingAverage Class
- * 
- * Framework Class, meaning it will be added to Phoenix API in the future.
- * 
- * Class containing functions and variables related to the Moving Average of
- * a continous value/single.
- */
 package frc.robot.util;
 
 public class MovingAverage {

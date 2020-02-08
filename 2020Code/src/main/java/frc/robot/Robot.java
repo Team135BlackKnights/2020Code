@@ -16,22 +16,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 
 public class Robot extends TimedRobot {
- /* //Dec FalconDrivers with drive
-  public static FalconDrive drive; 
-  //Declare ColorWheel with colorwheel
-  public static ColorWheel colorWheel;
-  //Dec TurretLimelight with turretlimelight
-  public static TurretLimelight  turretlimelight;
-  //Dec IntakeLimelight with intakelimelight
-  public static IntakeLimelight intakeLimelight; 
-  //Dec Turret with turret
-  public static Turret turret;
-  //Dec OI with oi
-  public static Intake intake;
-  //Dec Endgame with endgame
-  public static Endgame endgame;
-  public static OI oi;
-*/
+ 
   public RobotContainer container;
   Command autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -40,8 +25,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 	  container = new RobotContainer();
-	//initKOPChassis();
-	//initRobot();
+	
 
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
