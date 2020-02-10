@@ -7,7 +7,6 @@
 
 package frc.robot.ncommands.auton;
 
-
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.ncommands.drive.DriveWithTrajectory;
@@ -28,9 +27,10 @@ public class leftAutonParallel extends ParallelCommandGroup {
   Intake intake;
   Turret turret;
 
-  public leftAutonParallel(FalconDrive drivesubsystem, Intake intakesubsystem, Turret turretsubsystem, Storage storagesubsystem) {
+  public leftAutonParallel(FalconDrive drivesubsystem, Intake intakesubsystem, Turret turretsubsystem,
+      Storage storagesubsystem) {
     super();
-    
+
     drive = drivesubsystem;
     turret = turretsubsystem;
     intake = intakesubsystem;
@@ -38,15 +38,11 @@ public class leftAutonParallel extends ParallelCommandGroup {
     // super(new FooCommand(), new BarCommand());
     if (drive.doesPathExist("paths/YourPath.wpilib.json")) {
       parallel(new DriveWithTrajectory(drive, "paths/YourPath.wpilib.json"));
-    }
-    else parallel( new EncoderDrive(drive, 90, 90, 2, true, RobotContainer.manipJoystick));
-    parallel(sequence(new runRoller(intake, .8)), 
-             sequence(
-               parallel(new RotateTurretToAngle(turret, 90)),
-               parallel(new moveIntake(intake))));
-    
-    
+    } else
+      parallel(new EncoderDrive(drive, 90, 90, 2, true, RobotContainer.manipJoystick));
+    parallel(sequence(new runRoller(intake, .8)),
+        sequence(parallel(new RotateTurretToAngle(turret, 90)), parallel(new moveIntake(intake))));
 
   }
-  
+
 }

@@ -16,13 +16,13 @@ import frc.robot.util.ImprovedJoystick;
 
 public class EncoderDriveWithSonar extends CommandBase {
   FalconDrive drive;
-  private double _leftTarget, _rightTarget, _distanceFromWall,
-              leftError, rightError, _tolerance;
+  private double _leftTarget, _rightTarget, _distanceFromWall, leftError, rightError, _tolerance;
   private double actualDistanceFromWall;
   private boolean _stopWhenDone;
   private ImprovedJoystick _joystick;
-  
-  public EncoderDriveWithSonar(FalconDrive subsystem, double leftTarget, double rightTarget, double tolerance, double distanceFromWall, boolean stopWhenDone, Joystick joystick) {
+
+  public EncoderDriveWithSonar(FalconDrive subsystem, double leftTarget, double rightTarget, double tolerance,
+      double distanceFromWall, boolean stopWhenDone, Joystick joystick) {
     drive = subsystem;
     _joystick = new ImprovedJoystick(joystick);
     this._leftTarget = leftTarget;
@@ -38,7 +38,7 @@ public class EncoderDriveWithSonar extends CommandBase {
   public void initialize() {
     SmartDashboard.putString("Drive Command Running:", "Encoder Drive");
     SmartDashboard.putBoolean("Is Encoder Drive Finished", isFinished());
-  
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -47,49 +47,45 @@ public class EncoderDriveWithSonar extends CommandBase {
     double currentLeftPos = drive.getLeftPos();
     double currentRightPos = drive.getRightPos();
 
-    leftError = currentLeftPos-_leftTarget;
+    leftError = currentLeftPos - _leftTarget;
     rightError = currentRightPos - _rightTarget;
 
     double leftPower, rightPower;
-    leftPower = leftError/60;
-    rightPower = rightError/60;
+    leftPower = leftError / 60;
+    rightPower = rightError / 60;
 
-    double 
-    leftP = 1.5,  rightP = 1.5;
-    
-    double 
-    angleP = .3;   
+    double leftP = 1.5, rightP = 1.5;
+
+    double angleP = .3;
 
     actualDistanceFromWall = sonarDistance(drive.rearRightSonar);
 
-
-    double minDrivePower = .26; 
-    double leftMinAlt = leftError > 0 ? 1: -1;
-    double rightMinAlt = rightError > 0 ? 1: -1;
+    double minDrivePower = .26;
+    double leftMinAlt = leftError > 0 ? 1 : -1;
+    double rightMinAlt = rightError > 0 ? 1 : -1;
     double leftMinPower = minDrivePower * leftMinAlt;
     double rightMinPower = minDrivePower * rightMinAlt;
-    
-    double wallDistancePower = ((actualDistanceFromWall - _distanceFromWall)/_distanceFromWall) * angleP;
-    
+
+    double wallDistancePower = ((actualDistanceFromWall - _distanceFromWall) / _distanceFromWall) * angleP;
+
     if (wallDistancePower < 0) {
       minDrivePower = -minDrivePower;
     }
 
     leftPower = drive.limit(leftPower, .45, -.45);
     rightPower = drive.limit(rightPower, .45, -.45);
-  
+
     SmartDashboard.putNumber("wallDistancePower", wallDistancePower);
-      leftPower = drive.limit(((leftPower *leftP) + leftMinPower) + (wallDistancePower), .8, -.8);
-      rightPower = drive.limit(((rightPower*rightP) + rightMinPower) + (wallDistancePower),.8,-.8);
-    
+    leftPower = drive.limit(((leftPower * leftP) + leftMinPower) + (wallDistancePower), .8, -.8);
+    rightPower = drive.limit(((rightPower * rightP) + rightMinPower) + (wallDistancePower), .8, -.8);
+
     SmartDashboard.putNumber("Encoder Drive Left Power", leftPower);
     SmartDashboard.putNumber("Encoder Drive Right Power", rightPower);
 
     drive.TankDrive(-leftPower, rightPower);
   }
 
-  public double sonarDistance(Ultrasonic sonar)
-  {
+  public double sonarDistance(Ultrasonic sonar) {
     return sonar.getRangeInches();
   }
 
@@ -101,7 +97,8 @@ public class EncoderDriveWithSonar extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (Math.abs(leftError) <= _tolerance && Math.abs(rightError) <=_tolerance) && 
-    ((actualDistanceFromWall + 1 <= _distanceFromWall || actualDistanceFromWall - 1 <= _distanceFromWall)) ||
-    _joystick.getJoystickAxis(2) >.2 ;  }
+    return (Math.abs(leftError) <= _tolerance && Math.abs(rightError) <= _tolerance)
+        && ((actualDistanceFromWall + 1 <= _distanceFromWall || actualDistanceFromWall - 1 <= _distanceFromWall))
+        || _joystick.getJoystickAxis(2) > .2;
+  }
 }

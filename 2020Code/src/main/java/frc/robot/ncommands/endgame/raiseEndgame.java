@@ -12,12 +12,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.Endgame;
 
 public class raiseEndgame extends CommandBase {
-  
+
   private final Endgame endgame;
   private double _target;
   private double targetError;
-  public raiseEndgame(Endgame subsystem, double target) 
-  {
+
+  public raiseEndgame(Endgame subsystem, double target) {
     endgame = subsystem;
     _target = target;
     addRequirements(endgame);
@@ -33,17 +33,16 @@ public class raiseEndgame extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() 
-  {
+  public void execute() {
     double currentLiftPos, kp, power, minPower, minDirection;
 
     currentLiftPos = endgame.getLiftRaiseEncoderPosition();
-    targetError = _target-currentLiftPos;
+    targetError = _target - currentLiftPos;
 
-    power = targetError/90;
+    power = targetError / 90;
     minPower = .15;
-    minDirection = targetError > 0 ? 1:-1;
-    kp = 1; 
+    minDirection = targetError > 0 ? 1 : -1;
+    kp = 1;
 
     minPower = minPower * minDirection;
 

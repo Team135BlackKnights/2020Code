@@ -14,54 +14,55 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
-
 public class Robot extends TimedRobot {
- 
-  public RobotContainer container;
-  Command autonomousCommand;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
 
+	public RobotContainer container;
+	Command autonomousCommand;
+	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-  @Override
-  public void robotInit() {
-	  container = new RobotContainer();
-	
+	@Override
+	public void robotInit() {
+		container = new RobotContainer();
 
-    // chooser.addOption("My Auto", new MyAutoCommand());
-    SmartDashboard.putData("Auto mode", m_chooser);
-  }
+		// chooser.addOption("My Auto", new MyAutoCommand());
+		SmartDashboard.putData("Auto mode", m_chooser);
+	}
 
-  @Override
-  public void robotPeriodic() {
-    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
-    // commands, running already-scheduled commands, removing finished or interrupted commands,
-    // and running subsystem periodic() methods.  This must be called from the robot's periodic
-    // block in order for anything in the Command-based framework to work.
-    CommandScheduler.getInstance().run();
-  }
- 
+	@Override
+	public void robotPeriodic() {
+		// Runs the Scheduler. This is responsible for polling buttons, adding
+		// newly-scheduled
+		// commands, running already-scheduled commands, removing finished or
+		// interrupted commands,
+		// and running subsystem periodic() methods. This must be called from the
+		// robot's periodic
+		// block in order for anything in the Command-based framework to work.
+		CommandScheduler.getInstance().run();
+	}
 
-    //Initialize Shutdown
- 	@Override
-	public void disabledInit() {}
+	// Initialize Shutdown
+	@Override
+	public void disabledInit() {
+	}
 
-	//Run Shutdown
+	// Run Shutdown
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 	}
 
-	//Initialize auto
+	// Initialize auto
 	@Override
-	public void autonomousInit() {}
+	public void autonomousInit() {
+	}
 
-	//Run auto
+	// Run auto
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
 	}
 
-	//Initialize Tele
+	// Initialize Tele
 	@Override
 	public void teleopInit() {
 		if (autonomousCommand != null) {
@@ -69,15 +70,16 @@ public class Robot extends TimedRobot {
 		}
 	}
 
-	//Run Tele
+	// Run Tele
 	@Override
 	public void teleopPeriodic() {
 		CommandScheduler.getInstance().run();
-		//Scheduler.getInstance().run();
-		
+		// Scheduler.getInstance().run();
+
 	}
 
 	//
 	@Override
-	public void testPeriodic() {}
+	public void testPeriodic() {
+	}
 }

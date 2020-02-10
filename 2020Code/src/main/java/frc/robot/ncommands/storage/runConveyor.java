@@ -14,10 +14,10 @@ import frc.robot.nsubsystems.*;
 import frc.robot.util.ImprovedJoystick;
 
 public class runConveyor extends CommandBase {
-  
+
   private final Storage storage;
   private ImprovedJoystick _joystick;
-  
+
   public runConveyor(Storage subsystem, Joystick joystick) {
     storage = subsystem;
     _joystick = new ImprovedJoystick(joystick);
@@ -27,7 +27,7 @@ public class runConveyor extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+
     SmartDashboard.putString("Conveyor Commmand Running: ", " runConveyor");
 
   }
@@ -62,13 +62,11 @@ public class runConveyor extends CommandBase {
     {
       conveyorPower = -.25;
       SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR GOING DOWN");
-    }
-    else 
-    {
+    } else {
       conveyorPower = 0;
       SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR NOT OVERWROTE");
     }
-      
+
     storage.runConveyor(conveyorPower);
   }
 

@@ -13,7 +13,7 @@ import frc.robot.nsubsystems.FalconDrive;
 public class toggleCompressor extends CommandBase {
   private static boolean isCompressorOn = true;
   FalconDrive drive;
-  
+
   public toggleCompressor(FalconDrive subsystem) {
     drive = subsystem;
   }
@@ -27,11 +27,11 @@ public class toggleCompressor extends CommandBase {
   @Override
   public void execute() {
     isCompressorOn = !isCompressorOn;
-		if (isCompressorOn) {
-			drive.setCompressorOn();
-		} else {
-		  drive.setCompressorOff();
-		}
+    if (isCompressorOn) {
+      drive.setCompressorOn();
+    } else {
+      drive.setCompressorOff();
+    }
   }
 
   // Called once the command ends or is interrupted.

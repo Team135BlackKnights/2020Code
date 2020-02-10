@@ -11,11 +11,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.*;
 
 public class moveIntake extends CommandBase {
- 
+
   private final Intake intake;
   private static boolean solenoidPosition = true;
+
   public moveIntake(Intake subsystem) {
-     intake = subsystem;
+    intake = subsystem;
   }
 
   // Called when the command is initially scheduled.
@@ -28,7 +29,7 @@ public class moveIntake extends CommandBase {
   public void execute() {
     solenoidPosition = !solenoidPosition;
     intake.raiseLower(solenoidPosition);
-    
+
   }
 
   // Called once the command ends or is interrupted.

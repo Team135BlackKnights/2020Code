@@ -12,7 +12,7 @@ import frc.robot.nsubsystems.Storage;
 
 public class resetStorageEncoders extends CommandBase {
   Storage storage;
-  
+
   public resetStorageEncoders(Storage subsystem) {
     storage = subsystem;
   }

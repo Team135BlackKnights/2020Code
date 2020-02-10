@@ -11,11 +11,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.Intake;
 
 public class runRoller extends CommandBase {
-  
+
   private final Intake intake;
   private final double _power;
+
   public runRoller(Intake subsystem, double power) {
-    intake = subsystem; 
+    intake = subsystem;
     _power = power;
   }
 

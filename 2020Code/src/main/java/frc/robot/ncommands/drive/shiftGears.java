@@ -13,7 +13,7 @@ import frc.robot.nsubsystems.FalconDrive;
 public class shiftGears extends CommandBase {
   private static boolean solenoidPosition = true;
   FalconDrive drive;
-  
+
   public shiftGears(FalconDrive subsystem) {
     drive = subsystem;
   }
@@ -27,7 +27,7 @@ public class shiftGears extends CommandBase {
   @Override
   public void execute() {
     solenoidPosition = !solenoidPosition;
-		drive.shiftGears(solenoidPosition);
+    drive.shiftGears(solenoidPosition);
   }
 
   // Called once the command ends or is interrupted.

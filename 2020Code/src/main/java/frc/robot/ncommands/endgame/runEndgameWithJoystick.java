@@ -14,14 +14,15 @@ import frc.robot.nsubsystems.Endgame;
 import frc.robot.util.ImprovedJoystick;
 
 public class runEndgameWithJoystick extends CommandBase {
-  
+
   private final Endgame endgame;
   private final ImprovedJoystick _joystick;
+
   public runEndgameWithJoystick(Endgame subsystem, Joystick joystick) {
     endgame = subsystem;
     _joystick = new ImprovedJoystick(joystick);
 
-  addRequirements(endgame);
+    addRequirements(endgame);
   }
 
   // Called when the command is initially scheduled.
@@ -33,7 +34,7 @@ public class runEndgameWithJoystick extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    endgame.runLiftRaiseSpark(-_joystick.getJoystickAxis(1)/3);
+    endgame.runLiftRaiseSpark(-_joystick.getJoystickAxis(1) / 3);
   }
 
   // Called once the command ends or is interrupted.

@@ -36,7 +36,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 
 public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
-  
+
   public static final double distBetweenWheelsInches = 23;// 26.84603809585759;
   public static final double gearRatio = 1 / 13.85;
   public static final double wheelDiameterInches = 6.375;// 18;
@@ -111,16 +111,18 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     // Declares the chassis as a DifferentialDrive, with the arguments of the motor
     // controller groups
     chassis = new DifferentialDrive(leftDriveSide, rightDriveSide);
-    chassis.setSafetyEnabled(false); 
-    // turns off system where if the motors don't recieve signal, the chassis learns about it and gets mad
+    chassis.setSafetyEnabled(false);
+    // turns off system where if the motors don't recieve signal, the chassis learns
+    // about it and gets mad
 
     chassis.setMaxOutput(.98); // Maximum zoom is 98%
 
     resetEncoders(); // Calls method to reset the internal encoders of the motors
-    setBrakeMode(NeutralMode.Brake); 
-    // Calls method which makes it so that when the input is neutral, the motors will brake
+    setBrakeMode(NeutralMode.Brake);
+    // Calls method which makes it so that when the input is neutral, the motors
+    // will brake
 
-    System.out.println("Falcon Drive Initialized"); 
+    System.out.println("Falcon Drive Initialized");
     // Outputs the text letting the user know that the Falcon has been initialized
 
   }
@@ -346,22 +348,21 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   public boolean doesPathExist(String path) {
     try {
       final Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(path);
-      //The line below isn't doing anything but it needs to run to see if it works / gives me an error
+      // The line below isn't doing anything but it needs to run to see if it works /
+      // gives me an error
       TrajectoryUtil.fromPathweaverJson(trajectoryPath);
       return true;
     } catch (final IOException ex) {
-      SmartDashboard.putString("Unable to open trajectory: ","");
+      SmartDashboard.putString("Unable to open trajectory: ", "");
       return false;
     }
   }
   /*
-  public void resetOdometry() {
-    odometry.resetPosition(new Pose2d(), getHeading());
-  }
-  */
+   * public void resetOdometry() { odometry.resetPosition(new Pose2d(),
+   * getHeading()); }
+   */
   /*
-  public Rotation2d getHeading() {
-    return Rotation2d.fromDegrees(Math.IEEEremainder(navx.getYaw(), 360.0d));
-  }
-  */
+   * public Rotation2d getHeading() { return
+   * Rotation2d.fromDegrees(Math.IEEEremainder(navx.getYaw(), 360.0d)); }
+   */
 }

@@ -11,9 +11,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.*;
 
 public class ToggleLight extends CommandBase {
-  
-  private final Turret turret; 
+
+  private final Turret turret;
   private boolean lightOn;
+
   public ToggleLight(Turret subsystem) {
     turret = subsystem;
   }
@@ -27,7 +28,7 @@ public class ToggleLight extends CommandBase {
   @Override
   public void execute() {
     lightOn = !lightOn;
-		turret.setLight(lightOn);
+    turret.setLight(lightOn);
   }
 
   // Called once the command ends or is interrupted.

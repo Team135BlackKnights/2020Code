@@ -15,6 +15,7 @@ public class rotateWheelOfFortune extends CommandBase {
   ColorWheel colorWheel;
   public boolean isFinished;
   public double manualSpinSpeed;
+
   /**
    * Creates a new rotateWheelOfFortune.
    */
@@ -28,7 +29,7 @@ public class rotateWheelOfFortune extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    isFinished=false;
+    isFinished = false;
 
     SmartDashboard.putString("Control Panel Command Running:", "rotate Wheel of Fortune");
   }
@@ -36,32 +37,33 @@ public class rotateWheelOfFortune extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (manualSpinSpeed != 0)//if = 0, then command is not manual control and skip this block
+    if (manualSpinSpeed != 0)// if = 0, then command is not manual control and skip this block
     {
       colorWheel.rotatorSpark.set(manualSpinSpeed);
       edu.wpi.first.wpilibj.Timer t = new edu.wpi.first.wpilibj.Timer();
       t.start();
       double starttime = t.get();
-      while ((t.get() - starttime) < .25 )//runs motor for .25 seconds
-      {}
+      while ((t.get() - starttime) < .25)// runs motor for .25 seconds
+      {
+      }
       colorWheel.rotatorSpark.set(0);
       isFinished = true;
       return;
     }
-    
-    //Sets the desired color to the color given by the game
+
+    // Sets the desired color to the color given by the game
     String DesiredColor = colorWheel.gameColor();
     SmartDashboard.putString("FMS Readout", DesiredColor);
-    //If the desired color isn't empty, rotate the wheel at 80% power until it is detected 
+    // If the desired color isn't empty, rotate the wheel at 80% power until it is
+    // detected
     if (DesiredColor != "No Color") {
       colorWheel.getToColor(DesiredColor, .35);
       if (colorWheel.atDesiredRoations){ //2If the wheel has been spun the desired amount, it is finished
         isFinished = true;
         colorWheel.stopControlPanel();
-        }
-    }
-    else {
-      //If the desired color is no color, rotate the wheel four times at 80% power
+      }
+    } else {
+      // If the desired color is no color, rotate the wheel four times at 80% power
       colorWheel.rotateColorWheel(.8, 2.75);
       if (colorWheel.checkForColor() != colorWheel.desiredColor) {
         isFinished = true;
