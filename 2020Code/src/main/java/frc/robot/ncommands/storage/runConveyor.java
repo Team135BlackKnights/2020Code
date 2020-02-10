@@ -27,8 +27,7 @@ public class runConveyor extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
-    SmartDashboard.putString("Conveyor Commmand Running: ", " runConveyor");
+    SmartDashboard.putString("Storage Command Running: ", " runConveyor");
 
   }
 

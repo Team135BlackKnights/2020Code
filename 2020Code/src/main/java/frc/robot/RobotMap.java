@@ -33,17 +33,22 @@ public interface RobotMap {
   }
 
   public interface DRIVE {
-    final int FRONT_LEFT_FALCON = 3, FRONT_RIGHT_FALCON = 1, REAR_LEFT_FALCON = 4, REAR_RIGHT_FALCON = 2,
+    final int 
+    FRONT_LEFT_FALCON = 3, 
+    FRONT_RIGHT_FALCON = 1, 
+    REAR_LEFT_FALCON = 4, 
+    REAR_RIGHT_FALCON = 2,
 
         SHIFTER_ID = 0,
 
         WHEEL_DIAMETER = 6, ENCODER_TICKS_PER_REVOLUTION = 4096,
 
-        FRONT_RIGHT_SONAR_TRIG = 0, FRONT_RIGHT_SONAR_ECHO = 1, REAR_RIGHT_SONAR_TRIG = 2, REAR_RIGHT_SONAR_ECHO = 3,
-        FRONT_LEFT_SONAR_TRIG = 4, FRONT_LEFT_SONAR_ECHO = 5, REAR_LEFT_SONAR_TRIG = 6, REAR_LEFT_SONAR_ECHO = 7,
-        REAR_SONAR_TRIG = 8, REAR_SONAR_ECHO = 9, REAR_LIDAR = 12,
+        FRONT_RIGHT_SONAR_TRIG = 7, FRONT_RIGHT_SONAR_ECHO = 6, 
+        REAR_RIGHT_SONAR_TRIG = 2, REAR_RIGHT_SONAR_ECHO = 3,
+        FRONT_LEFT_SONAR_TRIG = 9, FRONT_LEFT_SONAR_ECHO = 8, 
+        REAR_LEFT_SONAR_TRIG = 4, REAR_LEFT_SONAR_ECHO = 5,
 
-        ksVolts = 1, kvVoltSecondsPerMeter = 1, kaVoltSecondsSquaredPerMeter = 1;
+        ksVolts = 12, kvVoltSecondsPerMeter = 1, kaVoltSecondsSquaredPerMeter = 1;
 
     // kDriveKinematics = 1;
 
@@ -61,8 +66,8 @@ public interface RobotMap {
       TRIP_SWITCH_ID = 14,
       LEFT_LIMIT_ID = 20, 
       RIGHT_LIMIT_ID = 19,
-      ROTATION_ENCODER_A = 17,
-      ROTATION_ENCODER_B = 18,
+      ROTATION_ENCODER_A = 18,
+      ROTATION_ENCODER_B = 17,
 
         TARGETING_LIGHT = 0;
 

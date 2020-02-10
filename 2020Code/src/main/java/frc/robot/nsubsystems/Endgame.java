@@ -44,7 +44,7 @@ public class Endgame extends SubsystemBase implements RobotMap.ENDGAME {
   }
 
   public void runLiftRaiseSpark(double power) {
-    limit(power, .5, -.5);
+    limit(power, .75, -.75);
     liftRaiseSpark.set(power);
   }
 

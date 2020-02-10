@@ -89,14 +89,12 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     frontLeftSonar = new Ultrasonic(FRONT_LEFT_SONAR_TRIG, FRONT_LEFT_SONAR_ECHO);
     rearLeftSonar = new Ultrasonic(REAR_LEFT_SONAR_TRIG, REAR_LEFT_SONAR_ECHO);
 
-    rearSonar = new Ultrasonic(10, 11);
 
     // Sets the Ultrasonic Sensors so that they can function together
     rearRightSonar.setAutomaticMode(true);
     frontRightSonar.setAutomaticMode(true);
     frontLeftSonar.setAutomaticMode(true);
     rearLeftSonar.setAutomaticMode(true);
-    rearSonar.setAutomaticMode(true);
 
     // Initializes Lidar and runs its function
 
@@ -213,6 +211,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   public double getEncoderVelocity(TalonFX falcon) {
     return falcon.getSelectedSensorVelocity();
   }
+  
 
   public void shiftGears(boolean isHighGear) {
     shifter.set(isHighGear);
@@ -256,7 +255,12 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   public double getRightPos() {
     return (getEncoderDistance(frontRightFX) + getEncoderDistance(rearRightFX)) / 2;
   }
-
+  
+  public double rotationsToInches(double rotations, double wheelDiameter)
+  {
+    return rotations*wheelDiameter*Math.PI;
+  }
+  
   // Prints the positions of all of encoders as well as the averages of the groups
   public void printPositions() {
     SmartDashboard.putNumber("front Left Position:", getEncoderDistance(frontLeftFX));
@@ -266,7 +270,6 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
 
     SmartDashboard.putNumber("Average Left Position:", getLeftPos());
     SmartDashboard.putNumber("Average Right Position:", getRightPos());
-
   }
 
   // Returns the amount of power being output by the motor controller
@@ -299,6 +302,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     SmartDashboard.putNumber("front Right Voltage: ", getMotorVoltage(frontRightFX));
     SmartDashboard.putNumber("rear Right Voltage: ", getMotorVoltage(rearRightFX));
   }
+  
 
   // Prints the results of the getmotortemp method for all of the four motors
   public void printTemperature() {
@@ -315,7 +319,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
 
   // Prints the distances found by each ultrasonic sensor in inches
   public void printUltrasonicValues() {
-    SmartDashboard.putNumber("right ultrasonic:", sonarDistance(rearRightSonar));
+    SmartDashboard.putNumber("right ultrasonic:", sonarDistance(frontLeftSonar));
     SmartDashboard.putNumber("left ultrasonic:", sonarDistance(frontRightSonar));
   }
 
@@ -331,8 +335,16 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     encoderTicksPerRev * gearRatio *
     wheelCircumferenceInches*poofs);
     */
-    printPositions();
+
+    /*
+    printVel();
+    printVoltage();
+    printMetres();
     printPower();
+    printVoltage();
+    */
+
+    printUltrasonicValues();
 
     // This method will be called once per scheduler run
   }

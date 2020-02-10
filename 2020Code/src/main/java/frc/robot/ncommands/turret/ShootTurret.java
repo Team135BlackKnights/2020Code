@@ -16,6 +16,7 @@ public class ShootTurret extends CommandBase {
   private final Turret turret;
   private final double topShooterDesired, bottomShooterDesired;
   private boolean isFinished;
+  private double previousFeederError = 0;
 
   public ShootTurret(Turret subsystem, double topShooterRPM, double bottomShooterRPM) {
     turret = subsystem;
@@ -41,13 +42,15 @@ public class ShootTurret extends CommandBase {
     double topShooterActual = turret.getTopWheelRPM();
     double bottomShooterActual = turret.getBottomWheelRPM();
     double feederActual = turret.getFeederRPM();
+    
+    double minError = 100;
   
     double topShooterError = topShooterDesired-topShooterActual;
     double bottomShooterError = bottomShooterDesired-bottomShooterActual;
     double feederError = feederDesired-feederActual;
 
     boolean isUpToSpeed = 
-    (topShooterError <= 20 && bottomShooterError <=20);
+    (topShooterError <= minError && bottomShooterError <=minError);
 
     double topPower = topShooterDesired + topShooterError;
     double bottomPower = bottomShooterDesired + bottomShooterError;
@@ -57,23 +60,33 @@ public class ShootTurret extends CommandBase {
     bottomPower = bottomPower / 5200;
     feederPower = feederPower / feederMax;
 
-    double tP, bP, fP;
+    double tP, bP, fP, tI, bI, fD; 
 
-    tP = 1;
-    bP = 1;
-    fP = 1;
+    tP = .99; tI = .4;
+    bP = .968; bI = .4;
+    fP = .892; fD = 0;
 
-    double topInput = topPower * tP;
-    double bottomInput = bottomPower * bP;
-    double feederInput = feederPower * fP;
+    double tErrorSum =+ topPower * .02;
+    double bErrorSum =+ bottomPower * .02;
+    
+    double feederDerivative = (feederPower-previousFeederError)/.02;
+
+    double topInput = topPower * tP + tErrorSum * tI;
+    double bottomInput = bottomPower * bP + bErrorSum * bI;;
+    double feederInput = feederPower * fP + feederDerivative * fD;
 
     turret.runShooterPower(topInput, bottomInput);
     if(isUpToSpeed)
     {
       turret.runBallFeeder(feederInput);
     }
-    turret.runBallFeeder(0);
-    
+    else 
+    {
+      turret.runBallFeeder(0);
+    }
+    SmartDashboard.putBoolean("isShooterUpToSpeed", isUpToSpeed);
+    SmartDashboard.putNumber("Feeder Power", feederInput);
+    previousFeederError = feederPower;
   }
 
   // Called once the command ends or is interrupted.

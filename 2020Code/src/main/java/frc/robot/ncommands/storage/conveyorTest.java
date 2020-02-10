@@ -10,7 +10,6 @@ package frc.robot.ncommands.storage;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.nsubsystems.Endgame;
 import frc.robot.nsubsystems.Storage;
 import frc.robot.util.ImprovedJoystick;
 
@@ -28,7 +27,7 @@ public class conveyorTest extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putString("Storage command Running: ", "run Storage with joystick");
+    SmartDashboard.putString("Storage Commmand Running: ", " runConveyor");
   }
 
   // Called every time the scheduler runs while the command is scheduled.

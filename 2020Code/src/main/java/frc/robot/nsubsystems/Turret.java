@@ -356,11 +356,14 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
   public void periodic() {
    //printTemp();
    autoResetEncoders();
-   SmartDashboard.putNumber("Rotation Ticks", getRotationTicks());
+  /* SmartDashboard.putNumber("Rotation Ticks", getRotationTicks());
    SmartDashboard.putNumber("Rotation Ticks With Conversion",getRotationTicks() * (360/512));
    printRotations();
    printStates();
    printTiltPos();
+   */
+  printRotations();
+  printShooterRPM();
     // This method will be called once per scheduler run
   }
 }

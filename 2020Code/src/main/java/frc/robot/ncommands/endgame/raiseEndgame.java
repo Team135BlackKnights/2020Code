@@ -42,11 +42,12 @@ public class raiseEndgame extends CommandBase {
     power = targetError / 90;
     minPower = .15;
     minDirection = targetError > 0 ? 1 : -1;
-    kp = 1;
+    kp = 1.23;
 
     minPower = minPower * minDirection;
 
-    power = (minPower + (power * kp));
+    power = (power * kp) + minPower;
+    power = endgame.limit(power, .75  , -.75);
     endgame.runLiftRaiseSpark(power);
     SmartDashboard.putNumber("Raise Endgame target Error ", targetError);
     SmartDashboard.putNumber("Raise Endgame power: ", power);
@@ -61,6 +62,6 @@ public class raiseEndgame extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(targetError) <= 2;
+    return Math.abs(targetError) <= .5;
   }
 }
