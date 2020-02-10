@@ -158,7 +158,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
 
   public void runRotation(double power)
   {
-    /*
+    
     if(getForwardRotationLimit())
     {
       power =  limit(power, 0, -.45);
@@ -169,9 +169,9 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
     }
     else 
     {
-    */
+    
     power = limit(power, .45, -.45);
-  //  }
+    }
 
     SmartDashboard.putNumber("Rotation Power", power);
     rotationSpark.set(power);
@@ -399,7 +399,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET{
   @Override
   public void periodic() {
    //printTemp();
-   //autoResetEncoders();
+   autoResetEncoders();
    SmartDashboard.putNumber("Rotation Ticks", getRotationTicks());
    SmartDashboard.putNumber("Rotation Ticks With Conversion",getRotationTicks() * (360/512));
    printRotations();

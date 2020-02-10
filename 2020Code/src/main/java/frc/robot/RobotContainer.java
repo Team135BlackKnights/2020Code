@@ -82,7 +82,7 @@ public static JoystickButton
 	manipThumb = new JoystickButton(manipJoystick, KOI.THUMB_BUTTON),
   manipButton3 = new JoystickButton(manipJoystick, KOI.HANDLE_BOTTOM_LEFT_BUTTON),
   manipButton4 = new JoystickButton(manipJoystick, KOI.HANDLE_BOTTOM_RIGHT_BUTTON),
-	manipButton5 = new JoystickButton(manipJoystick, KOI.HANDLE_BOTTOM_RIGHT_BUTTON),
+	manipButton5 = new JoystickButton(manipJoystick, KOI.HANDLE_TOP_LEFT_BUTTON),
 	manipButton7 = new JoystickButton(manipJoystick, KOI.BASE_TOP_LEFT_BUTTON),
 	manipButton8 = new JoystickButton(manipJoystick, KOI.BASE_TOP_RIGHT_BUTTON),
 	manipButton9 = new JoystickButton(manipJoystick, KOI.BASE_MIDDLE_LEFT_BUTTON),
@@ -95,7 +95,7 @@ public static JoystickButton
 
   public RobotContainer() {
     drive.setDefaultCommand(new DriveWithJoysticks(drive, leftJoystick, rightJoystick));
-    //intake.setDefaultCommand(new runConveyor(intake, manipJoystick));
+    storage.setDefaultCommand(new runConveyor(storage, manipJoystick));
     turret.setDefaultCommand(new TargetTurret(turret, turretLimelight, manipJoystick));
     //turret.setDefaultCommand(new TurretTest(turret, manipJoystick));
     // Configure the button bindings
@@ -124,8 +124,9 @@ public static JoystickButton
 
     manipTrigger.whileHeld(new ShootTurret(turret, 2200, 3400));
     manipThumb.whileHeld(new runEndgameWithJoystick(endgame, manipJoystick));
+    //manipButton3.whenPressed(new rotateWheelOfFortune(colorWheel, .25));
+  // manipButton3.whenPressed(new RotateTurretToAngle(turret, -90));
     
-    manipButton3.whenPressed(new RotateTurretToAngle(turret, -90));
     manipButton4.whileHeld(new runRoller(intake, .4));
     manipButton5.whileHeld(new runWinch(endgame, .675));
     manipButton9.whenPressed(new rotateWheelOfFortune(colorWheel, 0));

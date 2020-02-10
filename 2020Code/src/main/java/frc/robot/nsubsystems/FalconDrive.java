@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -322,16 +323,24 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
 
   @Override
   public void periodic() {
-    // pose = odometry.update(getHeading(), getLeftPos() / encoderTicksPerRev *
-    // gearRatio * Units.inchesToMeters(wheelCircumferenceInches), getRightPos() /
-    // encoderTicksPerRev * gearRatio *
-    // Units.inchesToMeters(wheelCircumferenceInches));
+    /*
+     pose = m_odometry.update(getHeading(), getLeftPos() / encoderTicksPerRev *
+    gearRatio * wheelCircumferenceInches *poofs, getRightPos() /
+    encoderTicksPerRev * gearRatio *
+    wheelCircumferenceInches*poofs);
+    */
+    printPositions();
+    printPower();
 
     // This method will be called once per scheduler run
   }
 
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
+  }
+  public Rotation2d getHeading() 
+  {
+    return Rotation2d.fromDegrees(Math.IEEEremainder(navx.getYaw(), 360.0d));
   }
 
   public boolean doesPathExist(String path) {

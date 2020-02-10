@@ -19,6 +19,7 @@ public class runWinch extends CommandBase {
   {
     endgame = subsystem;
     _power = power;
+    addRequirements(endgame);
   }
 
   // Called when the command is initially scheduled.
@@ -32,7 +33,18 @@ public class runWinch extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    endgame.runWinchSpark(_power);
+    double liftPosition = endgame.getLiftRaiseEncoderPosition();
+
+    boolean isLifted = liftPosition > 100;
+
+    if(isLifted)
+    {
+      endgame.runWinchSpark(_power);
+    }
+    else{
+      endgame.runWinchSpark(0);
+
+    }
   }
 
   // Called once the command ends or is interrupted.

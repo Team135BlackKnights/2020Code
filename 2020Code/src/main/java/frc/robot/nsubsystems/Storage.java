@@ -13,6 +13,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
@@ -20,7 +21,7 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE{
   
   public CANSparkMax conveyorSpark;
   public CANEncoder conveyorEncoder;
-  public DigitalInput intakeBallTripSwitch;
+  public DigitalInput intakeBallTripSwitch, testInput;
   public int currentBallCount;
   public boolean lastSwtichPosition;
 
@@ -33,6 +34,7 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE{
     conveyorEncoder = conveyorSpark.getEncoder();
 
     intakeBallTripSwitch = new DigitalInput(INTAKE_TRIP_SWITCH);
+    testInput = new DigitalInput(15);
 
     conveyorEncoder = conveyorSpark.getEncoder();
     lastSwtichPosition = false;
@@ -69,12 +71,25 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE{
 
   public double getConveyorRotations()
   {
-    return ticksToRotations(getEncoderPosition(conveyorEncoder));
+    return getEncoderPosition(conveyorEncoder);
   }
 
   public boolean isBallAtTripSwitch()
   {
     return intakeBallTripSwitch.get();
+  }
+
+  public boolean testInputState()
+  {
+    return testInput.get();
+  }
+
+  public void autoResetEncoder()
+  {
+    if(!isBallAtTripSwitch())
+    {
+      resetConveyorEncoder();
+    }
   }
 
   
@@ -104,6 +119,10 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE{
   @Override
   public void periodic() {
     intakeBallCount();
+    SmartDashboard.putNumber("Conveyor Position", getEncoderPosition(conveyorEncoder));
+    SmartDashboard.putBoolean("is Ball in conveyor", isBallAtTripSwitch());
+    SmartDashboard.putBoolean("test Input State", testInputState());
+    autoResetEncoder();
     // This method will be called once per scheduler run
   }
 }

@@ -21,6 +21,7 @@ public class runConveyor extends CommandBase {
   public runConveyor(Storage subsystem, Joystick joystick) {
     storage = subsystem;
     _joystick = new ImprovedJoystick(joystick);
+    addRequirements(storage);
   }
 
   // Called when the command is initially scheduled.
@@ -42,23 +43,24 @@ public class runConveyor extends CommandBase {
 
     isButton7 = _joystick.getJoystickButtonValue(7);
     isButton8 = _joystick.getJoystickButtonValue(8);
-    if(isBallTrip)
+    if(isBallTrip == false)
     {
       storage.resetConveyorEncoder();
     }
-    if(currentConveyPos <= 7 && !(isButton7 || isButton8))
+
+    if(currentConveyPos >= -4 && !(isButton7 || isButton8))
     {
-      conveyorPower = .65;
+      conveyorPower = -.25;
       SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR NOT OVERWROTE");
     }
     else if (isButton7)
     {
-      conveyorPower = .65;
+      conveyorPower = .25;
       SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR GOING UP");
     } 
     else if (isButton8)
     {
-      conveyorPower = -.65;
+      conveyorPower = -.25;
       SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR GOING DOWN");
     }
     else 

@@ -16,8 +16,6 @@ import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -25,7 +23,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL{
@@ -33,7 +30,6 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL{
    public ColorSensorV3 controlPanelColorSensor;
    private final I2C.Port i2cPort = I2C.Port.kOnboard;
    public CANSparkMax rotatorSpark;
-   public Solenoid extendSolenoid;
 
    public static ColorWheel instance;
    public Color detectedColor;
@@ -43,7 +39,6 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL{
    public String gameData, desiredColor;
    public int wheelRotations = 0;
    public boolean atDesiredRoations;
-   public WPI_TalonSRX testBoi;
    public CANSparkMax spark;
 
   public ColorWheel() 
@@ -52,10 +47,8 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL{
    controlPanelColorSensor = new ColorSensorV3(i2cPort);
    // Creates a SparkMax motor controller in rotatorSpark
    rotatorSpark = new CANSparkMax(ROTATOR_ID, MotorType.kBrushless);
-   extendSolenoid = new Solenoid(1);
 
    initCANSparkMax(rotatorSpark, IdleMode.kBrake);
-   testBoi = new WPI_TalonSRX(23);
    // Gets the data sent by the FMS as to what color we need
    gameData = DriverStation.getInstance().getGameSpecificMessage(); 
 
@@ -63,7 +56,6 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL{
 
    System.out.println("Color Wheel Initialized"); // Prints to screen
 
-   moveExtend(false);
    }
 
 
@@ -102,12 +94,7 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL{
    spark.enableVoltageCompensation(12);
    spark.setIdleMode(mode);
   }
-  public void moveExtend(Boolean pos)
-  {
-   extendSolenoid.set(pos);
-
-  }
-
+  
    public String gameColor() {
       // Checks if the gamedata has arrived yet by making sure its length is greater
       // than 0
@@ -203,6 +190,7 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL{
    // desired color, rotate the panel
    public void getToColor(final String desiredColor, double power) {
       //SmartDashboard.putString("dictval", spinToWhatColor(desiredColor));
+      updateColorFMSColor();
       String actualDesired = spinToWhatColor(desiredColor);
       SmartDashboard.putString("actual Desired", actualDesired);
       if (checkForColor() != actualDesired) {
@@ -214,24 +202,9 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL{
          // Counts color changes
          countColor();
 
-         // Prints to the screen
-         //SmartDashboard.putString("Current Color", currentColor);
-         //SmartDashboard.putNumber("ColorChanges:", colorChanges);
-         // rotatorSpark.set(power);
          rotatorSpark.set(power);
       } 
-      /* 
-      else {
-         rotatorSpark.set(-.6);
-         edu.wpi.first.wpilibj.Timer t = new edu.wpi.first.wpilibj.Timer();
-         t.start();
-         double starttime = t.get();
-         while ((t.get() - starttime) < .01 )//runs motor for .25 seconds
-         {}
-         atDesiredRoations=true;
-         stopControlPanel();// Stops the panel
-      }
-      */
+     
       else stopControlPanel();
 
    }
@@ -271,7 +244,6 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL{
   public void stopControlPanel()
   {   
       rotatorSpark.set(0);
-      testBoi.set(ControlMode.PercentOutput, 0);
   }
 
    public void printOut()
@@ -298,9 +270,17 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL{
   public String gameMessage = DriverStation.getInstance().getGameSpecificMessage();
 
 
+  public void updateColorFMSColor()
+  {
+   gameMessage = DriverStation.getInstance().getGameSpecificMessage();
+   gameColor();
+   SmartDashboard.putString("desired color", gameColor());
+  }
+
   @Override
   public void periodic() 
   {
+   updateColorFMSColor();
    detectedColor = controlPanelColorSensor.getColor();
     
    //Sets the current color to the current color(String)

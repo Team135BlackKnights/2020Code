@@ -31,7 +31,6 @@ public class rotateWheelOfFortune extends CommandBase {
     isFinished=false;
 
     SmartDashboard.putString("Control Panel Command Running:", "rotate Wheel of Fortune");
-    colorWheel.moveExtend(true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -55,7 +54,7 @@ public class rotateWheelOfFortune extends CommandBase {
     SmartDashboard.putString("FMS Readout", DesiredColor);
     //If the desired color isn't empty, rotate the wheel at 80% power until it is detected 
     if (DesiredColor != "No Color") {
-      colorWheel.getToColor(DesiredColor, .25);
+      colorWheel.getToColor(DesiredColor, .35);
       if (colorWheel.atDesiredRoations){ //2If the wheel has been spun the desired amount, it is finished
         isFinished = true;
         colorWheel.stopControlPanel();
@@ -78,7 +77,6 @@ public class rotateWheelOfFortune extends CommandBase {
     colorWheel.rotatorSpark.set(0);
     SmartDashboard.putString("Control Panel Command Running:", "No command Running");
     colorWheel.atDesiredRoations=false;
-    colorWheel.moveExtend(false);
   }
 
   // Returns true when the command should end.

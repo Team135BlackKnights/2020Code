@@ -47,6 +47,9 @@ public class ShootTurret extends CommandBase {
     double bottomShooterError = bottomShooterDesired-bottomShooterActual;
     double feederError = feederDesired-feederActual;
 
+    boolean isUpToSpeed = 
+    (topShooterError <= 20 && bottomShooterError <=20);
+
 
     double topPower = topShooterDesired+topShooterError;
     double bottomPower = bottomShooterDesired+bottomShooterError;
@@ -69,6 +72,10 @@ public class ShootTurret extends CommandBase {
     double feederInput = feederPower*fP;
 
     turret.runShooterPower(topInput, bottomInput);
+    if(isUpToSpeed)
+    {
+      turret.runBallFeeder(feederInput);
+    }
     turret.runBallFeeder(feederInput);
     //turret.runBallFeeder(1);
     /*

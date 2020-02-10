@@ -87,8 +87,8 @@ public interface RobotMap
       TILT_TALON_ID = 21,
 
       TRIP_SWITCH_ID = 14,
-      LEFT_LIMIT_ID = 19, 
-      RIGHT_LIMIT_ID = 20,
+      LEFT_LIMIT_ID = 20, 
+      RIGHT_LIMIT_ID = 19,
       ROTATION_ENCODER_A = 17,
       ROTATION_ENCODER_B = 18,
 
@@ -158,7 +158,7 @@ public interface RobotMap
       INTAKE_SONAR_TRIG = 10,
       INTAKE_SONAR_ECHO = 11,
 
-      INTAKE_TRIP_SWITCH = 15;
+      INTAKE_TRIP_SWITCH = 16;
   }
 
 }
