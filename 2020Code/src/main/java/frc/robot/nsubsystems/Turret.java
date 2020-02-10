@@ -48,7 +48,6 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     topShooterSpark = new CANSparkMax(TOP_SHOOTER_SPARK_ID, MotorType.kBrushless);
     ballFeederSpark = new CANSparkMax(FEEDER_SPARK_ID, MotorType.kBrushless);
 
-    turretBallTripSwitch = new DigitalInput(TRIP_SWITCH_ID);
     forwardRotationLimit = new DigitalInput(LEFT_LIMIT_ID);
     reverseRotationLimit = new DigitalInput(RIGHT_LIMIT_ID);
 
@@ -181,11 +180,6 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     runTilt(tiltPower);
     runRotation(rotationPower);
   }
-
-  public boolean isBallInShooter() {
-    return false;// turretBallTripSwitch.get();
-  }
-
   public boolean getForwardRotationLimit() {
     return forwardRotationLimit.get();
   }

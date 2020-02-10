@@ -43,10 +43,10 @@ public interface RobotMap {
 
         WHEEL_DIAMETER = 6, ENCODER_TICKS_PER_REVOLUTION = 4096,
 
-        FRONT_RIGHT_SONAR_TRIG = 7, FRONT_RIGHT_SONAR_ECHO = 6, 
-        REAR_RIGHT_SONAR_TRIG = 2, REAR_RIGHT_SONAR_ECHO = 3,
-        FRONT_LEFT_SONAR_TRIG = 9, FRONT_LEFT_SONAR_ECHO = 8, 
-        REAR_LEFT_SONAR_TRIG = 4, REAR_LEFT_SONAR_ECHO = 5,
+        FRONT_RIGHT_SONAR_TRIG = 9, FRONT_RIGHT_SONAR_ECHO = 8, 
+        REAR_RIGHT_SONAR_TRIG = 3, REAR_RIGHT_SONAR_ECHO = 2,
+        FRONT_LEFT_SONAR_TRIG = 7, FRONT_LEFT_SONAR_ECHO = 6, 
+        REAR_LEFT_SONAR_TRIG = 5, REAR_LEFT_SONAR_ECHO = 4,
 
         ksVolts = 12, kvVoltSecondsPerMeter = 1, kaVoltSecondsSquaredPerMeter = 1;
 
@@ -63,7 +63,7 @@ public interface RobotMap {
 
         TILT_TALON_ID = 21,
 
-      TRIP_SWITCH_ID = 14,
+      //TRIP_SWITCH_ID = 14,
       LEFT_LIMIT_ID = 20, 
       RIGHT_LIMIT_ID = 19,
       ROTATION_ENCODER_A = 18,
@@ -111,7 +111,7 @@ public interface RobotMap {
   }
 
   public interface ENDGAME {
-    public static final int LIMIT_ID = 19, WIND_UP_SPARK_ID = 16, LIFT_UP_SPARK_ID = 17;
+    public static final int LIMIT_ID = 14, WIND_UP_SPARK_ID = 16, LIFT_UP_SPARK_ID = 17;
 
   }
 

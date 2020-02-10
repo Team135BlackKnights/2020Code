@@ -51,7 +51,7 @@ public class RobotContainer implements RobotMap {
   public static JoystickButton rightTrigger = new JoystickButton(rightJoystick, KOI.TRIGGER_BUTTON),
       rightThumb = new JoystickButton(rightJoystick, KOI.THUMB_BUTTON),
       rightButton3 = new JoystickButton(rightJoystick, KOI.HANDLE_BOTTOM_LEFT_BUTTON),
-
+      rightButton11 = new JoystickButton(rightJoystick, KOI.BASE_BOTTOM_LEFT_BUTTON),
       leftTrigger = new JoystickButton(leftJoystick, KOI.TRIGGER_BUTTON),
       leftThumb = new JoystickButton(leftJoystick, KOI.THUMB_BUTTON),
 
@@ -92,7 +92,7 @@ public class RobotContainer implements RobotMap {
 
   private void configureButtonBindings() {
     rightButton3.whenPressed(new ToggleLight(turret));
-
+    rightButton11.whileHeld(new runTurretAndStorage(storage, turret));
     leftThumb.whenPressed(new shiftGears(drive));
     leftButton7.whenPressed(new resetDriveEncoders(drive));
     leftButton8.whenPressed(new resetEndgameEncoders(endgame));

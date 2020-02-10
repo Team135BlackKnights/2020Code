@@ -319,8 +319,11 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
 
   // Prints the distances found by each ultrasonic sensor in inches
   public void printUltrasonicValues() {
-    SmartDashboard.putNumber("right ultrasonic:", sonarDistance(frontLeftSonar));
-    SmartDashboard.putNumber("left ultrasonic:", sonarDistance(frontRightSonar));
+    SmartDashboard.putNumber("front right ultrasonic:", sonarDistance(frontRightSonar));
+    SmartDashboard.putNumber("front left ultrasonic:", sonarDistance(frontLeftSonar));
+    SmartDashboard.putNumber("rear right ultrasonic:", sonarDistance(rearRightSonar));
+    SmartDashboard.putNumber("rear left ultrasonic:", sonarDistance(rearLeftSonar));
+ 
   }
 
   public double poofs = 2.54; // Constant for conversion between inches and centimeters

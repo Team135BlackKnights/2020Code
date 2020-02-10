@@ -39,7 +39,7 @@ public class TargetTurret extends CommandBase {
   @Override
   public void initialize() {
     loopRuns = 1;
-    targetTurret = false;
+    targetTurret = true;
     SmartDashboard.putString("Turret Command Running: ", "targetTurret");
     turretLimelight.initLimelight(0, 0);
   }

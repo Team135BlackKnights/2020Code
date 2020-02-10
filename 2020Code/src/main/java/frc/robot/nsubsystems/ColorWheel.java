@@ -50,7 +50,8 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL 
 
    initCANSparkMax(rotatorSpark, IdleMode.kBrake);
    // Gets the data sent by the FMS as to what color we need
-   gameData = DriverStation.getInstance().getGameSpecificMessage(); 
+   gameData = DriverStation.getInstance().getGameSpecificMessage();
+  // gameData = DriverStation.getInstance().getGameSpecificMessage(); 
 
       desiredColor = "No Color"; // Desired color is none
 
@@ -117,8 +118,10 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL 
             desiredColor = "No color";
             break;
          }
+         
       } else {
          desiredColor = "No Color";
+         
          // Code for no data received yet
       }
       return desiredColor;
@@ -265,19 +268,19 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL 
   }
   
   //Pulls the game specific message from driver station
-  public String gameMessage = DriverStation.getInstance().getGameSpecificMessage();
 
 
   public void updateColorFMSColor()
   {
-   gameMessage = DriverStation.getInstance().getGameSpecificMessage();
-   gameColor();
+   gameData = DriverStation.getInstance().getGameSpecificMessage();
    SmartDashboard.putString("desired color", gameColor());
   }
 
   @Override
   public void periodic() 
   {
+   gameData = DriverStation.getInstance().getGameSpecificMessage();
+
    updateColorFMSColor();
    detectedColor = controlPanelColorSensor.getColor();
     
