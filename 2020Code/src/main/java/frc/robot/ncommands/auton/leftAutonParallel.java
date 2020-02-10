@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.ncommands.drive.DriveWithTrajectory;
 import frc.robot.ncommands.drive.EncoderDrive;
+import frc.robot.ncommands.drive.shiftGears;
 import frc.robot.ncommands.intake.moveIntake;
 import frc.robot.ncommands.intake.runRoller;
 import frc.robot.ncommands.turret.RotateTurretToAngle;
@@ -36,6 +37,7 @@ public class leftAutonParallel extends ParallelCommandGroup {
     intake = intakesubsystem;
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
+    parallel(new shiftGears(drive));
     if (drive.doesPathExist("paths/YourPath.wpilib.json")) {
       parallel(new DriveWithTrajectory(drive, "paths/YourPath.wpilib.json"));
     } else
