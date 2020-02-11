@@ -281,7 +281,6 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
   }
 
   public void printStates() {
-    SmartDashboard.putBoolean("is Ball in Turret:", isBallInShooter());
     SmartDashboard.putBoolean("is Rotation at Forward limit", getForwardRotationLimit());
     SmartDashboard.putBoolean("is Rotation at Reverse limit", getReverseRotationLimit());
   }
