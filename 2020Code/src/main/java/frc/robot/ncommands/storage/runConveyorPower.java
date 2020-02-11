@@ -7,35 +7,61 @@
 
 package frc.robot.ncommands.storage;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.Storage;
+import frc.robot.util.MovingAverage;
 
 public class runConveyorPower extends CommandBase {
   /**
    * Creates a new runConveyorPower.
    */
   Storage storage;
-  private double power;
-  public runConveyorPower(Storage _storage, double _power) {
+  private double RPM;
+  private double previousError;
+  public runConveyorPower(Storage _storage, double _RPM) {
     storage = _storage;
-    power = _power;
+    RPM = _RPM;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    SmartDashboard.putString("Storage Command Running: ", " runConveyorWithPID "+ RPM);
+    previousError = 0; 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    storage.runConveyor(power);
+    double currentRPM = storage.getConveyorVel();
+    MovingAverage smoothPls = new MovingAverage(25);
+    double maybe = smoothPls.process((float)currentRPM);
+    double storageMaxVel = 5200;
+
+    double error = RPM-maybe;
+    error = error/storageMaxVel;
+
+    double integral =+error*.02;
+    double derivative = (error-previousError)/.02;
+    
+    double kP, kI, kD;
+    kP = 2.1;
+    kI = 0;
+    kD = 0;
+
+    double storageInput = error*kP;
+
+    SmartDashboard.putNumber("Storage input", storageInput);
+    storage.runConveyor(storageInput);
+    previousError = error;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    storage.runConveyor(0);
   }
 
   // Returns true when the command should end.

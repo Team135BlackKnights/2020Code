@@ -92,7 +92,7 @@ public class RobotContainer implements RobotMap {
 
   private void configureButtonBindings() {
     rightButton3.whenPressed(new ToggleLight(turret));
-    rightButton11.whileHeld(new runTurretAndStorage(storage, turret));
+   // rightButton11.whileHeld(new runTurretAndStorage(storage, turret));
     leftThumb.whenPressed(new shiftGears(drive));
     leftButton7.whenPressed(new resetDriveEncoders(drive));
     leftButton8.whenPressed(new resetEndgameEncoders(endgame));
@@ -101,7 +101,7 @@ public class RobotContainer implements RobotMap {
     leftButton11.toggleWhenPressed(new toggleCompressor(drive));
     leftButton12.whenPressed(new resetTurretEncoder(turret));
 
-    manipTrigger.whileHeld(new ShootTurret(turret, 1035, 1600));
+    manipTrigger.whileHeld(new runTurretAndStorage(storage, turret, turretLimelight));
     manipThumb.whileHeld(new runEndgameWithJoystick(endgame, manipJoystick));
     //manipButton3.whenPressed(new rotateWheelOfFortune(colorWheel, .25));
   // manipButton3.whenPressed(new RotateTurretToAngle(turret, -90));

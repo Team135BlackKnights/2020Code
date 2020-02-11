@@ -26,6 +26,7 @@ public class TargetTurret extends CommandBase {
   private boolean targetTurret;
 
   private long furtherTime = 0;
+  private double previousError;
 
   public TargetTurret(Turret turretSubsystem, TurretLimelight limelightSubsystem, Joystick joystick) {
     _joystick = new ImprovedJoystick(joystick);
@@ -40,6 +41,7 @@ public class TargetTurret extends CommandBase {
   public void initialize() {
     loopRuns = 1;
     targetTurret = true;
+    previousError = 0; 
     SmartDashboard.putString("Turret Command Running: ", "targetTurret");
     turretLimelight.initLimelight(0, 0);
   }
@@ -51,12 +53,16 @@ public class TargetTurret extends CommandBase {
     verticalOffset = turretLimelight.GetLimelightData()[2];
     horizontalOffset = turretLimelight.GetLimelightData()[1];
 
+    double distToTarget = turretLimelight.distToTarget();
+
+    verticalOffset = verticalOffset + distToTarget/4;
     double rotationPower, tiltPower;
 
-    double rP = .58, tP = 1, rI = .012;
-
+    double rP = .17, tP = 1, rI = .352, rD = 0;
     rotationPower = horizontalOffset / 70;
     tiltPower = -verticalOffset / 8;
+
+    double derivative = (rotationPower- previousError)/.02;
 
     double minPower = .00;
 
@@ -126,7 +132,7 @@ public class TargetTurret extends CommandBase {
       SmartDashboard.putString("Turret State:", "Driver Override");
 
     } else if (targetExist && targetTurret) {
-      rotationPower = (rotationPower * rP) + (rIntegral * rI) + (minPower * rotationDirection);
+      rotationPower = (rotationPower * rP) + (rIntegral * rI) + (derivative *rD);
       tiltPower = (tiltPower * tP);
       SmartDashboard.putString("Turret State:", "Auto Targetting");
     } else {
@@ -140,8 +146,7 @@ public class TargetTurret extends CommandBase {
     SmartDashboard.putNumber("Target Turret Tilt Power:", tiltPower);
 
     turret.aimTurret(rotationPower, tiltPower);
-    loopRuns = +loopRuns;
-
+    previousError = horizontalOffset / 70;
   }
 
   // Called once the command ends or is interrupted.

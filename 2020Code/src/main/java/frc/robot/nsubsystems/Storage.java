@@ -65,6 +65,11 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE {
     return getEncoderPosition(conveyorEncoder);
   }
 
+  public double getConveyorVel()
+  {
+    return conveyorEncoder.getVelocity();
+  }
+
   public boolean isBallAtTripSwitch()
   {
     return intakeBallTripSwitch.get();
@@ -108,6 +113,8 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE {
     SmartDashboard.putNumber("Conveyor Position", getEncoderPosition(conveyorEncoder));
     SmartDashboard.putBoolean("is Ball in conveyor", isBallAtTripSwitch());
     autoResetEncoder();
+
+    SmartDashboard.putNumber("Convyeor Vel ", getConveyorVel());
     // This method will be called once per scheduler run
   }
 }

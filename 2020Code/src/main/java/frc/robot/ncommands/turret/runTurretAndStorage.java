@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.ncommands.storage.runConveyorPower;
 import frc.robot.nsubsystems.Storage;
 import frc.robot.nsubsystems.Turret;
+import frc.robot.nsubsystems.TurretLimelight;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -21,10 +22,10 @@ public class runTurretAndStorage extends ParallelCommandGroup {
    */
   
 
-  public runTurretAndStorage(Storage _storage, Turret _turret) {
+  public runTurretAndStorage(Storage _storage, Turret _turret, TurretLimelight _limelight) {
     super(
-      new ShootTurret(_turret, 2800, 3500),
-     new runConveyorPower(_storage, -.35));
+      new ShootTurret(_turret, _limelight, 2300, 2875),
+      new runConveyorPower(_storage, -1800));
     
 
 

@@ -47,19 +47,19 @@ public class runConveyor extends CommandBase {
       storage.resetConveyorEncoder();
     }
 
-    if(currentConveyPos >= -3.25 && !(isButton7 || isButton8))
+    if(currentConveyPos >= -2.5 && !(isButton7 || isButton8))
     {
-      conveyorPower = -.35;
+      conveyorPower = -.25;
       SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR NOT OVERWROTE");
     }
     else if (isButton7)
     {
-      conveyorPower = .35;
+      conveyorPower = .85;
       SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR GOING UP");
     } 
     else if (isButton8)
     {
-      conveyorPower = -.35;
+      conveyorPower = -.25;
       SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR GOING DOWN");
     } else {
       conveyorPower = 0;
