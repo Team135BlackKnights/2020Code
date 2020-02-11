@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.util.Units;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.nsubsystems.FalconDrive;
@@ -57,9 +56,6 @@ public class DriveWithTrajectory extends CommandBase {
   @Override
   public void execute() {
     //Command ramsete = runRamsete();
-  }
-
-  public Command runRamsete() {
     drive.resetEncoders();
     drive.getAngle();
     // drive.resetOdometry();
@@ -82,12 +78,11 @@ public class DriveWithTrajectory extends CommandBase {
     };
     var leftController = new PIDController(.6, 0, 0);
     var rightController = new PIDController(.6, 0, 0);
-    RamseteCommand command = new RamseteCommand(trajectory, drive::getPose, disabledRamsete, getFeedForward(),
+    new RamseteCommand(trajectory, drive::getPose, disabledRamsete, getFeedForward(),
         getKinematics(), drive::getWheelSpeeds, leftController, rightController, (leftVolts, rightVolts) -> {
           drive.tankVolts(leftVolts, rightVolts);
         }, // m_driveSubsystem::set,
         drive);
-    return command;
   }
 
   public DifferentialDriveKinematics getKinematics() {
