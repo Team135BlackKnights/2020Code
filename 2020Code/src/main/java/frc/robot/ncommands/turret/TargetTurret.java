@@ -53,9 +53,9 @@ public class TargetTurret extends CommandBase {
 
     double rotationPower, tiltPower;
 
-    double rP = .38, tP = 1, rI = .012;
+    double rP = .58, tP = 1, rI = .012;
 
-    rotationPower = horizontalOffset / 80;
+    rotationPower = horizontalOffset / 70;
     tiltPower = -verticalOffset / 8;
 
     double minPower = .00;

@@ -37,14 +37,10 @@ public class runWinch extends CommandBase {
 
     boolean isLifted = liftPosition > 100;
 
-    if(isLifted)
-    {
       endgame.runWinchSpark(_power);
-    }
-    else{
-      endgame.runWinchSpark(0);
+   
 
-    }
+    
   }
 
   // Called once the command ends or is interrupted.
