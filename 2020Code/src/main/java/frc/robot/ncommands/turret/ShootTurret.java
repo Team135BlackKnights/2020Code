@@ -44,7 +44,7 @@ public class ShootTurret extends CommandBase {
     double bottomShooterActual = turret.getBottomWheelRPM();
     double feederActual = turret.getFeederRPM();
     
-    double minError = 100;
+    double minError = 40;
   
     double topShooterError = topShooterDesired-topShooterActual;
     double bottomShooterError = bottomShooterDesired-bottomShooterActual;

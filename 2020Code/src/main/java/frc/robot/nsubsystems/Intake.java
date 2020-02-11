@@ -35,10 +35,6 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE {
 
     raiseLower = new Solenoid(RAISE_LOWER);
 
-    // intakeSonar = new Ultrasonic(8, 9);
-
-    // intakeSonar.setAutomaticMode(true);
-
     System.out.println("Intake Initialized");
   }
 

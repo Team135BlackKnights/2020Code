@@ -23,7 +23,7 @@ public class runTurretAndStorage extends ParallelCommandGroup {
 
   public runTurretAndStorage(Storage _storage, Turret _turret) {
     super(
-      new ShootTurret(_turret, 2200, 3400),
+      new ShootTurret(_turret, 2800, 3500),
      new runConveyorPower(_storage, -.35));
     
 

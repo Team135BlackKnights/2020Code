@@ -66,7 +66,7 @@ public class RobotContainer implements RobotMap {
       manipThumb = new JoystickButton(manipJoystick, KOI.THUMB_BUTTON),
       manipButton3 = new JoystickButton(manipJoystick, KOI.HANDLE_BOTTOM_LEFT_BUTTON),
       manipButton4 = new JoystickButton(manipJoystick, KOI.HANDLE_BOTTOM_RIGHT_BUTTON),
-      manipButton5 = new JoystickButton(manipJoystick, KOI.HANDLE_BOTTOM_RIGHT_BUTTON),
+      manipButton5 = new JoystickButton(manipJoystick, KOI.HANDLE_TOP_LEFT_BUTTON),
       manipButton7 = new JoystickButton(manipJoystick, KOI.BASE_TOP_LEFT_BUTTON),
       manipButton8 = new JoystickButton(manipJoystick, KOI.BASE_TOP_RIGHT_BUTTON),
       manipButton9 = new JoystickButton(manipJoystick, KOI.BASE_MIDDLE_LEFT_BUTTON),
@@ -101,13 +101,13 @@ public class RobotContainer implements RobotMap {
     leftButton11.toggleWhenPressed(new toggleCompressor(drive));
     leftButton12.whenPressed(new resetTurretEncoder(turret));
 
-    manipTrigger.whileHeld(new ShootTurret(turret, 2200, 3400));
+    manipTrigger.whileHeld(new ShootTurret(turret, 1035, 1600));
     manipThumb.whileHeld(new runEndgameWithJoystick(endgame, manipJoystick));
     //manipButton3.whenPressed(new rotateWheelOfFortune(colorWheel, .25));
   // manipButton3.whenPressed(new RotateTurretToAngle(turret, -90));
     
     manipButton4.whileHeld(new runRoller(intake, .4));
-    manipButton5.whileHeld(new runWinch(endgame, .675));
+    manipButton5.whileHeld(new runWinch(endgame, .8));
     manipButton9.whenPressed(new rotateWheelOfFortune(colorWheel, 0));
     manipButton10.whenPressed(new raiseEndgame(endgame, 222));
     manipButton11.toggleWhenPressed(new moveIntake(intake));

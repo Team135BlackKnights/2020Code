@@ -8,6 +8,7 @@
 package frc.robot.nsubsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANEncoder;
@@ -20,6 +21,7 @@ public class Endgame extends SubsystemBase implements RobotMap.ENDGAME {
 
   public CANSparkMax winchSpark, liftRaiseSpark;
   public CANEncoder liftRaiseEncoder, winchEncoder;
+  public DigitalInput highLimit; 
 
   public Endgame() {
     winchSpark = new CANSparkMax(WIND_UP_SPARK_ID, MotorType.kBrushless);
@@ -29,6 +31,7 @@ public class Endgame extends SubsystemBase implements RobotMap.ENDGAME {
     initCANSparkMax(winchSpark, IdleMode.kBrake);
     initCANSparkMax(liftRaiseSpark, IdleMode.kBrake);
     liftRaiseSpark.setInverted(true);
+    highLimit = new DigitalInput(LIMIT_ID);
 
     resetAllEndgameEncoders();
   }
@@ -39,12 +42,23 @@ public class Endgame extends SubsystemBase implements RobotMap.ENDGAME {
     spark.setIdleMode(mode);
   }
 
+  public boolean getLimitState()
+  {
+    return highLimit.get();
+  }
+
   public void runWinchSpark(double power) {
     winchSpark.set(power);
   }
 
   public void runLiftRaiseSpark(double power) {
-    limit(power, .75, -.75);
+/*
+    if(getLimitState())
+    {
+      power = limit(power, .75, 0);
+    }
+    */
+    power = limit(power, .75, -.75);
     liftRaiseSpark.set(power);
   }
 
@@ -75,6 +89,16 @@ public class Endgame extends SubsystemBase implements RobotMap.ENDGAME {
 
   public double ticksToInches(double ticks) {
     return ticks / 4096; // NEED TO UPDATE WITH ACTUAL CONVERSION RATE
+  }
+
+  public double getMotorPower(CANSparkMax spark)
+  {
+    return spark.getAppliedOutput();
+  }
+
+  public void printPower()
+  {
+    SmartDashboard.putNumber("winch power", getMotorPower(winchSpark));
   }
 
   public void printPosition() {
@@ -141,11 +165,13 @@ public class Endgame extends SubsystemBase implements RobotMap.ENDGAME {
     printTemp();
     printVoltage();
 
+
   }
 
   @Override
   public void periodic() {
     printPosition();
+    printPower();
     // printTicks();
     // This method will be called once per scheduler run
   }
