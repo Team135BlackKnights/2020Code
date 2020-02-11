@@ -107,7 +107,7 @@ public class RobotContainer implements RobotMap {
   // manipButton3.whenPressed(new RotateTurretToAngle(turret, -90));
     
     manipButton4.whileHeld(new runRoller(intake, .4));
-    manipButton5.whileHeld(new runWinch(endgame, .8));
+    manipButton3.whileHeld(new runWinch(endgame, .8));
     manipButton9.whenPressed(new rotateWheelOfFortune(colorWheel, 0));
     manipButton10.whenPressed(new raiseEndgame(endgame, 222));
     manipButton11.toggleWhenPressed(new moveIntake(intake));

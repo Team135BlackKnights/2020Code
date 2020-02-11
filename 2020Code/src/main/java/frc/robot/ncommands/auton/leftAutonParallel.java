@@ -38,8 +38,8 @@ public class leftAutonParallel extends ParallelCommandGroup {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     parallel(new shiftGears(drive));
-    if (drive.doesPathExist("paths/YourPath.wpilib.json")) {
-      parallel(new DriveWithTrajectory(drive, "paths/YourPath.wpilib.json"));
+    if (drive.doesPathExist("PathWeaver/output/redRight.wpilib.json")) {
+      parallel(new DriveWithTrajectory(drive, "PathWeaver/output/redRight.wpilib.json"));
     } else
       parallel(new EncoderDrive(drive, 90, 90, 2, true, RobotContainer.manipJoystick));
     parallel(sequence(new runRoller(intake, .8)),

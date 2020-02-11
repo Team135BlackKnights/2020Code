@@ -33,11 +33,12 @@ public class runWinch extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    /*
     double liftPosition = endgame.getLiftRaiseEncoderPosition();
 
     boolean isLifted = liftPosition > 100;
-
-      endgame.runWinchSpark(_power);
+*/
+      endgame.runWinchSpark(1);
    
 
     

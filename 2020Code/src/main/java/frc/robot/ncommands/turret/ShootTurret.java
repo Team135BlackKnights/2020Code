@@ -57,7 +57,7 @@ public class ShootTurret extends CommandBase {
 
     double modifier = distance.process((float)usedDistance);
 
-    double minError = 25;
+    double minError = 50;
     
     double tAddOn = (modifier*5200)/2
     ;
