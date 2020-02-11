@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.util.Units;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.nsubsystems.FalconDrive;
@@ -56,18 +55,12 @@ public class DriveWithTrajectory extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    runRamsete();
-  }
-
-  public Command runRamsete() {
+    //Command ramsete = runRamsete();
     drive.resetEncoders();
     drive.getAngle();
     // drive.resetOdometry();
-
     TrajectoryConfig config = new TrajectoryConfig(3.97350993, 2);
-
     config.setKinematics(getKinematics());
-
     // final String trajectoryJSON = "paths/YourPath.wpilib.json";
     try {
       final Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
@@ -83,18 +76,13 @@ public class DriveWithTrajectory extends CommandBase {
         return new ChassisSpeeds(linearVelocityRefMeters, 0.0, angularVelocityRefRadiansPerSecond);
       }
     };
-
     var leftController = new PIDController(.6, 0, 0);
     var rightController = new PIDController(.6, 0, 0);
-    RamseteCommand command = new RamseteCommand(trajectory, drive::getPose, disabledRamsete, // new
-                                                                                             // RamseteController(2.0,
-                                                                                             // 0.7),
-        getFeedForward(), getKinematics(), drive::getWheelSpeeds, leftController, rightController,
-        (leftVolts, rightVolts) -> {
+    new RamseteCommand(trajectory, drive::getPose, disabledRamsete, getFeedForward(),
+        getKinematics(), drive::getWheelSpeeds, leftController, rightController, (leftVolts, rightVolts) -> {
           drive.tankVolts(leftVolts, rightVolts);
         }, // m_driveSubsystem::set,
         drive);
-    return command;
   }
 
   public DifferentialDriveKinematics getKinematics() {
