@@ -16,7 +16,7 @@ import frc.robot.util.ImprovedJoystick;
 public class TargetTurret extends CommandBase {
 
   double tiltPowerPreset = .6;
-  double rotationPowerPreset = .25;
+  double rotationPowerPreset = .2;
   private final Turret turret;
   private final TurretLimelight turretLimelight;
   private final ImprovedJoystick _joystick;
@@ -52,19 +52,23 @@ public class TargetTurret extends CommandBase {
     targetExist = turretLimelight.GetLimelightData()[0] >= 1 ? true : false;
     verticalOffset = turretLimelight.GetLimelightData()[2];
     horizontalOffset = turretLimelight.GetLimelightData()[1];
-
+    
+    boolean isShooting = turret.getTopWheelRPM() > 1250;
     double distToTarget = turretLimelight.distToTarget();
 
     verticalOffset = verticalOffset + distToTarget/3;
     double rotationPower, tiltPower;
-
-    double rP = .17, tP = 1, rI = .352, rD = 0;
-    rotationPower = horizontalOffset / 70;
+    double rotationHelper = distToTarget/600;
+    SmartDashboard.putNumber("ROtatoinhelper", rotationHelper);
+    double rP = .18, tP = 1, rI = .0, rD = .08;
+    rotationPower = horizontalOffset /70;
     tiltPower = -verticalOffset / 8;
+
+    //rotationPower = rotationPower+rotationHelper;
 
     double derivative = (rotationPower- previousError)/.02;
 
-    double minPower = .00;
+    double minPower = .02;
 
     double rotationDirection = horizontalOffset > 0 ? 1 : -1;
     boolean isPOVLeft, isPOVRight, isPOVUp, isPOVDown, isPOVTopRight, isPOVBottomRight, isPOVBottomLeft, isPOVTopLeft;
@@ -84,11 +88,21 @@ public class TargetTurret extends CommandBase {
     isPOVTopLeft = _joystick.isPovDirectionPressed(7);
 
     long timeNow = System.currentTimeMillis();
-
+    
+    
+    if(isShooting)
+    {
+      targetTurret = false;
+    }
+    else 
+    {
+      targetTurret = true;
+    }
     if (_joystick.getJoystickButtonValue(6) && timeNow >= furtherTime) {
       furtherTime = timeNow + 50;
       targetTurret = !targetTurret;
     }
+    
     SmartDashboard.putBoolean("Auto Targeting turret: ", targetTurret);
 
     if (isPOVUp) {
@@ -132,7 +146,7 @@ public class TargetTurret extends CommandBase {
       SmartDashboard.putString("Turret State:", "Driver Override");
 
     } else if (targetExist && targetTurret) {
-      rotationPower = (rotationPower * rP) + (rIntegral * rI) + (derivative *rD);
+      rotationPower = (rotationPower * rP) + (rIntegral * rI) + (derivative *rD) + (minPower * rotationDirection);
       tiltPower = (tiltPower * tP);
       SmartDashboard.putString("Turret State:", "Auto Targetting");
     } else {

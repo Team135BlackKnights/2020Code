@@ -41,7 +41,7 @@ public class DriveWithTrajectory extends CommandBase {
   SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(kS, kV, kA);
   Trajectory trajectory;
   final String trajectoryJSON;
-
+  public RamseteCommand Steven;
   public DriveWithTrajectory(FalconDrive subsystem, String filePath) {
     drive = subsystem;
     trajectoryJSON = filePath;
@@ -51,13 +51,14 @@ public class DriveWithTrajectory extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    SmartDashboard.putBoolean("I tried ", true);
+    System.out.println("I tried");
 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //Command ramsete = runRamsete();
     drive.resetEncoders();
     drive.getAngle();
     // drive.resetOdometry();
@@ -78,9 +79,11 @@ public class DriveWithTrajectory extends CommandBase {
         return new ChassisSpeeds(linearVelocityRefMeters, 0.0, angularVelocityRefRadiansPerSecond);
       }
     };
+
+
     var leftController = new PIDController(.6, 0, 0);
     var rightController = new PIDController(.6, 0, 0);
-    new RamseteCommand(trajectory, drive::getPose, disabledRamsete, getFeedForward(),
+    Steven = new RamseteCommand(trajectory, drive::getPose, disabledRamsete, getFeedForward(),
         getKinematics(), drive::getWheelSpeeds, leftController, rightController, (leftVolts, rightVolts) -> {
           drive.tankVolts(leftVolts, rightVolts);
         }, // m_driveSubsystem::set,
