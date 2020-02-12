@@ -8,9 +8,25 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.ncommands.color.rotateWheelOfFortune;
@@ -37,6 +53,17 @@ public class RobotContainer implements RobotMap {
   private final Endgame endgame = new Endgame();
   private final ColorWheel colorWheel = new ColorWheel();
   private final TurretLimelight turretLimelight = TurretLimelight.getInstance();
+
+  //Ramsete Variables
+  private static final double kS = 0.358;
+  private static final double kV = 3.02;
+  private static final double kA = 0.249;
+  DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(
+      Units.inchesToMeters(23));
+  SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(kS, kV, kA);
+  Trajectory trajectory;
+  String trajectoryJSON;
+  public RamseteCommand Steven;
 
   public static Joystick leftJoystick = new Joystick(RobotMap.KOI.LEFT_JOYSTICK),
       rightJoystick = new Joystick(RobotMap.KOI.RIGHT_JOYSTICK),
@@ -80,6 +107,7 @@ public class RobotContainer implements RobotMap {
     turret.setDefaultCommand(new TargetTurret(turret, turretLimelight, manipJoystick));
     // turret.setDefaultCommand(new TurretTest(turret, manipJoystick));
     // Configure the button bindings
+    initRamsete("paths/redRight.wpilib.json");
     configureButtonBindings();
   }
 
@@ -92,7 +120,7 @@ public class RobotContainer implements RobotMap {
 
   private void configureButtonBindings() {
     rightButton3.whenPressed(new ToggleLight(turret));
-    rightButton11.whenPressed(new DriveWithTrajectory(drive, "paths/redRight.wpilib.json"));
+    rightButton11.whenPressed(Steven);
     leftThumb.whenPressed(new shiftGears(drive));
     leftButton7.whenPressed(new resetDriveEncoders(drive));
     leftButton8.whenPressed(new resetEndgameEncoders(endgame));
@@ -244,6 +272,47 @@ public class RobotContainer implements RobotMap {
     }
     return povDirectionPressed;
 
+  }
+
+  public void initRamsete(String trajectoryJSON) {
+  drive.resetEncoders();
+    drive.getAngle();
+    // drive.resetOdometry();
+    TrajectoryConfig config = new TrajectoryConfig(3.97350993, 2);
+    config.setKinematics(getKinematics());
+    // final String trajectoryJSON = "paths/YourPath.wpilib.json";
+    try {
+      final Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    } catch (final IOException ex) {
+      SmartDashboard.putString("Unable to open trajectory: ", "");
+    }
+
+    RamseteController disabledRamsete = new RamseteController() {
+      @Override
+      public ChassisSpeeds calculate(Pose2d currentPose, Pose2d poseRef, double linearVelocityRefMeters,
+          double angularVelocityRefRadiansPerSecond) {
+        return new ChassisSpeeds(linearVelocityRefMeters, 0.0, angularVelocityRefRadiansPerSecond);
+      }
+    };
+
+
+    var leftController = new PIDController(.6, 0, 0);
+    var rightController = new PIDController(.6, 0, 0);
+    Steven = new RamseteCommand(trajectory, drive::getPose, disabledRamsete, getFeedForward(),
+        getKinematics(), drive::getWheelSpeeds, leftController, rightController, (leftVolts, rightVolts) -> {
+          drive.tankVolts(leftVolts, rightVolts);
+        }, // m_driveSubsystem::set,
+        drive);
+  }
+
+
+  public DifferentialDriveKinematics getKinematics() {
+    return kinematics;
+  }
+
+  public SimpleMotorFeedforward getFeedForward() {
+    return feedForward;
   }
 
   public Command getAutonomousCommand() {

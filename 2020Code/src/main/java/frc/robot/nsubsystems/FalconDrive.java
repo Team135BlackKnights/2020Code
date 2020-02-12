@@ -36,18 +36,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 
 public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
-
+  public double poofs = 2.54; // Constant for conversion between inches and centimeters
   public static final double distBetweenWheelsInches = 23;// 26.84603809585759;
   public static final double gearRatio = 1 / 13.85;
   public static final double wheelDiameterInches = 6.375;// 18;
   public static final double wheelCircumferenceInches = wheelDiameterInches * Math.PI;
   public static final double encoderTicksPerRev = 2048;
-  // DifferentialDriveOdometry odometry = new
-  // DifferentialDriveOdometry(getHeading());
+ // DifferentialDriveOdometry(getHeading());
 
-  DifferentialDriveOdometry m_odometry;
+  public DifferentialDriveOdometry m_odometry;
 
-  Pose2d pose;
+  public Pose2d pose;
 
   public WPI_TalonFX frontLeftFX, frontRightFX, rearLeftFX, rearRightFX;
   public Solenoid shifter;
@@ -119,6 +118,9 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     setBrakeMode(NeutralMode.Brake);
     // Calls method which makes it so that when the input is neutral, the motors
     // will brake
+   
+    pose = new Pose2d();
+    m_odometry = new DifferentialDriveOdometry(getHeading());
 
     System.out.println("Falcon Drive Initialized");
     // Outputs the text letting the user know that the Falcon has been initialized
@@ -326,19 +328,17 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
  
   }
 
-  public double poofs = 2.54; // Constant for conversion between inches and centimeters
 
   // Prints the distance found by the lidar in inches
 
   @Override
   public void periodic() {
-    /*
-     pose = m_odometry.update(getHeading(), getLeftPos() / encoderTicksPerRev *
-    gearRatio * wheelCircumferenceInches *poofs, getRightPos() /
-    encoderTicksPerRev * gearRatio *
-    wheelCircumferenceInches*poofs);
     
-*/
+    pose = m_odometry.update(getHeading(), 0,0);
+     //getLeftPos() / encoderTicksPerRev * gearRatio * wheelCircumferenceInches * poofs, 
+     //getRightPos() / encoderTicksPerRev * gearRatio * wheelCircumferenceInches * poofs);
+    
+
     /*
     printVel();
     printVoltage();
@@ -347,7 +347,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     printVoltage();
     */
 
-    printUltrasonicValues();
+   // printUltrasonicValues();
 
     // This method will be called once per scheduler run
   }
@@ -372,12 +372,8 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
       return false;
     }
   }
-  /*
-   * public void resetOdometry() { odometry.resetPosition(new Pose2d(),
-   * getHeading()); }
-   */
-  /*
-   * public Rotation2d getHeading() { return
-   * Rotation2d.fromDegrees(Math.IEEEremainder(navx.getYaw(), 360.0d)); }
-   */
+  
+    public void resetOdometry() { m_odometry.resetPosition(new Pose2d(),
+    getHeading()); }
+     
 }
