@@ -92,7 +92,7 @@ public class RobotContainer implements RobotMap {
 
   private void configureButtonBindings() {
     rightButton3.whenPressed(new ToggleLight(turret));
-   // rightButton11.whileHeld(new runTurretAndStorage(storage, turret));
+    rightButton11.whenPressed(new DriveWithTrajectory(drive, "PathWeaver/output/redRight.wpilib.json"));
     leftThumb.whenPressed(new shiftGears(drive));
     leftButton7.whenPressed(new resetDriveEncoders(drive));
     leftButton8.whenPressed(new resetEndgameEncoders(endgame));

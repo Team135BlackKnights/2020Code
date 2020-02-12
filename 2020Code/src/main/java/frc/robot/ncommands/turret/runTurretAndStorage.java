@@ -7,6 +7,7 @@
 
 package frc.robot.ncommands.turret;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.ncommands.storage.runConveyorPower;
 import frc.robot.nsubsystems.Storage;
@@ -24,7 +25,7 @@ public class runTurretAndStorage extends ParallelCommandGroup {
 
   public runTurretAndStorage(Storage _storage, Turret _turret, TurretLimelight _limelight) {
     super(
-      new ShootTurret(_turret, _limelight, 2700, 3375),
+      new ShootTurret(_turret, _limelight, 210, 2687.5),
       new runConveyorPower(_storage, -1800));
     
 
