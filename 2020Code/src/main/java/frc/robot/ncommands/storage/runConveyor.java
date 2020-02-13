@@ -55,6 +55,7 @@ public class runConveyor extends CommandBase {
     else if (isButton7)
     {
       conveyorPower = .85;
+      storage.resetConveyorEncoder();
       SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR GOING UP");
     } 
     else if (isButton8)
