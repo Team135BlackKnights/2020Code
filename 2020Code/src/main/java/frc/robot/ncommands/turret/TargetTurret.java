@@ -94,10 +94,6 @@ public class TargetTurret extends CommandBase {
     {
       targetTurret = false;
     }
-    else 
-    {
-      targetTurret = true;
-    }
     if (_joystick.getJoystickButtonValue(6) && timeNow >= furtherTime) {
       furtherTime = timeNow + 50;
       targetTurret = !targetTurret;

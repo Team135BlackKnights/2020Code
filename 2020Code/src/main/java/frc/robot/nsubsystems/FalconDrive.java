@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj.util.Units;
 
 public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   public double poofs = 2.54; // Constant for conversion between inches and centimeters
@@ -122,9 +123,10 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     pose = new Pose2d();
     m_odometry = new DifferentialDriveOdometry(getHeading());
 
+    updatePose();
+
     System.out.println("Falcon Drive Initialized");
     // Outputs the text letting the user know that the Falcon has been initialized
-
   }
 
   public void configFalcon(WPI_TalonFX falcon, boolean isLeft) {
@@ -134,7 +136,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     falcon.enableVoltageCompensation(true);
     falcon.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, 100);
     falcon.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_50Ms, 100);
-    falcon.configVelocityMeasurementWindow(1, 100);
+    falcon.configVelocityMeasurementWindow(4, 100);
   }
 
   // Sets the neutral input to brake all four motors
@@ -156,8 +158,16 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     double rightEncoderVelocity = (getEncoderVelocity(frontRightFX) + getEncoderVelocity(rearRightFX)) / 2;
     return new DifferentialDriveWheelSpeeds(leftEncoderVelocity, rightEncoderVelocity);
   }
+  public void setVoltageCompensation(boolean isDesired)
+  {
+    frontLeftFX.enableVoltageCompensation(isDesired);
+    rearLeftFX.enableVoltageCompensation(isDesired);
+    frontRightFX.enableVoltageCompensation(isDesired);
+    rearRightFX.enableVoltageCompensation(isDesired);
+  }
 
   public void tankVolts(double leftVolts, double rightVolts) {
+    setVoltageCompensation(false);
     frontLeftFX.setVoltage(leftVolts);
     rearLeftFX.setVoltage(leftVolts);
     frontRightFX.setVoltage(rightVolts);
@@ -211,7 +221,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
 
   // Returns the velocity of the chosen motor's encoder
   public double getEncoderVelocity(TalonFX falcon) {
-    return falcon.getSelectedSensorVelocity();
+    return falcon.getSelectedSensorVelocity()*10/4096;
   }
   
 
@@ -255,12 +265,50 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   // Finds the right position of the encoders of the right drive group, and
   // averages them in order to normalize the results
   public double getRightPos() {
-    return (getEncoderDistance(frontRightFX) + getEncoderDistance(rearRightFX)) / 2;
+    return (-getEncoderDistance(frontRightFX) + -getEncoderDistance(rearRightFX)) / 2;
   }
   
-  public double rotationsToInches(double rotations, double wheelDiameter)
+  public double rotationsToInches(double rotations)
   {
-    return rotations*wheelDiameter*Math.PI;
+    return rotations*6*Math.PI;
+  }
+  public void printMetres()
+  {
+    SmartDashboard.putNumber("left Dist Metres", (Units.inchesToMeters(rotationsToInches(getLeftPos())) * gearRatio));
+    SmartDashboard.putNumber("right Dist Metres", (Units.inchesToMeters(rotationsToInches(getRightPos())) * gearRatio));
+  }
+  public double getLeftMetres()
+  {
+    return (Units.inchesToMeters(rotationsToInches(getLeftPos()))) * gearRatio;
+  }
+  public double getRightMetres()
+  {
+    return (Units.inchesToMeters(rotationsToInches(getRightPos()))) * gearRatio;
+  }
+
+  public double getEncoderMps(TalonFX talon)
+  {
+    return (Units.inchesToMeters(rotationsToInches(getEncoderVelocity(talon)))) * gearRatio;
+  }
+  
+  public double getLeftMps()
+  {
+    return (getEncoderMps(frontLeftFX) + getEncoderMps(rearLeftFX))/2;
+  }
+
+  public double getRightMps()
+  {
+    return (getEncoderMps(frontRightFX) + getEncoderMps(rearRightFX))/2;
+  }
+
+  public double getLinearMps()
+  {
+    return (getLeftMps() + getRightMps())/2;
+  }
+
+  public double getAngularMps()
+  {
+    return (getLeftMps() - getRightMps())/Units.inchesToMeters(21);
   }
   
   // Prints the positions of all of encoders as well as the averages of the groups
@@ -325,30 +373,45 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     SmartDashboard.putNumber("front left ultrasonic:", sonarDistance(frontLeftSonar));
     SmartDashboard.putNumber("rear right ultrasonic:", sonarDistance(rearRightSonar));
     SmartDashboard.putNumber("rear left ultrasonic:", sonarDistance(rearLeftSonar));
- 
+  }
+
+  public void printMps()
+  {
+    SmartDashboard.putNumber("Front Left M/s", getEncoderMps(frontLeftFX));
+    SmartDashboard.putNumber("Front Left M/s", getEncoderMps(frontLeftFX));
+    SmartDashboard.putNumber("Front Left M/s", getEncoderMps(frontLeftFX));
+    SmartDashboard.putNumber("Front Left M/s", getEncoderMps(frontLeftFX));
+   
+    SmartDashboard.putNumber("Left M/s", getLeftMps());
+    SmartDashboard.putNumber("Right M/s", getRightMps());
+    SmartDashboard.putNumber("Linear M/s ", getLinearMps());
+    SmartDashboard.putNumber("Angular M/s", getAngularMps());
+
+  }
+
+  public void updatePose()
+  {
+    pose = m_odometry.update(getHeading(),getLeftMetres(), getRightMetres());
+  }
+
+  public void printPose()
+  {
+    SmartDashboard.putNumber("rotation", pose.getRotation().getDegrees());
+    SmartDashboard.putNumber("translation y ", pose.getTranslation().getY());
+    SmartDashboard.putNumber("translation x ", pose.getTranslation().getX());
   }
 
 
   // Prints the distance found by the lidar in inches
 
   @Override
-  public void periodic() {
-    
-    pose = m_odometry.update(getHeading(), 0,0);
-     //getLeftPos() / encoderTicksPerRev * gearRatio * wheelCircumferenceInches * poofs, 
-     //getRightPos() / encoderTicksPerRev * gearRatio * wheelCircumferenceInches * poofs);
-    
-
-    /*
-    printVel();
-    printVoltage();
+  public void periodic() 
+  {
+    updatePose();
+    printPose();
+    printMps();
     printMetres();
-    printPower();
-    printVoltage();
-    */
-
-   // printUltrasonicValues();
-
+    SmartDashboard.putNumber("left VEl", getEncoderVelocity(frontLeftFX));
     // This method will be called once per scheduler run
   }
 

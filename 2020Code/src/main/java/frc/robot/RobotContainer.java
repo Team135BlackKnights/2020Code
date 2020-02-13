@@ -10,6 +10,7 @@ package frc.robot;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -18,11 +19,14 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -59,7 +63,7 @@ public class RobotContainer implements RobotMap {
   private static final double kV = 3.02;
   private static final double kA = 0.249;
   DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(
-      Units.inchesToMeters(23));
+      Units.inchesToMeters(21));
   SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(kS, kV, kA);
   Trajectory trajectory;
   String trajectoryJSON;
@@ -78,7 +82,9 @@ public class RobotContainer implements RobotMap {
   public static JoystickButton rightTrigger = new JoystickButton(rightJoystick, KOI.TRIGGER_BUTTON),
       rightThumb = new JoystickButton(rightJoystick, KOI.THUMB_BUTTON),
       rightButton3 = new JoystickButton(rightJoystick, KOI.HANDLE_BOTTOM_LEFT_BUTTON),
+      rightButton10 = new JoystickButton(rightJoystick , KOI.BASE_MIDDLE_RIGHT_BUTTON),
       rightButton11 = new JoystickButton(rightJoystick, KOI.BASE_BOTTOM_LEFT_BUTTON),
+      rightButton12 = new JoystickButton(rightJoystick, KOI.BASE_BOTTOM_RIGHT_BUTTON),
       leftTrigger = new JoystickButton(leftJoystick, KOI.TRIGGER_BUTTON),
       leftThumb = new JoystickButton(leftJoystick, KOI.THUMB_BUTTON),
 
@@ -120,7 +126,10 @@ public class RobotContainer implements RobotMap {
 
   private void configureButtonBindings() {
     rightButton3.whenPressed(new ToggleLight(turret));
+    rightButton10.whenPressed(new resetGyro(drive));
+    rightButton12.whenPressed(new resetOdometry(drive));
     rightButton11.whenPressed(Steven);
+
     leftThumb.whenPressed(new shiftGears(drive));
     leftButton7.whenPressed(new resetDriveEncoders(drive));
     leftButton8.whenPressed(new resetEndgameEncoders(endgame));
@@ -275,18 +284,30 @@ public class RobotContainer implements RobotMap {
   }
 
   public void initRamsete(String trajectoryJSON) {
-  drive.resetEncoders();
+    drive.resetEncoders();
     drive.getAngle();
-    // drive.resetOdometry();
+    drive.resetOdometry();
     TrajectoryConfig config = new TrajectoryConfig(3.97350993, 2);
     config.setKinematics(getKinematics());
-    // final String trajectoryJSON = "paths/YourPath.wpilib.json";
+    
+    trajectory = TrajectoryGenerator.generateTrajectory(
+      new Pose2d(0,0, new Rotation2d()),
+      List.of(
+        new Translation2d(1,1),
+        new Translation2d(2,-1)
+      ),
+      new Pose2d(3,0,new Rotation2d(0)),
+      config
+    ); 
+    
+    /*
     try {
-      final Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+     Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
       trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    } catch (final IOException ex) {
+    } catch (IOException ex) {
       SmartDashboard.putString("Unable to open trajectory: ", "");
     }
+    */
 
     RamseteController disabledRamsete = new RamseteController() {
       @Override
@@ -299,7 +320,7 @@ public class RobotContainer implements RobotMap {
 
     var leftController = new PIDController(.6, 0, 0);
     var rightController = new PIDController(.6, 0, 0);
-    Steven = new RamseteCommand(trajectory, drive::getPose, disabledRamsete, getFeedForward(),
+    Steven = new RamseteCommand(trajectory, drive::getPose, new RamseteController(2.0, 0.7), getFeedForward(),
         getKinematics(), drive::getWheelSpeeds, leftController, rightController, (leftVolts, rightVolts) -> {
           drive.tankVolts(leftVolts, rightVolts);
         }, // m_driveSubsystem::set,

@@ -29,6 +29,7 @@ public class DriveWithJoysticks extends CommandBase {
   @Override
   public void initialize() {
     SmartDashboard.putString("Drive Command Running: ", "Drive with Joysticks");
+    drive.setVoltageCompensation(true);
 
   }
 
@@ -44,22 +45,18 @@ public class DriveWithJoysticks extends CommandBase {
     // Declare the power based off the correct stick and, if it is active, lowered
     // power mode to drive slower.
 
-    lateralPower = _rightJoystick.getJoystickAxis(1);
-    rotationPower = _leftJoystick.getJoystickAxis(2);
-    isHalfPower = _leftJoystick.getJoystickButtonValue(2);
+    lateralPower = _rightJoystick.getJoystickAxis(1) *_rightJoystick.getJoystickSlider();
+    rotationPower = _leftJoystick.getJoystickAxis(2) * _leftJoystick.getJoystickSlider();
+    isHalfPower = _rightJoystick.getJoystickButtonValue(2);
     isReversed = (_leftJoystick.getJoystickButtonValue(1) || _rightJoystick.getJoystickButtonValue(1));
 
     if (isHalfPower) {
       lateralPower = lateralPower * .75;
       rotationPower = rotationPower * .5;
     }
-
-    if (isReversed) {
-      drive.ArcadeDrive(lateralPower, rotationPower * .85);
-    } else {
-      drive.ArcadeDrive(-lateralPower, rotationPower * .85);
-    }
-
+    lateralPower = isReversed ? lateralPower : -lateralPower;
+    
+    drive.ArcadeDrive(lateralPower, rotationPower*.85);
   }
 
   // Called once the command ends or is interrupted.
