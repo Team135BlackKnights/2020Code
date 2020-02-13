@@ -232,7 +232,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   }
 
   public double getAngle() {
-    SmartDashboard.putNumber("Current angle of Robot:", navx.getYaw());
+    //SmartDashboard.putNumber("Current angle of Robot:", navx.getYaw());
     return navx.getYaw();
   }
 
@@ -409,7 +409,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
    
 
     pose = m_odometry.update(getHeading(),getLeftMetres(), getRightMetres());
-
+    SmartDashboard.putString("pose", pose.toString());
     printPose();
     printMps();
     printMetres();
@@ -421,7 +421,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   }
   public Rotation2d getHeading() 
   {
-    return Rotation2d.fromDegrees(Math.IEEEremainder(navx.getYaw(), 360.0d));
+    return Rotation2d.fromDegrees(Math.IEEEremainder(-navx.getYaw(), 360.0d));
   }
 
   public boolean doesPathExist(String path) {

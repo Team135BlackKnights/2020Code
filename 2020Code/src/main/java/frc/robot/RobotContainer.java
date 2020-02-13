@@ -62,8 +62,7 @@ public class RobotContainer implements RobotMap {
   private static final double kS = 0.358;
   private static final double kV = 3.02;
   private static final double kA = 0.249;
-  DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(
-      Units.inchesToMeters(21));
+  DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(21*.0254);
   SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(kS, kV, kA);
   Trajectory trajectory;
   String trajectoryJSON;
@@ -292,16 +291,18 @@ public class RobotContainer implements RobotMap {
     config.setKinematics(getKinematics());
     
     trajectory = TrajectoryGenerator.generateTrajectory(
-      new Pose2d(0,0, new Rotation2d()),
+      new Pose2d(0,0, new Rotation2d(0)),
       List.of(
-        //new Translation2d(.5,0)
-       // new Translation2d(1,-.5)
+      //new Translation2d(5.65,0),
+        
+       //new Translation2d(5.13,-.35),
+       //new Translation2d(3.44,1.76)
       ),
-      new Pose2d(.0,0.5,new Rotation2d(0)),
+      new Pose2d(1,1,new Rotation2d(0)),
       config
     ); 
-    
     /*
+    
     try {
      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
       trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
