@@ -20,7 +20,8 @@ public class ImprovedJoystick {
 	}
 
 	public double getJoystickSlider() {
-		return (-((Math.abs(_joystick.getRawAxis(3)) < _deadband) ? 0 : _joystick.getRawAxis(3)) + 1) / 2;
+		return (-((Math.abs(_joystick.getRawAxis(3)) < _deadband) ? 
+		0 : _joystick.getRawAxis(3)) + 1) / 2;
 	}
 
 	public double getJoystickAxis(int axis) {

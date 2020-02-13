@@ -79,6 +79,7 @@ public class RobotContainer implements RobotMap {
       rightThumb = new JoystickButton(rightJoystick, KOI.THUMB_BUTTON),
       rightButton3 = new JoystickButton(rightJoystick, KOI.HANDLE_BOTTOM_LEFT_BUTTON),
       rightButton11 = new JoystickButton(rightJoystick, KOI.BASE_BOTTOM_LEFT_BUTTON),
+      rightButton12 = new JoystickButton(rightJoystick, KOI.BASE_BOTTOM_RIGHT_BUTTON),
       leftTrigger = new JoystickButton(leftJoystick, KOI.TRIGGER_BUTTON),
       leftThumb = new JoystickButton(leftJoystick, KOI.THUMB_BUTTON),
 

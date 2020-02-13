@@ -7,29 +7,30 @@
 
 package frc.robot.ncommands.drive;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.FalconDrive;
 
-public class shiftGears extends CommandBase {
-  private static boolean solenoidPosition = true;
+public class resetOdometry extends CommandBase {
+  /**
+   * Creates a new resetOdometry.
+   */
   FalconDrive drive;
-
-  public shiftGears(FalconDrive subsystem) {
-    drive = subsystem;
+  public resetOdometry(FalconDrive _drive) {
+    drive = _drive;
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    drive.resetOdometry();
+    SmartDashboard.putBoolean("Odometry Reset", true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    solenoidPosition = !solenoidPosition;
-    drive.shiftGears(solenoidPosition);
   }
 
   // Called once the command ends or is interrupted.

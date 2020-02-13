@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj.util.Units;
 
 public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   public double poofs = 2.54; // Constant for conversion between inches and centimeters
@@ -156,8 +157,16 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     double rightEncoderVelocity = (getEncoderVelocity(frontRightFX) + getEncoderVelocity(rearRightFX)) / 2;
     return new DifferentialDriveWheelSpeeds(leftEncoderVelocity, rightEncoderVelocity);
   }
+  public void setVoltageCompensation(boolean isDesired)
+  {
+    frontLeftFX.enableVoltageCompensation(isDesired);
+    rearLeftFX.enableVoltageCompensation(isDesired);
+    frontRightFX.enableVoltageCompensation(isDesired);
+    rearRightFX.enableVoltageCompensation(isDesired);
+  }
 
   public void tankVolts(double leftVolts, double rightVolts) {
+    setVoltageCompensation(false);
     frontLeftFX.setVoltage(leftVolts);
     rearLeftFX.setVoltage(leftVolts);
     frontRightFX.setVoltage(rightVolts);
@@ -255,12 +264,25 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   // Finds the right position of the encoders of the right drive group, and
   // averages them in order to normalize the results
   public double getRightPos() {
-    return (getEncoderDistance(frontRightFX) + getEncoderDistance(rearRightFX)) / 2;
+    return (-getEncoderDistance(frontRightFX) + -getEncoderDistance(rearRightFX)) / 2;
   }
   
   public double rotationsToInches(double rotations, double wheelDiameter)
   {
     return rotations*wheelDiameter*Math.PI;
+  }
+  public void printMetres()
+  {
+    SmartDashboard.putNumber("left Dist Metres", (Units.inchesToMeters(rotationsToInches(getLeftPos(), 6))) * gearRatio);
+    SmartDashboard.putNumber("right Dist Metres", (Units.inchesToMeters(rotationsToInches(getRightPos(), 6))) * gearRatio);
+  }
+  public double getLeftMetres()
+  {
+    return (Units.inchesToMeters(rotationsToInches(getLeftPos(), 6))) * gearRatio;
+  }
+  public double getRightMetres()
+  {
+    return (Units.inchesToMeters(rotationsToInches(getRightPos(), 6))) * gearRatio;
   }
   
   // Prints the positions of all of encoders as well as the averages of the groups
@@ -334,10 +356,18 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   @Override
   public void periodic() {
     
-    pose = m_odometry.update(getHeading(), 0,0);
-     //getLeftPos() / encoderTicksPerRev * gearRatio * wheelCircumferenceInches * poofs, 
-     //getRightPos() / encoderTicksPerRev * gearRatio * wheelCircumferenceInches * poofs);
-    
+    pose = m_odometry.update(getHeading(),getLeftMetres(), getRightMetres());
+
+   // getLeftPos() / gearRatio * wheelCircumferenceInches * poofs, 
+   // getRightPos() /  gearRatio * wheelCircumferenceInches * poofs);
+   
+    SmartDashboard.putNumber("rotation", pose.getRotation().getDegrees());
+    SmartDashboard.putNumber("translation y ", pose.getTranslation().getY());
+    SmartDashboard.putNumber("translation x ", pose.getTranslation().getX());
+    printMetres();
+    printPositions();
+    SmartDashboard.putBoolean("does path exist",doesPathExist("paths/redRight.wpilib.json"));
+     
 
     /*
     printVel();
