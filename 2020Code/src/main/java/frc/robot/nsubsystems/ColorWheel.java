@@ -290,8 +290,10 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL 
    countColor(); 
 
    //Prints to the screen
+   /*
    SmartDashboard.putString("Current Color", currentColor );
    SmartDashboard.putNumber("ColorChanges:", colorChanges);
+   */
    // This method will be called once per scheduler run
   }
  

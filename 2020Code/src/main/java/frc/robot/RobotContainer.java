@@ -50,9 +50,9 @@ import frc.robot.nsubsystems.*;
  */
 public class RobotContainer implements RobotMap {
   // The robot's subsystems and commands are defined here...
-  private final Storage storage = new Storage();
   private final FalconDrive drive = new FalconDrive();
   private final Turret turret = new Turret();
+  private final Storage storage = new Storage();
   private final Intake intake = new Intake();
   private final Endgame endgame = new Endgame();
   private final ColorWheel colorWheel = new ColorWheel();
@@ -114,6 +114,7 @@ public class RobotContainer implements RobotMap {
     // turret.setDefaultCommand(new TurretTest(turret, manipJoystick));
     // Configure the button bindings
     initRamsete("paths/redRight.wpilib.json");
+    turretLimelight.initLimelight(1, 1);
     configureButtonBindings();
   }
 
@@ -287,16 +288,16 @@ public class RobotContainer implements RobotMap {
     drive.resetEncoders();
     drive.getAngle();
     drive.resetOdometry();
-    TrajectoryConfig config = new TrajectoryConfig(3.97350993, 2);
+    TrajectoryConfig config = new TrajectoryConfig(1.72, .4);
     config.setKinematics(getKinematics());
     
     trajectory = TrajectoryGenerator.generateTrajectory(
       new Pose2d(0,0, new Rotation2d()),
       List.of(
-        new Translation2d(1,1),
-        new Translation2d(2,-1)
+        //new Translation2d(.5,0)
+       // new Translation2d(1,-.5)
       ),
-      new Pose2d(3,0,new Rotation2d(0)),
+      new Pose2d(.0,0.5,new Rotation2d(0)),
       config
     ); 
     

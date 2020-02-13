@@ -110,11 +110,11 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE {
   @Override
   public void periodic() {
     intakeBallCount();
-    SmartDashboard.putNumber("Conveyor Position", getEncoderPosition(conveyorEncoder));
-    SmartDashboard.putBoolean("is Ball in conveyor", isBallAtTripSwitch());
+   // SmartDashboard.putNumber("Conveyor Position", getEncoderPosition(conveyorEncoder));
+    //SmartDashboard.putBoolean("is Ball in conveyor", isBallAtTripSwitch());
     autoResetEncoder();
 
-    SmartDashboard.putNumber("Convyeor Vel ", getConveyorVel());
+    //SmartDashboard.putNumber("Convyeor Vel ", getConveyorVel());
     // This method will be called once per scheduler run
   }
 }

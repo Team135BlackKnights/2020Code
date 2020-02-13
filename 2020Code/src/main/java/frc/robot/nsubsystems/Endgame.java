@@ -170,8 +170,8 @@ public class Endgame extends SubsystemBase implements RobotMap.ENDGAME {
 
   @Override
   public void periodic() {
-    printPosition();
-    printPower();
+  //  printPosition();
+    //printPower();
     // printTicks();
     // This method will be called once per scheduler run
   }

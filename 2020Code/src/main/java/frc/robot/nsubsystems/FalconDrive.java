@@ -38,8 +38,8 @@ import edu.wpi.first.wpilibj.util.Units;
 
 public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   public double poofs = 2.54; // Constant for conversion between inches and centimeters
-  public static final double distBetweenWheelsInches = 23;// 26.84603809585759;
-  public static final double gearRatio = 1 / 13.85;
+  public static final double distBetweenWheelsInches = 21;// 26.84603809585759;
+  public static final double gearRatio = 1/10.86;
   public static final double wheelDiameterInches = 6.375;// 18;
   public static final double wheelCircumferenceInches = wheelDiameterInches * Math.PI;
   public static final double encoderTicksPerRev = 2048;
@@ -123,7 +123,6 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     pose = new Pose2d();
     m_odometry = new DifferentialDriveOdometry(getHeading());
 
-    updatePose();
 
     System.out.println("Falcon Drive Initialized");
     // Outputs the text letting the user know that the Falcon has been initialized
@@ -154,9 +153,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    double leftEncoderVelocity = (getEncoderVelocity(frontLeftFX) + getEncoderVelocity(rearLeftFX)) / 2;
-    double rightEncoderVelocity = (getEncoderVelocity(frontRightFX) + getEncoderVelocity(rearRightFX)) / 2;
-    return new DifferentialDriveWheelSpeeds(leftEncoderVelocity, rightEncoderVelocity);
+    return new DifferentialDriveWheelSpeeds(getLeftMps(), getRightMps());
   }
   public void setVoltageCompensation(boolean isDesired)
   {
@@ -228,6 +225,11 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   public void shiftGears(boolean isHighGear) {
     shifter.set(isHighGear);
   }
+  public boolean shifterState()
+  {
+    return shifter.get();
+
+  }
 
   public double getAngle() {
     SmartDashboard.putNumber("Current angle of Robot:", navx.getYaw());
@@ -288,7 +290,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
 
   public double getEncoderMps(TalonFX talon)
   {
-    return (Units.inchesToMeters(rotationsToInches(getEncoderVelocity(talon)))) * gearRatio;
+    return 0.0254*(rotationsToInches(getEncoderVelocity(talon))) * gearRatio;
   }
   
   public double getLeftMps()
@@ -298,7 +300,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
 
   public double getRightMps()
   {
-    return (getEncoderMps(frontRightFX) + getEncoderMps(rearRightFX))/2;
+    return (-getEncoderMps(frontRightFX) + -getEncoderMps(rearRightFX))/2;
   }
 
   public double getLinearMps()
@@ -377,22 +379,19 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
 
   public void printMps()
   {
-    SmartDashboard.putNumber("Front Left M/s", getEncoderMps(frontLeftFX));
-    SmartDashboard.putNumber("Front Left M/s", getEncoderMps(frontLeftFX));
-    SmartDashboard.putNumber("Front Left M/s", getEncoderMps(frontLeftFX));
-    SmartDashboard.putNumber("Front Left M/s", getEncoderMps(frontLeftFX));
+    SmartDashboard.putNumber("Front Left Mps", getEncoderMps(frontLeftFX));
+    SmartDashboard.putNumber("Front Right Mps", getEncoderMps(frontRightFX));
+    SmartDashboard.putNumber("Rear Left Mps", getEncoderMps(rearLeftFX));
+    SmartDashboard.putNumber("Rear Right Mps", getEncoderMps(rearRightFX));
    
-    SmartDashboard.putNumber("Left M/s", getLeftMps());
-    SmartDashboard.putNumber("Right M/s", getRightMps());
-    SmartDashboard.putNumber("Linear M/s ", getLinearMps());
-    SmartDashboard.putNumber("Angular M/s", getAngularMps());
+    SmartDashboard.putNumber("Left Mps", getLeftMps());
+    SmartDashboard.putNumber("Right Mps", getRightMps());
+    SmartDashboard.putNumber("Linear Mps ", getLinearMps());
+    SmartDashboard.putNumber("Angular Mps", getAngularMps());
 
   }
 
-  public void updatePose()
-  {
-    pose = m_odometry.update(getHeading(),getLeftMetres(), getRightMetres());
-  }
+  
 
   public void printPose()
   {
@@ -407,11 +406,13 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   @Override
   public void periodic() 
   {
-    updatePose();
+   
+
+    pose = m_odometry.update(getHeading(),getLeftMetres(), getRightMetres());
+
     printPose();
     printMps();
     printMetres();
-    SmartDashboard.putNumber("left VEl", getEncoderVelocity(frontLeftFX));
     // This method will be called once per scheduler run
   }
 
