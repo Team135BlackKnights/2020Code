@@ -220,7 +220,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
 
   // Returns the velocity of the chosen motor's encoder
   public double getEncoderVelocity(TalonFX falcon) {
-    return falcon.getSelectedSensorVelocity();
+    return falcon.getSelectedSensorVelocity()/6*Math.PI;
   }
   
 
@@ -367,7 +367,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     printMetres();
     printPositions();
     SmartDashboard.putBoolean("does path exist",doesPathExist("paths/redRight.wpilib.json"));
-     
+    SmartDashboard.putNumber("left VEl", getEncoderVelocity(frontLeftFX));
 
     /*
     printVel();
