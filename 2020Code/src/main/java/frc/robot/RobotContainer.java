@@ -9,6 +9,7 @@
 package frc.robot;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -291,14 +292,10 @@ public class RobotContainer implements RobotMap {
     config.setKinematics(getKinematics());
     
     trajectory = TrajectoryGenerator.generateTrajectory(
-      new Pose2d(0,0, new Rotation2d(0)),
-      List.of(
-      //new Translation2d(5.65,0),
-        
-       //new Translation2d(5.13,-.35),
-       //new Translation2d(3.44,1.76)
+      Arrays.asList(
+        new Pose2d(0,0, new Rotation2d(0)),
+        new Pose2d(1,0,new Rotation2d(0))
       ),
-      new Pose2d(1,1,new Rotation2d(0)),
       config
     ); 
     /*
@@ -323,10 +320,10 @@ public class RobotContainer implements RobotMap {
     var leftController = new PIDController(.6, 0, 0);
     var rightController = new PIDController(.6, 0, 0);
     Steven = new RamseteCommand(trajectory, drive::getPose, new RamseteController(2.0, 0.7), getFeedForward(),
-        getKinematics(), drive::getWheelSpeeds, leftController, rightController, (leftVolts, rightVolts) -> {
+        getKinematics(), drive::getWheelSpeeds, leftController, rightController, 
+        (leftVolts, rightVolts) -> {
           drive.tankVolts(leftVolts, rightVolts);
-        }, // m_driveSubsystem::set,
-        drive);
+        }, drive);
   }
 
 
