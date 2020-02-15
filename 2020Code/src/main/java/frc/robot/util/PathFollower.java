@@ -20,6 +20,8 @@ public class PathFollower
 
     public Segment currentSegment;
 
+    public double leftOutput, rightOutPut, robotXPos, robotYPos, robotTheta, robotLinearSpeed, robotAngularSpeed;
+
     public PathFollower(Waypoint[] _waypoints, FalconDrive _drive)
     {
         drive = _drive;
@@ -45,7 +47,6 @@ public class PathFollower
         {
             Waypoint aCopy = a;
             Waypoint bCopy = b; 
-
             //boolean isSegmentLine = 0 <=(aCopy.waypointTheta - bCopy.waypointTheta);
         }
 
@@ -66,6 +67,5 @@ public class PathFollower
 
     public void followPath()
     {
-
     }
 }
