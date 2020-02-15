@@ -158,24 +158,34 @@ public class PathFollower
        boolean isSpeedTrue = isPointEqual(robotLinearSpeed, finSegment.B.waypointSpeed);
     }
 
-    public void arcFinder(Waypoint a, Waypoint b) {
+    double prevTheta = 0;
+    public double arcFinder(Waypoint a, Waypoint b) {
         Waypoint A,B;
     A = currentSegment.A;
     B = currentSegment.B;
     double pointA[] = {A.waypointX, A.waypointY};
     double pointB[] = {B.waypointX, B.waypointY};
-    double radius = KnightMath.radiusFromPoints(pointA, pointB);
+    double rRadius = KnightMath.radiusFromPoints(pointA, pointB) - .2667;
+    double lRadius = KnightMath.radiusFromPoints(pointA, pointB) + .2667;
     double dTheta;
     double theta;
     double chord;
     double arcLen;
-    double dArcLen;
-    double rightSpeed;
-    double leftSpeed;
+    double rVelocity, lVelocity;
+    double velocities[];
 
+    dTheta = (theta - prevTheta)/.02;
     chord = KnightMath.distanceFormula(pointA, pointB);
+    theta = 2 * Math.asin(chord/(2 * lRadius));
+    arcLen = theta *lRadius;
+    lVelocity = lRadius * dTheta;
     
+    chord = KnightMath.distanceFormula(pointA, pointB);
+    theta = 2 * Math.asin(chord/(2 * rRadius));
+    arcLen = theta *rRadius;
+    rVelocity = rRadius * dTheta;
 
+    return velocities;
     }
 
     public boolean objectChecker(Object input, Object[] inputArray)
