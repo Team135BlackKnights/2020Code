@@ -12,7 +12,7 @@ package frc.robot.util;
  */
 public class Waypoint
     {
-        public double waypointX, waypointY, waypointTheta, waypointsSpeed;
+        public double waypointX, waypointY, waypointTheta, waypointSpeed;
 
         public Waypoint(double x, double y, double theta, double speed)
         {
@@ -20,6 +20,6 @@ public class Waypoint
             waypointX = x;
             waypointY = y;
             waypointTheta = theta;
-            waypointsSpeed = speed;
+            waypointSpeed = speed;
         }
     }
