@@ -25,9 +25,15 @@ import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import frc.robot.util.KnightMath;
 
 public class Turret extends SubsystemBase implements RobotMap.TURRET {
 
+  public double[] point1 = new double[2];
+  public double[] point2 = new double[2];
+  
+ 
+  public double radius;
   public WPI_TalonSRX tiltTalon;
   public Relay targetingLight;
   public CANSparkMax rotationSpark, bottomShooterSpark, topShooterSpark, ballFeederSpark;
@@ -69,6 +75,14 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
 
     resetAllTurretEncoders();
 
+    point1[0] = 1;
+    point1[1] = 0;
+  
+    point2[0] = 2;
+    point2[1] = 1;
+
+    radius = KnightMath.radiusFromPoints(point1, point2);
+    System.out.print(radius);
     System.out.println("Turret Initialized");
   }
 
