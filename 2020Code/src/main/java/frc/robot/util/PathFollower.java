@@ -177,13 +177,21 @@ public class PathFollower
 
     public void linearPath()
     {   
-        double x1, x2, y1, y2, theta1, theta2, s1, s2, A, B, C, a, b, c;
+        double x1, y1, x2, y2, alpha, theta, e, A, B, C;
        /*
         A = waypoint(x1, y1, theta1, s1);
         B = waypoint(x2, y2, theta2, s2);
         */
-        C = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        C = KnightMath.distanceFormula(A, B);
+        
+
     }
+
+    public double [] linearOutputs;
+    {
+        c = KnightMath.distanceFormula(A, B)
+    }
+
 
     public void arcFinder()
     {
