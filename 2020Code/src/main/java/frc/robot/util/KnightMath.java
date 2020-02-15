@@ -11,7 +11,7 @@ public class KnightMath
 {
     public static double[] centroid(double[] point1, double[] point2 )
     {
-       double x1, y1, x2, y2;
+        double x1, y1, x2, y2;
         x1 = point1[0];
         y1 = point1[1];
 
@@ -98,4 +98,16 @@ public class KnightMath
         return radius;
     }
 
+    public static double distanceFormula(double[] A, double[] B)
+    {
+        double x1, y1, x2, y2, C;
+        x1 = A[0];
+        y1 = A[1];
+        x2 = B[0];
+        y2 = B[1];
+        C = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+
+
+        return C; 
+    }
 }
