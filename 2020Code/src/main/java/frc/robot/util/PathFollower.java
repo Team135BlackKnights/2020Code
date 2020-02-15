@@ -22,7 +22,7 @@ public class PathFollower
 
     public int currentSegmentNumber = 0;
 
-    public double leftOutput, rightOutPut, robotXPos, robotYPos, robotTheta, robotLinearSpeed, robotAngularSpeed;
+    public double leftOutput, rightOutPut, robotXPos, robotYPos, endXPos, endYPos, robotTheta, robotLinearSpeed, robotAngularSpeed;
 
     public PathFollower(Waypoint[] _waypoints, FalconDrive _drive)
     {
@@ -119,6 +119,10 @@ public class PathFollower
         return a==b;
     }
 
+    public void arcFinder(Waypoint a, Waypoint b) {
+    int radius;
+    
+    }
 
     public void followPath()
     {
@@ -140,7 +144,23 @@ public class PathFollower
         return isEqual;
     }
 
-    public boolean segmentChecker(Segment input, Segment] inputArray)
+    public void linearPath()
+    {       
+
+    }
+
+    public void linearCorrection()
+    {
+        
+        double x1, x2, y1, y2, theta1, theta2, s1, s2, A, B, C, a, b, c;
+       /*
+        A = waypoint(x1, y1, theta1, s1);
+        B = waypoint(x2, y2, theta2, s2);
+        */
+        C = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    }
+
+    public boolean segmentChecker(Segment input, Segment[] inputArray)
     {
         int n = inputArray.length;
         boolean isEqual = false;
@@ -151,6 +171,8 @@ public class PathFollower
 
         return isEqual;
     }
+}
+
 
 
 
