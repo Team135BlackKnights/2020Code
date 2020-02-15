@@ -11,7 +11,7 @@ public class KnightMath
 {
     public static double[] centroid(double[] point1, double[] point2 )
     {
-        double x1, y1, x2, y2;
+       double x1, y1, x2, y2;
         x1 = point1[0];
         y1 = point1[1];
 

@@ -163,10 +163,17 @@ public class PathFollower
         return a==b;
     }
 
-    public void arcFinder() {
-
-    int radius;
-    
+    public void arcFinder(Waypoint a, Waypoint b) {
+        Waypoint A,B;
+    A = currentSegment.A;
+    B = currentSegment.B;
+    double pointA[] = {A.waypointX, A.waypointY};
+    double pointB[] = {B.waypointX, B.waypointY};
+    double radius = KnightMath.radiusFromPoints(pointA, pointB);
+    double dTheta;
+    double theta;
+    double arcLen;
+    double dArcLen;
     }
 
     public boolean objectChecker(Object input, Object[] inputArray)
@@ -182,19 +189,22 @@ public class PathFollower
     }
 
     public void linearPath()
-    {       
-
-    }
-
-    public void linearCorrection()
-    {
-        
+    {   
         double x1, x2, y1, y2, theta1, theta2, s1, s2, A, B, C, a, b, c;
        /*
         A = waypoint(x1, y1, theta1, s1);
         B = waypoint(x2, y2, theta2, s2);
         */
         C = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    }
+
+    public void arcFinder()
+    {
+        
+    }
+
+    public void linearCorrection()
+    {    
     }
 
     public boolean segmentChecker(Segment input, Segment[] inputArray)
