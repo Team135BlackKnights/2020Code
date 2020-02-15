@@ -167,8 +167,14 @@ public class PathFollower
     double radius = KnightMath.radiusFromPoints(pointA, pointB);
     double dTheta;
     double theta;
+    double chord;
     double arcLen;
     double dArcLen;
+    double rightSpeed;
+    double leftSpeed;
+
+    chord = KnightMath.distanceFormula(pointA, pointB);
+
     }
 
     public boolean objectChecker(Object input, Object[] inputArray)
@@ -188,7 +194,12 @@ public class PathFollower
         Waypoint A, B;
 
         C = KnightMath.distanceFormula(A, B);
+        alpha = (Math.pow(C, 2) + Math.pow(B, 2) - Math.pow(A, 2)) / 2 * C * B;
+        e = B * Math.asin(alpha);
+        angleError = theta - (robotTheta - e * k);
         
+        L = speed + angleError;
+        R = speed - angleError;
 
     }
 
