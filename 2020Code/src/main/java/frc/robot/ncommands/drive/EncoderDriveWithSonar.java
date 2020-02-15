@@ -18,7 +18,6 @@ public class EncoderDriveWithSonar extends CommandBase {
   FalconDrive drive;
   private double _leftTarget, _rightTarget, _distanceFromWall, leftError, rightError, _tolerance;
   private double actualDistanceFromWall;
-  private boolean _stopWhenDone;
   private ImprovedJoystick _joystick;
 
   public EncoderDriveWithSonar(FalconDrive subsystem, double leftTarget, double rightTarget, double tolerance,
@@ -29,7 +28,6 @@ public class EncoderDriveWithSonar extends CommandBase {
     this._rightTarget = rightTarget;
     this._tolerance = tolerance;
     this._distanceFromWall = distanceFromWall;
-    this._stopWhenDone = stopWhenDone;
     addRequirements(drive);
   }
 

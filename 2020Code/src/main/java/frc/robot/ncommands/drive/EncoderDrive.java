@@ -15,9 +15,8 @@ import frc.robot.util.ImprovedJoystick;
 
 public class EncoderDrive extends CommandBase {
   FalconDrive drive;
-  private double _leftTarget, _rightTarget, _distanceFromWall, leftError, rightError, _tolerance;
+  private double _leftTarget, _rightTarget, leftError, rightError, _tolerance;
   private boolean _stopWhenDone;
-  private double actualDistanceFromWall;
   private ImprovedJoystick _joystick;
 
   public EncoderDrive(FalconDrive subsystem, double leftTarget, double rightTarget, double tolerance,

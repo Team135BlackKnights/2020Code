@@ -9,7 +9,6 @@ package frc.robot.ncommands.turret;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
 import frc.robot.nsubsystems.*;
 import frc.robot.util.MovingAverage;
 
@@ -59,10 +58,6 @@ public class ShootTurret extends CommandBase {
 
     double minError = 50;
     
-    double tAddOn = (modifier*5200)/2
-    ;
-    double bAddOn = (modifier*5600)/24;
-
     double tsd = topShooterDesired;
     double bsd = bottomShooterDesired;
 

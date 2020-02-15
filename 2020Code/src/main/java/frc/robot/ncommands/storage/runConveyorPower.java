@@ -51,7 +51,7 @@ public class runConveyorPower extends CommandBase {
     kI = 0;
     kD = 0;
 
-    double storageInput = error*kP;
+    double storageInput = error*kP + integral *kI + derivative * kD;
 
     SmartDashboard.putNumber("Storage input", storageInput);
     storage.runConveyor(storageInput);
