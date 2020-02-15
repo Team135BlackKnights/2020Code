@@ -37,7 +37,6 @@ public class PathFollower
         segmentCreator(waypoints);
         updateRobotVals();
 
-
     }
 
     public void followPath()
@@ -141,8 +140,7 @@ public class PathFollower
         {
             currentSegmentNumber++;
         }
-        
-        
+           
     }
 
     public boolean isPointEqual(double a, double b)
@@ -150,7 +148,17 @@ public class PathFollower
         return a==b;
     }
 
-    public void arcVelocity(Waypoint a, Waypoint b) {
+    public void checkForDone()
+    {
+        Segment finSegment = segments[segments.length-1];
+
+       boolean isXTrue = isPointEqual(robotXPos, finSegment.B.waypointX);
+       boolean isYTrue = isPointEqual(robotYPos, finSegment.B.waypointY);
+       boolean isThetaTrue = isPointEqual(robotTheta, finSegment.B.waypointTheta);
+       boolean isSpeedTrue = isPointEqual(robotLinearSpeed, finSegment.B.waypointSpeed);
+    }
+
+    public void arcFinder(Waypoint a, Waypoint b) {
         Waypoint A,B;
     A = currentSegment.A;
     B = currentSegment.B;
@@ -167,6 +175,7 @@ public class PathFollower
 
     chord = KnightMath.distanceFormula(pointA, pointB);
     
+
     }
 
     public boolean objectChecker(Object input, Object[] inputArray)
@@ -183,11 +192,8 @@ public class PathFollower
 
     public void linearPath()
     {   
-        double x1, y1, x2, y2, alpha, theta, robotTheta, e, A, B, C, angleError, k, speed, L, R;
-       /*
-        A = waypoint(x1, y1, theta1, s1);
-        B = waypoint(x2, y2, theta2, s2);
-        */
+        Waypoint A, B;
+
         C = KnightMath.distanceFormula(A, B);
         alpha = (Math.pow(C, 2) + Math.pow(B, 2) - Math.pow(A, 2)) / 2 * C * B;
         e = B * Math.asin(alpha);
@@ -198,9 +204,11 @@ public class PathFollower
 
     }
 
-    public void linearCorrection()
-    {    
+    public double[] linearOutputs;
+    {
+        c = KnightMath.distanceFormula(A, B)
     }
+
 
     public boolean segmentChecker(Segment input, Segment[] inputArray)
     {
