@@ -45,7 +45,15 @@ public class PathFollower
        updateRobotVals();
        segmentTransistion();
        checkForDone();
-       currentSegment.updateLinearSpeeds();
+       if(currentSegment.isSegmentLine)
+       {
+        currentSegment.updateLinearSpeeds();
+       }
+       else 
+       {
+        currentSegment.updateCurvaLinearSpeeds();
+       }
+    
 
         lP = 1;
         lI = 0;
@@ -90,31 +98,18 @@ public class PathFollower
             B= b; 
             isSegmentLine = 0 <=(A.waypointTheta - B.waypointTheta);
 
-            if(isSegmentLine && checker.objectChecker(B, waypoints))
-            {
-                updateLinearSpeeds();
-                leftDesired = linearOutputs()[0];
-                rightDesired = linearOutputs()[1];
-
-               System.out.print("Driving along Line path" + "left Desired:" + leftDesired + "rightDesired" + rightDesired);
-            }     
-            else if(!isSegmentLine && checker.objectChecker(B, waypoints))
-            {
-                //TODO do arc math 
-                System.out.print("Driving along Arc path");
-
-            } 
-            else 
-            {
-                System.out.println("Done with Path or invalid input");
-            }
-
         }
 
         public void updateLinearSpeeds()
         {
             leftDesired = linearOutputs()[0];
             rightDesired = linearOutputs()[1];
+        }
+
+        public void updateCurvaLinearSpeeds()
+        {
+            leftDesired = curvalinearOutputs()[0];
+            rightDesired = curvalinearOutputs()[1];
         }
 
     }
@@ -174,8 +169,9 @@ public class PathFollower
     }
 
     double prevTheta = 0;
-    public double arcFinder(Waypoint a, Waypoint b) {
-        Waypoint A,B;
+    public double[] curvalinearOutputs() 
+    {
+    Waypoint A,B;
     A = currentSegment.A;
     B = currentSegment.B;
     double pointA[] = {A.waypointX, A.waypointY};
@@ -185,20 +181,18 @@ public class PathFollower
     double dTheta;
     double theta;
     double chord;
-    double arcLen;
     double rVelocity, lVelocity;
-    double velocities[];
 
-    dTheta = (theta - prevTheta)/.02;
     chord = KnightMath.distanceFormula(pointA, pointB);
     theta = 2 * Math.asin(chord/(2 * lRadius));
-    arcLen = theta *lRadius;
-    lVelocity = lRadius * dTheta;
+    dTheta = (theta - prevTheta)/.02;
+        lVelocity = lRadius * dTheta;
     
     chord = KnightMath.distanceFormula(pointA, pointB);
     theta = 2 * Math.asin(chord/(2 * rRadius));
-    arcLen = theta *rRadius;
     rVelocity = rRadius * dTheta;
+
+    double velocities[] = {lVelocity, rVelocity};
 
     return velocities;
     }
@@ -258,7 +252,3 @@ public class PathFollower
         robotRightSpeed = drive.getRightMps();
     }
 }
-
-
-
-

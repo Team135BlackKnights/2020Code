@@ -106,8 +106,6 @@ public class KnightMath
         x2 = B[0];
         y2 = B[1];
         C = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-
-
         return C; 
     }
 }
