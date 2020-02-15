@@ -28,13 +28,15 @@ public class PathFollower
 
     public double lP, lI, lD, rP, rI, rD;
 
-    
+    public boolean doneWithPath = false;
+
     public PathFollower(Waypoint[] _waypoints, FalconDrive _drive)
     {
         drive = _drive;
         waypoints = _waypoints;
         segmentCreator(waypoints);
         updateRobotVals();
+
 
     }
 
@@ -43,13 +45,14 @@ public class PathFollower
         updateRobotVals();
 
         segmentTransistion();
+
         lP = 1;
-        lI = .5;
-        lD = .125;
+        lI = 0;
+        lD = 0;
 
         rP = 1;
-        rI = .5;
-        rD = .125;
+        rI = 0;
+        rD = 0;
 
         double leftIntegral, leftDerivative, rightIntegral, rightDerivative, leftErrorSum, rightErrorSum, loopTime, leftError, rightError;
         loopTime = .02;
@@ -75,20 +78,6 @@ public class PathFollower
         rightPrevError = rightError;
     }
 
-    public class Waypoint
-    {
-        public double waypointX, waypointY, waypointTheta, waypointsSpeed;
-
-        public Waypoint(double x, double y, double theta, double speed)
-        {
-
-            waypointX = x;
-            waypointY = y;
-            waypointTheta = theta;
-            waypointsSpeed = speed;
-        }
-    }
-
     public class Segment
     {
         Waypoint A, B;
@@ -99,8 +88,6 @@ public class PathFollower
             A = a;
             B= b; 
             isSegmentLine = 0 <=(A.waypointTheta - B.waypointTheta);
-
-        
 
             if(isSegmentLine && objectChecker(B, waypoints))
             {
