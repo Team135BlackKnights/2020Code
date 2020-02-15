@@ -18,22 +18,61 @@ public class PathFollower
     public FalconDrive drive; 
     public Waypoint[] waypoints;
 
-    public Segment currentSegment;
-
     public int currentSegmentNumber = 0;
 
-    public double leftOutput, rightOutPut, robotXPos, robotYPos, endXPos, endYPos, robotTheta, robotLinearSpeed, robotAngularSpeed;
+    public Segment currentSegment = segments[currentSegmentNumber];
 
+    public double leftOutput, rightOutPut, robotXPos, robotYPos, robotTheta, robotLinearSpeed, robotAngularSpeed, robotLeftSpeed, robotRightSpeed,
+        leftPrevError = 0,
+        rightPrevError = 0;
+
+    public double lP, lI, lD, rP, rI, rD;
+
+    
     public PathFollower(Waypoint[] _waypoints, FalconDrive _drive)
     {
         drive = _drive;
         waypoints = _waypoints;
+        segmentCreator(waypoints);
+        updateRobotVals();
 
-        robotXPos = drive.robotXPos();
-        robotYPos = drive.robotYPos();
-        robotTheta = drive.robotTheta();
-        robotLinearSpeed = drive.getLinearMps();
-        robotAngularSpeed = drive.getAngularMps();
+    }
+
+    public void followPath()
+    {
+        updateRobotVals();
+
+        segmentTransistion();
+        lP = 1;
+        lI = .5;
+        lD = .125;
+
+        rP = 1;
+        rI = .5;
+        rD = .125;
+
+        double leftIntegral, leftDerivative, rightIntegral, rightDerivative, leftErrorSum, rightErrorSum, loopTime, leftError, rightError;
+        loopTime = .02;
+        leftError = currentSegment.leftError;
+        rightError = currentSegment.rightError;
+
+        leftErrorSum =+ leftError;
+        rightErrorSum =+ rightError;
+
+        leftIntegral = leftErrorSum * loopTime;
+        rightIntegral = rightErrorSum * loopTime;
+
+        leftDerivative = (leftError-leftPrevError)/loopTime;
+        rightDerivative = (rightError - rightPrevError)/loopTime;
+
+        
+        leftOutput = (currentSegment.rightDesired* lP) + (leftIntegral *lI) + (leftDerivative *lD);
+        rightOutPut = (currentSegment.leftDesired * rP) + (rightIntegral *lI) + (rightDerivative *lD);
+        
+        drive.TankDrive(leftOutput, rightOutPut);
+
+        leftPrevError = leftError;
+        rightPrevError = rightError;
     }
 
     public class Waypoint
@@ -54,7 +93,7 @@ public class PathFollower
     {
         Waypoint A, B;
         boolean isSegmentLine;
-        double desiredDriveSpeed, leftDesired, rightDesired;
+        double desiredDriveSpeed, leftDesired, rightDesired, leftError, rightError;
         public Segment(Waypoint a, Waypoint b)
         {
             A = a;
@@ -63,13 +102,13 @@ public class PathFollower
 
         
 
-            if(isSegmentLine && waypointChecker(B, waypoints))
+            if(isSegmentLine && objectChecker(B, waypoints))
             {
                //TODO do line math 
 
                System.out.print("Driving along Line path");
             }     
-            else if(!isSegmentLine && waypointChecker(B, waypoints))
+            else if(!isSegmentLine && objectChecker(B, waypoints))
             {
                 //TODO do arc math 
                 System.out.print("Driving along Arc path");
@@ -101,16 +140,21 @@ public class PathFollower
         int n = segments.length;
         
         currentSegment = segments[currentSegmentNumber];
-
+        //TODO add a deadband for segment transistion
         boolean isXTrue, isYTrue, isZTrue;
         isXTrue = isPointEqual(robotXPos, currentSegment.B.waypointX);
         isYTrue = isPointEqual(robotYPos, currentSegment.B.waypointY);
         isZTrue = isPointEqual(robotTheta, currentSegment.B.waypointTheta);
         
-        if((isXTrue && isYTrue) || (isXTrue && isZTrue) || (isYTrue && isZTrue))
+        if
+        ((isXTrue && isYTrue && currentSegmentNumber<=n) || 
+        (isXTrue && isZTrue && currentSegmentNumber<=n) || 
+        (isYTrue && isZTrue && currentSegmentNumber<=n))
+
         {
             currentSegmentNumber++;
         }
+        
         
     }
 
@@ -119,20 +163,13 @@ public class PathFollower
         return a==b;
     }
 
-    public void arcFinder(Waypoint a, Waypoint b) {
+    public void arcFinder() {
+
     int radius;
     
     }
 
-    public void followPath()
-    {
-
-        double lP, lI, lD, rP, rI, rD;
-
-        
-    }
-
-    public boolean waypointChecker(Waypoint input, Waypoint[] inputArray)
+    public boolean objectChecker(Object input, Object[] inputArray)
     {
         int n = inputArray.length;
         boolean isEqual = false;
@@ -170,6 +207,17 @@ public class PathFollower
         }
 
         return isEqual;
+    }
+
+    public void updateRobotVals()
+    {
+        robotXPos = drive.robotXPos();
+        robotYPos = drive.robotYPos();
+        robotTheta = drive.robotTheta();
+        robotLinearSpeed = drive.getLinearMps();
+        robotAngularSpeed = drive.getAngularMps();
+        robotLeftSpeed = drive.getLeftMps();
+        robotRightSpeed = drive.getRightMps();
     }
 }
 
