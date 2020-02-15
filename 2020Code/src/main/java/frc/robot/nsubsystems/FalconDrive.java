@@ -424,6 +424,24 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     return Rotation2d.fromDegrees(Math.IEEEremainder(-navx.getYaw(), 360.0d));
   }
 
+  
+  public double robotXPos()
+  {
+    return pose.getTranslation().getX();
+  }
+
+  public double robotYPos()
+  {
+    return pose.getTranslation().getY();
+  }
+
+  public double robotTheta()
+  {
+    return pose.getRotation().getDegrees();
+  }
+
+
+
   public boolean doesPathExist(String path) {
     try {
       final Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(path);
