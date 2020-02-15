@@ -22,7 +22,6 @@ public class TargetTurret extends CommandBase {
   private final ImprovedJoystick _joystick;
   private double horizontalOffset, verticalOffset;
   private boolean targetExist;
-  private double loopRuns;
   private boolean targetTurret;
 
   private long furtherTime = 0;
@@ -39,7 +38,6 @@ public class TargetTurret extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    loopRuns = 1;
     targetTurret = true;
     previousError = 0; 
     SmartDashboard.putString("Turret Command Running: ", "targetTurret");

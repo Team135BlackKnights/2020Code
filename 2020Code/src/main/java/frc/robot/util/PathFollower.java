@@ -8,6 +8,7 @@
 package frc.robot.util;
 
 import frc.robot.nsubsystems.FalconDrive;
+import frc.robot.util.checker;
 
 /**
  * Add your docs here.
@@ -41,9 +42,10 @@ public class PathFollower
 
     public void followPath()
     {
-        updateRobotVals();
-
-        segmentTransistion();
+       updateRobotVals();
+       segmentTransistion();
+       checkForDone();
+       currentSegment.updateLinearSpeeds();
 
         lP = 1;
         lI = 0;
@@ -88,13 +90,15 @@ public class PathFollower
             B= b; 
             isSegmentLine = 0 <=(A.waypointTheta - B.waypointTheta);
 
-            if(isSegmentLine && objectChecker(B, waypoints))
+            if(isSegmentLine && checker.objectChecker(B, waypoints))
             {
-               //TODO do line math 
+                updateLinearSpeeds();
+                leftDesired = linearOutputs()[0];
+                rightDesired = linearOutputs()[1];
 
-               System.out.print("Driving along Line path");
+               System.out.print("Driving along Line path" + "left Desired:" + leftDesired + "rightDesired" + rightDesired);
             }     
-            else if(!isSegmentLine && objectChecker(B, waypoints))
+            else if(!isSegmentLine && checker.objectChecker(B, waypoints))
             {
                 //TODO do arc math 
                 System.out.print("Driving along Arc path");
@@ -107,8 +111,14 @@ public class PathFollower
 
         }
 
-        
+        public void updateLinearSpeeds()
+        {
+            leftDesired = linearOutputs()[0];
+            rightDesired = linearOutputs()[1];
+        }
+
     }
+
 
     public void segmentCreator(Waypoint[] waypoints)
     {
@@ -156,6 +166,11 @@ public class PathFollower
        boolean isYTrue = isPointEqual(robotYPos, finSegment.B.waypointY);
        boolean isThetaTrue = isPointEqual(robotTheta, finSegment.B.waypointTheta);
        boolean isSpeedTrue = isPointEqual(robotLinearSpeed, finSegment.B.waypointSpeed);
+
+       if(isXTrue && isYTrue && isThetaTrue || isSpeedTrue)
+       {
+        doneWithPath = true;
+       }
     }
 
     public void arcFinder(Waypoint a, Waypoint b) {
@@ -174,39 +189,37 @@ public class PathFollower
     double leftSpeed;
 
     chord = KnightMath.distanceFormula(pointA, pointB);
-    
-
     }
 
-    public boolean objectChecker(Object input, Object[] inputArray)
+    public double[] linearOutputs()
     {
-        int n = inputArray.length;
-        boolean isEqual = false;
-        for(int i = 0; (i<n && !isEqual); i++)
-        {
-            isEqual = (input == inputArray[i]);
-        }
+        double a,b,c;
 
-        return isEqual;
-    }
-
-    public void linearPath()
-    {   
         Waypoint A, B;
+        A = currentSegment.A;
+        B = currentSegment.B;
 
-        C = KnightMath.distanceFormula(A, B);
-        alpha = (Math.pow(C, 2) + Math.pow(B, 2) - Math.pow(A, 2)) / 2 * C * B;
-        e = B * Math.asin(alpha);
-        angleError = theta - (robotTheta - e * k);
+        double pointA[] = {A.waypointX, A.waypointY};
+        double pointB[] = {B.waypointX, B.waypointY};
+        double pointR[] = {robotXPos, robotYPos};
+
+        a = KnightMath.distanceFormula(pointB, pointR);
+        b = KnightMath.distanceFormula(pointR, pointA);
+        c = KnightMath.distanceFormula(pointA, pointB);
+
+        double alpha = (Math.pow(c,2) + Math.pow(b,2) - Math.pow(a,2))/2*c*b;
+        double pError = b*Math.sin(alpha);
+        double kA = 1;
+        double aError = B.waypointTheta-(robotTheta-pError*kA);
         
-        L = speed + angleError;
-        R = speed - angleError;
+        double speed = B.waypointSpeed;
 
-    }
-
-    public double[] linearOutputs;
-    {
-        c = KnightMath.distanceFormula(A, B)
+        double[] outputs = 
+        {
+            speed+aError,
+            speed-aError
+        };
+        return outputs;
     }
 
 
