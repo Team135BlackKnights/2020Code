@@ -165,8 +165,8 @@ public class PathFollower
     double rightSpeed;
     double leftSpeed;
 
-    chord = KnightMath.d(A, B);
-
+    chord = KnightMath.distanceFormula(pointA, pointB);
+    
     }
 
     public boolean objectChecker(Object input, Object[] inputArray)
