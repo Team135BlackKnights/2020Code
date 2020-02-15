@@ -64,6 +64,10 @@ public class PathFollower
         }
     }
 
+    public void arcFinder(Waypoint a, Waypoint b) {
+    int radius;
+    
+    }
 
     public void followPath()
     {

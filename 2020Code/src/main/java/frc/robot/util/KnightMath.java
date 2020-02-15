@@ -82,7 +82,7 @@ public class KnightMath
             + (sy21) * (y13)) 
             / (2 * ((x31) * (y12) - (x21) * (y13))); 
   
-        c = -(int)Math.pow(x1, 2) - (int)Math.pow(y1, 2) - 
+        c = -(int)Math.pow(x1, 2) - (int)Math.pow(y1, 2) - //Center point of circle
                                 2 * g * x1 - 2 * f * y1; 
   
     // eqn of circle be x^2 + y^2 + 2*g*x + 2*f*y + c = 0 
