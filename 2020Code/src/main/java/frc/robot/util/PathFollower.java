@@ -190,21 +190,20 @@ public class PathFollower
 
     public void linearPath()
     {   
-        double x1, y1, x2, y2, alpha, theta, e, A, B, C;
+        double x1, y1, x2, y2, alpha, theta, robotTheta, e, A, B, C, angleError, k, speed, L, R;
        /*
         A = waypoint(x1, y1, theta1, s1);
         B = waypoint(x2, y2, theta2, s2);
         */
         C = KnightMath.distanceFormula(A, B);
+        alpha = (Math.pow(C, 2) + Math.pow(B, 2) - Math.pow(A, 2)) / 2 * C * B;
+        e = B * Math.asin(alpha);
+        angleError = theta - (robotTheta - e * k);
         
+        L = speed + angleError;
+        R = speed - angleError;
 
     }
-
-    public double [] linearOutputs;
-    {
-        c = KnightMath.distanceFormula(A, B)
-    }
-
 
     public void arcFinder()
     {
