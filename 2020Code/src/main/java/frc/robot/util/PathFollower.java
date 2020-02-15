@@ -120,8 +120,16 @@ public class PathFollower
     }
 
     public void arcFinder(Waypoint a, Waypoint b) {
-    int radius;
-    
+        Waypoint A,B;
+    A = currentSegment.A;
+    B = currentSegment.B;
+    double pointA[] = {A.waypointX, A.waypointY};
+    double pointB[] = {B.waypointX, B.waypointY};
+    double radius = KnightMath.radiusFromPoints(pointA, pointB);
+    double dTheta;
+    double theta;
+    double arcLen;
+    double dArcLen;
     }
 
     public void followPath()
