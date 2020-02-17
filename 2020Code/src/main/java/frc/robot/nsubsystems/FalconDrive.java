@@ -440,6 +440,16 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     return pose.getRotation().getDegrees();
   }
 
+  public boolean drivingForward()
+  {
+    return getLinearMps() > 0 && (getAngularMps() <=.15);
+  }
+
+  public boolean drivingBackward()
+  {
+    return getLinearMps() < 0 && (getAngularMps() <=.15);
+  }
+
 
 
   public boolean doesPathExist(String path) {

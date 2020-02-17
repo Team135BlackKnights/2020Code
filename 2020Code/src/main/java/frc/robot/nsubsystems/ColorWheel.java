@@ -169,6 +169,7 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL 
          lastSeenColor = currentColor;
       }
    }
+   @SuppressWarnings({"unchecked" , "rawtypes"})
 
    public String spinToWhatColor(String FMScolor) {
       Dictionary colors = new Hashtable<>();

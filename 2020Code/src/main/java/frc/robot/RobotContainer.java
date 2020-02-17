@@ -8,30 +8,9 @@
 
 package frc.robot;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.nio.file.Path;
-import java.util.List;
 
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.RamseteController;
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
-import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
-import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.ncommands.color.rotateWheelOfFortune;
@@ -51,23 +30,15 @@ import frc.robot.nsubsystems.*;
  */
 public class RobotContainer implements RobotMap {
   // The robot's subsystems and commands are defined here...
-  private final FalconDrive drive = new FalconDrive();
-  private final Turret turret = new Turret();
-  private final Storage storage = new Storage();
-  private final Intake intake = new Intake();
-  private final Endgame endgame = new Endgame();
-  private final ColorWheel colorWheel = new ColorWheel();
-  private final TurretLimelight turretLimelight = TurretLimelight.getInstance();
+  public static final FalconDrive drive = new FalconDrive();
+  public static final Turret turret = new Turret();
+  public static final Storage storage = new Storage();
+  public static final Intake intake = new Intake();
+  public static final Endgame endgame = new Endgame();
+  public static final ColorWheel colorWheel = new ColorWheel();
+  public static final TurretLimelight turretLimelight = TurretLimelight.getInstance();
+  public static final Rioduino arduino = new Rioduino();
 
-  //Ramsete Variables
-  private static final double kS = 0.358;
-  private static final double kV = 3.02;
-  private static final double kA = 0.249;
-  DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(21*.0254);
-  SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(kS, kV, kA);
-  Trajectory trajectory;
-  String trajectoryJSON;
-  public RamseteCommand Steven;
 
   public static Joystick leftJoystick = new Joystick(RobotMap.KOI.LEFT_JOYSTICK),
       rightJoystick = new Joystick(RobotMap.KOI.RIGHT_JOYSTICK),
@@ -113,7 +84,6 @@ public class RobotContainer implements RobotMap {
     turret.setDefaultCommand(new TargetTurret(turret, turretLimelight, manipJoystick));
     // turret.setDefaultCommand(new TurretTest(turret, manipJoystick));
     // Configure the button bindings
-    initRamsete("paths/redRight.wpilib.json");
     turretLimelight.initLimelight(1, 1);
     configureButtonBindings();
   }
@@ -129,7 +99,6 @@ public class RobotContainer implements RobotMap {
     rightButton3.whenPressed(new ToggleLight(turret));
     rightButton10.whenPressed(new resetGyro(drive));
     rightButton12.whenPressed(new resetOdometry(drive));
-    rightButton11.whenPressed(Steven);
 
     leftThumb.whenPressed(new shiftGears(drive));
     leftButton7.whenPressed(new resetDriveEncoders(drive));
@@ -282,57 +251,6 @@ public class RobotContainer implements RobotMap {
     }
     return povDirectionPressed;
 
-  }
-
-  public void initRamsete(String trajectoryJSON) {
-    drive.resetEncoders();
-    drive.getAngle();
-    drive.resetOdometry();
-    TrajectoryConfig config = new TrajectoryConfig(1.72, .4);
-    config.setKinematics(getKinematics());
-    
-    trajectory = TrajectoryGenerator.generateTrajectory(
-      Arrays.asList(
-        new Pose2d(0,0, new Rotation2d(0)),
-        new Pose2d(1,0,new Rotation2d(0))
-      ),
-      config
-    ); 
-    /*
-    
-    try {
-     Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    } catch (IOException ex) {
-      SmartDashboard.putString("Unable to open trajectory: ", "");
-    }
-    */
-
-    RamseteController disabledRamsete = new RamseteController() {
-      @Override
-      public ChassisSpeeds calculate(Pose2d currentPose, Pose2d poseRef, double linearVelocityRefMeters,
-          double angularVelocityRefRadiansPerSecond) {
-        return new ChassisSpeeds(linearVelocityRefMeters, 0.0, angularVelocityRefRadiansPerSecond);
-      }
-    };
-
-
-    var leftController = new PIDController(.6, 0, 0);
-    var rightController = new PIDController(.6, 0, 0);
-    Steven = new RamseteCommand(trajectory, drive::getPose, new RamseteController(2.0, 0.7), getFeedForward(),
-        getKinematics(), drive::getWheelSpeeds, leftController, rightController, 
-        (leftVolts, rightVolts) -> {
-          drive.tankVolts(leftVolts, rightVolts);
-        }, drive);
-  }
-
-
-  public DifferentialDriveKinematics getKinematics() {
-    return kinematics;
-  }
-
-  public SimpleMotorFeedforward getFeedForward() {
-    return feedForward;
   }
 
   public Command getAutonomousCommand() {

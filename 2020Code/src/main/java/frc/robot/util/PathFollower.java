@@ -8,8 +8,6 @@
 package frc.robot.util;
 
 import frc.robot.nsubsystems.FalconDrive;
-import frc.robot.util.checker;
-
 /**
  * Add your docs here.
  */
@@ -129,18 +127,18 @@ public class PathFollower
     public void segmentTransistion()
     {
         int n = segments.length;
+        double transistionDeadband = .2;
         
         currentSegment = segments[currentSegmentNumber];
-        //TODO add a deadband for segment transistion
-        boolean isXTrue, isYTrue, isZTrue;
-        isXTrue = isPointEqual(robotXPos, currentSegment.B.waypointX);
-        isYTrue = isPointEqual(robotYPos, currentSegment.B.waypointY);
-        isZTrue = isPointEqual(robotTheta, currentSegment.B.waypointTheta);
+        boolean isXNearEnough, isYNearEnough, isThetaNearEnough;
+        isXNearEnough = isPointWithinDeadBand(robotXPos, currentSegment.B.waypointX, transistionDeadband);
+        isYNearEnough = isPointWithinDeadBand(robotYPos, currentSegment.B.waypointY, transistionDeadband);
+        isThetaNearEnough = isPointWithinDeadBand(robotTheta, currentSegment.B.waypointTheta, 5);
         
         if
-        ((isXTrue && isYTrue && currentSegmentNumber<=n) || 
-        (isXTrue && isZTrue && currentSegmentNumber<=n) || 
-        (isYTrue && isZTrue && currentSegmentNumber<=n))
+        ((isXNearEnough && isYNearEnough && currentSegmentNumber<=n) || 
+        (isXNearEnough && isThetaNearEnough && currentSegmentNumber<=n) || 
+        (isYNearEnough && isThetaNearEnough && currentSegmentNumber<=n))
 
         {
             currentSegmentNumber++;
@@ -152,17 +150,21 @@ public class PathFollower
     {
         return a==b;
     }
+    public boolean isPointWithinDeadBand(double a, double b, double deadband)
+    {
+        return Math.abs(a)-Math.abs(b) <=deadband;
+    }
 
     public void checkForDone()
     {
         Segment finSegment = segments[segments.length-1];
 
-       boolean isXTrue = isPointEqual(robotXPos, finSegment.B.waypointX);
-       boolean isYTrue = isPointEqual(robotYPos, finSegment.B.waypointY);
+       boolean isXNearEnough = isPointEqual(robotXPos, finSegment.B.waypointX);
+       boolean isYNearEnough = isPointEqual(robotYPos, finSegment.B.waypointY);
        boolean isThetaTrue = isPointEqual(robotTheta, finSegment.B.waypointTheta);
        boolean isSpeedTrue = isPointEqual(robotLinearSpeed, finSegment.B.waypointSpeed);
 
-       if(isXTrue && isYTrue && isThetaTrue || isSpeedTrue)
+       if(isXNearEnough && isYNearEnough && isThetaTrue || isSpeedTrue)
        {
         doneWithPath = true;
        }
