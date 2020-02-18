@@ -15,7 +15,7 @@ public class encoderDrive extends CommandBase {
   /**
    * Creates a new encoderDrive.
    */
-  FalconDrive drive;
+  public FalconDrive drive;
   public double leftDesired, rightDesired, leftError, rightError, prevLeftError, prevRightError;
   public boolean isFinished;
   public encoderDrive(FalconDrive drive, double leftDesired, double rightDesired) 
@@ -55,13 +55,29 @@ public class encoderDrive extends CommandBase {
     double leftError = currentLeftPos - leftDesired;
     double rightError = currentRightPos - rightDesired;
     
-    leftError = leftError/5;
-    rightError = rightError/5;
-    
-    //double leftErrorSum
+    double leftPower, rightPower;
+
+    leftPower = leftError/5;
+    rightPower = rightError/5;
+
+    double leftErrorSum =+ leftError*.02;
+    double rightErrorSum =+ rightError *.02;
+
+    double leftErrorChange = (leftError - prevLeftError)/.02;
+    double rightErrorChange = (rightError - prevRightError)/.02;
+
     double lP, lI, lD, rP, rI, rD; 
+    lP = 1; lI = 0; lD = 0; 
+    rP = 1; rI = 0; rD = 0; 
+    double leftInput, rightInput; 
 
+    leftInput = leftPower * lP + leftErrorSum * lI + leftErrorChange * lD; 
+    rightInput = rightPower * rP + rightErrorSum * rI + rightErrorChange * rD;
 
+    prevLeftError = leftError;
+    prevRightError = rightError;
+  
+    this.drive.TankDrive(leftInput, rightInput);
   }
 
   // Called once the command ends or is interrupted.

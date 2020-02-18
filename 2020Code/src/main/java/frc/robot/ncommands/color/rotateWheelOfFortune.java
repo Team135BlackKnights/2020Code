@@ -58,14 +58,18 @@ public class rotateWheelOfFortune extends CommandBase {
     // detected
     if (DesiredColor != "No Color") {
       colorWheel.getToColor(DesiredColor, .35);
-      if (colorWheel.atDesiredRoations){ //2If the wheel has been spun the desired amount, it is finished
+      if(colorWheel.checkForColor() == DesiredColor)
+      {
         isFinished = true;
         colorWheel.stopControlPanel();
       }
+      //2If the wheel has been spun the desired amount, it is finished
+
+      
     } else {
       // If the desired color is no color, rotate the wheel four times at 80% power
-      colorWheel.rotateColorWheel(.8, 2.75);
-      if (colorWheel.checkForColor() != colorWheel.desiredColor) {
+      colorWheel.rotateColorWheel(.8,4 );
+      if (colorWheel.atDesiredRoations) {
         isFinished = true;
         colorWheel.stopControlPanel();
       }

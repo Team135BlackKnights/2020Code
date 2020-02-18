@@ -43,11 +43,6 @@ public interface RobotMap {
 
         WHEEL_DIAMETER = 6, ENCODER_TICKS_PER_REVOLUTION = 4096,
 
-        FRONT_RIGHT_SONAR_TRIG = 9, FRONT_RIGHT_SONAR_ECHO = 8, 
-        REAR_RIGHT_SONAR_TRIG = 3, REAR_RIGHT_SONAR_ECHO = 2,
-        FRONT_LEFT_SONAR_TRIG = 7, FRONT_LEFT_SONAR_ECHO = 6, 
-        REAR_LEFT_SONAR_TRIG = 5, REAR_LEFT_SONAR_ECHO = 4,
-
         ksVolts = 12, kvVoltSecondsPerMeter = 1, kaVoltSecondsSquaredPerMeter = 1;
 
     // kDriveKinematics = 1;
@@ -58,16 +53,16 @@ public interface RobotMap {
   }
 
   public interface TURRET {
-    public static final int ROTATION_SPARK_ID = 11, TOP_SHOOTER_SPARK_ID = 12, BOTTOM_SHOOTER_SPARK_ID = 13,
-        FEEDER_SPARK_ID = 14,
+    public static final int 
+    ROTATION_SPARK_ID = 11, 
+    TOP_SHOOTER_SPARK_ID = 12, 
+    BOTTOM_SHOOTER_SPARK_ID = 13,
+        FEEDER_SPARK_ID = 14, 
+        TILT_SPARK_ID = 20,
 
-        TILT_TALON_ID = 21,
-
-      //TRIP_SWITCH_ID = 14,
-      LEFT_LIMIT_ID = 20, 
-      RIGHT_LIMIT_ID = 19,
-      ROTATION_ENCODER_A = 18,
-      ROTATION_ENCODER_B = 17,
+      LEFT_LIMIT_ID = 1, 
+      RIGHT_LIMIT_ID = 2,
+      TILT_LIMIT_ID = 3,
 
         TARGETING_LIGHT = 0;
 
@@ -111,7 +106,7 @@ public interface RobotMap {
   }
 
   public interface ENDGAME {
-    public static final int LIMIT_ID = 14, WIND_UP_SPARK_ID = 16, LIFT_UP_SPARK_ID = 17;
+    public static final int WIND_UP_SPARK_ID = 16, LIFT_UP_SPARK_ID = 17;
 
   }
 
@@ -120,9 +115,7 @@ public interface RobotMap {
 
         RAISE_LOWER = 0,
 
-        INTAKE_SONAR_TRIG = 10, INTAKE_SONAR_ECHO = 11,
-
-      INTAKE_TRIP_SWITCH = 16;
+      INTAKE_TRIP_SWITCH = 0;
   }
 
 }

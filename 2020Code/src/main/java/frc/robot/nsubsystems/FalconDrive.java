@@ -82,22 +82,6 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     compressor.setClosedLoopControl(false);
     compressor.start();
 
-    // Creates four Ultrasonic sensors
-    frontRightSonar = new Ultrasonic(FRONT_RIGHT_SONAR_TRIG, FRONT_RIGHT_SONAR_ECHO);
-    rearRightSonar = new Ultrasonic(REAR_RIGHT_SONAR_TRIG, REAR_RIGHT_SONAR_ECHO);
-
-    frontLeftSonar = new Ultrasonic(FRONT_LEFT_SONAR_TRIG, FRONT_LEFT_SONAR_ECHO);
-    rearLeftSonar = new Ultrasonic(REAR_LEFT_SONAR_TRIG, REAR_LEFT_SONAR_ECHO);
-
-
-    // Sets the Ultrasonic Sensors so that they can function together
-    rearRightSonar.setAutomaticMode(true);
-    frontRightSonar.setAutomaticMode(true);
-    frontLeftSonar.setAutomaticMode(true);
-    rearLeftSonar.setAutomaticMode(true);
-
-    // Initializes Lidar and runs its function
-
     // Declares a new Navx and immediately sets it to 0
     navx = new AHRS(navXPort);
     navx.reset();

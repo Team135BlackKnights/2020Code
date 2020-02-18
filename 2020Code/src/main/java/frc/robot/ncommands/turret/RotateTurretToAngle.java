@@ -59,7 +59,7 @@ public class RotateTurretToAngle extends CommandBase {
     // Going from encoder ticks to the angle of another wheel
     // encoderWheelCurrentInches = turret.ticksToInches(turret.rotationEncoder,
     // encoderWheelDiameter);
-    encoderWheelCurrentInches = turret.getRotationTicks() * encoderWheelCircumference;
+    encoderWheelCurrentInches = turret.getSparkEncoderPosition(turret.rotationEncoder) * encoderWheelCircumference;
     turretWheelCurrentInches = encoderWheelCurrentInches;
     turretWheelPercent = turretWheelCurrentInches / turretWheelCircumference;
     currentAngle = 360 * turretWheelPercent;
@@ -67,7 +67,7 @@ public class RotateTurretToAngle extends CommandBase {
     SmartDashboard.putNumber("turret wheel angle", currentAngle);
 
     // Angle error for how far off it currently is
-    // TODO:: Test angle error now that the absolute value isn't being taken from it
+    // TOD: Test angle error now that the absolute value isn't being taken from it
     // so we can get a negative rotation
     angleError = _desiredAngle - currentAngle;
     // determine the direction of min power

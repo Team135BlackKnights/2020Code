@@ -42,11 +42,7 @@ public class runConveyor extends CommandBase {
 
     isButton7 = _joystick.getJoystickButtonValue(7);
     isButton8 = _joystick.getJoystickButtonValue(8);
-    if(isBallTrip == false)
-    {
-      storage.resetConveyorEncoder();
-    }
-
+    
     if(currentConveyPos >= -2.5 && !(isButton7 || isButton8))
     {
       conveyorPower = -.25;

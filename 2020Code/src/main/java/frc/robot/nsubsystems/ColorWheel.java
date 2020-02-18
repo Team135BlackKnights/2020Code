@@ -219,7 +219,7 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL 
       lastSeenColor = checkForColor(); // Sets the last seen color to the current color
       // rotatorSpark.set(power); //Runs the motor at the desired power
       rotatorSpark.set(power);
-      while (wheelRotations < desiredRotations) {
+      if (wheelRotations < desiredRotations) {
          detectedColor = controlPanelColorSensor.getColor();
 
          // Sets the current color to the current color(String)

@@ -9,38 +9,25 @@ package frc.robot.nsubsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
-import frc.robot.util.KnightMath;
 
 public class Turret extends SubsystemBase implements RobotMap.TURRET {
-
-  public double[] point1 = new double[2];
-  public double[] point2 = new double[2];
-  
  
   public double radius;
-  public WPI_TalonSRX tiltTalon;
   public Relay targetingLight;
-  public CANSparkMax rotationSpark, bottomShooterSpark, topShooterSpark, ballFeederSpark;
-  public CANEncoder bottomShooterEncoder, topShooterEncoder, ballFeederEncoder;
-  public DigitalInput turretBallTripSwitch, forwardRotationLimit, reverseRotationLimit;
-  public Encoder rotationEncoder;
-  public Counter turretLidar;
+  public CANSparkMax rotationSpark, tiltSpark, bottomShooterSpark, topShooterSpark, ballFeederSpark;
+  public CANEncoder bottomShooterEncoder, topShooterEncoder, ballFeederEncoder, rotationEncoder, tiltEncoder;
+  public DigitalInput forwardRotationLimit, reverseRotationLimit, tiltLimit;
 
   public int turretBallCount = 0;
 
@@ -48,7 +35,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
 
   public Turret() {
     targetingLight = new Relay(TARGETING_LIGHT);
-    tiltTalon = new WPI_TalonSRX(TILT_TALON_ID);
+    tiltSpark  = new CANSparkMax(TILT_SPARK_ID, MotorType.kBrushless);
     rotationSpark = new CANSparkMax(ROTATION_SPARK_ID, MotorType.kBrushless);
     bottomShooterSpark = new CANSparkMax(BOTTOM_SHOOTER_SPARK_ID, MotorType.kBrushless);
     topShooterSpark = new CANSparkMax(TOP_SHOOTER_SPARK_ID, MotorType.kBrushless);
@@ -56,61 +43,32 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
 
     forwardRotationLimit = new DigitalInput(LEFT_LIMIT_ID);
     reverseRotationLimit = new DigitalInput(RIGHT_LIMIT_ID);
+    tiltLimit = new DigitalInput(TILT_LIMIT_ID);
 
-    initTalonSRX(tiltTalon);
-
+    initCANSparkMax(tiltSpark, IdleMode.kBrake);
     initCANSparkMax(rotationSpark, IdleMode.kBrake);
     initCANSparkMax(bottomShooterSpark, IdleMode.kCoast);
     initCANSparkMax(topShooterSpark, IdleMode.kCoast);
     initCANSparkMax(ballFeederSpark, IdleMode.kBrake);
 
     topShooterSpark.setInverted(true);
+
     bottomShooterEncoder = bottomShooterSpark.getEncoder();
     topShooterEncoder = topShooterSpark.getEncoder();
     ballFeederEncoder = ballFeederSpark.getEncoder();
-    //tiltTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-    rotationEncoder = new Encoder(ROTATION_ENCODER_A, ROTATION_ENCODER_B);
-
-    rotationEncoder.setDistancePerPulse(64);
+    rotationEncoder = rotationSpark.getEncoder();
+    tiltEncoder = tiltSpark.getEncoder();
 
     resetAllTurretEncoders();
 
-    point1[0] = 1;
-    point1[1] = 0;
-  
-    point2[0] = 2;
-    point2[1] = 1;
-
-    radius = KnightMath.radiusFromPoints(point1, point2);
-    System.out.print(radius);
     System.out.println("Turret Initialized");
   }
 
-  /*
-   * public void turretCountBalls() { if(isBallInShooter()!=lastBallState &&
-   * isBallInShooter()!=false) { turretBallCount++; }
-   * if(lastBallState!=isBallInShooter()) { lastBallState = isBallInShooter(); }
-   * 
-   * }
-   */
   public void initCANSparkMax(CANSparkMax spark, IdleMode mode) {
     spark.restoreFactoryDefaults();
     spark.setInverted(false);
     spark.enableVoltageCompensation(12);
     spark.setIdleMode(mode);
-  }
-
-  public void initTalonSRX(WPI_TalonSRX talon) {
-    talon.configReverseSoftLimitEnable(false);
-    talon.configForwardSoftLimitEnable(false);
-    talon.enableCurrentLimit(false);
-    talon.enableVoltageCompensation(true);
-    talon.setSensorPhase(true);
-    talon.configNominalOutputForward(0);
-    talon.configNominalOutputReverse(0);
-    talon.configPeakOutputForward(1);
-    talon.configPeakOutputReverse(-1);
-    talon.setNeutralMode(NeutralMode.Brake);
   }
 
   public void setLight(boolean on) {
@@ -121,8 +79,9 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     }
   }
 
-  public void resetTiltEncoder() {
-    tiltTalon.setSelectedSensorPosition(0);
+  public void resetTiltEncoder() 
+  {
+    tiltEncoder.setPosition(0);
   }
 
   public void resetShooterEncoders() {
@@ -135,19 +94,20 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
   }
 
   public void resetRotationEncoder() {
-    rotationEncoder.reset();
+    rotationEncoder.setPosition(0);
   }
 
   public void resetAllTurretEncoders() {
-    // resetTiltEncoder();
+    resetTiltEncoder();
     resetShooterEncoders();
     resetBallFeederEncoder();
-    // resetRotationEncoder();;
+    resetRotationEncoder();;
   }
 
-  public void runTilt(double power) {
-    power = limit(power, .9, -.9);
-    tiltTalon.set(ControlMode.PercentOutput, power);
+  public void runTilt(double power)
+  {
+    power = limit(power, .5, -.5);
+    tiltSpark.set(power);
   }
 
   public void runRotation(double power)
@@ -163,11 +123,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     }
     else 
     {
-    
     power = limit(power, .45, -.45);
     }
-
-    SmartDashboard.putNumber("Rotation Power", power);
     rotationSpark.set(power);
   }
 
@@ -202,15 +159,14 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     return reverseRotationLimit.get();
   }
 
+  public boolean getTiltLImit()
+  {
+    return tiltLimit.get();
+  }
+
   public void autoResetRotation() {
     if (getForwardRotationLimit()) {
       resetRotationEncoder();
-    }
-  }
-
-  public void autoResetTiltEncoder() {
-    if (tiltTalon.isRevLimitSwitchClosed() == 1) {
-      tiltTalon.setSelectedSensorPosition(0);
     }
   }
 
@@ -218,28 +174,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     return encoder.getPosition();
   }
 
-  public double getRotationTicks() {
-    return rotationEncoder.getDistance() / 64;
-  }
-
-  public double getRotationRate() {
-    return rotationEncoder.getRate();
-  }
-
-  public double tiltTicksToAngle() {
-    return 180 - ((getTalonPosition(tiltTalon) * 360 / 256) + 90);
-  }
-
   public double getSparkEncoderVelocity(CANEncoder encoder) {
     return encoder.getVelocity();
-  }
-
-  public double getTalonPosition(WPI_TalonSRX talon) {
-    return talon.getSelectedSensorPosition();
-  }
-
-  public double getTalonVelocity(WPI_TalonSRX talon) {
-    return talon.getSelectedSensorVelocity();
   }
 
   public double ticksToRotations(double ticks, double ppr) {
@@ -289,19 +225,14 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     SmartDashboard.putNumber("bottom Shooter Spark Position:",
         ticksToRotations(getSparkEncoderPosition(bottomShooterEncoder), 4096));
     SmartDashboard.putNumber("ball Feeder Spark Position:",
-        ticksToRotations(getSparkEncoderPosition(ballFeederEncoder), 4096));
-    SmartDashboard.putNumber("rotation  Position:", getRotationTicks());
-    SmartDashboard.putNumber("tilt talon Position:", ticksToRotations(getTalonPosition(tiltTalon), 64));
-  }
+        ticksToRotations(getSparkEncoderPosition(ballFeederEncoder), 4096));}
 
   public void printStates() {
-    SmartDashboard.putBoolean("is Rotation at Forward limit", getForwardRotationLimit());
-    SmartDashboard.putBoolean("is Rotation at Reverse limit", getReverseRotationLimit());
+    SmartDashboard.putBoolean("is turret at Forward limit", getForwardRotationLimit());
+    SmartDashboard.putBoolean("is turret at Reverse limit", getReverseRotationLimit());
+    SmartDashboard.putBoolean("is turret at Tilt limit", getTiltLImit());
   }
 
-  public void printTiltPos() {
-    SmartDashboard.putNumber("TIlt ticks", getTalonPosition(tiltTalon));
-  }
 
   public void printShooterRPM() {
     SmartDashboard.putNumber("top shooter RPM", getTopWheelRPM());
@@ -314,7 +245,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     SmartDashboard.putNumber("bottom Shooter Spark power:", getSparkPower(bottomShooterSpark));
     SmartDashboard.putNumber("ball Feeder Spark power:", getSparkPower(ballFeederSpark));
     SmartDashboard.putNumber("rotation spark power:", getSparkPower(rotationSpark));
-    SmartDashboard.putNumber("tilt talon power:", getTalonPower(tiltTalon));
+    SmartDashboard.putNumber("tilt talon power:", getSparkPower(tiltSpark));
   }
 
   public void printTemp() {
@@ -322,7 +253,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     SmartDashboard.putNumber("bottom Shooter Spark temp:", getSparkTemp(bottomShooterSpark));
     SmartDashboard.putNumber("ball Feeder Spark temp:", getSparkTemp(ballFeederSpark));
     SmartDashboard.putNumber("rotation spark temp:", getSparkTemp(rotationSpark));
-    SmartDashboard.putNumber("tilt talon temp:", getTalonTemp(tiltTalon));
+    SmartDashboard.putNumber("tilt talon temp:", getSparkTemp(rotationSpark));
   }
 
   public void stopShooter() {
@@ -332,7 +263,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
 
   public void stopTurret() {
     rotationSpark.set(0);
-    tiltTalon.set(ControlMode.PercentOutput, 0);
+    tiltSpark.set(0);
   }
 
   public void stopFeeder() {
@@ -352,6 +283,14 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
       x = lowerLimit;
     }
     return x;
+  }
+
+  public void autoResetTiltEncoder()
+  {
+    if(getTiltLImit())
+    {
+      resetTiltEncoder();
+    }
   }
 
   public void autoResetEncoders() {

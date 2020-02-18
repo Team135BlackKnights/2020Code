@@ -31,7 +31,6 @@ public class Endgame extends SubsystemBase implements RobotMap.ENDGAME {
     initCANSparkMax(winchSpark, IdleMode.kBrake);
     initCANSparkMax(liftRaiseSpark, IdleMode.kBrake);
     liftRaiseSpark.setInverted(true);
-    highLimit = new DigitalInput(LIMIT_ID);
 
     resetAllEndgameEncoders();
   }

@@ -78,7 +78,7 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE {
 
   public void autoResetEncoder()
   {
-    if(!isBallAtTripSwitch())
+    if(isBallAtTripSwitch())
     {
       resetConveyorEncoder();
     }
