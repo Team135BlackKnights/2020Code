@@ -39,7 +39,7 @@ public interface RobotMap {
     REAR_LEFT_FALCON = 4, 
     REAR_RIGHT_FALCON = 2,
 
-        SHIFTER_ID = 0,
+        SHIFTER_ID = 1,
 
         WHEEL_DIAMETER = 6, ENCODER_TICKS_PER_REVOLUTION = 4096,
 
@@ -118,7 +118,7 @@ public interface RobotMap {
   public interface INTAKE {
     final int CONVEYOR_SPARK = 18, ROLLER_SPARK = 19,
 
-        RAISE_LOWER = 2,
+        RAISE_LOWER = 0,
 
         INTAKE_SONAR_TRIG = 10, INTAKE_SONAR_ECHO = 11,
 

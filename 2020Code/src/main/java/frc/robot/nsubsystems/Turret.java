@@ -68,7 +68,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     bottomShooterEncoder = bottomShooterSpark.getEncoder();
     topShooterEncoder = topShooterSpark.getEncoder();
     ballFeederEncoder = ballFeederSpark.getEncoder();
-    tiltTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+    //tiltTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
     rotationEncoder = new Encoder(ROTATION_ENCODER_A, ROTATION_ENCODER_B);
 
     rotationEncoder.setDistancePerPulse(64);
@@ -362,15 +362,15 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
   @Override
   public void periodic() {
    //printTemp();
-   autoResetEncoders();
+  // autoResetEncoders();
   /* SmartDashboard.putNumber("Rotation Ticks", getRotationTicks());
    SmartDashboard.putNumber("Rotation Ticks With Conversion",getRotationTicks() * (360/512));
    printRotations();
    printStates();
    printTiltPos();
    */
-  printRotations();
-  printShooterRPM();
+ // printRotations();
+  //printShooterRPM();
     // This method will be called once per scheduler run
   }
 }

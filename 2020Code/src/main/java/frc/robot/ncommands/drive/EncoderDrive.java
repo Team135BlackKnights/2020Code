@@ -7,84 +7,73 @@
 
 package frc.robot.ncommands.drive;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.FalconDrive;
-import frc.robot.util.ImprovedJoystick;
 
-public class EncoderDrive extends CommandBase {
+public class encoderDrive extends CommandBase {
+  /**
+   * Creates a new encoderDrive.
+   */
   FalconDrive drive;
-  private double _leftTarget, _rightTarget, leftError, rightError, _tolerance;
-  private boolean _stopWhenDone;
-  private ImprovedJoystick _joystick;
-
-  public EncoderDrive(FalconDrive subsystem, double leftTarget, double rightTarget, double tolerance,
-      boolean stopWhenDone, Joystick joystick) {
-    drive = subsystem;
-    _joystick = new ImprovedJoystick(joystick);
-    this._leftTarget = leftTarget;
-    this._rightTarget = rightTarget;
-    this._tolerance = tolerance;
-    this._stopWhenDone = stopWhenDone;
+  public double leftDesired, rightDesired, leftError, rightError, prevLeftError, prevRightError;
+  public boolean isFinished;
+  public encoderDrive(FalconDrive drive, double leftDesired, double rightDesired) 
+  {
+    this.drive = drive;
+    this.leftDesired = leftDesired;
+    this.rightDesired = rightDesired;
     addRequirements(drive);
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    SmartDashboard.putString("Drive Command Running:", "Encoder Drive");
-    SmartDashboard.putBoolean("Is Encoder Drive Finished", isFinished());
+  public void initialize() 
+  {
+    SmartDashboard.putString("Drive Command Running:", "Encoder Drive " + leftDesired + rightDesired);
+
+    prevLeftError = 0;
+    prevRightError = 0; 
+    leftError = drive.getLeftMetres() - leftDesired;
+    rightError = drive.getRightMetres() - rightDesired;
+    isFinished = false;
 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    double currentLeftPos = drive.getLeftPos();
-    double currentRightPos = drive.getRightPos();
+  public void execute() 
+  {
+    if(Math.abs(leftError) < .2 && Math.abs(rightError) < .2)
+    {
+      isFinished = true;
+    }
+    double currentLeftPos = drive.getLeftMetres();
+    double currentRightPos = drive.getRightMetres();
+    
+    double leftError = currentLeftPos - leftDesired;
+    double rightError = currentRightPos - rightDesired;
+    
+    leftError = leftError/5;
+    rightError = rightError/5;
+    
+    //double leftErrorSum
+    double lP, lI, lD, rP, rI, rD; 
 
-    leftError = currentLeftPos - _leftTarget;
-    rightError = currentRightPos - _rightTarget;
 
-    double leftPower, rightPower;
-    leftPower = leftError / 60;
-    rightPower = rightError / 60;
-
-    double leftP = 1.4, rightP = 1.4;
-
-    double minDrivePower = .26;
-    double leftMinAlt = leftError > 0 ? 1 : -1;
-    double rightMinAlt = rightError > 0 ? 1 : -1;
-    double leftMinPower = minDrivePower * leftMinAlt;
-    double rightMinPower = minDrivePower * rightMinAlt;
-
-    leftPower = drive.limit(leftPower, .45, -.45);
-    rightPower = drive.limit(rightPower, .45, -.45);
-
-    leftPower = drive.limit((leftPower * leftP) + leftMinPower, .7, -.7);
-    rightPower = drive.limit((rightPower * rightP) + rightMinPower, .7, -.7);
-
-    SmartDashboard.putNumber("Encoder Drive Left Power", leftPower);
-    SmartDashboard.putNumber("Encoder Drive Right Power", rightPower);
-
-    drive.TankDrive(-leftPower, rightPower);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    if (this._stopWhenDone) {
-      drive.stopMotors();
-    }
-    SmartDashboard.putString("Command Finished: ", "Encoder Drive");
-    SmartDashboard.putString("Drive Command Running:", "No Command Running");
+  public void end(boolean interrupted) 
+  {
+    drive.stopMotors();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (Math.abs(leftError) <= _tolerance && Math.abs(rightError) <= _tolerance)
-        || _joystick.getJoystickAxis(2) > .2;
+    return isFinished;
   }
 }

@@ -38,7 +38,7 @@ public class runWinch extends CommandBase {
 
     boolean isLifted = liftPosition > 100;
 */
-      endgame.runWinchSpark(1);
+      endgame.runWinchSpark(_power);
    
 
     

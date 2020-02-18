@@ -118,7 +118,7 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE {
   public void periodic() {
     intakeBallCount();
     autoResetEncoder();
-
+    printStorageData();
     // This method will be called once per scheduler run
   }
 }

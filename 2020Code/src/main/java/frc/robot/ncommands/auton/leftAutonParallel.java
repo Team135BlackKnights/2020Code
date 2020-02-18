@@ -10,7 +10,6 @@ package frc.robot.ncommands.auton;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.ncommands.drive.DriveWithTrajectory;
-import frc.robot.ncommands.drive.EncoderDrive;
 import frc.robot.ncommands.drive.shiftGears;
 import frc.robot.ncommands.intake.moveIntake;
 import frc.robot.ncommands.intake.runRoller;
@@ -41,7 +40,7 @@ public class leftAutonParallel extends ParallelCommandGroup {
     if (drive.doesPathExist("PathWeaver/output/redRight.wpilib.json")) {
       parallel(new DriveWithTrajectory(drive, "PathWeaver/output/redRight.wpilib.json"));
     } else
-      parallel(new EncoderDrive(drive, 90, 90, 2, true, RobotContainer.manipJoystick));
+     // parallel(new encoderDrive(drive, 90, 90));
     parallel(sequence(new runRoller(intake, .8)),
         sequence(parallel(new RotateTurretToAngle(turret, 90)), parallel(new moveIntake(intake))));
 
