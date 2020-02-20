@@ -81,7 +81,7 @@ public class RobotContainer implements RobotMap {
   public RobotContainer() {
     drive.setDefaultCommand(new DriveWithJoysticks(drive, leftJoystick, rightJoystick));
     storage.setDefaultCommand(new runConveyor(storage, manipJoystick));
-   // turret.setDefaultCommand(new TargetTurret(turret, turretLimelight, manipJoystick));
+    turret.setDefaultCommand(new TargetTurret(turret, turretLimelight, manipJoystick));
     // turret.setDefaultCommand(new TurretTest(turret, manipJoystick));
     // Configure the button bindings
     //turretLimelight.initLimelight(1, 1);
