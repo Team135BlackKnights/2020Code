@@ -56,10 +56,10 @@ public class TargetTurret extends CommandBase {
 
     verticalOffset = verticalOffset + distToTarget/3;
     double rotationPower, tiltPower;
-    double rotationHelper = distToTarget/600;
+    double rotationHelper = distToTarget/6;
     SmartDashboard.putNumber("ROtatoinhelper", rotationHelper);
-    double rP = .01, tP = 1, rI = .0, rD = .08;
-    rotationPower = -horizontalOffset /70;
+    double rP = 1.5, tP = 1, rI = .0, rD = .08;
+    rotationPower = horizontalOffset /70;
     tiltPower = -verticalOffset / 4;
 
     //rotationPower = rotationPower+rotationHelper;

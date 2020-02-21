@@ -34,8 +34,10 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
   public int turretBallCount = 0;
 
   public boolean lastBallState = false;
+  public boolean isShooterUpToSpeed; 
 
   public Turret() {
+    isShooterUpToSpeed = false; 
     double[] testPoint1 = 
     {
       0,0

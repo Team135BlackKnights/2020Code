@@ -76,10 +76,17 @@ public class PathFollower
         rI = 0;
         rD = 0;
 
-        double leftIntegral, leftDerivative, rightIntegral, rightDerivative, leftErrorSum, rightErrorSum, loopTime, leftError, rightError;
+        double leftIntegral, leftDerivative, rightIntegral, rightDerivative, leftErrorSum, rightErrorSum, loopTime, leftError, rightError, leftDesired, rightDesired, maxVel;
+
         loopTime = .02;
-        leftError = currentSegment.leftError;
-        rightError = currentSegment.rightError;
+
+        maxVel = 1.72; // Max velocity in M/s in low gear
+
+        leftDesired = currentSegment.leftDesired ;
+        rightDesired = currentSegment.rightDesired ;
+
+        leftError = leftDesired * maxVel;
+        rightError = rightDesired * maxVel; 
 
         leftErrorSum =+ leftError;
         rightErrorSum =+ rightError;
@@ -89,19 +96,19 @@ public class PathFollower
 
         leftDerivative = (leftError-leftPrevError)/loopTime;
         rightDerivative = (rightError - rightPrevError)/loopTime;
+        double leftPrePID, rightPrePID;
 
-        double leftDesired, rightDesired;
-        leftDesired = currentSegment.leftDesired + leftError;
-        rightDesired = currentSegment.rightDesired + rightError;
+        leftPrePID = leftDesired + leftError;
+        rightPrePID = rightDesired + rightError;
         
-        leftOutput = (leftDesired* lP) + (leftIntegral *lI) + (leftDerivative *lD);
-        rightOutput = (rightDesired * rP) + (rightIntegral *lI) + (rightDerivative *lD);
+        leftOutput = (leftPrePID *lP) + (leftIntegral *lI) + (leftDerivative *lD);
+        rightOutput = (rightPrePID * rP) + (rightIntegral *lI) + (rightDerivative *lD);
         
         //drive.TankDrive(leftOutput, rightOutput);
         SmartDashboard.putNumber("Path follower left Error", leftError);
         SmartDashboard.putNumber("Path follower right error ", rightError);
-       SmartDashboard.putNumber("path Follower Left Output", leftOutput);
-       SmartDashboard.putNumber("Path follower Right Output ", rightOutput);
+        SmartDashboard.putNumber("path Follower Left Output", leftOutput);
+        SmartDashboard.putNumber("Path follower Right Output ", rightOutput);
 
         leftPrevError = leftError;
         rightPrevError = rightError;
@@ -232,22 +239,23 @@ public class PathFollower
     double pointB[] = {B.waypointX, B.waypointY};
     double rRadius = KnightMath.radiusFromPoints(pointA, pointB) - .2667;
     double lRadius = KnightMath.radiusFromPoints(pointA, pointB) + .2667;
-    double dTheta;
-    double theta;
-    double chord;
+    double dThetaL, dThetaR;
+    double thetaL, thetaR;
+    double chordL, chordR;
     double rVelocity, lVelocity;
 
-    chord = KnightMath.distanceFormula(pointA, pointB);
-    theta = 2 * Math.asin(chord/(2 * lRadius));
-    dTheta = (theta - prevTheta)/.02;
-        lVelocity = lRadius * dTheta;
+    chordL = KnightMath.distanceFormula(pointA, pointB);
+    thetaL = 2 * Math.asin(chordL/(2 * lRadius));
+    dThetaL = (thetaL - prevTheta)/.02;
+        lVelocity = lRadius * dThetaL;
     
-    chord = KnightMath.distanceFormula(pointA, pointB);
-    theta = 2 * Math.asin(chord/(2 * rRadius));
-    rVelocity = rRadius * dTheta;
+    chordR = KnightMath.distanceFormula(pointA, pointB);
+    thetaR= 2 * Math.asin(chordR/(2 * rRadius));
+    dThetaR = (thetaR - prevTheta)/.02;
+    rVelocity = rRadius * dThetaR;
 
     double velocities[] = {lVelocity, rVelocity};
-
+    
     return velocities;
     }
 

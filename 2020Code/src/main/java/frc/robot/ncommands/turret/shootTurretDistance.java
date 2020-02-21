@@ -19,6 +19,7 @@ public class shootTurretDistance extends CommandBase {
   TurretLimelight limelight;
   Turret turret;
   double distToTarget;
+  
 
   public shootTurretDistance(Turret _turret, TurretLimelight _limelight) 
   {
@@ -78,15 +79,14 @@ public class shootTurretDistance extends CommandBase {
 
     double minError = 50;
     
-    boolean isUpToSpeed = 
-    (topShooterError <= minError && bottomShooterError <=minError);
-
-    feederInput = isUpToSpeed ? feederInput : 0;
+    
+    turret.isShooterUpToSpeed = (topShooterError <= minError && bottomShooterError <=minError);
+    feederInput = turret.isShooterUpToSpeed ? feederInput : 0;
     
     turret.runBallFeeder(feederInput);
     turret.runShooterPower(topShooterInput, bottomShooterInput);
 
-    SmartDashboard.putBoolean("is Shooter Up to Speed", isUpToSpeed);
+    SmartDashboard.putBoolean("is Shooter Up to Speed", turret.isShooterUpToSpeed);
     SmartDashboard.putNumber("Desired top RPM ", topShooterDesired);
     SmartDashboard.putNumber("Top Shooter Input", topShooterInput);
     SmartDashboard.putNumber("Bottom Shooter Input", bottomShooterInput);

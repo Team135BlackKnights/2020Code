@@ -46,7 +46,7 @@ public class TurretLimelight extends SubsystemBase {
 
 	public double distToTarget()
 	{
-		return  (9.204*Math.pow(.5146, getAveragedArea()));
+		return  (9.204*Math.pow(.5146, getAveragedArea())) -.5;
 	}
 
 	
