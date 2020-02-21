@@ -35,7 +35,6 @@ public class runConveyor extends CommandBase {
   @Override
   public void execute() {
 
-    boolean isBallTrip = storage.isBallAtTripSwitch();
     double currentConveyPos = storage.getConveyorRotations();
     double conveyorPower = 0;
     boolean isButton7, isButton8;

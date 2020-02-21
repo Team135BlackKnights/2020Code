@@ -26,5 +26,18 @@ public class paths
 
         return waypoints;
     }
+
+    public static Waypoint[] testPathWaypoints()
+    {
+        Waypoint[] waypoints = 
+        {
+            new Waypoint(1, 0, 0, .5),
+            new Waypoint(2, 0, 0, .5),
+            new Waypoint(3, 0 , 0, .5),
+            new Waypoint(3, 0 , 0, 0)
+
+        };
+        return waypoints;
+    }
     
 }

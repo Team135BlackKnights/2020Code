@@ -20,9 +20,11 @@ import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import frc.robot.util.KnightMath;
 
 public class Turret extends SubsystemBase implements RobotMap.TURRET {
  
+  public double[] testPoint1, testPoint2; 
   public double radius;
   public Relay targetingLight;
   public CANSparkMax rotationSpark, tiltSpark, bottomShooterSpark, topShooterSpark, ballFeederSpark;
@@ -34,6 +36,16 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
   public boolean lastBallState = false;
 
   public Turret() {
+    double[] testPoint1 = 
+    {
+      0,0
+    };
+    double[] testPoint2 =
+    {
+      1,1
+    };
+    double testRadius = KnightMath.radiusFromPoints(testPoint1, testPoint2);
+    double[] testCentroid = KnightMath.centroid(testPoint1, testPoint2);
     targetingLight = new Relay(TARGETING_LIGHT);
     tiltSpark  = new CANSparkMax(TILT_SPARK_ID, MotorType.kBrushless);
     rotationSpark = new CANSparkMax(ROTATION_SPARK_ID, MotorType.kBrushless);
@@ -52,6 +64,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     initCANSparkMax(ballFeederSpark, IdleMode.kBrake);
 
     topShooterSpark.setInverted(true);
+    tiltSpark.setInverted(true
+    );
 
     bottomShooterEncoder = bottomShooterSpark.getEncoder();
     topShooterEncoder = topShooterSpark.getEncoder();
@@ -60,7 +74,10 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     tiltEncoder = tiltSpark.getEncoder();
 
     resetAllTurretEncoders();
-
+    System.out.print(testRadius);
+    SmartDashboard.putNumber("test Radius", testRadius);
+    SmartDashboard.putNumber("test centroid x ", testCentroid[0]);
+    SmartDashboard.putNumber("test centroid y ", testCentroid[1] );
     System.out.println("Turret Initialized");
   }
 
@@ -114,7 +131,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
 
   public void runRotation(double power)
   {
-    
+    /*
     if(getForwardRotationLimit())
     {
       power =  limit(power, 0, -.45);
@@ -124,9 +141,9 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
       power = limit(power, .45, 0);
     }
     else 
-    {
+    {*/
     power = limit(power, .45, -.45);
-    }
+    //}
     rotationSpark.set(power);
   }
 
@@ -302,6 +319,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
 
   @Override
   public void periodic() {
+    printShooterRPM();
    //printTemp();
   // autoResetEncoders();
   /* SmartDashboard.putNumber("Rotation Ticks", getRotationTicks());

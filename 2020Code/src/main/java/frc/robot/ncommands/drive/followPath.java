@@ -7,6 +7,7 @@
 
 package frc.robot.ncommands.drive;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.FalconDrive;
 import frc.robot.util.PathFollower;
@@ -30,7 +31,11 @@ public class followPath extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
+  public void initialize() 
+  {
+    
+    SmartDashboard.putString("Drive Command Running: ", "follow Path");
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.

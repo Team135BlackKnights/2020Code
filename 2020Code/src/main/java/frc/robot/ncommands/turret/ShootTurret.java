@@ -42,11 +42,12 @@ public class ShootTurret extends CommandBase {
   public void execute() {
     double feederMax = 4500;
 
-    double feederDesired = -.25 * feederMax;
+    double feederDesired = -.45 * feederMax;
 
     double topShooterActual = turret.getTopWheelRPM();
     double bottomShooterActual = turret.getBottomWheelRPM();
     double feederActual = turret.getFeederRPM();
+    SmartDashboard.putNumber("feeder actual", feederActual);
 
     double distanceMod = limelight.distToTarget();
     double perferedDistance = 4;
@@ -97,19 +98,19 @@ public class ShootTurret extends CommandBase {
 
     double topInput = topPower * tP + tErrorSum * tI;
     double bottomInput = bottomPower * bP + bErrorSum * bI;;
-    double feederInput = feederPower * fP + feederDerivative * fD;
+    //double feederInput = feederPower * fP + feederDerivative * fD;
 
     turret.runShooterPower(topInput, bottomInput);
     if(isUpToSpeed)
     {
-      turret.runBallFeeder(feederInput);
+      turret.runBallFeeder(1);
     }
     else 
     {
       turret.runBallFeeder(0);
     }
     SmartDashboard.putBoolean("isShooterUpToSpeed", isUpToSpeed);
-    SmartDashboard.putNumber("Feeder Power", feederInput);
+    //SmartDashboard.putNumber("Feeder Power", feederInput);
     previousFeederError = feederPower;
   }
 

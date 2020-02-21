@@ -57,19 +57,15 @@ public class rotateWheelOfFortune extends CommandBase {
     // If the desired color isn't empty, rotate the wheel at 80% power until it is
     // detected
     if (DesiredColor != "No Color") {
-      colorWheel.getToColor(DesiredColor, .35);
-      if(colorWheel.checkForColor() == DesiredColor)
-      {
+      colorWheel.getToColor(DesiredColor, .25);
+      if (colorWheel.atDesiredRoations) { // 2If the wheel has been spun the desired amount, it is finished
         isFinished = true;
         colorWheel.stopControlPanel();
       }
-      //2If the wheel has been spun the desired amount, it is finished
-
-      
     } else {
       // If the desired color is no color, rotate the wheel four times at 80% power
-      colorWheel.rotateColorWheel(.8,4 );
-      if (colorWheel.atDesiredRoations) {
+      colorWheel.rotateColorWheel(.8, 2.75);
+      if (colorWheel.checkForColor() != colorWheel.desiredColor) {
         isFinished = true;
         colorWheel.stopControlPanel();
       }
@@ -82,7 +78,7 @@ public class rotateWheelOfFortune extends CommandBase {
     colorWheel.stopControlPanel();
     colorWheel.rotatorSpark.set(0);
     SmartDashboard.putString("Control Panel Command Running:", "No command Running");
-    colorWheel.atDesiredRoations=false;
+    colorWheel.atDesiredRoations = false;
   }
 
   // Returns true when the command should end.

@@ -7,6 +7,7 @@
 
 package frc.robot.util;
 
+
 public class KnightMath 
 {
     public static double[] centroid(double[] point1, double[] point2 )

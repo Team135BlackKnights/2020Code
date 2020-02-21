@@ -7,6 +7,7 @@
 
 package frc.robot.util;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.nsubsystems.FalconDrive;
 /**
  * Add your docs here.
@@ -14,14 +15,13 @@ import frc.robot.nsubsystems.FalconDrive;
 public class PathFollower 
 {
     public Segment[] segments;
+    public Segment currentSegment;
     public FalconDrive drive; 
     public Waypoint[] waypoints;
 
-    public int currentSegmentNumber = 0;
+    public int currentSegmentNumber;
 
-    public Segment currentSegment = segments[currentSegmentNumber];
-
-    public double leftOutput, rightOutPut, robotXPos, robotYPos, robotTheta, robotLinearSpeed, robotAngularSpeed, robotLeftSpeed, robotRightSpeed,
+    public double leftOutput, rightOutput, robotXPos, robotYPos, robotTheta, robotLinearSpeed, robotAngularSpeed, robotLeftSpeed, robotRightSpeed,
         leftPrevError = 0,
         rightPrevError = 0;
 
@@ -31,17 +31,32 @@ public class PathFollower
 
     public PathFollower(Waypoint[] _waypoints, FalconDrive _drive)
     {
+        currentSegmentNumber = 0;
+
         drive = _drive;
+
+        robotXPos = drive.robotXPos();
+        robotYPos = drive.robotYPos();
+        robotTheta = drive.robotTheta();
+        robotLinearSpeed = drive.getLinearMps();
+        robotAngularSpeed = drive.getAngularMps();
+        robotLeftSpeed = drive.getLeftMps();
+        robotRightSpeed = drive.getRightMps();
+        
         waypoints = _waypoints;
         segmentCreator(waypoints);
-        updateRobotVals();
+        currentSegment = segments[currentSegmentNumber];
+
+        
 
     }
 
     public void followPath()
     {
+       outputWaypointVals();
        updateRobotVals();
        segmentTransistion();
+       SmartDashboard.putNumber("current Segment", currentSegmentNumber);
        checkForDone();
        if(currentSegment.isSegmentLine)
        {
@@ -75,14 +90,49 @@ public class PathFollower
         leftDerivative = (leftError-leftPrevError)/loopTime;
         rightDerivative = (rightError - rightPrevError)/loopTime;
 
+        double leftDesired, rightDesired;
+        leftDesired = currentSegment.leftDesired + leftError;
+        rightDesired = currentSegment.rightDesired + rightError;
         
-        leftOutput = (currentSegment.rightDesired* lP) + (leftIntegral *lI) + (leftDerivative *lD);
-        rightOutPut = (currentSegment.leftDesired * rP) + (rightIntegral *lI) + (rightDerivative *lD);
+        leftOutput = (leftDesired* lP) + (leftIntegral *lI) + (leftDerivative *lD);
+        rightOutput = (rightDesired * rP) + (rightIntegral *lI) + (rightDerivative *lD);
         
-        drive.TankDrive(leftOutput, rightOutPut);
+        //drive.TankDrive(leftOutput, rightOutput);
+        SmartDashboard.putNumber("Path follower left Error", leftError);
+        SmartDashboard.putNumber("Path follower right error ", rightError);
+       SmartDashboard.putNumber("path Follower Left Output", leftOutput);
+       SmartDashboard.putNumber("Path follower Right Output ", rightOutput);
 
         leftPrevError = leftError;
         rightPrevError = rightError;
+    }
+
+    public void outputWaypointVals()
+    {
+        double 
+        currentSegWaypointAX, currentSegWaypointAY, currentSegWaypointATheta, 
+        currentSegWaypointBX, currentSegWaypointBY, currentSegWaypointBTheta,
+        currentSegWaypointBS;
+
+        currentSegWaypointATheta = currentSegment.A.waypointTheta;
+        currentSegWaypointAX = currentSegment.A.waypointX;
+        currentSegWaypointAY = currentSegment.A.waypointY;
+
+        currentSegWaypointBTheta = currentSegment.B.waypointTheta;
+        currentSegWaypointBX = currentSegment.B.waypointX;
+        currentSegWaypointBY = currentSegment.B.waypointY;
+        currentSegWaypointBS = currentSegment.B.waypointSpeed;
+
+        SmartDashboard.putNumber("Waypoint A Theta", currentSegWaypointATheta);
+        SmartDashboard.putNumber("Waypoint A X", currentSegWaypointAX);
+        SmartDashboard.putNumber("Waypoint A Y ", currentSegWaypointAY);
+
+        SmartDashboard.putNumber("Waypoint B Theta", currentSegWaypointBTheta);
+        SmartDashboard.putNumber("Waypoint B X ", currentSegWaypointBX);
+        SmartDashboard.putNumber("Waypoint B Y ", currentSegWaypointBY);
+
+        SmartDashboard.putNumber("Waypoint B Speed", currentSegWaypointBS);
+
     }
 
     public class Segment
@@ -94,7 +144,7 @@ public class PathFollower
         {
             A = a;
             B= b; 
-            isSegmentLine = 0 <=(A.waypointTheta - B.waypointTheta);
+            isSegmentLine = 0 ==(A.waypointTheta - B.waypointTheta);
 
         }
 
@@ -127,7 +177,7 @@ public class PathFollower
     public void segmentTransistion()
     {
         int n = segments.length;
-        double transistionDeadband = .2;
+        double transistionDeadband = .05;
         
         currentSegment = segments[currentSegmentNumber];
         boolean isXNearEnough, isYNearEnough, isThetaNearEnough;
@@ -136,13 +186,15 @@ public class PathFollower
         isThetaNearEnough = isPointWithinDeadBand(robotTheta, currentSegment.B.waypointTheta, 5);
         
         if
-        ((isXNearEnough && isYNearEnough && currentSegmentNumber<=n) || 
-        (isXNearEnough && isThetaNearEnough && currentSegmentNumber<=n) || 
-        (isYNearEnough && isThetaNearEnough && currentSegmentNumber<=n))
-
+        (isXNearEnough && isYNearEnough && isThetaNearEnough && currentSegmentNumber<n-1)/* || 
+        (isXNearEnough && isThetaNearEnough && currentSegmentNumber<n) || 
+        (isYNearEnough && isThetaNearEnough && currentSegmentNumber<n))
+        */
         {
             currentSegmentNumber++;
+           
         }
+        
            
     }
 
@@ -152,7 +204,7 @@ public class PathFollower
     }
     public boolean isPointWithinDeadBand(double a, double b, double deadband)
     {
-        return Math.abs(a)-Math.abs(b) <=deadband;
+        return Math.abs(b)-Math.abs(a) <=deadband;
     }
 
     public void checkForDone()
@@ -164,7 +216,7 @@ public class PathFollower
        boolean isThetaTrue = isPointEqual(robotTheta, finSegment.B.waypointTheta);
        boolean isSpeedTrue = isPointEqual(robotLinearSpeed, finSegment.B.waypointSpeed);
 
-       if(isXNearEnough && isYNearEnough && isThetaTrue || isSpeedTrue)
+       if(isXNearEnough && isYNearEnough && isThetaTrue) //|| isSpeedTrue)
        {
         doneWithPath = true;
        }
@@ -217,9 +269,10 @@ public class PathFollower
 
         double alpha = (Math.pow(c,2) + Math.pow(b,2) - Math.pow(a,2))/2*c*b;
         double pError = b*Math.sin(alpha);
-        double kA = 1;
-        double aError = B.waypointTheta-(robotTheta-pError*kA);
-        
+        double kA = .24;
+        double kS = 1; 
+        double aError = B.waypointTheta-(robotTheta-(pError*kA));
+        aError = aError * kS;
         double speed = B.waypointSpeed;
 
         double[] outputs = 
