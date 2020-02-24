@@ -33,7 +33,7 @@ public class encoderDrive extends CommandBase {
   @Override
   public void initialize() 
   {
-    SmartDashboard.putString("Drive Command Running:", "Encoder Drive " + leftDesired + rightDesired);
+    SmartDashboard.putString("Drive Command Running:", "Encoder Drive " + leftDesired  + rightDesired);
 
     prevLeftError = 0;
     prevRightError = 0; 
@@ -47,12 +47,16 @@ public class encoderDrive extends CommandBase {
   @Override
   public void execute() 
   {
-    
+    if(Math.abs(leftError) <.05 && Math.abs(rightError) < .05)
+    {
+      isFinished = true;
+    }
+    SmartDashboard.putBoolean("should be finished", isFinished);
     double currentLeftPos = drive.getLeftMetres();
     double currentRightPos = drive.getRightMetres();
     
-    double leftError = leftDesired-currentLeftPos;
-    double rightError = rightDesired-currentRightPos ;
+    leftError = leftDesired-currentLeftPos;
+    rightError = rightDesired-currentRightPos;
     SmartDashboard.putNumber("left error ecnoder drive", leftError);
     SmartDashboard.putNumber("right errror encoder drive", rightError);
     
@@ -70,7 +74,7 @@ public class encoderDrive extends CommandBase {
 
     double lP, lI, lD, rP, rI, rD; 
     lP = 4.47; lI = 0; lD = 0; 
-    rP = 4.47; rI = 0; rD = 0; 
+    rP = 4.58; rI = 0; rD = 0; 
     double leftInput, rightInput; 
 
     leftInput = leftPower * lP + leftErrorSum * lI + leftErrorChange * lD; 
@@ -95,6 +99,6 @@ public class encoderDrive extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(leftError) <1 && Math.abs(rightError) < 1;
+    return isFinished;
   }
 }
