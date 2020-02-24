@@ -39,6 +39,7 @@ public class RobotContainer implements RobotMap {
   public static final ColorWheel colorWheel = new ColorWheel();
   public static final TurretLimelight turretLimelight = TurretLimelight.getInstance();
   public static final Rioduino arduino = new Rioduino();
+  public static int activeBallCount = 3;
 
 
   public static Joystick leftJoystick = new Joystick(RobotMap.KOI.LEFT_JOYSTICK),
