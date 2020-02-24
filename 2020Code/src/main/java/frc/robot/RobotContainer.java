@@ -20,6 +20,7 @@ import frc.robot.ncommands.storage.*;
 import frc.robot.ncommands.intake.*;
 import frc.robot.ncommands.turret.*;
 import frc.robot.nsubsystems.*;
+import frc.robot.ncommands.auton.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -100,8 +101,8 @@ public class RobotContainer implements RobotMap {
     rightButton10.whenPressed(new resetGyro(drive));
     rightButton12.whenPressed(new resetOdometry(drive));
    // rightButton11.whenPressed(new turnToAngle(drive, 90));
-    rightButton11.whenPressed(new followPath(drive, paths.testPathWaypoints()));
-    leftThumb.whenPressed(new shiftGears(drive));
+    rightButton11.whenPressed(new testAuto(drive, intake));
+        leftThumb.whenPressed(new shiftGears(drive));
     leftButton7.whenPressed(new resetDriveEncoders(drive));
     leftButton8.whenPressed(new resetEndgameEncoders(endgame));
     leftButton9.whenPressed(new resetIntakeEncoders(intake));
@@ -115,7 +116,7 @@ public class RobotContainer implements RobotMap {
   // manipButton3.whenPressed(new RotateTurretToAngle(turret, -90));
     
     manipButton4.whileHeld(new runRoller(intake, .4));
-    manipButton3.whileHeld(new runWinch(endgame, -1));
+    manipButton3.whileHeld(new runWinch(endgame, -.5));
     manipButton9.whenPressed(new rotateWheelOfFortune(colorWheel, 0));
     manipButton10.whenPressed(new raiseEndgame(endgame, 165));
     manipButton11.toggleWhenPressed(new moveIntake(intake));

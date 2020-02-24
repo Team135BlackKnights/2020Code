@@ -16,13 +16,14 @@ import frc.robot.util.ImprovedJoystick;
 public class TargetTurret extends CommandBase {
 
   double tiltPowerPreset = .6;
-  double rotationPowerPreset = .2;
+  double rotationPowerPreset = .12;
   private final Turret turret;
   private final TurretLimelight turretLimelight;
   private final ImprovedJoystick _joystick;
   private double horizontalOffset, verticalOffset;
   private boolean targetExist;
   private boolean targetTurret;
+  private boolean overrideTurret; 
 
   private long furtherTime = 0;
   private double previousError;
@@ -39,6 +40,7 @@ public class TargetTurret extends CommandBase {
   @Override
   public void initialize() {
     targetTurret = false;
+    overrideTurret = false; 
     previousError = 0; 
     SmartDashboard.putString("Turret Command Running: ", "targetTurret");
     turretLimelight.initLimelight(0, 0);
@@ -49,17 +51,17 @@ public class TargetTurret extends CommandBase {
   public void execute() {
     targetExist = turretLimelight.GetLimelightData()[0] >= 1 ? true : false;
     verticalOffset = turretLimelight.GetLimelightData()[2];
-    horizontalOffset = turretLimelight.GetLimelightData()[1];
+    horizontalOffset = turretLimelight.GetLimelightData()[1] + 2;
     
     boolean isShooting = turret.getTopWheelRPM() > 1250;
     double distToTarget = turretLimelight.distToTarget();
 
-    verticalOffset = verticalOffset + distToTarget/3;
+    verticalOffset = verticalOffset + distToTarget/3.5;
     double rotationPower, tiltPower;
     double rotationHelper = distToTarget/6;
     SmartDashboard.putNumber("ROtatoinhelper", rotationHelper);
-    double rP = 1.5, tP = 1, rI = .0, rD = .08;
-    rotationPower = horizontalOffset /70;
+    double rP = 1.4, tP = 1, rI = .25, rD = .00;
+    rotationPower = horizontalOffset /30;
     tiltPower = -verticalOffset / 4;
 
     //rotationPower = rotationPower+rotationHelper;
@@ -88,13 +90,24 @@ public class TargetTurret extends CommandBase {
     long timeNow = System.currentTimeMillis();
     
     
+    
+    
+    if (_joystick.getJoystickButtonValue(6) && timeNow >= furtherTime) {
+      furtherTime = timeNow + 50;
+      overrideTurret = !overrideTurret;
+    }
+
     if(isShooting)
     {
       targetTurret = false;
     }
-    if (_joystick.getJoystickButtonValue(6) && timeNow >= furtherTime) {
-      furtherTime = timeNow + 50;
-      targetTurret = !targetTurret;
+    else if(overrideTurret)
+    {
+      targetTurret = false; 
+    }
+    else 
+    {
+      targetTurret = true;
     }
     
     SmartDashboard.putBoolean("Auto Targeting turret: ", targetTurret);
@@ -140,7 +153,7 @@ public class TargetTurret extends CommandBase {
       SmartDashboard.putString("Turret State:", "Driver Override");
 
     } else if (targetExist && targetTurret) {
-      rotationPower = (rotationPower * rP) ;//+ (rIntegral * rI) + (derivative *rD) + (minPower * rotationDirection);
+      rotationPower = (rotationPower * rP) + (rIntegral * rI) + (derivative *rD) + (minPower * rotationDirection);
       tiltPower = (tiltPower * tP);
       SmartDashboard.putString("Turret State:", "Auto Targetting");
     } else {

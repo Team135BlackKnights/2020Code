@@ -10,6 +10,8 @@ package frc.robot.ncommands.drive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.FalconDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 public class encoderDrive extends CommandBase {
   /**
@@ -35,8 +37,8 @@ public class encoderDrive extends CommandBase {
 
     prevLeftError = 0;
     prevRightError = 0; 
-    leftError = drive.getLeftMetres() - leftDesired;
-    rightError = drive.getRightMetres() - rightDesired;
+    leftError = leftDesired-drive.getLeftMetres() ;
+    rightError = rightDesired-drive.getRightMetres();
     isFinished = false;
 
   }
@@ -45,20 +47,20 @@ public class encoderDrive extends CommandBase {
   @Override
   public void execute() 
   {
-    if(Math.abs(leftError) < .2 && Math.abs(rightError) < .2)
-    {
-      isFinished = true;
-    }
+    
     double currentLeftPos = drive.getLeftMetres();
     double currentRightPos = drive.getRightMetres();
     
-    double leftError = currentLeftPos - leftDesired;
-    double rightError = currentRightPos - rightDesired;
+    double leftError = leftDesired-currentLeftPos;
+    double rightError = rightDesired-currentRightPos ;
+    SmartDashboard.putNumber("left error ecnoder drive", leftError);
+    SmartDashboard.putNumber("right errror encoder drive", rightError);
     
     double leftPower, rightPower;
+    
 
-    leftPower = leftError/5;
-    rightPower = rightError/5;
+    leftPower = leftError;
+    rightPower = rightError;
 
     double leftErrorSum =+ leftError*.02;
     double rightErrorSum =+ rightError *.02;
@@ -67,16 +69,19 @@ public class encoderDrive extends CommandBase {
     double rightErrorChange = (rightError - prevRightError)/.02;
 
     double lP, lI, lD, rP, rI, rD; 
-    lP = 1; lI = 0; lD = 0; 
-    rP = 1; rI = 0; rD = 0; 
+    lP = 4.47; lI = 0; lD = 0; 
+    rP = 4.47; rI = 0; rD = 0; 
     double leftInput, rightInput; 
 
     leftInput = leftPower * lP + leftErrorSum * lI + leftErrorChange * lD; 
     rightInput = rightPower * rP + rightErrorSum * rI + rightErrorChange * rD;
 
+    leftInput = drive.limit(leftInput, .65, -.65);
+    rightInput = drive.limit(rightInput, .65, -.65);
+
     prevLeftError = leftError;
     prevRightError = rightError;
-  
+    
     this.drive.TankDrive(leftInput, rightInput);
   }
 
@@ -90,6 +95,6 @@ public class encoderDrive extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return isFinished;
+    return Math.abs(leftError) <1 && Math.abs(rightError) < 1;
   }
 }

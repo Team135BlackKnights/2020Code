@@ -27,12 +27,11 @@ public class testAuto extends SequentialCommandGroup {
     // super(new FooCommand(), new BarCommand());
     super(
       new moveIntake(intake),
-      parallel(new encoderDrive(drive, 4.45,4.45), new runRoller(intake, .4)),
-      new encoderDrive(drive, 1.36, 1.36),
-      new turnToAngle(drive, 50),
-      parallel(new encoderDrive(drive, 4, 3.52), new runRoller(intake, .4)),
-      new turnToAngle(drive, 0),
-      new encoderDrive(drive, 2.68, 2.68)
+      parallel(sequence(new encoderDrive(drive, 4.45, 4.45), 
+      new encoderDrive(drive, 1,1)), 
+      new runRoller(intake, .4)),
+      
+      new encoderDrive(drive, 1,1)
     );
 
     

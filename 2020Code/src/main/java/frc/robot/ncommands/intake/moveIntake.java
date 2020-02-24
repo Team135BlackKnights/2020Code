@@ -13,7 +13,7 @@ import frc.robot.nsubsystems.*;
 public class moveIntake extends CommandBase {
 
   private final Intake intake;
-  private static boolean solenoidPosition = true;
+  private static boolean solenoidPosition = false;
 
   public moveIntake(Intake subsystem) {
     intake = subsystem;

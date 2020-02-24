@@ -246,7 +246,10 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     SmartDashboard.putNumber("bottom Shooter Spark Position:",
         ticksToRotations(getSparkEncoderPosition(bottomShooterEncoder), 4096));
     SmartDashboard.putNumber("ball Feeder Spark Position:",
-        ticksToRotations(getSparkEncoderPosition(ballFeederEncoder), 4096));}
+        ticksToRotations(getSparkEncoderPosition(ballFeederEncoder), 4096));
+    SmartDashboard.putNumber("Rotation Encoder Position",
+        ticksToRotations(getSparkEncoderPosition(rotationEncoder ), 1));
+      }
 
   public void printStates() {
     SmartDashboard.putBoolean("is turret at Forward limit", getForwardRotationLimit());
@@ -322,6 +325,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
   @Override
   public void periodic() {
     printShooterRPM();
+
+    printRotations();
    //printTemp();
   // autoResetEncoders();
   /* SmartDashboard.putNumber("Rotation Ticks", getRotationTicks());
