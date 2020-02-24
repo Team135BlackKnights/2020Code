@@ -5,36 +5,28 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.ncommands.auton;
+package frc.robot.ncommands.auton.parallels;
 
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.ncommands.drive.encoderDrive;
-import frc.robot.ncommands.drive.turnToAngle;
-import frc.robot.ncommands.intake.moveIntake;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import frc.robot.ncommands.auton.sequentials.rightSideFowardAndBack;
 import frc.robot.ncommands.intake.runRoller;
-import frc.robot.ncommands.turret.RotateTurretToPosition;
 import frc.robot.nsubsystems.FalconDrive;
 import frc.robot.nsubsystems.Intake;
-import frc.robot.nsubsystems.Turret;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class testAuto extends SequentialCommandGroup {
+public class runRollerAndDriveRightSide extends ParallelRaceGroup {
   /**
-   * Creates a new testAuto.
+   * Creates a new runRollerAndDriveRightSide.
    */
-  public testAuto(FalconDrive drive, Intake intake, Turret turret) {
+  public runRollerAndDriveRightSide(FalconDrive drive, Intake intake) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(
-      parallel(new moveIntake(intake), new RotateTurretToPosition(turret, -125))
-      //parallel(sequence(new encoderDrive(drive, 4.45, 4.45), 
-     // new encoderDrive(drive, 1,1)), 
-     // new runRoller(intake, .4)),
-      
+    super
+    (
+      new runRoller(intake, .4),
+      new rightSideFowardAndBack(drive)
     );
-
-    
   }
 }

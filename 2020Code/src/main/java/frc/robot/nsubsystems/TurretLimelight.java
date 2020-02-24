@@ -49,8 +49,6 @@ public class TurretLimelight extends SubsystemBase {
 		return  (9.204*Math.pow(.5146, getAveragedArea())) -.5;
 	}
 
-	
-
 	public double[] GetLimelightData() { // creating an array so we can get to any of the values that we need from
 											// network tables
 		limelightData[VALID_TARGET] = validTargetEntry.getDouble(0.0);

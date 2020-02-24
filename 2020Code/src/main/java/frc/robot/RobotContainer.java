@@ -100,9 +100,9 @@ public class RobotContainer implements RobotMap {
   private void configureButtonBindings() {
     rightButton3.whenPressed(new ToggleLight(turret));
     rightButton10.whenPressed(new resetGyro(drive));
-    rightButton12.whenPressed(new RotateTurretToPosition(turret, -125));
+    rightButton12.whenPressed(new rotateAndTiltTurretToPos(turret, -125, 50));
    // rightButton11.whenPressed(new turnToAngle(drive, 90));
-    rightButton11.whenPressed(new testAuto(drive, intake, turret));
+    //rightButton11.whenPressed(new testAuto(drive, intake, turret));
         leftThumb.whenPressed(new shiftGears(drive));
     leftButton7.whenPressed(new resetDriveEncoders(drive));
     leftButton8.whenPressed(new resetEndgameEncoders(endgame));
