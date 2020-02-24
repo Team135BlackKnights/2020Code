@@ -7,7 +7,6 @@
 
 package frc.robot.ncommands.turret;
 
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.*;
@@ -43,14 +42,14 @@ public class runTurretAuton extends CommandBase {
   @Override
   public void execute() 
   {
-    boolean targetExist, isShooting, isDriving, isTargetWithinRange, isShooterUpToSpeed;
+    boolean targetExist, isDriving, isTargetWithinRange, isShooterUpToSpeed;
     double verticalOffset, horizontalOffset, 
     distanceToTarget, rotationPower, tiltPower, currentTopWheelRPM, currentBottomWheelRPM, 
     desiredTopWheelRPM, desiredBottomWheelRPM, feederDesired, feederMax, feederActual,
     topShooterMax, bottomShooterMax, storageMax, storageDesired, storageActual, 
     feederError, tiltError, rotationError, storageError, topWheelError, bottomWheelError, 
     topWheelInput, bottomWheelInput, feederInput, storageInput, rotationInput, tiltInput,
-    currentStoragePos, tiltErrorSum; 
+    currentStoragePos;
 
     targetExist = limelight.GetLimelightData()[0] >=1;
     verticalOffset = limelight.GetLimelightData()[2];
@@ -89,7 +88,7 @@ public class runTurretAuton extends CommandBase {
     storageInput = (storageDesired + storageError)/storageMax;
 
     double tP, bP, fP, tI, bI, rP, rI, tiltP, storageP, 
-    rotationIntegral, rotationErrorSum, topWheelErrorSum, bottomWheelErrorSum;
+    rotationErrorSum, topWheelErrorSum, bottomWheelErrorSum;
 
     rotationErrorSum =+ horizontalOffset*.02;
     topWheelErrorSum =+ topWheelInput*.02;
@@ -106,18 +105,18 @@ public class runTurretAuton extends CommandBase {
     isShooterUpToSpeed = (topWheelError <= minError && bottomWheelError <=minError);
 
 
-    rP = 1.4; rI = .25; tiltP = .87;
+    rP = 1.4; rI = .25; tiltP = .87; storageP = 2.1;
     bI = .4; tI = .4; tP = .99; bP = .968; fP = .862;
 
     topWheelInput = isTargetWithinRange && !isDriving ? (topWheelInput * tP) + (topWheelErrorSum + tI) : 0;
     bottomWheelInput = isTargetWithinRange && !isDriving ? (bottomWheelInput * bP) + (bottomWheelErrorSum + bI) : 0;
     feederInput = isShooterUpToSpeed ? feederInput*fP : 0;
-    rotationInput = !isShooterUpToSpeed && targetExist ? rotationPower * rP: 0;
+    rotationInput = !isShooterUpToSpeed && targetExist ? (rotationPower * rP) + (rotationErrorSum * rI): 0;
     tiltInput = !isShooterUpToSpeed && targetExist ? tiltP * tP: 0;
-    storageInput = isShooterUpToSpeed && isTargetWithinRange ? storageInput: 0;
+    storageInput = isShooterUpToSpeed  ? (storageInput * storageP): 0;
 
 
-    if(currentStoragePos >= -2.5 )
+    if(currentStoragePos >= -2.5)
     {
       storageInput = -.25;
     }

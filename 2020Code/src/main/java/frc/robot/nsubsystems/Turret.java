@@ -327,7 +327,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
 
   @Override
   public void periodic() {
-    double currentRPM = (getBottomWheelRPM() + getTopWheelRPM()) / 2;
+    double currentRPM = getTopWheelRPM();
     printShooterRPM();
 
     printRotations();

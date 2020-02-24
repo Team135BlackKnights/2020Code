@@ -32,6 +32,7 @@ public class rightSideAuto extends SequentialCommandGroup {
     // super(new FooCommand(), new BarCommand());
     super
     (
+      
       sequence
       (
         new leaveStartingConfig(intake, turret),

@@ -13,12 +13,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.*;
 import frc.robot.util.ImprovedJoystick;
 
-public class DriveWithJoysticks extends CommandBase {
+public class driveWithJoysticks extends CommandBase {
   private final FalconDrive drive;
 
   ImprovedJoystick _leftJoystick, _rightJoystick;
 
-  public DriveWithJoysticks(FalconDrive subsystem, Joystick leftJoystick, Joystick rightJoystick) {
+  public driveWithJoysticks(FalconDrive subsystem, Joystick leftJoystick, Joystick rightJoystick) {
     drive = subsystem;
     addRequirements(drive);
     _leftJoystick = new ImprovedJoystick(leftJoystick);

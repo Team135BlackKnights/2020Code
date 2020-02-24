@@ -10,7 +10,7 @@ package frc.robot.util;
 /**
  * Add your docs here.
  */
-public class checker 
+public class Checker 
 {
     public static boolean objectChecker(Object input, Object[] inputArray)
     {

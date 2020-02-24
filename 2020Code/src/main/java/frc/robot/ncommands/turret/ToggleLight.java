@@ -10,12 +10,12 @@ package frc.robot.ncommands.turret;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.*;
 
-public class ToggleLight extends CommandBase {
+public class toggleLight extends CommandBase {
 
   private final Turret turret;
   private boolean lightOn;
 
-  public ToggleLight(Turret subsystem) {
+  public toggleLight(Turret subsystem) {
     turret = subsystem;
   }
 

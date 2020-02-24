@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.*;
 import frc.robot.util.ImprovedJoystick;
 
-public class TargetTurret extends CommandBase {
+public class targetTurret extends CommandBase {
 
   double tiltPowerPreset = .6;
   double rotationPowerPreset = .75;
@@ -28,7 +28,7 @@ public class TargetTurret extends CommandBase {
   private long furtherTime = 0;
   private double previousError;
 
-  public TargetTurret(Turret turretSubsystem, TurretLimelight limelightSubsystem, Joystick joystick) {
+  public targetTurret(Turret turretSubsystem, TurretLimelight limelightSubsystem, Joystick joystick) {
     _joystick = new ImprovedJoystick(joystick);
     turret = turretSubsystem;
     turretLimelight = limelightSubsystem;

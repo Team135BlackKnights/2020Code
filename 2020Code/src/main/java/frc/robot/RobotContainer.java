@@ -81,9 +81,9 @@ public class RobotContainer implements RobotMap {
       manipButton12 = new JoystickButton(manipJoystick, KOI.BASE_BOTTOM_RIGHT_BUTTON);
 
   public RobotContainer() {
-    drive.setDefaultCommand(new DriveWithJoysticks(drive, leftJoystick, rightJoystick));
+    drive.setDefaultCommand(new driveWithJoysticks(drive, leftJoystick, rightJoystick));
     storage.setDefaultCommand(new runConveyor(storage, manipJoystick));
-    turret.setDefaultCommand(new TargetTurret(turret, turretLimelight, manipJoystick));
+    turret.setDefaultCommand(new targetTurret(turret, turretLimelight, manipJoystick));
     // turret.setDefaultCommand(new TurretTest(turret, manipJoystick));
     // Configure the button bindings
     //turretLimelight.initLimelight(1, 1);
@@ -98,7 +98,7 @@ public class RobotContainer implements RobotMap {
    */
 
   private void configureButtonBindings() {
-    rightButton3.whenPressed(new ToggleLight(turret));
+    rightButton3.whenPressed(new toggleLight(turret));
     rightButton10.whenPressed(new resetGyro(drive));
     
     rightButton11.whenPressed(new rightSideAuto(drive, intake, turret, turretLimelight, false));
