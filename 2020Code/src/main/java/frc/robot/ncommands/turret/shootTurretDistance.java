@@ -46,7 +46,7 @@ public class shootTurretDistance extends CommandBase {
     double bottomShooterActual = turret.getBottomWheelRPM();
 
    // double topShooterDesired = 4.787*Math.pow(distToTarget, 2) + 110.3889*distToTarget +2076.622;
-    double topShooterDesired = 2900;
+    double topShooterDesired = 3000;
     double bottomShooterDesired = topShooterDesired *1.25;
 
     double feederMax = 5250;

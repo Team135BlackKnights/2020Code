@@ -51,23 +51,32 @@ public class rotateAndTiltTurretToPos extends CommandBase {
     tiltPower =  0;
     rotationPower = 0;
     //Sometimes all you need is BANG BANG control; 
-    if(Math.abs(tiltError) < 5 && Math.abs(rotationError) < 5)
+    if(Math.abs(tiltError) > 5 || Math.abs(rotationError) > 5)
     {
-      if(tiltPos < currentTiltPos)
+      if(tiltError > 5)
       {
-        tiltPower = .65;
+        tiltPower = .55;
       }
-      else if(tiltPos > currentTiltPos)
+      else if(tiltError < 5)
       {
-        tiltPower = -.65;
+        tiltPower = -.55;
       }
-      if(rotationPos < currentRotationPos)
+      else 
+      {
+        rotationPower = 0;
+      }
+
+      if(rotationError > 5)
+      {
+        rotationPower = .85;
+      }
+      else if(rotationError < 5)
       {
         rotationPower = -.85;
       }
-      else if(rotationPos > currentRotationPos)
+      else 
       {
-        rotationPower = .85;
+        rotationPower = 0; 
       }
       isFinished = false;
     }

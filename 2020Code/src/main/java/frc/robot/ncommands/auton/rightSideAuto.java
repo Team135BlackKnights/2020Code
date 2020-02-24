@@ -32,15 +32,12 @@ public class rightSideAuto extends SequentialCommandGroup {
     // super(new FooCommand(), new BarCommand());
     super
     (
-     parallel
-     (
-      new shootTurretDistance(turret, limelight, isShooting),
       sequence
       (
         new leaveStartingConfig(intake, turret),
-        new runRollerAndDriveRightSide(drive, intake)
+        new runRollerAndDriveRightSide(drive, intake),
+        new encoderDrive(drive, 1, 1)
       )
-     )
     );
 
     

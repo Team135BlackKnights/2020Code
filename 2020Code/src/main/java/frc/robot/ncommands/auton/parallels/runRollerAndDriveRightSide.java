@@ -9,6 +9,7 @@ package frc.robot.ncommands.auton.parallels;
 
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import frc.robot.ncommands.auton.sequentials.rightSideFowardAndBack;
+import frc.robot.ncommands.drive.encoderDrive;
 import frc.robot.ncommands.intake.runRoller;
 import frc.robot.nsubsystems.FalconDrive;
 import frc.robot.nsubsystems.Intake;
@@ -26,7 +27,7 @@ public class runRollerAndDriveRightSide extends ParallelRaceGroup {
     super
     (
       new runRoller(intake, .4),
-      new rightSideFowardAndBack(drive)
+      new encoderDrive(drive, 4.45 , 4.45)
     );
   }
 }

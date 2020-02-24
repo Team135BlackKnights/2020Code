@@ -51,7 +51,7 @@ public class TargetTurret extends CommandBase {
   public void execute() {
     targetExist = turretLimelight.GetLimelightData()[0] >= 1 ? true : false;
     verticalOffset = turretLimelight.GetLimelightData()[2];
-    horizontalOffset = turretLimelight.GetLimelightData()[1] + 2;
+    horizontalOffset = turretLimelight.GetLimelightData()[1] +.5;
     
     boolean isShooting = turret.getTopWheelRPM() > 1250;
     double distToTarget = turretLimelight.distToTarget();
@@ -60,7 +60,7 @@ public class TargetTurret extends CommandBase {
     double rotationPower, tiltPower;
     double rotationHelper = distToTarget/6;
     SmartDashboard.putNumber("ROtatoinhelper", rotationHelper);
-    double rP = 1.4, tP = 1, rI = .25, rD = .00;
+    double rP = 1.4, tP = .87, rI = .25, rD = .00;
     rotationPower = horizontalOffset /30;
     tiltPower = -verticalOffset / 4;
 
