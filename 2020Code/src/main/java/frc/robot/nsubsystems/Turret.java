@@ -335,6 +335,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
       RobotContainer.activeBallCount--;
     }
     lastRPM = currentRPM;
+
+    SmartDashboard.putNumber("current balls in system ", RobotContainer.activeBallCount);
     
    //printTemp();
   // autoResetEncoders();
