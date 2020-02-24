@@ -167,94 +167,9 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL 
       if (currentColor != "No Color") { // If the current color isn't no color, put it into last seen
          lastSeenColor = currentColor;
       }
-   }
-   @SuppressWarnings({"unchecked" , "rawtypes"})
-   public String spinToWhatColor(String FMScolor) {
-      Dictionary colors = new Hashtable<>();
-      colors.put("Red", "Blue");
-      colors.put("Green", "Yellow");
-      colors.put("Blue", "Red");
-      colors.put("Yellow", "Green");
-      Enumeration values = colors.elements();
-      for (Enumeration k = colors.keys(); k.hasMoreElements();) {
+   }   
 
-         if (k.nextElement() == FMScolor) {
-            return values.nextElement().toString();
-         }
-         values.nextElement();
-      }
-      return "Error";
-   }
-
-   // Takes the desired color and power setting and if the current color isn't the
-   // desired color, rotate the panel
-   public void getToColor(final String desiredColor, double power) {
-      // SmartDashboard.putString("dictval", spinToWhatColor(desiredColor));
-      String actualDesired = spinToWhatColor(desiredColor);
-      SmartDashboard.putString("actual Desired", actualDesired);
-      if (checkForColor() != actualDesired) {
-         detectedColor = controlPanelColorSensor.getColor();
-         SmartDashboard.putString("funcout", checkForColor());
-
-         // Sets the current color to the current color(String)
-         currentColor = checkForColor();
-         // Counts color changes
-         countColor();
-
-         // Prints to the screen
-         // SmartDashboard.putString("Current Color", currentColor);
-         // SmartDashboard.putNumber("ColorChanges:", colorChanges);
-         // rotatorSpark.set(power);
-         rotatorSpark.set(power);
-      }
-      /*
-       * else { rotatorSpark.set(-.6); edu.wpi.first.wpilibj.Timer t = new
-       * edu.wpi.first.wpilibj.Timer(); t.start(); double starttime = t.get(); while
-       * ((t.get() - starttime) < .01 )//runs motor for .25 seconds {}
-       * atDesiredRoations=true; stopControlPanel();// Stops the panel }
-       */
-      else
-         stopControlPanel();
-
-   }
-
-   // Takes the desired number of rotations and power setting, and rotates the
-   // wheel that many times
-   public void rotateColorWheel(double power, double desiredRotations) {
-      colorChanges = 0; // Resets number of color changes to 0
-
-      lastSeenColor = checkForColor(); // Sets the last seen color to the current color
-      // rotatorSpark.set(power); //Runs the motor at the desired power
-      rotatorSpark.set(power);
-      if(wheelRotations < desiredRotations) {
-         detectedColor = controlPanelColorSensor.getColor();
-
-         // Sets the current color to the current color(String)
-         currentColor = checkForColor();
-         // Counts color changes
-         countColor();
-
-         // Prints to the screen
-
-         SmartDashboard.putNumber("Wheel Rotations", wheelRotations);
-         SmartDashboard.putNumber("ColorChanges:", colorChanges);
-         // countColor();
-         wheelRotations = colorChanges / 8; // Calculates wheel rotations based on how many color changes its seen
-      }
-      else 
-      {
-         rotatorSpark.set(0);
-         wheelRotations = 0;
-         atDesiredRoations = true;
-      }
-      SmartDashboard.putNumber("Wheel Rotations", wheelRotations);
-      SmartDashboard.putNumber("ColorChanges:", colorChanges); // While the number of rotations is less than we need, it
-                                                               // continues to count colors and rotate the wheel
-
-       // After the above function ends, the desired rotations has been reached
-   }
-
-   // To stop the control panel, the motor controller is set to 0 power
+    // To stop the control panel, the motor controller is set to 0 power
    public void stopControlPanel() {
       rotatorSpark.set(0);
 
