@@ -26,7 +26,7 @@ public class runRollerAndDriveRightSide extends ParallelRaceGroup {
     super
     (
       new runRoller(intake, .4),
-      new encoderDrive(drive, 4.45 , 4.45)
+      new encoderDrive(drive, 4.45 , 4.45, true)
     );
   }
 }

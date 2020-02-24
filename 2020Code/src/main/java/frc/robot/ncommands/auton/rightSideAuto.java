@@ -14,11 +14,9 @@ import frc.robot.ncommands.drive.encoderDrive;
 import frc.robot.ncommands.drive.turnToAngle;
 import frc.robot.ncommands.intake.moveIntake;
 import frc.robot.ncommands.intake.runRoller;
+import frc.robot.ncommands.turret.runTurretAuton;
 import frc.robot.ncommands.turret.shootTurretDistance;
-import frc.robot.nsubsystems.FalconDrive;
-import frc.robot.nsubsystems.Intake;
-import frc.robot.nsubsystems.Turret;
-import frc.robot.nsubsystems.TurretLimelight;
+import frc.robot.nsubsystems.*;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -27,17 +25,18 @@ public class rightSideAuto extends SequentialCommandGroup {
   /**
    * Creates a new testAuto.
    */
-  public rightSideAuto(FalconDrive drive, Intake intake, Turret turret, TurretLimelight limelight, boolean isShooting) {
+  
+  public rightSideAuto(FalconDrive drive, Intake intake, Turret turret, TurretLimelight limelight, Storage storage, boolean isShooting) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super
     (
-      
+      new runTurretAuton(turret, limelight, storage),
       sequence
       (
         new leaveStartingConfig(intake, turret),
         new runRollerAndDriveRightSide(drive, intake),
-        new encoderDrive(drive, 1, 1)
+        new encoderDrive(drive, 1, 1, false)
       )
     );
 
