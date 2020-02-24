@@ -50,7 +50,7 @@ public class runTurretAuton extends CommandBase {
     topShooterMax, bottomShooterMax, storageMax, storageDesired, storageActual, 
     feederError, tiltError, rotationError, storageError, topWheelError, bottomWheelError, 
     topWheelInput, bottomWheelInput, feederInput, storageInput, rotationInput, tiltInput,
-    currentStoragePos; 
+    currentStoragePos, tiltErrorSum; 
 
     targetExist = limelight.GetLimelightData()[0] >=1;
     verticalOffset = limelight.GetLimelightData()[2];
@@ -81,10 +81,12 @@ public class runTurretAuton extends CommandBase {
     topWheelError = desiredTopWheelRPM - currentTopWheelRPM;
     bottomWheelError = desiredBottomWheelRPM - currentBottomWheelRPM;
     feederError = feederDesired - feederActual;
+    storageError = storageDesired - storageActual;
 
     topWheelInput = (desiredTopWheelRPM + topWheelError)/topShooterMax;
     bottomWheelInput = (desiredBottomWheelRPM + bottomWheelError)/bottomShooterMax;
     feederInput = (desiredBottomWheelRPM + feederError)/feederMax;
+    storageInput = (storageDesired + storageError)/storageMax;
 
     double tP, bP, fP, tI, bI, rP, rI, tiltP, storageP, 
     rotationIntegral, rotationErrorSum, topWheelErrorSum, bottomWheelErrorSum;
@@ -105,11 +107,15 @@ public class runTurretAuton extends CommandBase {
 
 
     rP = 1.4; rI = .25; tiltP = .87;
-    bI = .4; tI = .4; tP = .99; bP = .968, fP = .862;
+    bI = .4; tI = .4; tP = .99; bP = .968; fP = .862;
 
     topWheelInput = isTargetWithinRange && !isDriving ? (topWheelInput * tP) + (topWheelErrorSum + tI) : 0;
     bottomWheelInput = isTargetWithinRange && !isDriving ? (bottomWheelInput * bP) + (bottomWheelErrorSum + bI) : 0;
     feederInput = isShooterUpToSpeed ? feederInput*fP : 0;
+    rotationInput = !isShooterUpToSpeed && targetExist ? rotationPower * rP: 0;
+    tiltInput = !isShooterUpToSpeed && targetExist ? tiltP * tP: 0;
+    storageInput = isShooterUpToSpeed && isTargetWithinRange ? storageInput: 0;
+
 
     if(currentStoragePos >= -2.5 )
     {
