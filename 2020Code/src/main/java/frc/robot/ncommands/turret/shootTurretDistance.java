@@ -9,6 +9,7 @@ package frc.robot.ncommands.turret;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.nsubsystems.Turret;
 import frc.robot.nsubsystems.TurretLimelight;
 
@@ -19,12 +20,13 @@ public class shootTurretDistance extends CommandBase {
   TurretLimelight limelight;
   Turret turret;
   double distToTarget;
+  boolean isAuton;
   
-
-  public shootTurretDistance(Turret _turret, TurretLimelight _limelight) 
+  public shootTurretDistance(Turret _turret, TurretLimelight _limelight, boolean _isAuton) 
   {
     turret = _turret;
     limelight = _limelight;
+    isAuton = _isAuton;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -34,9 +36,7 @@ public class shootTurretDistance extends CommandBase {
   {
     distToTarget = limelight.distToTarget();
     SmartDashboard.putString("Turret Command Running:", "Shoot Turret w/Distance");
-
   }
-
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() 
@@ -46,8 +46,8 @@ public class shootTurretDistance extends CommandBase {
     double bottomShooterActual = turret.getBottomWheelRPM();
 
    // double topShooterDesired = 4.787*Math.pow(distToTarget, 2) + 110.3889*distToTarget +2076.622;
-   double topShooterDesired = 2900;
-   double bottomShooterDesired = topShooterDesired *1.25;
+    double topShooterDesired = 2900;
+    double bottomShooterDesired = topShooterDesired *1.25;
 
     double feederMax = 5250;
     double feederDesired = -.35*feederMax;
@@ -74,15 +74,36 @@ public class shootTurretDistance extends CommandBase {
     double tErrorSum =+ topShooterPower *.02;
     double bErrorSum =+ bottomShooterPower * .02;
 
-    double topShooterInput = (topShooterPower * tP) + (tErrorSum * tI);
-    double bottomShooterInput = (bottomShooterPower * bP) + (bErrorSum * bI);
-    double feederInput = feederPower*fP;
+    double topShooterInput, bottomShooterInput, feederInput;
 
     double minError = 100;
     
-    
     turret.isShooterUpToSpeed = (topShooterError <= minError && bottomShooterError <=minError);
-    feederInput = turret.isShooterUpToSpeed ? feederInput : 0;
+
+    if(isAuton)
+    {
+      if(RobotContainer.activeBallCount >= 3)
+      {
+        
+        topShooterInput = (topShooterPower * tP) + (tErrorSum + tI);
+        bottomShooterInput = (bottomShooterPower * bP) + (bErrorSum * bI);
+        feederInput = feederPower*fP;
+        feederInput = turret.isShooterUpToSpeed ? feederInput : 0;
+      }
+      else 
+      {
+        topShooterInput = 0;
+        bottomShooterInput = 0;
+        feederInput = 0; 
+      }
+    }
+    else 
+    {
+      topShooterInput = (topShooterPower * tP) + (tErrorSum + tI);
+      bottomShooterInput = (bottomShooterPower * bP) + (bErrorSum * bI);
+      feederInput = feederPower*fP;
+      feederInput = turret.isShooterUpToSpeed ? feederInput : 0;
+    }
     
     turret.runBallFeeder(feederInput);
     turret.runShooterPower(topShooterInput, bottomShooterInput);

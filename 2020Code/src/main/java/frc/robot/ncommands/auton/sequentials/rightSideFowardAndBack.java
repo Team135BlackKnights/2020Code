@@ -5,32 +5,26 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.ncommands.turret;
+package frc.robot.ncommands.auton.sequentials;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.ncommands.storage.runConveyorPower;
-import frc.robot.nsubsystems.Storage;
-import frc.robot.nsubsystems.Turret;
-import frc.robot.nsubsystems.TurretLimelight;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.ncommands.drive.encoderDrive;
+import frc.robot.nsubsystems.FalconDrive;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class runTurretAndStorage extends ParallelCommandGroup {
+public class rightSideFowardAndBack extends SequentialCommandGroup {
   /**
-   * Creates a new runTurretAndStorage.
+   * Creates a new rightSideFowardAndBack.
    */
-  
-
-  public runTurretAndStorage(Storage _storage, Turret _turret, TurretLimelight _limelight) {
-    super(
-      new shootTurretDistance(_turret, _limelight, false),
-      new runConveyorPower(_storage, -1800));
-    
-
-
-
+  public rightSideFowardAndBack(FalconDrive drive) {
     // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());super();
+    // super(new FooCommand(), new BarCommand());
+    super
+    (
+      new encoderDrive(drive, 4.45, 4.45),
+      new encoderDrive(drive, 1,1)
+    );
   }
 }

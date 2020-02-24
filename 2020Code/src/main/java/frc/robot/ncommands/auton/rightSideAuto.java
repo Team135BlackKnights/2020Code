@@ -7,42 +7,43 @@
 
 package frc.robot.ncommands.auton;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.ncommands.drive.DriveWithTrajectory;
-import frc.robot.ncommands.drive.shiftGears;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.ncommands.auton.parallels.leaveStartingConfig;
+import frc.robot.ncommands.auton.parallels.runRollerAndDriveRightSide;
+import frc.robot.ncommands.drive.encoderDrive;
+import frc.robot.ncommands.drive.turnToAngle;
 import frc.robot.ncommands.intake.moveIntake;
 import frc.robot.ncommands.intake.runRoller;
-import frc.robot.ncommands.turret.RotateTurretToAngle;
+import frc.robot.ncommands.turret.shootTurretDistance;
 import frc.robot.nsubsystems.FalconDrive;
 import frc.robot.nsubsystems.Intake;
-import frc.robot.nsubsystems.Storage;
 import frc.robot.nsubsystems.Turret;
+import frc.robot.nsubsystems.TurretLimelight;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class leftAutonParallel extends ParallelCommandGroup {
-  FalconDrive drive;
-  Intake intake;
-  Turret turret;
-
-  public leftAutonParallel(FalconDrive drivesubsystem, Intake intakesubsystem, Turret turretsubsystem,
-      Storage storagesubsystem) {
-    super();
-
-    drive = drivesubsystem;
-    turret = turretsubsystem;
-    intake = intakesubsystem;
+public class rightSideAuto extends SequentialCommandGroup {
+  /**
+   * Creates a new testAuto.
+   */
+  public rightSideAuto(FalconDrive drive, Intake intake, Turret turret, TurretLimelight limelight, boolean isShooting) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    parallel(new shiftGears(drive));
-    if (drive.doesPathExist("PathWeaver/output/redRight.wpilib.json")) {
-      parallel(new DriveWithTrajectory(drive, "PathWeaver/output/redRight.wpilib.json"));
-    } else
-     // parallel(new encoderDrive(drive, 90, 90));
-    parallel(sequence(new runRoller(intake, .8)),
-        sequence(parallel(new RotateTurretToAngle(turret, 90)), parallel(new moveIntake(intake))));
+    super
+    (
+     parallel
+     (
+      new shootTurretDistance(turret, limelight, isShooting),
+      sequence
+      (
+        new leaveStartingConfig(intake, turret),
+        new runRollerAndDriveRightSide(drive, intake)
+      )
+     )
+    );
 
+    
+    
   }
-
 }

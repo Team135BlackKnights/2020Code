@@ -5,31 +5,28 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.ncommands.turret;
+package frc.robot.ncommands.auton.parallels;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.ncommands.storage.runConveyorPower;
-import frc.robot.nsubsystems.Storage;
+import frc.robot.ncommands.intake.moveIntake;
+import frc.robot.ncommands.turret.rotateAndTiltTurretToPos;
+import frc.robot.nsubsystems.Intake;
 import frc.robot.nsubsystems.Turret;
-import frc.robot.nsubsystems.TurretLimelight;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class runTurretAndStorage extends ParallelCommandGroup {
+public class leaveStartingConfig extends ParallelCommandGroup {
   /**
-   * Creates a new runTurretAndStorage.
+   * Creates a new leaveStartingConfig.
    */
-  
-
-  public runTurretAndStorage(Storage _storage, Turret _turret, TurretLimelight _limelight) {
-    super(
-      new shootTurretDistance(_turret, _limelight, false),
-      new runConveyorPower(_storage, -1800));
+  public leaveStartingConfig(Intake intake, Turret turret) {
     
-
-
-
+    super
+    (
+      new moveIntake(intake),
+      new rotateAndTiltTurretToPos(turret, -.125, 50)
+    );
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());super();
   }
