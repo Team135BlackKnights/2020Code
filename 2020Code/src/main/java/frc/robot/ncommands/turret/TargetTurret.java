@@ -16,7 +16,7 @@ import frc.robot.util.ImprovedJoystick;
 public class TargetTurret extends CommandBase {
 
   double tiltPowerPreset = .6;
-  double rotationPowerPreset = .12;
+  double rotationPowerPreset = .75;
   private final Turret turret;
   private final TurretLimelight turretLimelight;
   private final ImprovedJoystick _joystick;
@@ -93,7 +93,7 @@ public class TargetTurret extends CommandBase {
     
     
     if (_joystick.getJoystickButtonValue(6) && timeNow >= furtherTime) {
-      furtherTime = timeNow + 50;
+      furtherTime = timeNow + 100;
       overrideTurret = !overrideTurret;
     }
 
