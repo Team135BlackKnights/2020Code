@@ -19,11 +19,14 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotContainer;
 import frc.robot.RobotMap;
 import frc.robot.util.KnightMath;
 
 public class Turret extends SubsystemBase implements RobotMap.TURRET {
  
+  public double lastRPM;
+
   public double[] testPoint1, testPoint2; 
   public double radius;
   public Relay targetingLight;
@@ -324,9 +327,15 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
 
   @Override
   public void periodic() {
+    double currentRPM = (getBottomWheelRPM() + getTopWheelRPM()) / 2;
     printShooterRPM();
 
     printRotations();
+    if (lastRPM - currentRPM < -500) {
+      RobotContainer.activeBallCount--;
+    }
+    lastRPM = currentRPM;
+    
    //printTemp();
   // autoResetEncoders();
   /* SmartDashboard.putNumber("Rotation Ticks", getRotationTicks());
