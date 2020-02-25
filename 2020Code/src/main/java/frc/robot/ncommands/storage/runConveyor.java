@@ -42,7 +42,7 @@ public class runConveyor extends CommandBase {
     isButton7 = _joystick.getJoystickButtonValue(7);
     isButton8 = _joystick.getJoystickButtonValue(8);
     
-    if(currentConveyPos >= -2.5 && !(isButton7 || isButton8))
+    if(currentConveyPos >= -3 && !(isButton7 || isButton8))
     {
       conveyorPower = -.25;
       SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR NOT OVERWROTE");

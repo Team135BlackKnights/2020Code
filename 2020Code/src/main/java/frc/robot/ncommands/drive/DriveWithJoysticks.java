@@ -48,7 +48,7 @@ public class driveWithJoysticks extends CommandBase {
     lateralPower = _rightJoystick.getJoystickAxis(1) *_rightJoystick.getJoystickSlider();
     rotationPower = _leftJoystick.getJoystickAxis(2) * _leftJoystick.getJoystickSlider();
     isHalfPower = _rightJoystick.getJoystickButtonValue(2);
-    isReversed = (_leftJoystick.getJoystickButtonValue(1) || _rightJoystick.getJoystickButtonValue(1));
+    isReversed = (_rightJoystick.getJoystickButtonValue(1));
 
     if (isHalfPower) {
       lateralPower = lateralPower * .75;

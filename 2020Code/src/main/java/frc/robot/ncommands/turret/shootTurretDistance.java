@@ -35,6 +35,7 @@ public class shootTurretDistance extends CommandBase {
   public void initialize() 
   {
     distToTarget = limelight.distToTarget();
+    RobotContainer.turretLimelight.initLimelight(0, 0);
     SmartDashboard.putString("Turret Command Running:", "Shoot Turret w/Distance");
   }
   // Called every time the scheduler runs while the command is scheduled.
@@ -46,7 +47,7 @@ public class shootTurretDistance extends CommandBase {
     double bottomShooterActual = turret.getBottomWheelRPM();
 
    // double topShooterDesired = 4.787*Math.pow(distToTarget, 2) + 110.3889*distToTarget +2076.622;
-    double topShooterDesired = 3000;
+    double topShooterDesired = 2000;
     double bottomShooterDesired = topShooterDesired *1.25;
 
     double feederMax = 5250;
@@ -79,31 +80,12 @@ public class shootTurretDistance extends CommandBase {
     double minError = 100;
     
     turret.isShooterUpToSpeed = (topShooterError <= minError && bottomShooterError <=minError);
-
-    if(isAuton)
-    {
-      if(RobotContainer.activeBallCount >= 3)
-      {
-        
+    //boolean isBsall
+   
         topShooterInput = (topShooterPower * tP) + (tErrorSum + tI);
         bottomShooterInput = (bottomShooterPower * bP) + (bErrorSum * bI);
         feederInput = feederPower*fP;
         feederInput = turret.isShooterUpToSpeed ? feederInput : 0;
-      }
-      else 
-      {
-        topShooterInput = 0;
-        bottomShooterInput = 0;
-        feederInput = 0; 
-      }
-    }
-    else 
-    {
-      topShooterInput = (topShooterPower * tP) + (tErrorSum + tI);
-      bottomShooterInput = (bottomShooterPower * bP) + (bErrorSum * bI);
-      feederInput = feederPower*fP;
-      feederInput = turret.isShooterUpToSpeed ? feederInput : 0;
-    }
     
     turret.runBallFeeder(feederInput);
     turret.runShooterPower(topShooterInput, bottomShooterInput);
@@ -120,6 +102,7 @@ public class shootTurretDistance extends CommandBase {
   public void end(boolean interrupted) {
     turret.runShooterPower(0, 0);
     turret.runBallFeeder(0);
+    turret.isShooterUpToSpeed = false;
   }
 
   // Returns true when the command should end.

@@ -43,6 +43,7 @@ public class Robot extends TimedRobot {
 	// Initialize Shutdown
 	@Override
 	public void disabledInit() {
+		RobotContainer.turretLimelight.initLimelight(1, 0);
 	}
 
 	// Run Shutdown

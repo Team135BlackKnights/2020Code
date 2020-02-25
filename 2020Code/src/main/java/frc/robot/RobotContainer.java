@@ -102,7 +102,8 @@ public class RobotContainer implements RobotMap {
     rightButton10.whenPressed(new resetGyro(drive));
     
     rightButton11.whenPressed(new rightSideAuto(drive, intake, turret, turretLimelight, storage, false));
-        leftThumb.whenPressed(new shiftGears(drive));
+      //leftThumb.whenPressed(new shiftGears(drive));
+      leftTrigger.whenPressed(new shiftGears(drive));
     leftButton7.whenPressed(new resetDriveEncoders(drive));
     leftButton8.whenPressed(new resetEndgameEncoders(endgame));
     leftButton9.whenPressed(new resetIntakeEncoders(intake));
@@ -115,7 +116,7 @@ public class RobotContainer implements RobotMap {
     //manipButton3.whenPressed(new rotateWheelOfFortune(colorWheel, .25));
   // manipButton3.whenPressed(new RotateTurretToAngle(turret, -90));
     
-    manipButton4.whileHeld(new runRoller(intake, .4));
+    manipButton4.whileHeld(new runRoller(intake, .8));
     manipButton3.whileHeld(new runWinch(endgame, -.5));
     manipButton9.whenPressed(new rotateWheelOfFortune(colorWheel, 0));
     manipButton10.whenPressed(new raiseEndgame(endgame, 165));

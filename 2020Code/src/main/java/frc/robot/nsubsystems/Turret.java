@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
 import frc.robot.RobotMap;
 import frc.robot.util.KnightMath;
+import frc.robot.util.MovingAverage;
 
 public class Turret extends SubsystemBase implements RobotMap.TURRET {
  
@@ -32,7 +33,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
   public Relay targetingLight;
   public CANSparkMax rotationSpark, tiltSpark, bottomShooterSpark, topShooterSpark, ballFeederSpark;
   public CANEncoder bottomShooterEncoder, topShooterEncoder, ballFeederEncoder, rotationEncoder, tiltEncoder;
-  public DigitalInput forwardRotationLimit, reverseRotationLimit, tiltLimit;
+  public DigitalInput forwardRotationLimit, reverseRotationLimit, tiltLimit, ballDetector; 
+  public boolean currentState, previousState;
 
   public int turretBallCount = 0;
 
@@ -61,6 +63,9 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     forwardRotationLimit = new DigitalInput(LEFT_LIMIT_ID);
     reverseRotationLimit = new DigitalInput(RIGHT_LIMIT_ID);
     tiltLimit = new DigitalInput(TILT_LIMIT_ID);
+    ballDetector = new DigitalInput(5);
+    
+
 
     initCANSparkMax(tiltSpark, IdleMode.kBrake);
     initCANSparkMax(rotationSpark, IdleMode.kBrake);
@@ -83,8 +88,11 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     SmartDashboard.putNumber("test Radius", testRadius);
     SmartDashboard.putNumber("test centroid x ", testCentroid[0]);
     SmartDashboard.putNumber("test centroid y ", testCentroid[1] );
+    currentState = ballDetector.get();
+    previousState = false;
     System.out.println("Turret Initialized");
   }
+  MovingAverage slowCurrent = new MovingAverage(5);
 
   public void initCANSparkMax(CANSparkMax spark, IdleMode mode) {
     spark.restoreFactoryDefaults();
@@ -240,7 +248,11 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
 
   public double ticksToInches(CANEncoder encoder, double ppr, double WheelDiameter) {
     return rotationsToInches(ticksToRotations(getSparkEncoderPosition(encoder), ppr), WheelDiameter);
+  }
 
+  public boolean isBallInTurret()
+  {
+    return ballDetector.get();
   }
 
   public void printRotations() {
@@ -258,6 +270,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     SmartDashboard.putBoolean("is turret at Forward limit", getForwardRotationLimit());
     SmartDashboard.putBoolean("is turret at Reverse limit", getReverseRotationLimit());
     SmartDashboard.putBoolean("is turret at Tilt limit", getTiltLImit());
+    SmartDashboard.putBoolean("is ball in turret", isBallInTurret());
   }
 
 
@@ -324,20 +337,34 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     autoResetRotation();
     autoResetTiltEncoder();
   }
+  public double topShooterCurrent()
+  {
+    return topShooterSpark.getOutputCurrent();
+  }
+
+  public void UpdateBallCount()
+  {
+    currentState = isBallInTurret();
+    if(previousState && previousState !=currentState)
+    {
+      RobotContainer.activeBallCount--;
+    }
+    previousState = currentState;
+  }
 
   @Override
   public void periodic() {
-    double currentRPM = getTopWheelRPM();
+    isBallInTurret();
     printShooterRPM();
 
     printRotations();
-    if (lastRPM - currentRPM < -500) {
-      RobotContainer.activeBallCount--;
-    }
-    lastRPM = currentRPM;
+    UpdateBallCount();
+    
 
     SmartDashboard.putNumber("current balls in system ", RobotContainer.activeBallCount);
-    
+    SmartDashboard.putBoolean("is ball in turret", isBallInTurret());
+    //SmartDashboard.putNumber("ball detectors inches", getBallDetectorInches());
+    SmartDashboard.putNumber("topShooterCurrent", topShooterSpark.getOutputCurrent());
    //printTemp();
   // autoResetEncoders();
   /* SmartDashboard.putNumber("Rotation Ticks", getRotationTicks());

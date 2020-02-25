@@ -25,7 +25,7 @@ public class leaveStartingConfig extends ParallelCommandGroup {
     super
     (
       new moveIntake(intake),
-      new rotateAndTiltTurretToPos(turret, -125, 150)
+      new rotateAndTiltTurretToPos(turret, -150, 125)
     );
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());super();
