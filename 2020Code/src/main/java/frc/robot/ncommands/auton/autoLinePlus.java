@@ -9,37 +9,33 @@ package frc.robot.ncommands.auton;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.ncommands.auton.parallels.leaveStartingConfig;
-import frc.robot.ncommands.auton.parallels.runRollerAndDriveRightSide;
 import frc.robot.ncommands.drive.encoderDrive;
-import frc.robot.ncommands.intake.runRoller;
 import frc.robot.ncommands.turret.runTurretAuton;
-import frc.robot.nsubsystems.*;
+import frc.robot.nsubsystems.FalconDrive;
+import frc.robot.nsubsystems.Intake;
+import frc.robot.nsubsystems.Storage;
+import frc.robot.nsubsystems.Turret;
+import frc.robot.nsubsystems.TurretLimelight;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class rightSideAuto extends SequentialCommandGroup {
+public class autoLinePlus extends SequentialCommandGroup {
   /**
-   * Creates a new testAuto.
+   * Creates a new autoLinePlus.
    */
-  
-  public rightSideAuto(FalconDrive drive, Intake intake, Turret turret, TurretLimelight limelight, Storage storage, boolean isShooting) {
+
+  public autoLinePlus(FalconDrive drive, Intake intake, Turret turret, TurretLimelight limelight, Storage storage) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super
-    (
+    super(
       parallel(
         new runTurretAuton(turret, limelight, storage),
-      sequence
-      (
+      sequence(
         new leaveStartingConfig(intake, turret),
-        new runRollerAndDriveRightSide(drive, intake),
-        parallel(new encoderDrive(drive, 1, 1, false), new runRoller(intake, .35, false))
-        )
+        new encoderDrive(drive, 2, 2, true)
+      )
       )
     );
-
-    
-    
   }
 }

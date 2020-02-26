@@ -65,8 +65,6 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     tiltLimit = new DigitalInput(TILT_LIMIT_ID);
     ballDetector = new DigitalInput(5);
     
-
-
     initCANSparkMax(tiltSpark, IdleMode.kBrake);
     initCANSparkMax(rotationSpark, IdleMode.kBrake);
     initCANSparkMax(bottomShooterSpark, IdleMode.kCoast);

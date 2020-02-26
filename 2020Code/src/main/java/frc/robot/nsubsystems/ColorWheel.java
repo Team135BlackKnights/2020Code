@@ -8,16 +8,11 @@
 package frc.robot.nsubsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.I2C;
 
-import java.util.Dictionary;
-import java.util.Enumeration;
-import java.util.Hashtable;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -104,16 +99,16 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL 
          // Takes the Game Specific Data and changes it to a usable form
          switch (gameData.charAt(0)) {
          case 'B':
-            desiredColor = "Blue";
-            break;
-         case 'G':
-            desiredColor = "Green";
-            break;
-         case 'R':
             desiredColor = "Red";
             break;
-         case 'Y':
+         case 'G':
             desiredColor = "Yellow";
+            break;
+         case 'R':
+            desiredColor = "Blue";
+            break;
+         case 'Y':
+            desiredColor = "Green";
             break;
          default:
             desiredColor = "No color";
@@ -124,8 +119,9 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL 
          // Code for no data received yet
       }
       return desiredColor;
-
    }
+
+   
 
    // Detect current Red value given from the color sensor
    public double red() {
@@ -172,7 +168,11 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL 
     // To stop the control panel, the motor controller is set to 0 power
    public void stopControlPanel() {
       rotatorSpark.set(0);
-
+   }
+   public void moveColorWheel(double power)
+   {
+      power = RobotContainer.drive.limit(power, .85, -.85);
+      rotatorSpark.set(power);
    }
 
    public void printOut() {
@@ -197,12 +197,12 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL 
    }
 
    // Pulls the game specific message from driver station
-   public String gameMessage = DriverStation.getInstance().getGameSpecificMessage();
 
    @Override
    public void periodic() {
       detectedColor = controlPanelColorSensor.getColor();
-
+      gameColor();
+      SmartDashboard.putString("game color", gameColor());
       // Sets the current color to the current color(String)
       currentColor = checkForColor();
       // Counts color changes

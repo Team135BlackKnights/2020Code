@@ -80,7 +80,6 @@ public class shootTurretDistance extends CommandBase {
     double minError = 100;
     
     turret.isShooterUpToSpeed = (topShooterError <= minError && bottomShooterError <=minError);
-    //boolean isBsall
    
         topShooterInput = (topShooterPower * tP) + (tErrorSum + tI);
         bottomShooterInput = (bottomShooterPower * bP) + (bErrorSum * bI);

@@ -8,24 +8,42 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class Robot extends TimedRobot {
 
 	public RobotContainer container;
-	Command autonomousCommand;
-	SendableChooser<Command> m_chooser = new SendableChooser<>();
+	private Command autoCommand;
+	public String autoSelected;
+	SendableChooser<Command> chooser = new SendableChooser<>();
 
 	@Override
 	public void robotInit() {
 		container = new RobotContainer();
+		SmartDashboard.putString("Auto Selection", "Default");
+		String autoSelected = SmartDashboard.getString("Auto Selection", "Default");
+		switch(autoSelected)
+		{
+			case "Right Side" : autoCommand = container.getRightSideAuto();
+			break;
+			case "Middle" : autoCommand = container.getMiddleAuto();
+			break; 
+			case "Auto Line" : autoCommand = container.getAutoLine();
+			break;
+			case "Auto Line+" : autoCommand = container.getDefaultAuto();
+			break;
+		}
 
-		// chooser.addOption("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", m_chooser);
+		chooser.addOption("Auto Line", container.getAutoLine());
+		chooser.addOption("Right Side", container.getRightSideAuto());
+		chooser.addOption("Middle", container.getMiddleAuto());
+		chooser.addOption("Auto Line+", container.getDefaultAuto());
+		SmartDashboard.putString("Auto Selected", chooser.toString());
+	
 	}
 
 	@Override
@@ -55,6 +73,13 @@ public class Robot extends TimedRobot {
 	// Initialize auto
 	@Override
 	public void autonomousInit() {
+		RobotContainer.turretLimelight.initLimelight(0, 0);
+		autoCommand = container.getAutonomousCommand();
+		
+		if(autoCommand != null)
+		{
+			autoCommand.schedule();
+		}
 	}
 
 	// Run auto
@@ -66,8 +91,8 @@ public class Robot extends TimedRobot {
 	// Initialize Tele
 	@Override
 	public void teleopInit() {
-		if (autonomousCommand != null) {
-			autonomousCommand.cancel();
+		if (autoCommand != null) {
+			autoCommand.cancel();
 		}
 	}
 

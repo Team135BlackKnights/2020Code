@@ -110,6 +110,15 @@ public class targetTurret extends CommandBase {
     {
       targetTurret = true;
     }
+
+    if(targetTurret == false)
+    {
+      turretLimelight.initLimelight(1,0);
+    }
+    else
+    {
+      turretLimelight.initLimelight(0,0);
+    }
     
     SmartDashboard.putBoolean("Auto Targeting turret: ", targetTurret);
 

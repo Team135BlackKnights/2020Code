@@ -67,7 +67,7 @@ public class runTurretAuton extends CommandBase {
     
     isDriving = Math.abs(RobotContainer.drive.getLinearMps()) >.5;
     SmartDashboard.putBoolean("is robot currently in motion", isDriving);
-    isTargetWithinRange = (Math.abs(verticalOffset) < 1 && Math.abs(horizontalOffset) < 1);
+    isTargetWithinRange = (Math.abs(verticalOffset) < 1.5 && Math.abs(horizontalOffset) < 1.5);
     SmartDashboard.putBoolean("is target within range ", isTargetWithinRange);
 
     feederMax = 5250;
@@ -75,20 +75,21 @@ public class runTurretAuton extends CommandBase {
     bottomShooterMax = 5200;
     storageMax = 5200;
 
-    desiredTopWheelRPM = 1800;
+    desiredTopWheelRPM = 1700;
     desiredBottomWheelRPM = desiredTopWheelRPM * 1.25;
-    feederDesired = -feederMax*.35;
-    storageDesired = -1200;
+    feederDesired = -.35*feederMax;
+    storageDesired = -1400;
     
     topWheelError = desiredTopWheelRPM - currentTopWheelRPM;
     bottomWheelError = desiredBottomWheelRPM - currentBottomWheelRPM;
     feederError = feederDesired - feederActual;
-    storageError = storageDesired - storageActual;
+    storageError = storageDesired-averagedStorage;
+    storageError = storageError/storageMax;
 
     topWheelInput = (desiredTopWheelRPM + topWheelError)/topShooterMax;
     bottomWheelInput = (desiredBottomWheelRPM + bottomWheelError)/bottomShooterMax;
     feederInput = (desiredBottomWheelRPM + feederError)/feederMax;
-    storageInput = (storageDesired + storageError)/storageMax;
+    
 
     double tP, bP, fP, tI, bI, rP, rI, tiltP, storageP, 
     rotationErrorSum, topWheelErrorSum, bottomWheelErrorSum;
@@ -103,7 +104,7 @@ public class runTurretAuton extends CommandBase {
     rotationPower = rotationError/60;
     tiltPower = -tiltError/4;
 
-    double minError = 50;
+    double minError = 100;
     
     isShooterUpToSpeed = (topWheelError <= minError && bottomWheelError <=minError);
 
@@ -119,13 +120,19 @@ public class runTurretAuton extends CommandBase {
 
     rP = 1.4; rI = .25; tiltP = .87; storageP = 2.1;
     bI = .4; tI = .4; tP = .99; bP = .968; fP = .862;
-
-    topWheelInput = (isTargetWithinRange && !isDriving) ? (topWheelInput * tP) + (topWheelErrorSum + tI) : 0;
-    bottomWheelInput = (isTargetWithinRange && !isDriving) ? (bottomWheelInput * bP) + (bottomWheelErrorSum + bI) : 0;
+    int count = 0; 
+    if(isTargetWithinRange)
+    {
+      count++;
+    }
+    boolean isReadyShoot = count>=1 && RobotContainer.activeBallCount>=0 && !isDriving;
+   
+    topWheelInput = (isReadyShoot) ? (topWheelInput * tP) + (topWheelErrorSum + tI) : 0;
+    bottomWheelInput = (isReadyShoot) ? (bottomWheelInput * bP) + (bottomWheelErrorSum + bI) : 0;
     feederInput = isShooterUpToSpeed ? feederInput*fP : 0;
     rotationInput = !isShooterUpToSpeed && !isTargetWithinRange && targetExist ? (rotationPower * rP) + (rotationErrorSum * rI): 0;
     tiltInput = !isShooterUpToSpeed && !isTargetWithinRange && targetExist ? tiltPower * tiltP: 0;
-    storageInput = isShooterUpToSpeed  ? (storageInput * storageP): 0;
+    storageInput = isShooterUpToSpeed  ? (storageError * storageP): 0;
 
 
     if(currentStoragePos >= -2.5)
@@ -137,12 +144,17 @@ public class runTurretAuton extends CommandBase {
     turret.aimTurret(rotationInput, tiltInput);
     turret.runBallFeeder(-feederInput);
     turret.runShooterPower(topWheelInput, bottomWheelInput);
-    storage.runConveyor(storageInput);    
+    storage.runConveyor(storageInput);   
+    SmartDashboard.putNumber("Auton Storage" , storageInput);
+    SmartDashboard.putNumber("Auton Feeder", -feederInput);
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    turret.stopAllTurretMotors();
+    storage.runConveyor(0);   
   }
 
   // Returns true when the command should end.

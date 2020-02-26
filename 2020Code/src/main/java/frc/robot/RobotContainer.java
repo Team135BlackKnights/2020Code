@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
-import frc.robot.ncommands.color.rotateWheelOfFortune;
+import frc.robot.ncommands.color.*;
 import frc.robot.ncommands.drive.*;
 import frc.robot.ncommands.endgame.*;
 import frc.robot.ncommands.storage.*;
@@ -87,6 +87,8 @@ public class RobotContainer implements RobotMap {
     // turret.setDefaultCommand(new TurretTest(turret, manipJoystick));
     // Configure the button bindings
     //turretLimelight.initLimelight(1, 1);
+    
+    
     configureButtonBindings();
   }
 
@@ -116,14 +118,21 @@ public class RobotContainer implements RobotMap {
     //manipButton3.whenPressed(new rotateWheelOfFortune(colorWheel, .25));
   // manipButton3.whenPressed(new RotateTurretToAngle(turret, -90));
     
-    manipButton4.whileHeld(new runRoller(intake, .8));
+    manipButton4.whileHeld(new runRoller(intake, 7500, false));
     manipButton3.whileHeld(new runWinch(endgame, -.5));
-    manipButton9.whenPressed(new rotateWheelOfFortune(colorWheel, 0));
-    manipButton10.whenPressed(new raiseEndgame(endgame, 165));
+    //manipButton9.whenPressed(new rotateWheelOfFortune(colorWheel, 0));
+    manipButton9.whenPressed(new rotateColorWheel(colorWheel, 0));
+    manipButton10.toggleWhenPressed(new rotateColorWheel(colorWheel, .5));
+    //manipButton10.whenPressed(new raiseEndgame(endgame, 165));
     manipButton11.toggleWhenPressed(new moveIntake(intake));
     manipButton12.whenPressed(new raiseEndgame(endgame, 15));
 
     
+  }
+
+  public void printButtonBindings()
+  {
+
   }
 
   public static boolean leftTrigger() {
@@ -256,9 +265,30 @@ public class RobotContainer implements RobotMap {
     return povDirectionPressed;
 
   }
+  public Command getAutonomousCommand()
+  {
+    return new rightSideAuto(drive, intake, turret, turretLimelight, storage, false);
+  }
 
-  public Command getAutonomousCommand() {
+  public Command getDefaultAuto() {
 
-    return null;
+    return new rightSideAuto(drive, intake, turret, turretLimelight, storage, false);
+  }
+
+  public Command getMiddleAuto()
+  {
+    return new rightSideAuto(drive, intake, turret, turretLimelight, storage, false);
+
+  }
+
+  public Command getRightSideAuto()
+  {
+    return new rightSideAuto(drive, intake, turret, turretLimelight, storage, false);
+
+  }
+
+  public Command getAutoLine()
+  {
+    return new rightSideAuto(drive, intake, turret, turretLimelight, storage, false);
   }
 }

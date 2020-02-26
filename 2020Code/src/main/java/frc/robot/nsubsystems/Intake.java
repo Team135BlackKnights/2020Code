@@ -26,6 +26,7 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE {
   public Ultrasonic intakeSonar;
   public Solenoid raiseLower;
 
+  public boolean raiseLowerState;
   public Intake() {
     rollerSpark = new CANSparkMax(ROLLER_SPARK, MotorType.kBrushless);
 
@@ -79,14 +80,21 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE {
   public double getRollerPower() {
     return rollerSpark.getAppliedOutput();
   }
+  public double getRollerRPM()
+  {
+    return rollerEncoder.getVelocity();
+  }
 
   public void printIntakeStuff() {
     SmartDashboard.putBoolean("is Intake Lower", isRollerLowered());
     SmartDashboard.putNumber("intake roller position", getEncoderPosition(rollerEncoder));
+    SmartDashboard.putNumber("roller Vel", getRollerRPM());
   }
 
   @Override
   public void periodic() {
+    isRollerLowered();
+    printIntakeStuff();
 
     // This method will be called once per scheduler run
   }

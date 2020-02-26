@@ -221,7 +221,7 @@ public class PathFollower
        boolean isXNearEnough = isPointEqual(robotXPos, finSegment.B.waypointX);
        boolean isYNearEnough = isPointEqual(robotYPos, finSegment.B.waypointY);
        boolean isThetaTrue = isPointEqual(robotTheta, finSegment.B.waypointTheta);
-       boolean isSpeedTrue = isPointEqual(robotLinearSpeed, finSegment.B.waypointSpeed);
+       //boolean isSpeedTrue = isPointEqual(robotLinearSpeed, finSegment.B.waypointSpeed);
 
        if(isXNearEnough && isYNearEnough && isThetaTrue) //|| isSpeedTrue)
        {
