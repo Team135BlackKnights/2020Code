@@ -125,57 +125,53 @@ public class targetTurret extends CommandBase {
     if (isPOVUp) {
       rotationPower = 0;
       tiltPower = tiltPowerPreset;
-      SmartDashboard.putString("Turret State:", "Driver Override");
+      SmartDashboard.putString("Turret State: ", "Driver Override");
 
     } else if (isPOVRight) {
       rotationPower = rotationPowerPreset;
       tiltPower = 0;
-      SmartDashboard.putString("Turret State:", "Driver Override");
+      SmartDashboard.putString("Turret State: ", "Driver Override");
 
     } else if (isPOVDown) {
       rotationPower = 0;
       tiltPower = -tiltPowerPreset;
-      SmartDashboard.putString("Turret State:", "Driver Override");
+      SmartDashboard.putString("Turret State: ", "Driver Override");
 
     } else if (isPOVLeft) {
       rotationPower = -rotationPowerPreset;
       tiltPower = 0;
-      SmartDashboard.putString("Turret State:", "Driver Override");
+      SmartDashboard.putString("Turret State: ", "Driver Override");
 
     } else if (isPOVTopRight) {
       rotationPower = rotationPowerPreset;
       tiltPower = tiltPowerPreset;
-      SmartDashboard.putString("Turret State:", "Driver Override");
+      SmartDashboard.putString("Turret State: ", "Driver Override");
 
     } else if (isPOVBottomRight) {
       rotationPower = rotationPowerPreset;
       tiltPower = -tiltPowerPreset;
-      SmartDashboard.putString("Turret State:", "Driver Override");
+      SmartDashboard.putString("Turret State: ", "Driver Override");
 
     } else if (isPOVBottomLeft) {
       rotationPower = -rotationPowerPreset;
       tiltPower = -tiltPowerPreset;
-      SmartDashboard.putString("Turret State:", "Driver Override");
+      SmartDashboard.putString("Turret State: ", "Driver Override");
 
     } else if (isPOVTopLeft) {
       rotationPower = -rotationPowerPreset;
       tiltPower = tiltPowerPreset;
-      SmartDashboard.putString("Turret State:", "Driver Override");
+      SmartDashboard.putString("Turret State: ", "Driver Override");
 
 
     } else if (targetExist && targetTurret) {
       rotationPower = (rotationPower * rP) + (rIntegral * rI) + (derivative *rD) + (minPower * rotationDirection);
       tiltPower = (tiltPower * tP);
-      SmartDashboard.putString("Turret State:", "Auto Targetting");
+      SmartDashboard.putString("Turret State: ", "Auto Targetting");
     } else {
       rotationPower = 0;
       tiltPower = 0;
-      SmartDashboard.putString("Turret State:", "No Target");
+      SmartDashboard.putString("Turret State: ", "No Target");
     }
-
-    SmartDashboard.putNumber("INtegral", rIntegral * rI);
-    SmartDashboard.putNumber("Target Turret Rotation Power:", rotationPower);
-    SmartDashboard.putNumber("Target Turret Tilt Power:", tiltPower);
 
     turret.aimTurret(rotationPower, tiltPower);
     previousError = horizontalOffset / 40;
@@ -183,7 +179,10 @@ public class targetTurret extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
+  public void end(boolean interrupted) 
+  {
+    SmartDashboard.putString("Turret Command Running: ", "targetTurret");
+    turret.aimTurret(0, 0);
   }
 
   // Returns true when the command should end.

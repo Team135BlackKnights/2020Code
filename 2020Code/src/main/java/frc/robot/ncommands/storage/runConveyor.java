@@ -47,29 +47,30 @@ public class runConveyor extends CommandBase {
     {
       conveyorPower = -.25;
       RobotContainer.intake.runRoller(0);
-      SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR NOT OVERWROTE");
+      SmartDashboard.putString("Conveyor Override: ", "Sensor Control");
     }
     else if (isButton7)
     {
       conveyorPower = .85;
       storage.resetConveyorEncoder();
       RobotContainer.intake.runRoller(-.3);
+      RobotContainer.turret.runBallFeeder(.2);
       if(RobotContainer.intake.isRollerLowered())
       {
        RobotContainer.intake.raiseLower(false);
        
       }
-      SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR GOING UP");
+      SmartDashboard.putString("Conveyor Override: ", "Conveyor Going Up");
     } 
     else if (isButton8)
     {
       conveyorPower = -.25;
       RobotContainer.intake.runRoller(.3);
       storage.resetConveyorEncoder();
-      SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR GOING DOWN");
+      SmartDashboard.putString("Conveyor Override: ", "Conveyor Going Down");
     } else {
       conveyorPower = 0;
-      SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR NOT OVERWROTE");
+      SmartDashboard.putString("Conveyor Override: ", "Sensor Control");
     }
 
     storage.runConveyor(conveyorPower);
@@ -77,12 +78,16 @@ public class runConveyor extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
+  public void end(boolean interrupted) 
+  {
+    storage.runConveyor(0);
   }
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
+  public boolean isFinished() 
+  {
+    SmartDashboard.putString("Storage Command Running: ", "No Command Running");
     return false;
   }
 }

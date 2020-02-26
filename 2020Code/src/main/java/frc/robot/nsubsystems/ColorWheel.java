@@ -202,7 +202,7 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL 
    public void periodic() {
       detectedColor = controlPanelColorSensor.getColor();
       gameColor();
-      SmartDashboard.putString("game color", gameColor());
+      SmartDashboard.putString("Desired Color", gameColor());
       // Sets the current color to the current color(String)
       currentColor = checkForColor();
       // Counts color changes

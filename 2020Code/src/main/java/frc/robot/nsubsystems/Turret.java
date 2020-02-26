@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
 import frc.robot.RobotMap;
-import frc.robot.util.KnightMath;
 import frc.robot.util.MovingAverage;
 
 public class Turret extends SubsystemBase implements RobotMap.TURRET {
@@ -44,18 +43,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
 
   public Turret() {
     isShooterUpToSpeed = false; 
-    smartDashTopRPM = SmartDashboard.getNumber("top shooter desired", 2200);
 
-    double[] testPoint1 = 
-    {
-      0,0
-    };
-    double[] testPoint2 =
-    {
-      1,1
-    };
-    double testRadius = KnightMath.radiusFromPoints(testPoint1, testPoint2);
-    double[] testCentroid = KnightMath.centroid(testPoint1, testPoint2);
     targetingLight = new Relay(TARGETING_LIGHT);
     tiltSpark  = new CANSparkMax(TILT_SPARK_ID, MotorType.kBrushless);
     rotationSpark = new CANSparkMax(ROTATION_SPARK_ID, MotorType.kBrushless);
@@ -85,10 +73,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     tiltEncoder = tiltSpark.getEncoder();
 
     resetAllTurretEncoders();
-    System.out.print(testRadius);
-    SmartDashboard.putNumber("test Radius", testRadius);
-    SmartDashboard.putNumber("test centroid x ", testCentroid[0]);
-    SmartDashboard.putNumber("test centroid y ", testCentroid[1] );
+    
     currentState = ballDetector.get();
     previousState = false;
     smartDashTopRPM = SmartDashboard.getNumber("top shooter desired", 2200);

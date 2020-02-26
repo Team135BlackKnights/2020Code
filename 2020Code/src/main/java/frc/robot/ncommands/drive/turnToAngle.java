@@ -33,7 +33,7 @@ public class turnToAngle extends CommandBase {
   public void initialize() 
   {
     isFinished = false; 
-    SmartDashboard.putString("Drive Command Running:", "Turn to Angle: " + desiredAngle);
+    SmartDashboard.putString("Drive Command Running: ", "Turn to Angle: " + desiredAngle);
     error = drive.pose.getRotation().getDegrees()-desiredAngle;
 
   }
@@ -74,7 +74,6 @@ public class turnToAngle extends CommandBase {
     power * kP + errorSum * kI + changeInError *kD;
 
     drive.ArcadeDrive(0, rotationInput);
-    SmartDashboard.putNumber("rotation Input ", rotationInput);
 
     prevError = error; 
 

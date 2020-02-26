@@ -26,7 +26,7 @@ public class runWinch extends CommandBase {
   @Override
   public void initialize() {
 
-    SmartDashboard.putString("Endgame command Running: ", "runWinch " + _power);
+    SmartDashboard.putString("Endgame Command Running: ", "runWinch " + _power);
 
   }
 
@@ -46,7 +46,10 @@ public class runWinch extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
+  public void end(boolean interrupted) 
+  {
+    SmartDashboard.putString("Endgame Command Running: ", "No Command Running");
+
     endgame.runWinchSpark(0);
   }
 

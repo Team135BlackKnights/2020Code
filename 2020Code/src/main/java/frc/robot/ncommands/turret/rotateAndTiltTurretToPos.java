@@ -31,8 +31,7 @@ public class rotateAndTiltTurretToPos extends CommandBase {
   public void initialize() 
   {
     isFinished = false; 
-    SmartDashboard.putString("Turret Command Running: ", "rotate and tilt turret to pos" + rotationPos + tiltPos);
-
+    SmartDashboard.putString("Turret Command Running: ", "rotate and tilt turret to pos " + rotationPos + tiltPos);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -95,6 +94,7 @@ public class rotateAndTiltTurretToPos extends CommandBase {
   @Override
   public void end(boolean interrupted) 
   {
+    SmartDashboard.putString("Turret Command Running: ", "No Command Running");
     turret.aimTurret(0, 0);
   }
 

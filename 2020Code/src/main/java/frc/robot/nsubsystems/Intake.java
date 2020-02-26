@@ -39,10 +39,12 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE {
     System.out.println("Intake Initialized");
   }
 
-  public void initCANSparkMax(CANSparkMax spark, IdleMode mode) {
+  public void initCANSparkMax(CANSparkMax spark, IdleMode mode)
+  {
     spark.setInverted(false);
     spark.enableVoltageCompensation(12);
     spark.setIdleMode(mode);
+    spark.setSmartCurrentLimit(30, 30);
   }
 
   public void runRoller(double power) {

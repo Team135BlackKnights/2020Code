@@ -35,7 +35,7 @@ public class encoderDrive extends CommandBase {
   @Override
   public void initialize() 
   {
-    SmartDashboard.putString("Drive Command Running:", "Encoder Drive " + leftDesired  + rightDesired);
+    SmartDashboard.putString("Drive Command Running: ", "Encoder Drive " + leftDesired  + rightDesired);
 
     prevLeftError = 0;
     prevRightError = 0; 
@@ -57,14 +57,11 @@ public class encoderDrive extends CommandBase {
       {
         isFinished = true;
       }
-      SmartDashboard.putBoolean("should be finished", isFinished);
       double currentLeftPos = drive.getLeftMetres();
       double currentRightPos = drive.getRightMetres();
     
       leftError = leftDesired-currentLeftPos;
       rightError = rightDesired-currentRightPos;
-      SmartDashboard.putNumber("left error ecnoder drive", leftError);
-      SmartDashboard.putNumber("right errror encoder drive", rightError);
     
       double leftPower, rightPower;
     
@@ -100,6 +97,7 @@ public class encoderDrive extends CommandBase {
   @Override
   public void end(boolean interrupted) 
   {
+    SmartDashboard.putString("Drive Command Running: ", "No Command Running");
     drive.stopMotors();
   }
 

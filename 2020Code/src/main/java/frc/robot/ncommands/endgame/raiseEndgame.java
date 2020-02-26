@@ -27,7 +27,7 @@ public class raiseEndgame extends CommandBase {
   @Override
   public void initialize() {
 
-    SmartDashboard.putString("Endgame command Running: ", "raise Endgame " + _target);
+    SmartDashboard.putString("Endgame Command Running: ", "raise Endgame " + _target);
 
   }
 
@@ -49,13 +49,13 @@ public class raiseEndgame extends CommandBase {
     power = (power * kp) + minPower;
     power = endgame.limit(power, .75  , -.75);
     endgame.runLiftRaiseSpark(power);
-    SmartDashboard.putNumber("Raise Endgame target Error ", targetError);
-    SmartDashboard.putNumber("Raise Endgame power: ", power);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
+  public void end(boolean interrupted) 
+  {
+    SmartDashboard.putString("Endgame Command Running: ", "No Command Running");
     endgame.runLiftRaiseSpark(0);
   }
 

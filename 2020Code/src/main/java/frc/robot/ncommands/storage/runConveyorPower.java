@@ -29,7 +29,7 @@ public class runConveyorPower extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putString("Storage Command Running: ", " runConveyorWithPID "+ RPM);
+    SmartDashboard.putString("Storage Command Running: ", " conveyorPID "+ RPM);
     previousError = 0; 
   }
 
@@ -54,14 +54,15 @@ public class runConveyorPower extends CommandBase {
 
     double storageInput = error*kP + integral *kI + derivative * kD;
     storageInput  = RobotContainer.turret.isShooterUpToSpeed ? storageInput : 0; 
-    SmartDashboard.putNumber("Storage input", storageInput);
     storage.runConveyor(storageInput);
     previousError = error;
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
+  public void end(boolean interrupted) 
+  {
+    SmartDashboard.putString("Storage Command Running: ", "No Command Running");
     storage.runConveyor(0);
   }
 

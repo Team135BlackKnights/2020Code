@@ -41,8 +41,7 @@ public class rotateColorWheel extends CommandBase {
     wheel.colorChanges = 0;
     desiredRotations = 0;
 
-    SmartDashboard.putString("COlor to spin to", desiredColor);
-    SmartDashboard.putString("Control Panel Command Running", "Rotate Color Wheel " + input);
+    SmartDashboard.putString("Control Panel Command Running: ", "Rotate Color Wheel " + input);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -52,21 +51,7 @@ public class rotateColorWheel extends CommandBase {
     wheel.countColor();
     String currentColor = wheel.currentColor;
     double currentRotations = wheel.colorChanges/8;
-   /* if(input !=0)
-    {
-      if(Timer.getMatchTime() - initTime >uhOhTime)
-      {
-        wheel.moveColorWheel(input);
-        isFinished = false;
-      }
-      else 
-      if(Timer.getMatchTime() - initTime < uhOhTime)
-      {
-        isFinished = true;
-      }
-      
-    }
-    */
+   
    desiredRotations = desiredColor == "No Color" ? 4:0;
     double input =0;
     boolean isDriving = Math.abs(RobotContainer.drive.getLinearMps()) >.2;
@@ -109,7 +94,7 @@ public class rotateColorWheel extends CommandBase {
   public void end(boolean interrupted) 
   {
     wheel.stopControlPanel();
-    SmartDashboard.putString("Control Panel Command Running", "Rotate Color Wheel Finished");
+    SmartDashboard.putString("Control Panel Command Running: ", "No Command Running");
   }
 
   // Returns true when the command should end.

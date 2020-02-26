@@ -28,7 +28,7 @@ public class runEndgameWithJoystick extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putString("Endgame command Running: ", "run Endgame with joystick");
+    SmartDashboard.putString("Endgame command Running: ", "Run Endgame with Joystick");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,7 +39,9 @@ public class runEndgameWithJoystick extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
+  public void end(boolean interrupted) 
+  {
+    SmartDashboard.putString("Endgame Command Running: ", "Run Endgame with Joystick");
     endgame.runLiftRaiseSpark(0);
   }
 

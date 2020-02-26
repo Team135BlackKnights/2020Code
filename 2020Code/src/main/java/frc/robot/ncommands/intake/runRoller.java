@@ -7,6 +7,7 @@
 
 package frc.robot.ncommands.intake;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.nsubsystems.Intake;
@@ -28,7 +29,7 @@ public class runRoller extends CommandBase {
   @Override
   public void initialize() 
   {
-    
+    SmartDashboard.putString("Intake Command Running: ", "Run Roller " + _RPM);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,7 +40,7 @@ public class runRoller extends CommandBase {
     
     double input = (_RPM+error)/10000;
     double robotLinearSpeed = RobotContainer.drive.getLinearMps();
-    double RPMIncrease = Math.abs(robotLinearSpeed/1.53) *1000;
+    double RPMIncrease = Math.abs(robotLinearSpeed/1.53) *500;
     _RPM = _RPM + RPMIncrease;
     if(isWaiting)
     {
@@ -59,6 +60,7 @@ public class runRoller extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    SmartDashboard.putString("Intake Command Running: ", "No Command Running");
     intake.runRoller(0);
   }
 

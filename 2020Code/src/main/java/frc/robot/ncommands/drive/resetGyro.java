@@ -7,7 +7,6 @@
 
 package frc.robot.ncommands.drive;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.FalconDrive;
 
@@ -25,7 +24,6 @@ public class resetGyro extends CommandBase {
   @Override
   public void initialize() {
     drive.resetGyro();
-    SmartDashboard.putBoolean("Gyro Reset", true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

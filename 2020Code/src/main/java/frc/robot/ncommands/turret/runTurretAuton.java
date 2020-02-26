@@ -36,6 +36,7 @@ public class runTurretAuton extends CommandBase {
   public void initialize() 
   {
     SmartDashboard.putString("Turret Command Running: ", "runTurretAuton");
+    SmartDashboard.putString("Storage Command Running: ", "runTurretAuton");
     limelight.initLimelight(0, 0);
   }
 
@@ -66,9 +67,7 @@ public class runTurretAuton extends CommandBase {
     double averagedStorage = smoothStorage.process((float)storageActual);
     
     isDriving = Math.abs(RobotContainer.drive.getLinearMps()) >.5;
-    SmartDashboard.putBoolean("is robot currently in motion", isDriving);
     isTargetWithinRange = (Math.abs(verticalOffset) < 1.5 && Math.abs(horizontalOffset) < 1.5);
-    SmartDashboard.putBoolean("is target within range ", isTargetWithinRange);
 
     feederMax = 5250;
     topShooterMax = 5600;
@@ -145,14 +144,15 @@ public class runTurretAuton extends CommandBase {
     turret.runBallFeeder(-feederInput);
     turret.runShooterPower(topWheelInput, bottomWheelInput);
     storage.runConveyor(storageInput);   
-    SmartDashboard.putNumber("Auton Storage" , storageInput);
-    SmartDashboard.putNumber("Auton Feeder", -feederInput);
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
+  public void end(boolean interrupted) 
+  {
+    SmartDashboard.putString("Turret Command Running: ", "No Command Running");
+    SmartDashboard.putString("Storage Command Running: ", "No Command Running");
     turret.stopAllTurretMotors();
     storage.runConveyor(0);   
   }

@@ -36,7 +36,7 @@ public class shootTurretDistance extends CommandBase {
   {
     distToTarget = limelight.distToTarget();
     RobotContainer.limelight.initLimelight(0, 0);
-    SmartDashboard.putString("Turret Command Running:", "Shoot Turret w/Distance");
+    SmartDashboard.putString("Turret Command Running: ", "Shoot Turret w/Distance");
   }
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -92,16 +92,14 @@ public class shootTurretDistance extends CommandBase {
     turret.runBallFeeder(feederInput);
     turret.runShooterPower(topShooterInput, bottomShooterInput);
 
-    SmartDashboard.putBoolean("is Shooter Up to Speed", turret.isShooterUpToSpeed);
     SmartDashboard.putNumber("Desired top RPM ", topShooterDesired);
-    SmartDashboard.putNumber("Top Shooter Input", topShooterInput);
-    SmartDashboard.putNumber("Bottom Shooter Input", bottomShooterInput);
-    SmartDashboard.putNumber("Feeder Input", feederInput);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
+  public void end(boolean interrupted) 
+  {
+    SmartDashboard.putString("Turret Command Running: ", "No Command Running");
     turret.runShooterPower(0, 0);
     turret.runBallFeeder(0);
     turret.isShooterUpToSpeed = false;
