@@ -40,9 +40,12 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
 
   public boolean lastBallState = false;
   public boolean isShooterUpToSpeed; 
+  public double smartDashTopRPM = 2200;
 
   public Turret() {
     isShooterUpToSpeed = false; 
+    smartDashTopRPM = SmartDashboard.getNumber("top shooter desired", 2200);
+
     double[] testPoint1 = 
     {
       0,0
@@ -67,8 +70,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     
     initCANSparkMax(tiltSpark, IdleMode.kBrake);
     initCANSparkMax(rotationSpark, IdleMode.kBrake);
-    initCANSparkMax(bottomShooterSpark, IdleMode.kCoast);
-    initCANSparkMax(topShooterSpark, IdleMode.kCoast);
+    initCANSparkMax(bottomShooterSpark, IdleMode.kBrake);
+    initCANSparkMax(topShooterSpark, IdleMode.kBrake);
     initCANSparkMax(ballFeederSpark, IdleMode.kBrake);
 
     topShooterSpark.setInverted(true);
@@ -88,6 +91,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     SmartDashboard.putNumber("test centroid y ", testCentroid[1] );
     currentState = ballDetector.get();
     previousState = false;
+    smartDashTopRPM = SmartDashboard.getNumber("top shooter desired", 2200);
+
     System.out.println("Turret Initialized");
   }
   MovingAverage slowCurrent = new MovingAverage(5);
@@ -354,25 +359,13 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
   public void periodic() {
     isBallInTurret();
     printShooterRPM();
-
-    printRotations();
+   // printRotations();
     UpdateBallCount();
-    
+    smartDashTopRPM = SmartDashboard.getNumber("top shooter desired", 2200);
 
     SmartDashboard.putNumber("current balls in system ", RobotContainer.activeBallCount);
     SmartDashboard.putBoolean("is ball in turret", isBallInTurret());
-    //SmartDashboard.putNumber("ball detectors inches", getBallDetectorInches());
-    SmartDashboard.putNumber("topShooterCurrent", topShooterSpark.getOutputCurrent());
-   //printTemp();
-  // autoResetEncoders();
-  /* SmartDashboard.putNumber("Rotation Ticks", getRotationTicks());
-   SmartDashboard.putNumber("Rotation Ticks With Conversion",getRotationTicks() * (360/512));
-   printRotations();
-   printStates();
-   printTiltPos();
-   */
- // printRotations();
-  //printShooterRPM();
+   
     // This method will be called once per scheduler run
   }
 }

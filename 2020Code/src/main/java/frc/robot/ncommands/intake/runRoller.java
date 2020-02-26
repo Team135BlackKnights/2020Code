@@ -37,8 +37,10 @@ public class runRoller extends CommandBase {
     double actualRPM = intake.getRollerRPM();
     double error = _RPM-actualRPM;
     
-   double input = (_RPM+error)/10000;
-
+    double input = (_RPM+error)/10000;
+    double robotLinearSpeed = RobotContainer.drive.getLinearMps();
+    double RPMIncrease = Math.abs(robotLinearSpeed/1.53) *1000;
+    _RPM = _RPM + RPMIncrease;
     if(isWaiting)
     {
       if(RobotContainer.activeBallCount >=3)

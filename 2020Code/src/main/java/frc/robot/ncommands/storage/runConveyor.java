@@ -10,6 +10,7 @@ package frc.robot.ncommands.storage;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.nsubsystems.*;
 import frc.robot.util.ImprovedJoystick;
 
@@ -45,17 +46,25 @@ public class runConveyor extends CommandBase {
     if(currentConveyPos >= -3 && !(isButton7 || isButton8))
     {
       conveyorPower = -.25;
+      RobotContainer.intake.runRoller(0);
       SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR NOT OVERWROTE");
     }
     else if (isButton7)
     {
       conveyorPower = .85;
       storage.resetConveyorEncoder();
+      RobotContainer.intake.runRoller(-.3);
+      if(RobotContainer.intake.isRollerLowered())
+      {
+       RobotContainer.intake.raiseLower(false);
+       
+      }
       SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR GOING UP");
     } 
     else if (isButton8)
     {
       conveyorPower = -.25;
+      RobotContainer.intake.runRoller(.3);
       storage.resetConveyorEncoder();
       SmartDashboard.putString("CONVEYOR OVERRIDE:", "CONVEYOR GOING DOWN");
     } else {

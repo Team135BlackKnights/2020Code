@@ -16,33 +16,19 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class Robot extends TimedRobot {
 
-	public RobotContainer container;
+	public RobotContainer RobotContainer;
 	private Command autoCommand;
-	public String autoSelected;
-	SendableChooser<Command> chooser = new SendableChooser<>();
-
+	SendableChooser<Command> autoChooser = new SendableChooser<>();
 	@Override
 	public void robotInit() {
-		container = new RobotContainer();
-		SmartDashboard.putString("Auto Selection", "Default");
-		String autoSelected = SmartDashboard.getString("Auto Selection", "Default");
-		switch(autoSelected)
-		{
-			case "Right Side" : autoCommand = container.getRightSideAuto();
-			break;
-			case "Middle" : autoCommand = container.getMiddleAuto();
-			break; 
-			case "Auto Line" : autoCommand = container.getAutoLine();
-			break;
-			case "Auto Line+" : autoCommand = container.getDefaultAuto();
-			break;
-		}
 
-		chooser.addOption("Auto Line", container.getAutoLine());
-		chooser.addOption("Right Side", container.getRightSideAuto());
-		chooser.addOption("Middle", container.getMiddleAuto());
-		chooser.addOption("Auto Line+", container.getDefaultAuto());
-		SmartDashboard.putString("Auto Selected", chooser.toString());
+		RobotContainer = new RobotContainer();
+
+		autoChooser.setDefaultOption("Auto Line Plus", RobotContainer.getAutoLinePlus());
+		autoChooser.addOption("Auto Line", RobotContainer.getAutoLine());
+		autoChooser.addOption("Right Side ", RobotContainer.getRightSideAuto());
+		autoChooser.addOption("Middle", RobotContainer.getMiddleAuto());
+		SmartDashboard.putData(autoChooser);
 	
 	}
 
@@ -61,7 +47,7 @@ public class Robot extends TimedRobot {
 	// Initialize Shutdown
 	@Override
 	public void disabledInit() {
-		RobotContainer.turretLimelight.initLimelight(1, 0);
+		RobotContainer.initLimelight(1, 0);
 	}
 
 	// Run Shutdown
@@ -73,9 +59,11 @@ public class Robot extends TimedRobot {
 	// Initialize auto
 	@Override
 	public void autonomousInit() {
-		RobotContainer.turretLimelight.initLimelight(0, 0);
-		autoCommand = container.getAutonomousCommand();
+		RobotContainer.initLimelight(2, 0);
+		//String autonomousCommand = autoChooser.getSelected();
 		
+		autoCommand = autoChooser.getSelected();
+		SmartDashboard.putString("Auto Command ", autoChooser.getSelected().toString());
 		if(autoCommand != null)
 		{
 			autoCommand.schedule();

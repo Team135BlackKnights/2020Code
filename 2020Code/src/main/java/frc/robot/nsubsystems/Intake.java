@@ -94,7 +94,7 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE {
   @Override
   public void periodic() {
     isRollerLowered();
-    printIntakeStuff();
+   // printIntakeStuff();
 
     // This method will be called once per scheduler run
   }

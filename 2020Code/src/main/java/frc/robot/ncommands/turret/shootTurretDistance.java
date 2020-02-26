@@ -35,19 +35,22 @@ public class shootTurretDistance extends CommandBase {
   public void initialize() 
   {
     distToTarget = limelight.distToTarget();
-    RobotContainer.turretLimelight.initLimelight(0, 0);
+    RobotContainer.limelight.initLimelight(0, 0);
     SmartDashboard.putString("Turret Command Running:", "Shoot Turret w/Distance");
   }
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() 
   {
-
+    //SmartDashboard.putNumber("top shooter desired", turret.smartDashTopRPM);
+    //turret.smartDashTopRPM = SmartDashboard.getNumber("top shooter desired", 2200);
+    //double desired = RobotContainer.colorWheel.topShooterDesired;
     double topShooterActual = turret.getTopWheelRPM();
     double bottomShooterActual = turret.getBottomWheelRPM();
 
    // double topShooterDesired = 4.787*Math.pow(distToTarget, 2) + 110.3889*distToTarget +2076.622;
-    double topShooterDesired = 2000;
+
+    double topShooterDesired = 2550;
     double bottomShooterDesired = topShooterDesired *1.25;
 
     double feederMax = 5250;

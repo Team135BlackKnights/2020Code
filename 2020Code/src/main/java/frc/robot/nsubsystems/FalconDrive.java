@@ -393,10 +393,10 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
    
 
     pose = m_odometry.update(getHeading(),getLeftMetres(), getRightMetres());
-    SmartDashboard.putString("pose", pose.toString());
-    printPose();
-    printMps();
-    printMetres();
+   // SmartDashboard.putString("pose", pose.toString());
+    //printPose();
+    //printMps();
+    //printMetres();
     // This method will be called once per scheduler run
   }
 

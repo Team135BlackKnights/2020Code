@@ -53,9 +53,9 @@ public class runTurretAuton extends CommandBase {
     currentStoragePos;
 
     targetExist = limelight.GetLimelightData()[0] >=1;
-    horizontalOffset = limelight.GetLimelightData()[1] -1.5;
     distanceToTarget = limelight.distToTarget() ;
     verticalOffset = limelight.GetLimelightData()[2] +distanceToTarget/1.5;
+    horizontalOffset = limelight.GetLimelightData()[1] -distanceToTarget/5.25;
 
     currentTopWheelRPM = turret.getTopWheelRPM();
     currentBottomWheelRPM = turret.getBottomWheelRPM();
@@ -75,10 +75,10 @@ public class runTurretAuton extends CommandBase {
     bottomShooterMax = 5200;
     storageMax = 5200;
 
-    desiredTopWheelRPM = 1700;
+    desiredTopWheelRPM = 2000;
     desiredBottomWheelRPM = desiredTopWheelRPM * 1.25;
     feederDesired = -.35*feederMax;
-    storageDesired = -1400;
+    storageDesired = -1800;
     
     topWheelError = desiredTopWheelRPM - currentTopWheelRPM;
     bottomWheelError = desiredBottomWheelRPM - currentBottomWheelRPM;

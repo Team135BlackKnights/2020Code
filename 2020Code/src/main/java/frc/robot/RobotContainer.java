@@ -37,8 +37,12 @@ public class RobotContainer implements RobotMap {
   public static final Intake intake = new Intake();
   public static final Endgame endgame = new Endgame();
   public static final ColorWheel colorWheel = new ColorWheel();
-  public static final TurretLimelight turretLimelight = TurretLimelight.getInstance();
+  public static final TurretLimelight limelight = TurretLimelight.getInstance();
   public static final Rioduino arduino = new Rioduino();
+  public final autoLine autoLineCommand = new autoLine(drive, intake, turret);
+  public final rightSideAuto rightSideAutoCommand = new rightSideAuto(drive, intake, turret, limelight, storage, true);
+  public final autoLinePlus autoLinePlusCommand = new autoLinePlus(drive, intake, turret, limelight, storage);
+  public final middleAuto middleAutoCommand = new middleAuto(drive, turret, limelight, intake, storage);
   public static int activeBallCount = 3;
 
 
@@ -83,15 +87,14 @@ public class RobotContainer implements RobotMap {
   public RobotContainer() {
     drive.setDefaultCommand(new driveWithJoysticks(drive, leftJoystick, rightJoystick));
     storage.setDefaultCommand(new runConveyor(storage, manipJoystick));
-    turret.setDefaultCommand(new targetTurret(turret, turretLimelight, manipJoystick));
+    turret.setDefaultCommand(new targetTurret(turret, limelight, manipJoystick));
     // turret.setDefaultCommand(new TurretTest(turret, manipJoystick));
     // Configure the button bindings
-    //turretLimelight.initLimelight(1, 1);
+    //limelight.initLimelight(1, 1);
     
     
     configureButtonBindings();
   }
-
   /**
    * Use this method to define your button->command mappings. Buttons can be
    * created by instantiating a {@link GenericHID} or one of its subclasses
@@ -103,9 +106,8 @@ public class RobotContainer implements RobotMap {
     rightButton3.whenPressed(new toggleLight(turret));
     rightButton10.whenPressed(new resetGyro(drive));
     
-    rightButton11.whenPressed(new rightSideAuto(drive, intake, turret, turretLimelight, storage, false));
-      //leftThumb.whenPressed(new shiftGears(drive));
-      leftTrigger.whenPressed(new shiftGears(drive));
+    rightButton11.whenPressed(new rightSideAuto(drive, intake, turret, limelight, storage, false));
+    leftTrigger.whenPressed(new shiftGears(drive));
     leftButton7.whenPressed(new resetDriveEncoders(drive));
     leftButton8.whenPressed(new resetEndgameEncoders(endgame));
     leftButton9.whenPressed(new resetIntakeEncoders(intake));
@@ -113,27 +115,18 @@ public class RobotContainer implements RobotMap {
     leftButton11.toggleWhenPressed(new toggleCompressor(drive));
     leftButton12.whenPressed(new resetTurretEncoder(turret));
 
-    manipTrigger.whileHeld(new runTurretAndStorage(storage, turret, turretLimelight));
+    manipTrigger.whileHeld(new runTurretAndStorage(storage, turret, limelight));
     manipThumb.whileHeld(new runEndgameWithJoystick(endgame, manipJoystick));
-    //manipButton3.whenPressed(new rotateWheelOfFortune(colorWheel, .25));
-  // manipButton3.whenPressed(new RotateTurretToAngle(turret, -90));
-    
-    manipButton4.whileHeld(new runRoller(intake, 7500, false));
+    manipButton4.whileHeld(new runRoller(intake, 5000, false));
     manipButton3.whileHeld(new runWinch(endgame, -.5));
-    //manipButton9.whenPressed(new rotateWheelOfFortune(colorWheel, 0));
     manipButton9.whenPressed(new rotateColorWheel(colorWheel, 0));
-    manipButton10.toggleWhenPressed(new rotateColorWheel(colorWheel, .5));
-    //manipButton10.whenPressed(new raiseEndgame(endgame, 165));
+    manipButton10.whenPressed(new raiseEndgame(endgame, 165));
     manipButton11.toggleWhenPressed(new moveIntake(intake));
     manipButton12.whenPressed(new raiseEndgame(endgame, 15));
 
     
   }
 
-  public void printButtonBindings()
-  {
-
-  }
 
   public static boolean leftTrigger() {
     return leftTrigger.get();
@@ -265,30 +258,31 @@ public class RobotContainer implements RobotMap {
     return povDirectionPressed;
 
   }
-  public Command getAutonomousCommand()
+
+  public void initLimelight(int ledMode, int pipeline)
   {
-    return new rightSideAuto(drive, intake, turret, turretLimelight, storage, false);
+    limelight.initLimelight(ledMode, pipeline);
   }
 
-  public Command getDefaultAuto() {
-
-    return new rightSideAuto(drive, intake, turret, turretLimelight, storage, false);
+  public Command getAutoLinePlus()
+  {
+    return autoLinePlusCommand;
   }
 
   public Command getMiddleAuto()
   {
-    return new rightSideAuto(drive, intake, turret, turretLimelight, storage, false);
+    return middleAutoCommand;
 
   }
 
   public Command getRightSideAuto()
   {
-    return new rightSideAuto(drive, intake, turret, turretLimelight, storage, false);
+    return rightSideAutoCommand;
 
   }
 
   public Command getAutoLine()
   {
-    return new rightSideAuto(drive, intake, turret, turretLimelight, storage, false);
+    return autoLineCommand;
   }
 }

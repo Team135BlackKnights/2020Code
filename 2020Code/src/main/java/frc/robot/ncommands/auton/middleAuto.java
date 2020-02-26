@@ -10,25 +10,43 @@ package frc.robot.ncommands.auton;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.ncommands.auton.parallels.leaveStartingConfig;
 import frc.robot.ncommands.drive.encoderDrive;
+import frc.robot.ncommands.intake.runRoller;
+import frc.robot.ncommands.turret.runTurretAuton;
 import frc.robot.nsubsystems.FalconDrive;
 import frc.robot.nsubsystems.Intake;
+import frc.robot.nsubsystems.Storage;
 import frc.robot.nsubsystems.Turret;
+import frc.robot.nsubsystems.TurretLimelight;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class autoLine extends SequentialCommandGroup {
+public class middleAuto extends SequentialCommandGroup {
   /**
-   * Creates a new autoLine.
+   * Creates a new middleAuto.
    */
-  public autoLine(FalconDrive drive, Intake intake, Turret turret) {
+
+  public middleAuto(FalconDrive drive, Turret turret, TurretLimelight limelight, Intake intake, Storage storage) 
+  {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super
     (
       parallel(
+        new runTurretAuton(turret, limelight, storage),
+      
+      sequence(
         new leaveStartingConfig(intake, turret),
-        new encoderDrive(drive, 2, 2, false))
-    );
+        parallel(
+          new runRoller(intake, 3000, true),
+          new encoderDrive(drive,2,3, true)
+        ),
+        parallel(
+          new runRoller(intake, 3000, false),
+          new encoderDrive(drive, 1, 1, false)
+        )
+      )
+
+    ));
   }
 }

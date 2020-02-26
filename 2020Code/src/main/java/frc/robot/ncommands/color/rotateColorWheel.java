@@ -69,13 +69,14 @@ public class rotateColorWheel extends CommandBase {
     */
    desiredRotations = desiredColor == "No Color" ? 4:0;
     double input =0;
-
+    boolean isDriving = Math.abs(RobotContainer.drive.getLinearMps()) >.2;
+    
    if(input!= 0)
    {
     if(Timer.getMatchTime() - initTime >uhOhTime)
     {
       wheel.moveColorWheel(input);
-      isFinished = false;
+      isFinished = isDriving ? true : false;
     }
     else 
     if(Timer.getMatchTime() - initTime < uhOhTime)
@@ -86,17 +87,12 @@ public class rotateColorWheel extends CommandBase {
     if((desiredRotations == 0) && currentColor != desiredColor)
     {
       input = rotationPower;
-      isFinished = false;
+      isFinished = isDriving ? true :false;
     }
     else if(desiredRotations > currentRotations) 
     {
       input = rotationPower;
-      isFinished = false;
-    }
-    else if(Math.abs(RobotContainer.drive.getLinearMps()) >.2)
-    {
-      input = 0;
-      isFinished = true;
+      isFinished = isDriving ? true :false;
     }
     else 
     {
