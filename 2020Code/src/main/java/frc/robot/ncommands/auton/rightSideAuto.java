@@ -29,7 +29,7 @@ public class rightSideAuto extends SequentialCommandGroup {
     super
     (
       parallel(
-        new runTurretAuton(turret, limelight, storage),
+        new runTurretAuton(turret, limelight, storage, 6),
       sequence
       (
         new leaveStartingConfig(intake, turret),

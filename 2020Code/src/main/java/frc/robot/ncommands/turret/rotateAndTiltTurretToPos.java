@@ -31,6 +31,7 @@ public class rotateAndTiltTurretToPos extends CommandBase {
   public void initialize() 
   {
     isFinished = false; 
+    turret.resetAllTurretEncoders();
     SmartDashboard.putString("Turret Command Running: ", "rotate and tilt turret to pos " + rotationPos + tiltPos);
   }
 

@@ -28,7 +28,7 @@ public class autoLine extends SequentialCommandGroup {
     (
       parallel(
         new leaveStartingConfig(intake, turret),
-        new encoderDrive(drive, 2, 2, false))
+        new encoderDrive(drive, .5, .5, false))
     );
   }
 }

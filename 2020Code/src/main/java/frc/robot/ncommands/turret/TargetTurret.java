@@ -10,6 +10,7 @@ package frc.robot.ncommands.turret;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.nsubsystems.*;
 import frc.robot.util.ImprovedJoystick;
 
@@ -54,18 +55,15 @@ public class targetTurret extends CommandBase {
     horizontalOffset = turretLimelight.GetLimelightData()[1];
     
     boolean isShooting = turret.getTopWheelRPM() > 1250;
+    double angularMPS = RobotContainer.drive.getAngularMps();
     double distToTarget = turretLimelight.distToTarget();
 
     verticalOffset = verticalOffset + distToTarget/1.5; //3.5  for regular shots
-    horizontalOffset = horizontalOffset - distToTarget/4.5;  // + distToTarget/3;
+    horizontalOffset = horizontalOffset - distToTarget/4.75;  // + distToTarget/3;
     double rotationPower, tiltPower;
-    double rotationHelper = distToTarget/6;
-    SmartDashboard.putNumber("ROtatoinhelper", rotationHelper);
-    double rP = 1.4, tP = .87, rI = .25, rD = .00;
-    rotationPower = horizontalOffset /30;
+    double rP = 1.4, tP = .87, rI = .25, rD = .00, speedCorrection = .675;
+    rotationPower = (horizontalOffset/30) - angularMPS*speedCorrection;
     tiltPower = -verticalOffset / 4;
-
-    //rotationPower = rotationPower+rotationHelper;
 
     double derivative = (rotationPower- previousError)/.02;
 
@@ -89,9 +87,6 @@ public class targetTurret extends CommandBase {
     isPOVTopLeft = _joystick.isPovDirectionPressed(7);
 
     long timeNow = System.currentTimeMillis();
-    
-    
-    
     
     if (_joystick.getJoystickButtonValue(6) && timeNow >= furtherTime) {
       furtherTime = timeNow + 100;

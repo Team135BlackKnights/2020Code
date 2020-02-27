@@ -42,6 +42,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
   public double smartDashTopRPM = 2200;
 
   public Turret() {
+    turretBallCount = 0;
+    SmartDashboard.putNumber("turret ball count", turretBallCount);
     isShooterUpToSpeed = false; 
 
     targetingLight = new Relay(TARGETING_LIGHT);
@@ -143,7 +145,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     }
     else 
     {*/
-    power = limit(power, .45, -.45);
+    power = limit(power, .65, -.65);
     //}
     rotationSpark.set(power);
   }
@@ -336,6 +338,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     if(previousState && previousState !=currentState)
     {
       RobotContainer.activeBallCount--;
+      turretBallCount++;
     }
     previousState = currentState;
   }
@@ -346,6 +349,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     printShooterRPM();
    // printRotations();
     UpdateBallCount();
+    SmartDashboard.putString("hi", "fuck off");
+    SmartDashboard.putNumber("turret balls", turretBallCount);
     smartDashTopRPM = SmartDashboard.getNumber("top shooter desired", 2200);
     SmartDashboard.putNumber("bottom shooter current", bottomShooterSpark.getOutputCurrent());
 

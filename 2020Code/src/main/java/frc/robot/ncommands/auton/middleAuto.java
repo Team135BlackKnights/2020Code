@@ -33,7 +33,7 @@ public class middleAuto extends SequentialCommandGroup {
     super
     (
       parallel(
-        new runTurretAuton(turret, limelight, storage),
+        new runTurretAuton(turret, limelight, storage, 5),
       
       sequence(
         new leaveStartingConfig(intake, turret),

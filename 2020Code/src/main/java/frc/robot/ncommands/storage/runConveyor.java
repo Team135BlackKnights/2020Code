@@ -43,7 +43,7 @@ public class runConveyor extends CommandBase {
     isButton7 = _joystick.getJoystickButtonValue(7);
     isButton8 = _joystick.getJoystickButtonValue(8);
     
-    if(currentConveyPos >= -3 && !(isButton7 || isButton8))
+    if(currentConveyPos >= -4 && !(isButton7 || isButton8))
     {
       conveyorPower = -.25;
       RobotContainer.intake.runRoller(0);

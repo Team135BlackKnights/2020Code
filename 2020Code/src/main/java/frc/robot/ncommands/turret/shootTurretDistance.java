@@ -45,17 +45,16 @@ public class shootTurretDistance extends CommandBase {
   @Override
   public void execute() 
   {
-    //SmartDashboard.putNumber("top shooter desired", turret.smartDashTopRPM);
-    //turret.smartDashTopRPM = SmartDashboard.getNumber("top shooter desired", 2200);
-    //double desired = RobotContainer.colorWheel.topShooterDesired;
+    
     double topShooterActual = turret.getTopWheelRPM();
     double bottomShooterActual = turret.getBottomWheelRPM();
     double topShooterMax = 5100;
     double bottomShooterMax = 5000;
 
    // double topShooterDesired = 4.787*Math.pow(distToTarget, 2) + 110.3889*distToTarget +2076.622;
-
-    double topShooterDesired = 2180;// 2900 max
+    double steve = 150;
+    double topShooterDesired = 5.5113*Math.pow(distToTarget, 3) - 72.1904*(Math.pow(distToTarget, 2)) 
+                                + 428.5246*distToTarget +1346.0346 ;
     double bottomShooterDesired = topShooterDesired *1.25;
 
     double feederMax = 5000;
@@ -66,7 +65,7 @@ public class shootTurretDistance extends CommandBase {
     double bottomShooterError = (bottomShooterDesired-bottomShooterActual)/bottomShooterMax;
     double feederError = (feederDesired-feederActual)/5250;
 
-    double tP, bP, fP, tI, bI, tF, bF, fF, fI;
+    double tP, bP, fP, tI, bI, tF, bF, fF;
     tF = .85;
     bF = .85;
     tP = .5; tI = 2.5;
@@ -86,7 +85,7 @@ public class shootTurretDistance extends CommandBase {
 
     double topShooterInput, bottomShooterInput, feederInput;
 
-    double minError = 100;
+    double minError = .15;
     
     turret.isShooterUpToSpeed = (topShooterError <= minError && bottomShooterError <=minError);
     double topShooterFeedForward = topShooterDesired/topShooterMax;

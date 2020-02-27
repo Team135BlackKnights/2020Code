@@ -30,12 +30,12 @@ public class autoLinePlus extends SequentialCommandGroup {
     // super(new FooCommand(), new BarCommand());
     super(
       parallel(
-        new runTurretAuton(turret, limelight, storage),
-      sequence(
         new leaveStartingConfig(intake, turret),
-        new encoderDrive(drive, 2, 2, true)
-      )
-      )
+        new encoderDrive(drive, .25, .25, false)
+        )
+      ,
+        new runTurretAuton(turret, limelight, storage, 3)     
+      
     );
   }
 }
