@@ -20,8 +20,10 @@ public class runTurretAuton extends CommandBase {
   private Turret turret;
   private TurretLimelight limelight;
   private Storage storage;
-  boolean isFinished;
+  boolean isFinished, turretReadyToRetarget, hasShot3Balls;
   double topWheelErrorSum, bottomWheelErrorSum, ballsBeforeDone;
+  boolean hasShotAtLeastOnce;
+  int count;
   
   public runTurretAuton(Turret _turret, TurretLimelight _limelight, Storage _storage, double balls) 
   {
@@ -46,7 +48,11 @@ public class runTurretAuton extends CommandBase {
     topWheelErrorSum = 0;
     bottomWheelErrorSum = 0;
     turret.turretBallCount = 0; 
+    count = 0;
     isFinished = false;
+    turretReadyToRetarget = true;
+    hasShotAtLeastOnce = false;
+    hasShot3Balls = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -54,6 +60,13 @@ public class runTurretAuton extends CommandBase {
   public void execute() 
   {
     isFinished = turret.turretBallCount >= ballsBeforeDone;
+    hasShot3Balls=(turret.turretBallCount >=3);
+    
+    if(hasShot3Balls)
+    {
+      turret.turretBallCount = 0;
+      ballsBeforeDone = ballsBeforeDone-3;
+    }
     boolean targetExist, isDriving, isTargetWithinRange, isShooterUpToSpeed;
     double verticalOffset, horizontalOffset, 
     distanceToTarget, rotationPower, tiltPower, currentTopWheelRPM, currentBottomWheelRPM, 
@@ -66,8 +79,8 @@ public class runTurretAuton extends CommandBase {
     targetExist = limelight.GetLimelightData()[0] >=1;
     distanceToTarget = limelight.distToTarget() ;
     verticalOffset = limelight.GetLimelightData()[2] +distanceToTarget/1.5;
-    horizontalOffset = limelight.GetLimelightData()[1] -distanceToTarget/5.25;
-
+    horizontalOffset = limelight.GetLimelightData()[1] - distanceToTarget/4.4;
+    
     currentTopWheelRPM = turret.getTopWheelRPM();
     currentBottomWheelRPM = turret.getBottomWheelRPM();
     feederActual = turret.getFeederRPM();
@@ -78,13 +91,25 @@ public class runTurretAuton extends CommandBase {
     
     isDriving = Math.abs(RobotContainer.drive.getLinearMps()) >.5;
     isTargetWithinRange = (Math.abs(verticalOffset) < 1.5 && Math.abs(horizontalOffset) < 1.5);
+    if(!targetExist)
+    {
+      isTargetWithinRange = true;
+    }
 
     feederMax = 5000;
     topShooterMax = 5100;
     bottomShooterMax = 5000;
     storageMax = 5200;
 
-    desiredTopWheelRPM = 2231;
+
+    desiredTopWheelRPM = 2250;
+
+    if(Math.abs(RobotContainer.drive.getLeftMetres()) > 3)
+    {
+      desiredTopWheelRPM = 2600;
+    }  
+
+    SmartDashboard.putNumber("desired auto", desiredTopWheelRPM);
     desiredBottomWheelRPM = desiredTopWheelRPM * 1.25;
     feederDesired = .35*feederMax;
     storageDesired = -1400;
@@ -110,7 +135,7 @@ public class runTurretAuton extends CommandBase {
     topWheelErrorSum = turret.limit(topWheelErrorSum, .1, -.1);
     bottomWheelErrorSum = turret.limit(bottomWheelErrorSum, .1, -.1);
     
-    rotationError = horizontalOffset;
+    rotationError = horizontalOffset-1;
     tiltError = verticalOffset + distanceToTarget/3.5;
 
     rotationPower = rotationError/30;
@@ -124,7 +149,7 @@ public class runTurretAuton extends CommandBase {
     feederFeedForward = feederDesired/feederMax;
 
     isShooterUpToSpeed = (topWheelError <= minError && bottomWheelError <=minError);
-
+    
     if(isShooterUpToSpeed)
     {
       turret.isShooterUpToSpeed = true;
@@ -133,19 +158,27 @@ public class runTurretAuton extends CommandBase {
     {
       turret.isShooterUpToSpeed = false;
     }
-
-    int count = 0; 
+    hasShotAtLeastOnce = turret.turretBallCount >0;
+    SmartDashboard.putBoolean("has Shot at least once", hasShotAtLeastOnce);
+    if(hasShotAtLeastOnce && turret.turretBallCount >= 3)
+    {
+      hasShotAtLeastOnce = false;
+    }
     if(isTargetWithinRange)
     {
       count++;
+    }
+    if(RobotContainer.activeBallCount==0)
+    {
+      count = 0; 
     }
     boolean isReadyShoot = count>=1 && RobotContainer.activeBallCount>=0 && !isDriving;
    
     topWheelInput = (isReadyShoot) ? (topFeedForward *tF) + (topWheelError *tP) + (topWheelErrorSum) : 0;
     bottomWheelInput = (isReadyShoot) ? (bottomFeedForward *bF) + (bottomWheelError *bP) + (bottomWheelErrorSum) : 0;
     feederInput = isShooterUpToSpeed ? (feederFeedForward *fF) + (feederError * fP) : 0;
-    rotationInput = !isShooterUpToSpeed && !isTargetWithinRange && targetExist ? (rotationPower * rP) + (rotationErrorSum * rI): 0;
-    tiltInput = !isShooterUpToSpeed && !isTargetWithinRange && targetExist ? tiltPower * tiltP: 0;
+    rotationInput = !hasShotAtLeastOnce &&  !isShooterUpToSpeed && !isTargetWithinRange && targetExist ? (rotationPower * rP) + (rotationErrorSum * rI): 0;
+    tiltInput = !hasShotAtLeastOnce && !isShooterUpToSpeed && !isTargetWithinRange && targetExist ? tiltPower * tiltP: 0;
     storageInput = isShooterUpToSpeed  ? (storageError * storageP): 0;
 
 

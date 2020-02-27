@@ -63,7 +63,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		RobotContainer.initLimelight(2, 0);
-		
+		RobotContainer.activeBallCount = 3;
 		autoCommand = autoChooser.getSelected();
 		SmartDashboard.putString("Auto Command ", autoChooser.getSelected().toString());
 		if(autoCommand != null)

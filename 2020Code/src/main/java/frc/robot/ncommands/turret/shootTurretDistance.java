@@ -51,10 +51,10 @@ public class shootTurretDistance extends CommandBase {
     double topShooterMax = 5100;
     double bottomShooterMax = 5000;
 
-   // double topShooterDesired = 4.787*Math.pow(distToTarget, 2) + 110.3889*distToTarget +2076.622;
     double steve = 150;
-    double topShooterDesired = 5.5113*Math.pow(distToTarget, 3) - 72.1904*(Math.pow(distToTarget, 2)) 
-                                + 428.5246*distToTarget +1346.0346 ;
+    //double topShooterDesired = 5.5113*Math.pow(distToTarget, 3) - 72.1904*(Math.pow(distToTarget, 2)) 
+      //                          + 428.5246*distToTarget +1346.0346 ;
+    double topShooterDesired = 3.464*Math.pow(distToTarget, 4) - 57.4317*Math.pow(distToTarget, 3) + 324.4904*Math.pow(distToTarget, 2) -576.8705*distToTarget +2184.3954;
     double bottomShooterDesired = topShooterDesired *1.25;
 
     double feederMax = 5000;

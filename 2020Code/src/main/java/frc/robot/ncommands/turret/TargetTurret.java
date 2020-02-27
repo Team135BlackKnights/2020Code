@@ -59,7 +59,8 @@ public class targetTurret extends CommandBase {
     double distToTarget = turretLimelight.distToTarget();
 
     verticalOffset = verticalOffset + distToTarget/1.5; //3.5  for regular shots
-    horizontalOffset = horizontalOffset - distToTarget/4.75;  // + distToTarget/3;
+    horizontalOffset = horizontalOffset - distToTarget/4.75
+    ;  // + distToTarget/3;
     double rotationPower, tiltPower;
     double rP = 1.4, tP = .87, rI = .25, rD = .00, speedCorrection = .675;
     rotationPower = (horizontalOffset/30) - angularMPS*speedCorrection;

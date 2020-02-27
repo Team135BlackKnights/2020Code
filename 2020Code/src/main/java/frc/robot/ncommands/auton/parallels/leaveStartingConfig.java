@@ -8,6 +8,8 @@
 package frc.robot.ncommands.auton.parallels;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.RobotContainer;
+import frc.robot.ncommands.drive.resetDriveEncoders;
 import frc.robot.ncommands.intake.moveIntake;
 import frc.robot.ncommands.turret.rotateAndTiltTurretToPos;
 import frc.robot.nsubsystems.Intake;
@@ -21,11 +23,11 @@ public class leaveStartingConfig extends ParallelCommandGroup {
    * Creates a new leaveStartingConfig.
    */
   public leaveStartingConfig(Intake intake, Turret turret) {
-    
     super
     (
       new moveIntake(intake),
-      new rotateAndTiltTurretToPos(turret, -150, 125)
+      new rotateAndTiltTurretToPos(turret, 80, 0),
+      new resetDriveEncoders(RobotContainer.drive)
     );
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());super();
