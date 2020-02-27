@@ -105,7 +105,7 @@ public class RobotContainer implements RobotMap {
   private void configureButtonBindings() {
     rightButton3.whenPressed(new toggleLight(turret));
     rightButton10.whenPressed(new resetGyro(drive));
-    rightButton11.whenPressed(new rightSideAuto(drive, intake, turret, limelight, storage, false));
+    //rightButton11.whenPressed(new rightSideAuto(drive, intake, turret, limelight, storage, false));
     
     leftTrigger.whenPressed(new shiftGears(drive));
     leftButton7.whenPressed(new resetDriveEncoders(drive));
@@ -149,6 +149,7 @@ public class RobotContainer implements RobotMap {
   public boolean getManipThumb() {
     return manipThumb.get();
   }
+
 
   public boolean getManipButton7() {
     return manipButton7.get();

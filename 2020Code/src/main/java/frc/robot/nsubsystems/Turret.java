@@ -347,6 +347,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
    // printRotations();
     UpdateBallCount();
     smartDashTopRPM = SmartDashboard.getNumber("top shooter desired", 2200);
+    SmartDashboard.putNumber("bottom shooter current", bottomShooterSpark.getOutputCurrent());
 
     SmartDashboard.putNumber("current balls in system ", RobotContainer.activeBallCount);
     SmartDashboard.putBoolean("is ball in turret", isBallInTurret());

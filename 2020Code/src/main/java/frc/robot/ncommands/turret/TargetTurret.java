@@ -57,7 +57,7 @@ public class targetTurret extends CommandBase {
     double distToTarget = turretLimelight.distToTarget();
 
     verticalOffset = verticalOffset + distToTarget/1.5; //3.5  for regular shots
-    horizontalOffset = horizontalOffset -distToTarget/5.25;
+    horizontalOffset = horizontalOffset - distToTarget/4.5;  // + distToTarget/3;
     double rotationPower, tiltPower;
     double rotationHelper = distToTarget/6;
     SmartDashboard.putNumber("ROtatoinhelper", rotationHelper);
