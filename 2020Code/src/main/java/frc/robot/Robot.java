@@ -23,7 +23,7 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 
 		RobotContainer = new RobotContainer();
-
+		RobotContainer.initLimelight(2, 0);
 		autoChooser.setDefaultOption("Auto Line Plus", RobotContainer.getAutoLinePlus());
 		autoChooser.addOption("Auto Line", RobotContainer.getAutoLine());
 		autoChooser.addOption("Right Side ", RobotContainer.getRightSideAuto());

@@ -65,14 +65,16 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     initCANSparkMax(ballFeederSpark, IdleMode.kBrake);
 
     topShooterSpark.setInverted(true);
-    tiltSpark.setInverted(true
-    );
+    tiltSpark.setInverted(true);
+    tiltSpark.setSmartCurrentLimit(20,20);
+    rotationSpark.setSmartCurrentLimit(30, 30);
 
     bottomShooterEncoder = bottomShooterSpark.getEncoder();
     topShooterEncoder = topShooterSpark.getEncoder();
     ballFeederEncoder = ballFeederSpark.getEncoder();
     rotationEncoder = rotationSpark.getEncoder();
     tiltEncoder = tiltSpark.getEncoder();
+    
 
     resetAllTurretEncoders();
     
@@ -127,8 +129,13 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
   public void runTilt(double power)
   {
    //
-   
+   double motorTemp = 0;// tiltSpark.getMotorTemperature();
+  
    power = limit(power, .5, -.5);
+   if(motorTemp > 55)
+   {
+     power = limit(power, 0, 0);
+   }
     tiltSpark.set(power);
   }
 
@@ -355,6 +362,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
 
     SmartDashboard.putNumber("current balls in system ", RobotContainer.activeBallCount);
     SmartDashboard.putBoolean("is ball in turret", isBallInTurret());
+    SmartDashboard.putNumber("Tilt temp ", tiltSpark.getMotorTemperature());
    
     // This method will be called once per scheduler run
   }

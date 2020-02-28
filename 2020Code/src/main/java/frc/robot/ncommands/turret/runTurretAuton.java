@@ -102,11 +102,11 @@ public class runTurretAuton extends CommandBase {
     storageMax = 5200;
 
 
-    desiredTopWheelRPM = 2250;
+    desiredTopWheelRPM = 2400;
 
     if(Math.abs(RobotContainer.drive.getLeftMetres()) > 3)
     {
-      desiredTopWheelRPM = 2600;
+      desiredTopWheelRPM = 2800;
     }  
 
     SmartDashboard.putNumber("desired auto", desiredTopWheelRPM);

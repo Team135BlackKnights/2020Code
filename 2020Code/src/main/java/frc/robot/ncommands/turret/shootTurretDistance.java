@@ -51,10 +51,15 @@ public class shootTurretDistance extends CommandBase {
     double topShooterMax = 5100;
     double bottomShooterMax = 5000;
 
-    double steve = 150;
+    double steve = 200;
     //double topShooterDesired = 5.5113*Math.pow(distToTarget, 3) - 72.1904*(Math.pow(distToTarget, 2)) 
       //                          + 428.5246*distToTarget +1346.0346 ;
+    
     double topShooterDesired = 3.464*Math.pow(distToTarget, 4) - 57.4317*Math.pow(distToTarget, 3) + 324.4904*Math.pow(distToTarget, 2) -576.8705*distToTarget +2184.3954;
+    if(RobotContainer.manipButton4.get())
+    {
+      topShooterDesired = 3.464*Math.pow(distToTarget, 4) - 57.4317*Math.pow(distToTarget, 3) + 324.4904*Math.pow(distToTarget, 2) -576.8705*distToTarget +2184.3954 + steve;
+    }
     double bottomShooterDesired = topShooterDesired *1.25;
 
     double feederMax = 5000;
@@ -80,9 +85,6 @@ public class shootTurretDistance extends CommandBase {
     tErrorSum = turret.limit(tErrorSum, .1, -.1);
     bErrorSum = turret.limit(bErrorSum, .1, -.1);
 
-    SmartDashboard.putNumber("bottom error sum ", bErrorSum);
-    SmartDashboard.putNumber("top Error sum ", tErrorSum);
-
     double topShooterInput, bottomShooterInput, feederInput;
 
     double minError = .15;
@@ -98,9 +100,6 @@ public class shootTurretDistance extends CommandBase {
     
     turret.runBallFeeder(feederInput);
     turret.runShooterPower(topShooterInput, bottomShooterInput);
-    SmartDashboard.putNumber("Top shooter input", topShooterInput);
-    SmartDashboard.putNumber("Top shooter RPm", topShooterActual);
-    SmartDashboard.putNumber("feeder RPM", feederActual);
 
     SmartDashboard.putNumber("Desired top RPM ", topShooterDesired);
   }
