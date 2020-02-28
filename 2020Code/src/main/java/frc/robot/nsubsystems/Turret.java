@@ -67,7 +67,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     topShooterSpark.setInverted(true);
     tiltSpark.setInverted(true);
     tiltSpark.setSmartCurrentLimit(20,20);
-    rotationSpark.setSmartCurrentLimit(30, 30);
+    rotationSpark.setSmartCurrentLimit(20, 20);
 
     bottomShooterEncoder = bottomShooterSpark.getEncoder();
     topShooterEncoder = topShooterSpark.getEncoder();
@@ -141,19 +141,20 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
 
   public void runRotation(double power)
   {
-    /*
-    if(getForwardRotationLimit())
+    double reverseLimit = -250, forwardLimit = 35;
+
+    if(getSparkEncoderPosition(rotationEncoder) >=35)
     {
       power =  limit(power, 0, -.45);
     }
-    else if(getReverseRotationLimit())
+    else if(getSparkEncoderPosition(rotationEncoder) <=-250)
     {
       power = limit(power, .45, 0);
     }
     else 
-    {*/
+    {
     power = limit(power, .65, -.65);
-    //}
+    }
     rotationSpark.set(power);
   }
 
@@ -261,6 +262,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
         ticksToRotations(getSparkEncoderPosition(ballFeederEncoder), 4096));
     SmartDashboard.putNumber("Rotation Encoder Position",
         ticksToRotations(getSparkEncoderPosition(rotationEncoder ), 1));
+
+        SmartDashboard.putNumber("tilt Position", getSparkEncoderPosition(tiltEncoder));
       }
 
   public void printStates() {
@@ -356,6 +359,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     printShooterRPM();
    // printRotations();
     UpdateBallCount();
+    //printRotations();
     SmartDashboard.putNumber("turret balls", turretBallCount);
     smartDashTopRPM = SmartDashboard.getNumber("top shooter desired", 2200);
     SmartDashboard.putNumber("bottom shooter current", bottomShooterSpark.getOutputCurrent());

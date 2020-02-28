@@ -27,6 +27,7 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE {
   public Solenoid raiseLower;
 
   public boolean raiseLowerState;
+  public double autonRPM; 
   public Intake() {
     rollerSpark = new CANSparkMax(ROLLER_SPARK, MotorType.kBrushless);
 
@@ -35,6 +36,7 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE {
     rollerEncoder = rollerSpark.getEncoder();
 
     raiseLower = new Solenoid(RAISE_LOWER);
+    autonRPM = 3500;
 
     System.out.println("Intake Initialized");
   }
@@ -96,6 +98,8 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE {
   @Override
   public void periodic() {
     isRollerLowered();
+    SmartDashboard.putNumber("roller Vel", getRollerRPM());
+
    // printIntakeStuff();
 
     // This method will be called once per scheduler run

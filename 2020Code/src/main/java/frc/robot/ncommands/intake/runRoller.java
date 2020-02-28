@@ -36,9 +36,10 @@ public class runRoller extends CommandBase {
   @Override
   public void execute() {
     double actualRPM = intake.getRollerRPM();
+    double maxRPM = 5000; 
     double error = _RPM-actualRPM;
     
-    double input = (_RPM+error)/10000;
+    double input = (_RPM+error)/maxRPM;
     //double RPMIncrease = Math.abs(robotLinearSpeed/1.53) *500;
     if(isWaiting)
     {
@@ -48,11 +49,11 @@ public class runRoller extends CommandBase {
       }
       else 
       {
-        input = (_RPM+error)/10000;
+        input = (_RPM+error)/maxRPM;
       }
     }
     
-    intake.runRoller(input);
+    intake.runRoller(1);
   }
 
   // Called once the command ends or is interrupted.

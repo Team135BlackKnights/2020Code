@@ -28,13 +28,14 @@ public class rightSideAuto extends SequentialCommandGroup {
     // super(new FooCommand(), new BarCommand());
     super
     (
+  
       new leaveStartingConfig(intake, turret),
       parallel(
         new runTurretAuton(turret, limelight, storage, 6),
       sequence
       (
         new runRollerAndDriveRightSide(drive, intake),
-        parallel(new encoderDrive(drive, 4, 4, false), new runRoller(intake, .65, false))
+        parallel(new encoderDrive(drive, 4, 4, false), new runRoller(intake, intake.autonRPM, false))
         )
       )
     );
