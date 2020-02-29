@@ -61,8 +61,6 @@ public class michiganTurretTeleop extends CommandBase {
   {
     boolean targetExist;
     
-    isDriving = Math.abs(RobotContainer.drive.getLinearMps()) > .25;
-
     double verticalOffset, horizontalOffset, distanceToTarget,
           desiredTopRPM, desiredBottomRPM, desiredFeederRPM, desiredStorageRPM,
           topMaxRPM, bottomMaxRPM, feederMaxRPM, storageMaxRPM, 
@@ -92,10 +90,10 @@ public class michiganTurretTeleop extends CommandBase {
 
           if(joystick.getJoystickButtonValue(2))
           {
-            desiredTopRPM = 1500;
+            desiredTopRPM = 1650;
           }
 
-          desiredFeederRPM = .35*feederMaxRPM;
+          desiredFeederRPM = -.35*feederMaxRPM;
           desiredStorageRPM = -1550;
 
           adjustedVerticalOffset = verticalOffset +distanceToTarget/3.5;
@@ -145,7 +143,7 @@ public class michiganTurretTeleop extends CommandBase {
 
           readyToShoot = (topError <=minShooterError && bottomError <= minShooterError);
 
-          if(joystick.getJoystickButtonValue(1) && !isDriving)
+          if(joystick.getJoystickButtonValue(1))
           {
             turret.runShooterPower(topInput, bottomInput);
             isShooting = true;
