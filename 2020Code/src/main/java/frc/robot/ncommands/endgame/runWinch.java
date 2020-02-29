@@ -7,6 +7,8 @@
 
 package frc.robot.ncommands.endgame;
 
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.Endgame;
@@ -27,7 +29,7 @@ public class runWinch extends CommandBase {
   public void initialize() {
 
     SmartDashboard.putString("Endgame Command Running: ", "runWinch " + _power);
-
+    endgame.setLiftBrakeMode(IdleMode.kCoast);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

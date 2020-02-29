@@ -63,6 +63,7 @@ public class shootTurretDistance extends CommandBase {
      // bottomShooterDesired = 
     }
     double bottomShooterDesired = topShooterDesired *1.25;
+    SmartDashboard.putNumber("topShooterDesired", topShooterDesired);
 
     double feederMax = 5000;
     double feederDesired = -.35*feederMax;

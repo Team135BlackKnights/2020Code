@@ -349,6 +349,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     {
       RobotContainer.activeBallCount--;
       turretBallCount++;
+      SmartDashboard.putString("count changd ", "sure");
     }
     previousState = currentState;
   }
