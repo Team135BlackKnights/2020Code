@@ -55,8 +55,8 @@ public class shootTurretDistance extends CommandBase {
     //double topShooterDesired = 5.5113*Math.pow(distToTarget, 3) - 72.1904*(Math.pow(distToTarget, 2)) 
       //                          + 428.5246*distToTarget +1346.0346 ;
     
-    double topShooterDesired = 3.464*Math.pow(distToTarget, 4) - 57.4317*Math.pow(distToTarget, 3) + 324.4904*Math.pow(distToTarget, 2) -576.8705*distToTarget +2184.3954 +steve;
-    
+   // double topShooterDesired = 3.464*Math.pow(distToTarget, 4) - 57.4317*Math.pow(distToTarget, 3) + 324.4904*Math.pow(distToTarget, 2) -576.8705*distToTarget +2184.3954 +steve;
+    double topShooterDesired = -18.526*Math.pow(distToTarget,2) + 258.5128*distToTarget + 1667.3675;
     if(RobotContainer.manipButton4.get())
     {
       topShooterDesired = 1500;
