@@ -101,18 +101,17 @@ public class runTurretAuton extends CommandBase {
     bottomShooterMax = 5000;
     storageMax = 5200;
 
+    desiredTopWheelRPM = 2450;
 
-    desiredTopWheelRPM = 2250;
-
-    if(Math.abs(RobotContainer.drive.getLeftMetres()) > 3)
+    if(Math.abs(RobotContainer.drive.getLeftMetres()) > 1.9)
     {
-      desiredTopWheelRPM = 2700;
+      desiredTopWheelRPM = 2600;
     }  
 
     SmartDashboard.putNumber("desired auto", desiredTopWheelRPM);
     desiredBottomWheelRPM = desiredTopWheelRPM * 1.25;
     feederDesired = .35*feederMax;
-    storageDesired = -1400;
+    storageDesired = -1500;
     
     topWheelError = (desiredTopWheelRPM - currentTopWheelRPM)/topShooterMax;
     bottomWheelError = (desiredBottomWheelRPM - currentBottomWheelRPM)/bottomShooterMax;
@@ -135,7 +134,7 @@ public class runTurretAuton extends CommandBase {
     topWheelErrorSum = turret.limit(topWheelErrorSum, .1, -.1);
     bottomWheelErrorSum = turret.limit(bottomWheelErrorSum, .1, -.1);
     
-    rotationError = horizontalOffset-1;
+    rotationError = horizontalOffset-1.5;
     tiltError = verticalOffset + distanceToTarget/3.5;
 
     rotationPower = rotationError/30;

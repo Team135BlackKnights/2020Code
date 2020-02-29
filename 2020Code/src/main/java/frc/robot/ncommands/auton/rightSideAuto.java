@@ -35,7 +35,7 @@ public class rightSideAuto extends SequentialCommandGroup {
       sequence
       (
         new runRollerAndDriveRightSide(drive, intake),
-        parallel(new encoderDrive(drive, 4, 4, false), new runRoller(intake, intake.autonRPM, false))
+        parallel(new encoderDrive(drive, 2, 2, false), new runRoller(intake, intake.autonRPM, false))
         )
       )
     );

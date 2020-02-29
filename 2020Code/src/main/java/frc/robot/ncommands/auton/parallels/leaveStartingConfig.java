@@ -26,7 +26,8 @@ public class leaveStartingConfig extends ParallelCommandGroup {
     super
     (
       new moveIntake(intake),
-      new rotateAndTiltTurretToPos(turret, -150, 0),
+      new rotateAndTiltTurretToPos(turret, -150, 0),// TODO different starting config changes dependant on start position
+      // 6 ball right side auto -150 position
       new resetDriveEncoders(RobotContainer.drive)
     );
     // Add your commands in the super() call, e.g.

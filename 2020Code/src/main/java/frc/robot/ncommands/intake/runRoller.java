@@ -21,7 +21,7 @@ public class runRoller extends CommandBase {
 
   public runRoller(Intake subsystem, double RPM, boolean waitForTurret) {
     intake = subsystem;
-    _RPM = RPM >1000 ? RPM : RPM *10000;
+    _RPM = RPM >1000 ? RPM : RPM *5000;
     isWaiting = waitForTurret;
   }
 
@@ -36,7 +36,7 @@ public class runRoller extends CommandBase {
   @Override
   public void execute() {
     double actualRPM = intake.getRollerRPM();
-    double maxRPM = 5000; 
+    double maxRPM = 5400; 
     double error = _RPM-actualRPM;
     
     double input = (_RPM+error)/maxRPM;
@@ -53,7 +53,7 @@ public class runRoller extends CommandBase {
       }
     }
     
-    intake.runRoller(1);
+    intake.runRoller(input);
   }
 
   // Called once the command ends or is interrupted.

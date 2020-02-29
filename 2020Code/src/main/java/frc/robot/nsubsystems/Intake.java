@@ -36,7 +36,7 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE {
     rollerEncoder = rollerSpark.getEncoder();
 
     raiseLower = new Solenoid(RAISE_LOWER);
-    autonRPM = 3500;
+    autonRPM = 4800;
 
     System.out.println("Intake Initialized");
   }

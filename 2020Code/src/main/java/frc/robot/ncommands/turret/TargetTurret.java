@@ -52,18 +52,17 @@ public class targetTurret extends CommandBase {
   public void execute() {
     targetExist = turretLimelight.GetLimelightData()[0] >= 1 ? true : false;
     verticalOffset = turretLimelight.GetLimelightData()[2];
-    horizontalOffset = turretLimelight.GetLimelightData()[1];
+    double distToTarget = turretLimelight.distToTarget();
+    horizontalOffset = turretLimelight.GetLimelightData()[1]- distToTarget/4.4;
     
     boolean isShooting = turret.getTopWheelRPM() > 1250;
     double angularMPS = RobotContainer.drive.getAngularMps();
-    double distToTarget = turretLimelight.distToTarget();
 
-    verticalOffset = verticalOffset + distToTarget/1.5; //3.5  for regular shots
-    horizontalOffset = horizontalOffset - distToTarget/4.75
-    ;  // + distToTarget/3;
+    verticalOffset = verticalOffset + distToTarget/3.5; //3.5  for regular shots
+    horizontalOffset = horizontalOffset - 1.5;  // + distToTarget/3;
     double rotationPower, tiltPower;
     double rP = 1.4, tP = .87, rI = .25, rD = .00, speedCorrection = .675;
-    rotationPower = (horizontalOffset/30) - angularMPS*speedCorrection;
+    rotationPower = (horizontalOffset/30);// - angularMPS*speedCorrection;
     tiltPower = -verticalOffset / 4;
 
     double derivative = (rotationPower- previousError)/.02;
@@ -170,7 +169,6 @@ public class targetTurret extends CommandBase {
     }
 
     turret.aimTurret(rotationPower, tiltPower);
-    previousError = horizontalOffset / 40;
   }
 
   // Called once the command ends or is interrupted.

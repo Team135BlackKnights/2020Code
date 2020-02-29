@@ -25,7 +25,7 @@ public class runTurretAndStorage extends ParallelCommandGroup {
   public runTurretAndStorage(Storage _storage, Turret _turret, TurretLimelight _limelight) {
     super(
       new shootTurretDistance(_turret, _limelight, false),
-      new runConveyorPower(_storage, -1800));
+      new runConveyorPower(_storage, -1550));
     
 
 
