@@ -31,7 +31,7 @@ public class autoLinePlus extends SequentialCommandGroup {
     super(
       parallel(
         new leaveStartingConfig(intake, turret),
-        new encoderDrive(drive, .25, .25, false)
+        new encoderDrive(drive, -1.25, -1.25, false)
         )
       ,
         new runTurretAuton(turret, limelight, storage, 3)     

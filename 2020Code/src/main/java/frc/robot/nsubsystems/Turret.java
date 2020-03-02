@@ -369,6 +369,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     SmartDashboard.putNumber("current balls in system ", RobotContainer.activeBallCount);
     SmartDashboard.putBoolean("is ball in turret", isBallInTurret());
     SmartDashboard.putNumber("Tilt temp ", tiltSpark.getMotorTemperature());
+    //SmartDashboard.putNumber("rotation ", value)
    
     // This method will be called once per scheduler run
   }

@@ -52,13 +52,13 @@ public class runConveyor extends CommandBase {
     }
     else if (isButton7)
     {
-      conveyorPower = .85;
+      conveyorPower = .6;
       storage.resetConveyorEncoder();
       RobotContainer.intake.runRoller(-.3);
       RobotContainer.turret.runBallFeeder(.2);
       if(RobotContainer.intake.isRollerLowered())
       {
-       RobotContainer.intake.raiseLower(false);
+      // RobotContainer.intake.raiseLower(false);
        
       }
       SmartDashboard.putString("Conveyor Override: ", "Conveyor Going Up");

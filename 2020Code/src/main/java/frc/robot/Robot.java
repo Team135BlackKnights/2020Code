@@ -27,7 +27,6 @@ public class Robot extends TimedRobot {
 		autoChooser.setDefaultOption("Auto Line Plus", RobotContainer.getAutoLinePlus());
 		autoChooser.addOption("Auto Line", RobotContainer.getAutoLine());
 		autoChooser.addOption("Right Side ", RobotContainer.getRightSideAuto());
-		autoChooser.addOption("Middle", RobotContainer.getMiddleAuto());
 
 		SmartDashboard.putData(autoChooser);
 	

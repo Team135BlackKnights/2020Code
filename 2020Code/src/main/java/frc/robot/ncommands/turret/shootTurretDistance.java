@@ -62,8 +62,8 @@ public class shootTurretDistance extends CommandBase {
       topShooterDesired = 1500;
      // bottomShooterDesired = 
     }
-    double bottomShooterDesired = topShooterDesired *1.25;
-    SmartDashboard.putNumber("topShooterDesired", topShooterDesired);
+    double bottomShooterDesired = bottomShooterMax * -RobotContainer.manipJoystick.getThrottle();
+    SmartDashboard.putNumber("bottomShooterDesired", bottomShooterDesired);
 
     double feederMax = 5000;
     double feederDesired = -.35*feederMax;
@@ -92,11 +92,11 @@ public class shootTurretDistance extends CommandBase {
 
     double minError = .15;
     
-    turret.isShooterUpToSpeed = (topShooterError <= minError && bottomShooterError <=minError);
+    turret.isShooterUpToSpeed = (bottomShooterError <=minError);
     double topShooterFeedForward = topShooterDesired/topShooterMax;
     double bottomShooterFeedForward = bottomShooterDesired/bottomShooterMax;
     double feederFeedForward = feederDesired/feederMax;
-        topShooterInput = (topShooterFeedForward*tF) + (topShooterError * tP) + (tErrorSum);
+        topShooterInput = 0; //(topShooterFeedForward*tF) + (topShooterError * tP) + (tErrorSum);
         bottomShooterInput = (bottomShooterFeedForward*bF) + (bottomShooterError * bP) + (bErrorSum);
         feederInput = feederFeedForward * fF + feederError*fP;
         feederInput = turret.isShooterUpToSpeed ? feederInput : 0;

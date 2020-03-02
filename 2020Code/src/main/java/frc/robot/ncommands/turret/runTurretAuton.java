@@ -78,7 +78,7 @@ public class runTurretAuton extends CommandBase {
 
     targetExist = limelight.GetLimelightData()[0] >=1;
     distanceToTarget = limelight.distToTarget() ;
-    verticalOffset = limelight.GetLimelightData()[2] +distanceToTarget/1.5;
+    verticalOffset = limelight.GetLimelightData()[2] +distanceToTarget/3.5;
     horizontalOffset = limelight.GetLimelightData()[1] - distanceToTarget/4.4;
     
     currentTopWheelRPM = turret.getTopWheelRPM();
@@ -90,7 +90,7 @@ public class runTurretAuton extends CommandBase {
     double averagedStorage = smoothStorage.process((float)storageActual);
     
     isDriving = Math.abs(RobotContainer.drive.getLinearMps()) >.05;
-    isTargetWithinRange = (Math.abs(verticalOffset) < .5 && Math.abs(horizontalOffset) < 1.5);
+    isTargetWithinRange = (Math.abs(verticalOffset) < .75 && Math.abs(horizontalOffset) < .75);
     if(!targetExist)
     {
       isTargetWithinRange = true;
@@ -101,12 +101,11 @@ public class runTurretAuton extends CommandBase {
     bottomShooterMax = 5000;
     storageMax = 5200;
 
-    desiredTopWheelRPM = 2381;
+    desiredTopWheelRPM = 1400;
 
     if(Math.abs(RobotContainer.drive.getLeftMetres()) > 1.9)
     {
       desiredTopWheelRPM = -18.526*Math.pow(distanceToTarget,2) + 258.5128*distanceToTarget + 1667.3675;
-
     }  
 
     SmartDashboard.putNumber("desired auto", desiredTopWheelRPM);
@@ -166,13 +165,13 @@ public class runTurretAuton extends CommandBase {
     }
     if(isTargetWithinRange)
     {
-      count++;
+      count=1;
     }
     if(RobotContainer.activeBallCount==0)
     {
       count = 0; 
     }
-    boolean isReadyShoot = count>=1 && RobotContainer.activeBallCount>=0 && !isDriving;
+    boolean isReadyShoot = RobotContainer.activeBallCount>=0 && !isDriving;
    
     topWheelInput = (isReadyShoot) ? (topFeedForward *tF) + (topWheelError *tP) + (topWheelErrorSum) : 0;
     bottomWheelInput = (isReadyShoot) ? (bottomFeedForward *bF) + (bottomWheelError *bP) + (bottomWheelErrorSum) : 0;
@@ -188,7 +187,7 @@ public class runTurretAuton extends CommandBase {
     }
 
 
-    turret.aimTurret(rotationInput, tiltInput);
+  //  turret.aimTurret(rotationInput, tiltInput);
     turret.runBallFeeder(-feederInput);
     turret.runShooterPower(topWheelInput, bottomWheelInput);
     storage.runConveyor(storageInput);   

@@ -84,8 +84,8 @@ public class encoderDrive extends CommandBase {
       leftInput = leftPower * lP + leftErrorSum * lI + leftErrorChange * lD; 
       rightInput = rightPower * rP + rightErrorSum * rI + rightErrorChange * rD;
 
-      leftInput = drive.limit(leftInput, .85, -.85);
-      rightInput = drive.limit(rightInput, .85, -.85);
+      leftInput = drive.limit(leftInput, .55, -.55);
+      rightInput = drive.limit(rightInput, .55, -.55);
 
       prevLeftError = leftError;
       prevRightError = rightError;

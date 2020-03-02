@@ -53,13 +53,12 @@ public class targetTurret extends CommandBase {
     targetExist = turretLimelight.GetLimelightData()[0] >= 1 ? true : false;
     verticalOffset = turretLimelight.GetLimelightData()[2];
     double distToTarget = turretLimelight.distToTarget();
-    horizontalOffset = turretLimelight.GetLimelightData()[1]- distToTarget/4.4;
+    horizontalOffset = turretLimelight.GetLimelightData()[1];//- distToTarget/4.4;
     
     boolean isShooting = turret.getTopWheelRPM() > 1250;
     double angularMPS = RobotContainer.drive.getAngularMps();
 
     verticalOffset = verticalOffset + distToTarget/3.5; //3.5  for regular shots
-    horizontalOffset = horizontalOffset - 1.5;  // + distToTarget/3;
     double rotationPower, tiltPower;
     double rP = 1.4, tP = .87, rI = .25, rD = .00, speedCorrection = .675;
     rotationPower = (horizontalOffset/30);// - angularMPS*speedCorrection;
