@@ -24,6 +24,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Ultrasonic;
@@ -50,6 +51,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   public Pose2d pose;
 
   public WPI_TalonFX frontLeftFX, frontRightFX, rearLeftFX, rearRightFX;
+  public Servo testServo;
   public Solenoid shifter;
   public Compressor compressor;
 
@@ -69,6 +71,9 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
 
     frontRightFX = new WPI_TalonFX(FRONT_RIGHT_FALCON);
     rearRightFX = new WPI_TalonFX(REAR_RIGHT_FALCON);
+
+    testServo = new Servo(0);
+    //testServo.setSpeed(1);
 
     // *************************************
     configFalcon(frontLeftFX, true);
@@ -100,7 +105,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     chassis.setMaxOutput(.98); // Maximum zoom is 98%
 
     resetEncoders(); // Calls method to reset the internal encoders of the motors
-    setBrakeMode(NeutralMode.Brake);
+    setBrakeMode(NeutralMode.Coast);
     // Calls method which makes it so that when the input is neutral, the motors
     // will brake
    
@@ -120,6 +125,12 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     falcon.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, 100);
     falcon.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_50Ms, 100);
     falcon.configVelocityMeasurementWindow(4, 100);
+  }
+
+  public void runServo(double speed)
+  {
+    testServo.setSpeed(speed);
+    SmartDashboard.putNumber("Servo Pos", testServo.getPosition());
   }
 
   // Sets the neutral input to brake all four motors

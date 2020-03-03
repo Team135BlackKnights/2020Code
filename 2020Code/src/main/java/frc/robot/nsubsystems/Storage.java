@@ -25,15 +25,18 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE {
   public DigitalInput intakeBallTripSwitch, testInput;
   public int currentBallCount;
   public boolean lastSwtichPosition;
+  public double desiredEncoderPos; 
 
   public Storage() {
     conveyorSpark = new CANSparkMax(CONVEYOR_SPARK, MotorType.kBrushless);
     initCANSparkMax(conveyorSpark, IdleMode.kBrake);
+    conveyorSpark.setInverted(true);
     conveyorEncoder = conveyorSpark.getEncoder();
     intakeBallTripSwitch = new DigitalInput(INTAKE_TRIP_SWITCH);
     conveyorEncoder = conveyorSpark.getEncoder();
     lastSwtichPosition = false;
     currentBallCount = 0;
+    desiredEncoderPos = 4;
     System.out.println("Storage Initialized");
   }
 
@@ -109,6 +112,22 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE {
     return x;
   }
 
+  public void autoMoveBalls()
+  {
+    if(isBallAtTripSwitch())// && //!RobotContainer.nTurret.isReadyForBall)
+    {
+      resetConveyorEncoder();
+    }
+    if(1==1)//RobotContainer.nTurret.isReadyForBall)
+    {
+      runConveyor(.4);;
+    }
+    if(getConveyorRotations() > desiredEncoderPos)
+    {
+      runConveyor(.4);
+    }
+  }
+
   public void printStorageData()
   {
     SmartDashboard.putNumber("Balls Through System ", currentBallCount);
@@ -120,6 +139,7 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE {
   public void periodic() {
     intakeBallCount();
     autoResetEncoder();
+   // autoMoveBalls();
    // printStorageData();
     // This method will be called once per scheduler run
   }

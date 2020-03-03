@@ -10,6 +10,7 @@ package frc.robot.ncommands.drive;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.nsubsystems.*;
 import frc.robot.util.ImprovedJoystick;
 
@@ -57,6 +58,7 @@ public class driveWithJoysticks extends CommandBase {
     lateralPower = isReversed ? lateralPower : -lateralPower;
     
     drive.ArcadeDrive(lateralPower, rotationPower*.85);
+    drive.runServo(RobotContainer.manipJoystick.getRawAxis(1));
   }
 
   // Called once the command ends or is interrupted.

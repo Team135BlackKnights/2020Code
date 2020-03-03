@@ -43,9 +43,9 @@ public class runConveyor extends CommandBase {
     isButton7 = _joystick.getJoystickButtonValue(7);
     isButton8 = _joystick.getJoystickButtonValue(8);
     
-    if(currentConveyPos >= -4 && !(isButton7 || isButton8))
+    if(!(isButton7 || isButton8))
     {
-      conveyorPower = -.25;
+      storage.autoMoveBalls();
       RobotContainer.intake.runRoller(0);
       RobotContainer.turret.runBallFeeder(0);
       SmartDashboard.putString("Conveyor Override: ", "Sensor Control");
@@ -58,8 +58,7 @@ public class runConveyor extends CommandBase {
       RobotContainer.turret.runBallFeeder(.2);
       if(RobotContainer.intake.isRollerLowered())
       {
-      // RobotContainer.intake.raiseLower(false);
-       
+       RobotContainer.intake.raiseLower(false);
       }
       SmartDashboard.putString("Conveyor Override: ", "Conveyor Going Up");
     } 
