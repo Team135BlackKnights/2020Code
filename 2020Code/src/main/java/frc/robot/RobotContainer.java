@@ -88,10 +88,10 @@ public class RobotContainer implements RobotMap {
   public RobotContainer() {
     drive.setDefaultCommand(new driveWithJoysticks(drive, leftJoystick, rightJoystick));
 
-     storage.setDefaultCommand(new runConveyor(storage, manipJoystick));
-     turret.setDefaultCommand(new targetTurret(turret, limelight, manipJoystick));
+   // storage.setDefaultCommand(new runConveyor(storage, manipJoystick));
+    // turret.setDefaultCommand(new targetTurret(turret, limelight, manipJoystick));
     // turret.setDefaultCommand(new TurretTest(turret, manipJoystick));
-    //turret.setDefaultCommand(new michiganTurretTeleop(turret, limelight, storage, manipJoystick));
+    turret.setDefaultCommand(new michiganTurretTeleop(turret, limelight, storage, manipJoystick));
     
     // Configure the button bindings
     //limelight.initLimelight(1, 1);
@@ -121,13 +121,13 @@ public class RobotContainer implements RobotMap {
     leftButton11.toggleWhenPressed(new toggleCompressor(drive));
     leftButton12.whenPressed(new resetTurretEncoder(turret));
 
-    manipTrigger.whileHeld(new runTurretAndStorage(storage, turret, limelight));
+   // manipTrigger.whileHeld(new runTurretAndStorage(storage, turret, limelight));
     manipThumb.whileHeld(new runEndgameWithJoystick(endgame, manipJoystick));
     manipButton3.whileHeld(new runRoller(intake,  2400 , false));
     manipButton5.toggleWhenPressed(new moveIntake(intake));
     //manipButton9.whenPressed(new rotateColorWheel(colorWheel, 0));
     manipButton10.whenPressed(new raiseEndgame(endgame, 165));
-    manipButton11.whileHeld(new runWinch(endgame, -.85));
+    manipButton11.whileHeld(new runWinch(endgame, -.5));
     manipButton12.whenPressed(new raiseEndgame(endgame, 15));
   }
 

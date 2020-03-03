@@ -89,8 +89,8 @@ public class runTurretAuton extends CommandBase {
     MovingAverage smoothStorage = new MovingAverage(25);
     double averagedStorage = smoothStorage.process((float)storageActual);
     
-    isDriving = Math.abs(RobotContainer.drive.getLinearMps()) >.05;
-    isTargetWithinRange = (Math.abs(verticalOffset) < .75 && Math.abs(horizontalOffset) < .75);
+    isDriving = Math.abs(RobotContainer.drive.getLinearMps()) >.5;
+    isTargetWithinRange = (Math.abs(verticalOffset) < 1.5 && Math.abs(horizontalOffset) < 1.5);
     if(!targetExist)
     {
       isTargetWithinRange = true;
@@ -101,11 +101,12 @@ public class runTurretAuton extends CommandBase {
     bottomShooterMax = 5000;
     storageMax = 5200;
 
-    desiredTopWheelRPM = 1400;
+    desiredTopWheelRPM = 2450;
 
     if(Math.abs(RobotContainer.drive.getLeftMetres()) > 1.9)
     {
-      desiredTopWheelRPM = -18.526*Math.pow(distanceToTarget,2) + 258.5128*distanceToTarget + 1667.3675;
+      desiredTopWheelRPM = 2600;
+
     }  
 
     SmartDashboard.putNumber("desired auto", desiredTopWheelRPM);

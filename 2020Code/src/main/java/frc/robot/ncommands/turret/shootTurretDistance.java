@@ -62,8 +62,7 @@ public class shootTurretDistance extends CommandBase {
       topShooterDesired = 1500;
      // bottomShooterDesired = 
     }
-    double bottomShooterDesired = bottomShooterMax * -RobotContainer.manipJoystick.getThrottle();
-    SmartDashboard.putNumber("bottomShooterDesired", bottomShooterDesired);
+    double bottomShooterDesired = topShooterDesired *1.25;
 
     double feederMax = 5000;
     double feederDesired = -.35*feederMax;

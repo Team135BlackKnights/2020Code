@@ -57,7 +57,6 @@ public class encoderDrive extends CommandBase {
       {
         isFinished = true;
       }
-      
       double currentLeftPos = drive.getLeftMetres();
       double currentRightPos = drive.getRightMetres();
     
