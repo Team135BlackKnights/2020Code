@@ -53,7 +53,7 @@ public class runConveyorPower extends CommandBase {
     kD = 0;
 
     double storageInput = error*kP + integral *kI + derivative * kD;
-    storageInput  = RobotContainer.turret.isShooterUpToSpeed ? storageInput : 0; 
+    storageInput  = 0;//RobotContainer.turret.isShooterUpToSpeed ? storageInput : 0; 
     storage.runConveyor(storageInput);
     previousError = error;
   }

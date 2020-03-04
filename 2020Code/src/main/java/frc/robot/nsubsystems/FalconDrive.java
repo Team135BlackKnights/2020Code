@@ -129,8 +129,8 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
 
   public void runServo(double speed)
   {
-    testServo.setSpeed(speed);
-    SmartDashboard.putNumber("Servo Pos", testServo.getPosition());
+    testServo.set(speed +.5);
+    SmartDashboard.putNumber("Servo Pos", testServo.getAngle());
   }
 
   // Sets the neutral input to brake all four motors
