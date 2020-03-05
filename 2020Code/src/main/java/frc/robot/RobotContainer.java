@@ -21,7 +21,6 @@ import frc.robot.ncommands.intake.*;
 import frc.robot.ncommands.turret.*;
 import frc.robot.nsubsystems.*;
 import frc.robot.ncommands.auton.*;
-import frc.robot.ncommands.auton.parallels.leaveStartingConfig;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -33,19 +32,20 @@ import frc.robot.ncommands.auton.parallels.leaveStartingConfig;
 public class RobotContainer implements RobotMap {
   // The robot's subsystems and commands are defined here...
   public static final FalconDrive drive = new FalconDrive();
-  //public static final newTurret nTurret = null; // new newTurret();
+  //public static final newTurret nTurret = new newTurret();
  // public static final Turret turret = new Turret();
   
   public static final Storage storage = new Storage();
+  //public static final newStorage nStorage = new newStorage;
   public static final Intake intake = new Intake();
   public static final Endgame endgame = new Endgame();
   public static final ColorWheel colorWheel = null;//new ColorWheel();
   public static final TurretLimelight limelight = TurretLimelight.getInstance();
   public static final Rioduino arduino = new Rioduino();
-  public final autoLine autoLineCommand = null;//new autoLine(drive, intake, turret);
-  public final rightSideAuto rightSideAutoCommand = null;//new rightSideAuto(drive, intake, turret, limelight, storage, true);
-  public final autoLinePlus autoLinePlusCommand = null;//new autoLinePlus(drive, intake, turret, limelight, storage);
-  public final middleAuto middleAutoCommand =null;// new middleAuto(drive, turret, limelight, intake, storage);
+  public final autoLine autoLineCommand = null; //new autoLine(drive, intake, turret);
+  public final rightSideAuto rightSideAutoCommand = null; //new rightSideAuto(drive, intake, turret, limelight, storage, true);
+  public final autoLinePlus autoLinePlusCommand = null; //new autoLinePlus(drive, intake, turret, limelight, storage);
+  public final middleAuto middleAutoCommand =null; // new middleAuto(drive, turret, limelight, intake, storage);
   public static int activeBallCount = 3;
 
 
@@ -93,10 +93,10 @@ public class RobotContainer implements RobotMap {
      storage.setDefaultCommand(new runConveyor(storage, manipJoystick));
     // turret.setDefaultCommand(new targetTurret(turret, limelight, manipJoystick));
     // turret.setDefaultCommand(new TurretTest(turret, manipJoystick));
-    //turret.setDefaultCommand(new michiganTurretTeleop(turret, limelight, storage, manipJoystick));
+    // turret.setDefaultCommand(new michiganTurretTeleop(turret, limelight, storage, manipJoystick));
     
     // Configure the button bindings
-    //limelight.initLimelight(1, 1);
+    // limelight.initLimelight(1, 1);
     
     
     configureButtonBindings();
@@ -109,11 +109,11 @@ public class RobotContainer implements RobotMap {
    */
 
   private void configureButtonBindings() {
-   // rightButton3.whenPressed(new toggleLight(turret));
+    // rightButton3.whenPressed(new toggleLight(turret));
     rightButton10.whenPressed(new resetGyro(drive));
     
-    //rightButton11.whenPressed(new leaveStartingConfig(intake, turret));
-    //rightButton11.whenPressed(new rightSideAuto(drive, intake, turret, limelight, storage, false));
+    // rightButton11.whenPressed(new leaveStartingConfig(intake, turret));
+    // rightButton11.whenPressed(new rightSideAuto(drive, intake, turret, limelight, storage, false));
     
     leftTrigger.whenPressed(new shiftGears(drive));
     leftButton7.whenPressed(new resetDriveEncoders(drive));
@@ -121,13 +121,13 @@ public class RobotContainer implements RobotMap {
     leftButton9.whenPressed(new resetIntakeEncoders(intake));
     leftButton10.whenPressed(new resetStorageEncoders(storage));
     leftButton11.toggleWhenPressed(new toggleCompressor(drive));
-    //leftButton12.whenPressed(new resetTurretEncoder(turret));
+    // leftButton12.whenPressed(new resetTurretEncoder(turret));
 
-    //manipTrigger.whileHeld(new runTurretAndStorage(storage, turret, limelight));
+    // manipTrigger.whileHeld(new runTurretAndStorage(storage, turret, limelight));
     manipThumb.whileHeld(new runEndgameWithJoystick(endgame, manipJoystick));
     manipButton3.whileHeld(new runRoller(intake,  2400 , false));
     manipButton5.toggleWhenPressed(new moveIntake(intake));
-    //manipButton9.whenPressed(new rotateColorWheel(colorWheel, 0));
+    // manipButton9.whenPressed(new rotateColorWheel(colorWheel, 0));
     manipButton10.whenPressed(new raiseEndgame(endgame, 165));
     manipButton11.whileHeld(new runWinch(endgame, -.85));
     manipButton12.whenPressed(new raiseEndgame(endgame, 15));

@@ -9,7 +9,6 @@ package frc.robot.nsubsystems;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -384,6 +383,5 @@ public static final int
     isBallInTurret();
     updateBallCount();
     autoIndexBall();
-    // This method will be called once per scheduler run
   }
 }

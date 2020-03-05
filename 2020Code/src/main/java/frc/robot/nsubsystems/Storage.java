@@ -118,10 +118,13 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE {
     {
       resetConveyorEncoder();
     }
-    if(1==1)//RobotContainer.nTurret.isReadyForBall)
+    /*
+    if(RobotContainer.nTurret.isReadyForBall)
     {
       runConveyor(.4);;
     }
+    */
+    runConveyor(.4);
     if(getConveyorRotations() > desiredEncoderPos)
     {
       runConveyor(.4);

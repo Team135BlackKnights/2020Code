@@ -141,7 +141,6 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
 
   public void runRotation(double power)
   {
-    double reverseLimit = -250, forwardLimit = 35;
 
     if(getSparkEncoderPosition(rotationEncoder) >=35)
     {

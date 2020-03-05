@@ -58,16 +58,13 @@ public class targetAndShoot extends CommandBase {
 
     isAuton = Timer.getMatchTime() <= 15;
     double distanceToTarget, horizontalOffset, rotationError, hoodDesired, hoodActual, hoodError, 
-    desiredRPM, overrideRPM, actualRPM, rpmError, maxRPM, minRotationError, minHoodError, feedForwardRPM,
+    desiredRPM, overrideRPM, actualRPM, rpmError, maxRPM, feedForwardRPM,
     shooterInput, rotationInput, hoodInput;
 
     distanceToTarget = turret.distanceToTarget();
     horizontalOffset = turret.limelightData[1];
     isTargetValid = turret.limelightData[0] >=1;
     isDriving = RobotContainer.drive.getLinearMps() >= .15;
-
-    minRotationError = 1;
-    minHoodError = 5;
 
     if (joystick.getJoystickButtonValue(6) && timeNow >= furtherTime) {
       furtherTime = timeNow + 100;
