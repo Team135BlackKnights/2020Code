@@ -51,7 +51,6 @@ public class shootTurretDistance extends CommandBase {
     double topShooterMax = 5100;
     double bottomShooterMax = 5000;
 
-    double steve = 100;
     //double topShooterDesired = 5.5113*Math.pow(distToTarget, 3) - 72.1904*(Math.pow(distToTarget, 2)) 
       //                          + 428.5246*distToTarget +1346.0346 ;
     
@@ -73,11 +72,12 @@ public class shootTurretDistance extends CommandBase {
     double bottomShooterError = (bottomShooterDesired-bottomShooterActual)/bottomShooterMax;
     double feederError = (feederDesired-feederActual)/5250;
 
-    double tP, bP, fP, tI, bI, tF, bF, fF;
-    tF = .85;
+    double bP, fP, tI, bI, bF, fF;
+
     bF = .85;
-    tP = .5; tI = 2.5;
-    bP = .94; bI = 2;
+    tI = 2.5;
+    bP = .94; 
+    bI = 2;
     fF =.892;
     fP = 0;
 
@@ -88,21 +88,19 @@ public class shootTurretDistance extends CommandBase {
     tErrorSum = turret.limit(tErrorSum, .1, -.1);
     bErrorSum = turret.limit(bErrorSum, .1, -.1);
 
-    double topShooterInput, bottomShooterInput, feederInput;
+    double bottomShooterInput, feederInput;
 
     double minError = .15;
     
     turret.isShooterUpToSpeed = (bottomShooterError <=minError);
-    double topShooterFeedForward = topShooterDesired/topShooterMax;
     double bottomShooterFeedForward = bottomShooterDesired/bottomShooterMax;
     double feederFeedForward = feederDesired/feederMax;
-        topShooterInput = 0; //(topShooterFeedForward*tF) + (topShooterError * tP) + (tErrorSum);
         bottomShooterInput = (bottomShooterFeedForward*bF) + (bottomShooterError * bP) + (bErrorSum);
         feederInput = feederFeedForward * fF + feederError*fP;
         feederInput = turret.isShooterUpToSpeed ? feederInput : 0;
     
     turret.runBallFeeder(feederInput);
-    turret.runShooterPower(topShooterInput, bottomShooterInput);
+    turret.runShooterPower(0, bottomShooterInput);
 
     SmartDashboard.putNumber("Desired top RPM ", topShooterDesired);
   }
