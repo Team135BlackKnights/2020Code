@@ -37,15 +37,22 @@ public class runConveyor extends CommandBase {
   public void execute() {
 
     double currentConveyPos = storage.getConveyorRotations();
+    double conveyorError = -3-currentConveyPos;
     double conveyorPower = 0;
     boolean isButton7, isButton8;
 
     isButton7 = _joystick.getJoystickButtonValue(7);
     isButton8 = _joystick.getJoystickButtonValue(8);
     
-    if(!(isButton7 || isButton8))
+    if(storage.isBallAtTripSwitch())
     {
-      storage.autoMoveBalls();
+      storage.resetConveyorEncoder();
+    }
+
+    if(currentConveyPos > -3 && !isButton7 && !isButton8)
+    {
+      conveyorPower = conveyorError*.12;
+      
       RobotContainer.intake.runRoller(0);
      // RobotContainer.turret.runBallFeeder(0);
       SmartDashboard.putString("Conveyor Override: ", "Sensor Control");
@@ -64,7 +71,7 @@ public class runConveyor extends CommandBase {
     } 
     else if (isButton8)
     {
-      conveyorPower = -.25;
+      conveyorPower = -.85;
       RobotContainer.intake.runRoller(.3);
       storage.resetConveyorEncoder();
       SmartDashboard.putString("Conveyor Override: ", "Conveyor Going Down");

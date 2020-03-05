@@ -1,16 +1,9 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.ncommands.drive;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
+//import frc.robot.RobotContainer;
 import frc.robot.nsubsystems.*;
 import frc.robot.util.ImprovedJoystick;
 
@@ -30,7 +23,6 @@ public class driveWithJoysticks extends CommandBase {
   @Override
   public void initialize() {
     SmartDashboard.putString("Drive Command Running: ", "Drive with Joysticks");
-    drive.setVoltageCompensation(true);
 
   }
 
@@ -58,7 +50,6 @@ public class driveWithJoysticks extends CommandBase {
     lateralPower = isReversed ? lateralPower : -lateralPower;
     
     drive.ArcadeDrive(lateralPower, rotationPower*.85);
-    drive.runServo(RobotContainer.manipJoystick.getRawAxis(1));
   }
 
   // Called once the command ends or is interrupted.

@@ -8,10 +8,9 @@
 package frc.robot.nsubsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -20,18 +19,16 @@ import frc.robot.RobotMap;
 
 public class Endgame extends SubsystemBase implements RobotMap.ENDGAME {
 
-  public CANSparkMax winchSpark, liftRaiseSpark;
-  public CANEncoder liftRaiseEncoder, winchEncoder;
-  public DigitalInput highLimit; 
+  public CANSparkMax liftRaiseSpark;
+  public CANEncoder liftRaiseEncoder;
+  public Solenoid rachet; 
 
   public Endgame() {
-    winchSpark = new CANSparkMax(WIND_UP_SPARK_ID, MotorType.kBrushless);
     liftRaiseSpark = new CANSparkMax(LIFT_UP_SPARK_ID, MotorType.kBrushless);
     liftRaiseEncoder = liftRaiseSpark.getEncoder();
-    winchEncoder = winchSpark.getEncoder();
-    initCANSparkMax(winchSpark, IdleMode.kBrake);
     initCANSparkMax(liftRaiseSpark, IdleMode.kBrake);
     liftRaiseSpark.setInverted(true);
+    rachet = new Solenoid(3);
 
     resetAllEndgameEncoders();
   }
@@ -42,46 +39,34 @@ public class Endgame extends SubsystemBase implements RobotMap.ENDGAME {
     spark.setIdleMode(mode);
   }
 
-  public boolean getLimitState()
-  {
-    return highLimit.get();
-  }
-
-  public void runWinchSpark(double power) {
-    winchSpark.set(power);
-  }
   public void setLiftBrakeMode(IdleMode mode)
   {
     liftRaiseSpark.setIdleMode(mode);
   }
 
-
-  public void runLiftRaiseSpark(double power) {
-/*
-    if(getLimitState())
-    {
-      power = limit(power, .75, 0);
-    }
-    */
-    power = limit(power, .75, -.75);
+  public void runLiftRaiseSpark(double power) 
+  {
+    power = limit(power, .95, -.95);
     liftRaiseSpark.set(power);
   }
 
+  public void setRachetState(boolean isExtended)
+  {
+    rachet.set(isExtended);
+  }
+
+  public boolean getRachetState()
+  {
+    return rachet.get();
+  }
+
   public void resetAllEndgameEncoders() {
-    resetWinchEncoder();
     resetLiftEncoder();
   }
 
-  public void resetWinchEncoder() {
-    winchEncoder.setPosition(0);
-  }
 
   public void resetLiftEncoder() {
     liftRaiseEncoder.setPosition(0);
-  }
-
-  public double getWinchEncoderPosition() {
-    return winchEncoder.getPosition();
   }
 
   public double getLiftRaiseEncoderPosition() {
@@ -101,58 +86,40 @@ public class Endgame extends SubsystemBase implements RobotMap.ENDGAME {
     return spark.getAppliedOutput();
   }
 
-  public void printPower()
-  {
-    SmartDashboard.putNumber("winch power", getMotorPower(winchSpark));
-  }
 
   public void printPosition() {
 
     SmartDashboard.putNumber("LiftRaise Encoder Distance", getLiftRaiseEncoderPosition());
-    SmartDashboard.putNumber("Winch Encoder Distance", getWinchEncoderPosition());
   }
 
   public double getLiftEncoderVelocity() {
     return liftRaiseEncoder.getVelocity();
   }
 
-  public double getWinchEncoderVelocity() {
-    return winchEncoder.getVelocity();
-  }
-
   public double returnEncoderVelocity(CANEncoder encoder) {
     return encoder.getVelocity();
   }
 
-  public double getWinchRPM() {
-    return ticksToRotations(returnEncoderVelocity(winchEncoder));
-  }
-
+ 
   public void printVelocity() {
     SmartDashboard.putNumber("LiftRaise Encoder Velocity", returnEncoderVelocity(liftRaiseEncoder));
-    SmartDashboard.putNumber("Winch Encoder Velocity", returnEncoderVelocity(winchEncoder));
   }
 
   public double getLiftRaiseTemp() {
     return liftRaiseSpark.getMotorTemperature();
   }
 
-  public double getWinchTemp() {
-    return winchSpark.getMotorTemperature();
-  }
-
   public void printTemp() {
     SmartDashboard.putNumber("LiftRaise Motor Temp", getLiftRaiseTemp());
-    SmartDashboard.putNumber("Winch Motor Temp", getWinchTemp());
   }
 
   public double getVoltage(CANSparkMax spark) {
     return spark.getBusVoltage();
   }
 
-  public void printVoltage() {
+  public void printVoltage() 
+  {
     SmartDashboard.putNumber("LiftRaise Motor Voltage", getVoltage(liftRaiseSpark));
-    SmartDashboard.putNumber("Winch Motor Voltage", getVoltage(winchSpark));
   }
 
   public double limit(double x, double upperLimit, double lowerLimit) {
@@ -175,9 +142,7 @@ public class Endgame extends SubsystemBase implements RobotMap.ENDGAME {
 
   @Override
   public void periodic() {
-  //  printPosition();
-    //printPower();
-    // printTicks();
+ 
     // This method will be called once per scheduler run
   }
 }

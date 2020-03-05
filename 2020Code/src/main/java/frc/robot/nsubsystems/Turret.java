@@ -7,314 +7,236 @@
 
 package frc.robot.nsubsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.RobotMap;
-import frc.robot.util.MovingAverage;
 
-public class Turret extends SubsystemBase implements RobotMap.TURRET {
- 
-  public double lastRPM;
+public class Turret extends SubsystemBase implements RobotMap.TURRET{
+  /**
+   * Creates a new newTurret.
+   */
 
-  public double[] testPoint1, testPoint2; 
-  public double radius;
-  public Relay targetingLight;
-  public CANSparkMax rotationSpark, tiltSpark, bottomShooterSpark, topShooterSpark, ballFeederSpark;
-  public CANEncoder bottomShooterEncoder, topShooterEncoder, ballFeederEncoder, rotationEncoder, tiltEncoder;
-  public DigitalInput forwardRotationLimit, reverseRotationLimit, tiltLimit, ballDetector; 
-  public boolean currentState, previousState;
+  public CANSparkMax rotationSpark, hoodSpark, shooterMaster, shooterSlave, indexerSpark;
+  public CANEncoder rotationEncoder, hoodEncoder, shooterEncoder, indexEncoder;
+  public DigitalInput ballTrip; 
+  public double maxRPM;   
 
-  public int turretBallCount = 0;
+  NetworkTableInstance networkTableInstance = NetworkTableInstance.getDefault();
+	NetworkTable TurretLimelightTable = networkTableInstance.getTable("limelight-turret");
+	NetworkTableEntry validTargetEntry = TurretLimelightTable.getEntry("tv"),
+			horizontalOffsetEntry = TurretLimelightTable.getEntry("tx"),
+			verticalOffsetEntry = TurretLimelightTable.getEntry("ty"),
+			targetAreaEntry = TurretLimelightTable.getEntry("ta"),
+			targetSkewEntry = TurretLimelightTable.getEntry("tl"),
+			ledModeEntry = TurretLimelightTable.getEntry("ledMode"),
+			cameraModeEntry = TurretLimelightTable.getEntry("camMode"),
+      limelightPipelineEntry = TurretLimelightTable.getEntry("pipeline");
+      
+public double[] limelightData = new double[5];
 
-  public boolean lastBallState = false;
-  public boolean isShooterUpToSpeed; 
-  public double smartDashTopRPM = 2200;
+public static final int 
+  VALID_TARGET = 0, 
+  HORIZONTAL_OFFSET = 1,
+  VERTICAL_OFFSET = 2,
+  TARGET_AREA = 3, 
+  TARGET_SKEW = 4,
 
-  public Turret() {
-    turretBallCount = 0;
-    SmartDashboard.putNumber("turret ball count", turretBallCount);
-    isShooterUpToSpeed = false; 
+    LED_ON = 0, 
+    LED_OFF = 1,
+    LED_BLINKING = 2,
 
-    targetingLight = new Relay(TARGETING_LIGHT);
-    tiltSpark  = new CANSparkMax(TILT_SPARK_ID, MotorType.kBrushless);
-    rotationSpark = new CANSparkMax(ROTATION_SPARK_ID, MotorType.kBrushless);
-    bottomShooterSpark = new CANSparkMax(BOTTOM_SHOOTER_SPARK_ID, MotorType.kBrushless);
-    topShooterSpark = new CANSparkMax(TOP_SHOOTER_SPARK_ID, MotorType.kBrushless);
-    ballFeederSpark = new CANSparkMax(FEEDER_SPARK_ID, MotorType.kBrushless);
+    VISION_PROCESSOR = 0,
+    DRIVER_CAMERA = 1,
 
-    forwardRotationLimit = new DigitalInput(LEFT_LIMIT_ID);
-    reverseRotationLimit = new DigitalInput(RIGHT_LIMIT_ID);
-    tiltLimit = new DigitalInput(TILT_LIMIT_ID);
-    ballDetector = new DigitalInput(5);
-    
-    initCANSparkMax(tiltSpark, IdleMode.kBrake);
-    initCANSparkMax(rotationSpark, IdleMode.kBrake);
-    initCANSparkMax(bottomShooterSpark, IdleMode.kBrake);
-    initCANSparkMax(topShooterSpark, IdleMode.kBrake);
-    initCANSparkMax(ballFeederSpark, IdleMode.kBrake);
+    REFLECTIVE_TAPE = 0,
+    DRIVER_VISION = 1;
 
-    topShooterSpark.setInverted(true);
-    tiltSpark.setInverted(true);
-    tiltSpark.setSmartCurrentLimit(5,20);
-    rotationSpark.setSmartCurrentLimit(20, 20);
+  public boolean currentState, previousState, isReadyForBall;
+  public int ballsShot;
 
-    bottomShooterEncoder = bottomShooterSpark.getEncoder();
-    topShooterEncoder = topShooterSpark.getEncoder();
-    ballFeederEncoder = ballFeederSpark.getEncoder();
-    rotationEncoder = rotationSpark.getEncoder();
-    tiltEncoder = tiltSpark.getEncoder();
-    
-
-    resetAllTurretEncoders();
-    
-    currentState = ballDetector.get();
-    previousState = false;
-    smartDashTopRPM = SmartDashboard.getNumber("top shooter desired", 2200);
-
-    System.out.println("Turret Initialized");
-  }
-  MovingAverage slowCurrent = new MovingAverage(5);
-
-  public void initCANSparkMax(CANSparkMax spark, IdleMode mode) {
-    spark.restoreFactoryDefaults();
-    spark.setInverted(false);
-    spark.enableVoltageCompensation(12);
-    spark.setIdleMode(mode);
-  }
-
-  public void setLight(boolean on) {
-    if (on) {
-      targetingLight.set(Value.kForward);
-    } else {
-      targetingLight.set(Value.kOn);
-    }
-  }
-
-  public void resetTiltEncoder() 
+  public Turret() 
   {
-    tiltEncoder.setPosition(0);
+    rotationSpark = new CANSparkMax(ROTATION_SPARK_ID, MotorType.kBrushless);
+    hoodSpark = new CANSparkMax(TILT_SPARK_ID, MotorType.kBrushless);
+    shooterMaster = new CANSparkMax(TOP_SHOOTER_SPARK_ID, MotorType.kBrushless);
+    shooterSlave = new CANSparkMax(BOTTOM_SHOOTER_SPARK_ID, MotorType.kBrushless);
+    indexerSpark = new CANSparkMax(FEEDER_SPARK_ID, MotorType.kBrushless);
+
+    rotationEncoder = new CANEncoder(rotationSpark);
+    hoodEncoder = new CANEncoder(hoodSpark);
+    shooterEncoder = new CANEncoder(shooterMaster);
+    indexEncoder = new CANEncoder(indexerSpark);
+
+    ballTrip = new DigitalInput(15);
+
+    initSpark(rotationSpark, true, false, 20);
+    initSpark(hoodSpark, true, false, 20);
+    initSpark(shooterMaster, true, false, 30);
+    initSpark(shooterSlave, true, false, 30);
+    initSpark(indexerSpark, true, true, 30);
+
+    shooterSlave.follow(shooterMaster);
+
+    currentState = ballTrip.get();
+    previousState = false;
+    isReadyForBall = false;
+    ballsShot = 0; 
+    maxRPM = 5100;
+
+    initLimelight(LED_OFF, DRIVER_CAMERA);
+
+    System.out.print("new Turret Initialized");
   }
 
-  public void resetShooterEncoders() {
-    bottomShooterEncoder.setPosition(0);
-    topShooterEncoder.setPosition(0);
+  public void initSpark(CANSparkMax spark, boolean isBraked, boolean isInverted, int currentLimit)
+  {
+    spark.restoreFactoryDefaults();
+    spark.setInverted(isInverted);
+    spark.enableVoltageCompensation(12);
+    if(isBraked)
+    {
+      spark.setIdleMode(IdleMode.kBrake);
+    }
+    else 
+    {
+      spark.setIdleMode(IdleMode.kCoast);
+    }
+    spark.setSmartCurrentLimit(currentLimit);
   }
 
-  public void resetBallFeederEncoder() {
-    ballFeederEncoder.setPosition(0);
+  public void resetShooterEncoder()
+  {
+    shooterEncoder.setPosition(0);
   }
 
-  public void resetRotationEncoder() {
+  public void resetRotationEncoder()
+  {
     rotationEncoder.setPosition(0);
   }
 
-  public void resetAllTurretEncoders() {
-    resetTiltEncoder();
-    resetShooterEncoders();
-    resetBallFeederEncoder();
-    resetRotationEncoder();;
+  public void resetHoodEncoder()
+  {
+    hoodEncoder.setPosition(0);
+  }
+  public void resetIndexerEnocder()
+  {
+    indexEncoder.setPosition(0);
   }
 
-  public void runTilt(double power)
+  public void resetAllTurretEncoders()
   {
-   //
-   double motorTemp = 0;// tiltSpark.getMotorTemperature();
+    resetShooterEncoder();
+    resetRotationEncoder();
+    resetHoodEncoder();
+    resetIndexerEnocder();
+  }
+
+  public double getShooterEncoderPos()
+  {
+    return shooterEncoder.getPosition();
+  }
   
-   power = limit(power, .5, -.5);
-   if(motorTemp > 55)
-   {
-     power = limit(power, 0, 0);
-   }
-    tiltSpark.set(power);
+  public double getRotationPos()
+  {
+    return rotationEncoder.getPosition();
+  }
+
+  public double getHoodPos()
+  {
+    return hoodEncoder.getPosition();
+  }
+
+  public double getIndexerPos()
+  {
+    return indexEncoder.getPosition();
+  }
+
+  public double getShooterVel()
+  {
+    return shooterEncoder.getVelocity();
+  }
+
+  public void runHood(double power)
+  {
+    power = limit(power, .45, -.45);
+    hoodSpark.set(power);
   }
 
   public void runRotation(double power)
   {
-    double reverseLimit = -250, forwardLimit = 35;
+    power = limit(power, .85 , -.85);
+    rotationSpark.set(power);
+  }
 
-    if(getSparkEncoderPosition(rotationEncoder) >=35)
+  public void runIndexer(double power)
+  {
+    power = limit(power, .85, -.85);
+    indexerSpark.set(power);
+  }
+
+  public void runLimitedRotation(double power)
+  {
+    double reverseLimit = -250, forwardLimit = 35;
+    if(getRotationPos() >=forwardLimit)
     {
-      power =  limit(power, 0, -.45);
+      power = limit(power, 0, -.45);
     }
-    else if(getSparkEncoderPosition(rotationEncoder) <=-250)
+    else if (getRotationPos() <= reverseLimit)
     {
       power = limit(power, .45, 0);
     }
     else 
     {
-    power = limit(power, .65, -.65);
+      power = limit(power, .45, -.45);
     }
     rotationSpark.set(power);
   }
 
-  public void runTopShooter(double power) {
-    power = limit(power, .9, -.9);
-    topShooterSpark.set(power);
-  }
-
-  public void runBottomShooter(double power) {
-    limit(power, .9, -.9);
-    bottomShooterSpark.set(power);
-  }
-
-  public void runShooterPower(double topPower, double bottomPower) {
-    runTopShooter(topPower);
-    runBottomShooter(bottomPower);
-  }
-
-  public void runBallFeeder(double power) {
-    ballFeederSpark.set(power);
-  }
-
-  public void aimTurret(double rotationPower, double tiltPower) {
-    runTilt(tiltPower);
-    runRotation(rotationPower);
-  }
-  public boolean getForwardRotationLimit() {
-    return forwardRotationLimit.get();
-  }
-
-  public boolean getReverseRotationLimit() {
-    return reverseRotationLimit.get();
-  }
-
-  public boolean getTiltLImit()
+  public void runLimitedHood(double power)
   {
-    return tiltLimit.get();
-  }
-
-  public void autoResetRotation() {
-    if (getForwardRotationLimit()) {
-      resetRotationEncoder();
+    double reverseLimit = 0, forwardLimit = 100;
+    if(getHoodPos() >= forwardLimit)
+    {
+      power = limit(power, 0, -.45);
     }
+    else if(getHoodPos() <=reverseLimit)
+    {
+      power = limit(power, .45, 0);
+    }
+    else 
+    {
+      power = limit(power, .45,-.45);
+    }
+    hoodSpark.set(power);
   }
 
-  public double getSparkEncoderPosition(CANEncoder encoder) {
-    return encoder.getPosition();
+  public void runShooter(double power)
+  {
+    power = limit(power, .9, -.9);
+    shooterMaster.set(power);
   }
 
-  public double getSparkEncoderVelocity(CANEncoder encoder) {
-    return encoder.getVelocity();
-  }
-
-  public double ticksToRotations(double ticks, double ppr) {
-    return ticks / ppr;
-  }
-
-  public double rotationsToInches(double rotations, double wheelDiameter) {
-    return rotations * wheelDiameter * Math.PI;
-  }
-
-  public double getTopWheelRPM() {
-    return getSparkEncoderVelocity(topShooterEncoder);
-  }
-
-  public double getBottomWheelRPM() {
-    return getSparkEncoderVelocity(bottomShooterEncoder);
-  }
-
-  public double getFeederRPM() {
-    return getSparkEncoderVelocity(ballFeederEncoder);
-  }
-
-  public double getSparkPower(CANSparkMax spark) {
-    return spark.getAppliedOutput();
-  }
-
-  public double getTalonPower(WPI_TalonSRX talon) {
-    return talon.get();
-  }
-
-  public double getSparkTemp(CANSparkMax spark) {
-    return spark.getMotorTemperature();
-  }
-
-  public double getTalonTemp(WPI_TalonSRX talon) {
-    return talon.getTemperature();
-  }
-
-  public double ticksToInches(CANEncoder encoder, double ppr, double WheelDiameter) {
-    return rotationsToInches(ticksToRotations(getSparkEncoderPosition(encoder), ppr), WheelDiameter);
+  public void aimTurret(double rotationPower, double hoodPower)
+  {
+    runLimitedHood(hoodPower);
+    runLimitedRotation(rotationPower);
   }
 
   public boolean isBallInTurret()
   {
-    return ballDetector.get();
+    return ballTrip.get();
   }
-
-  public void printRotations() {
-    SmartDashboard.putNumber("top Shooter Spark Position:",
-        ticksToRotations(getSparkEncoderPosition(topShooterEncoder), 4096));
-    SmartDashboard.putNumber("bottom Shooter Spark Position:",
-        ticksToRotations(getSparkEncoderPosition(bottomShooterEncoder), 4096));
-    SmartDashboard.putNumber("ball Feeder Spark Position:",
-        ticksToRotations(getSparkEncoderPosition(ballFeederEncoder), 4096));
-    SmartDashboard.putNumber("Rotation Encoder Position",
-        ticksToRotations(getSparkEncoderPosition(rotationEncoder ), 1));
-
-        SmartDashboard.putNumber("tilt Position", getSparkEncoderPosition(tiltEncoder));
-      }
-
-  public void printStates() {
-    SmartDashboard.putBoolean("is turret at Forward limit", getForwardRotationLimit());
-    SmartDashboard.putBoolean("is turret at Reverse limit", getReverseRotationLimit());
-    SmartDashboard.putBoolean("is turret at Tilt limit", getTiltLImit());
-    SmartDashboard.putBoolean("is ball in turret", isBallInTurret());
-  }
-
-
-  public void printShooterRPM() {
-    SmartDashboard.putNumber("top shooter RPM", getTopWheelRPM());
-    SmartDashboard.putNumber("bottom shooter RPM", getBottomWheelRPM());
-    SmartDashboard.putNumber("feeder RPM", getFeederRPM());
-  }
-
-  public void printOutputs() {
-    SmartDashboard.putNumber("top Shooter Spark power:", getSparkPower(topShooterSpark));
-    SmartDashboard.putNumber("bottom Shooter Spark power:", getSparkPower(bottomShooterSpark));
-    SmartDashboard.putNumber("ball Feeder Spark power:", getSparkPower(ballFeederSpark));
-    SmartDashboard.putNumber("rotation spark power:", getSparkPower(rotationSpark));
-    SmartDashboard.putNumber("tilt talon power:", getSparkPower(tiltSpark));
-  }
-
-  public void printTemp() {
-    SmartDashboard.putNumber("top Shooter Spark temp:", getSparkTemp(topShooterSpark));
-    SmartDashboard.putNumber("bottom Shooter Spark temp:", getSparkTemp(bottomShooterSpark));
-    SmartDashboard.putNumber("ball Feeder Spark temp:", getSparkTemp(ballFeederSpark));
-    SmartDashboard.putNumber("rotation spark temp:", getSparkTemp(rotationSpark));
-    SmartDashboard.putNumber("tilt talon temp:", getSparkTemp(rotationSpark));
-  }
-
-  public void stopShooter() {
-    topShooterSpark.set(0);
-    bottomShooterSpark.set(0);
-  }
-
-  public void stopTurret() {
-    rotationSpark.set(0);
-    tiltSpark.set(0);
-  }
-
-  public void stopFeeder() {
-    ballFeederSpark.set(0);
-  }
-
-  public void stopAllTurretMotors() {
-    stopShooter();
-    stopTurret();
-    stopFeeder();
-  }
+  
 
   public double limit(double x, double upperLimit, double lowerLimit) {
     if (x >= upperLimit) {
@@ -325,52 +247,145 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     return x;
   }
 
-  public void autoResetTiltEncoder()
+  public void stopShooter()
   {
-    if(getTiltLImit())
-    {
-      resetTiltEncoder();
-    }
+    shooterMaster.set(0);
+  }
+  
+  public void stopTurret()
+  {
+    aimTurret(0, 0);
   }
 
-  public void autoResetEncoders() {
-    autoResetRotation();
-    autoResetTiltEncoder();
-  }
-  public double topShooterCurrent()
+  public void stopAllMotors()
   {
-    return topShooterSpark.getOutputCurrent();
+    stopShooter();
+    stopTurret();
   }
 
-  public void UpdateBallCount()
+  public void updateBallCount()
   {
     currentState = isBallInTurret();
     if(previousState && previousState !=currentState)
     {
       RobotContainer.activeBallCount--;
-      turretBallCount++;
-      SmartDashboard.putString("count changd ", "sure");
+      ballsShot++;
     }
     previousState = currentState;
   }
 
-  @Override
-  public void periodic() {
-    isBallInTurret();
-    printShooterRPM();
-   // printRotations();
-    UpdateBallCount();
-    //printRotations();
-    SmartDashboard.putNumber("tilt  curret ", tiltSpark.getOutputCurrent());
-    SmartDashboard.putNumber("turret balls", turretBallCount);
-    smartDashTopRPM = SmartDashboard.getNumber("top shooter desired", 2200);
-    SmartDashboard.putNumber("bottom shooter current", bottomShooterSpark.getOutputCurrent());
+  public void printBallData()
+  {
+    SmartDashboard.putBoolean("Is Ball in Shooter", isBallInTurret());
+    SmartDashboard.putNumber("Current Balls in System", RobotContainer.activeBallCount);
+    SmartDashboard.putNumber("Balls Shot", ballsShot);
+  }
 
-    SmartDashboard.putNumber("current balls in system ", RobotContainer.activeBallCount);
-    SmartDashboard.putBoolean("is ball in turret", isBallInTurret());
-    SmartDashboard.putNumber("Tilt temp ", tiltSpark.getMotorTemperature());
-    //SmartDashboard.putNumber("rotation ", value)
-   
+  public void printShooterData()
+  {
+    SmartDashboard.putNumber("Shooter RPM: ", getShooterVel());
+    SmartDashboard.putNumber("Shooter Temp: ", shooterMaster.getMotorTemperature());
+    SmartDashboard.putNumber("Shooter Current: ", shooterMaster.getOutputCurrent());
+    SmartDashboard.putNumber("Shooter Output: ", shooterMaster.getAppliedOutput());
+  }
+
+  public void printRotationData()
+  {
+    SmartDashboard.putNumber("Rotation Pos: ", getRotationPos());
+    SmartDashboard.putNumber("Rotation Temp: ", rotationSpark.getMotorTemperature());
+    SmartDashboard.putNumber("Rotation Current: ", rotationSpark.getOutputCurrent());
+    SmartDashboard.putNumber("Rotation Output: ", rotationSpark.getAppliedOutput());
+  }
+
+  public void printHoodData()
+  {
+    SmartDashboard.putNumber("Hood Pos: ", getHoodPos());
+    SmartDashboard.putNumber("Hood Temp: ", hoodSpark.getMotorTemperature());
+    SmartDashboard.putNumber("Hood Current: ", hoodSpark.getOutputCurrent());
+    SmartDashboard.putNumber("Hood Output: ", hoodSpark.getAppliedOutput());
+  }
+
+  public void printIndexerData()
+  {
+    SmartDashboard.putNumber("Indexer Pos: ", getIndexerPos());
+    SmartDashboard.putNumber("Indexer Temp: ", indexerSpark.getMotorTemperature());
+    SmartDashboard.putNumber("Indexer Current: ", indexerSpark.getOutputCurrent());
+    SmartDashboard.putNumber("Indexer Output: ", indexerSpark.getAppliedOutput());
+  }
+
+  public double[] getLimelightData() 
+  {
+    limelightData[VALID_TARGET] = validTargetEntry.getDouble(0);
+    limelightData[HORIZONTAL_OFFSET] = horizontalOffsetEntry.getDouble(0);
+    limelightData[VERTICAL_OFFSET] = verticalOffsetEntry.getDouble(0);
+    limelightData[TARGET_AREA] = targetAreaEntry.getDouble(0);
+    limelightData[TARGET_SKEW] = targetSkewEntry.getDouble(0);
+
+    return limelightData;
+  }
+
+  public double distanceToTarget()
+  {
+
+    double targetHeight = 8;
+    double limeligtHeight = 34/12;
+    double h = targetHeight-limeligtHeight;
+
+    double limelightAngle = 25;
+    double targetAngle = getLimelightData()[VERTICAL_OFFSET];
+
+    double theta = limelightAngle -targetAngle;
+    return h/Math.tan(theta);
+  }
+
+  public void printLimelightData()
+  {
+    SmartDashboard.putNumber("Distance To Target", distanceToTarget());
+    SmartDashboard.putBoolean("is Target Valid ?: ", limelightData[VALID_TARGET] >=1);
+    SmartDashboard.putNumber("Horizontal Offset", limelightData[HORIZONTAL_OFFSET]);
+    SmartDashboard.putNumber("Vertical Offset", limelightData[VERTICAL_OFFSET]);
+    SmartDashboard.putNumber("Target Area", limelightData[TARGET_AREA]);
+    SmartDashboard.putNumber("Target Skew", limelightData[TARGET_SKEW]);
+  }
+
+  public void SetLEDMode(int onOrOff) {
+		ledModeEntry.setNumber(onOrOff);
+	}
+
+	public void SetCameraMode(int cameraMode) {
+		cameraModeEntry.setNumber(cameraMode);
+	}
+
+	public void SetCameraPipeline(int pipeline) {
+		limelightPipelineEntry.setNumber(pipeline);
+	}
+
+	public void initLimelight(int ledMode, int pipeline) {
+		SetLEDMode(ledMode);
+		SetCameraPipeline(pipeline);
+  }
+
+  public void autoIndexBall()
+  {
+    if(isBallInTurret())
+    {
+      resetIndexerEnocder();
+    }
+
+    if(isReadyForBall && getIndexerPos() <= 5)
+    {
+      runIndexer(.5);
+    }
+  }
+
+  
+  
+  @Override
+  public void periodic() 
+  {
+    isBallInTurret();
+    updateBallCount();
+    autoIndexBall();
     // This method will be called once per scheduler run
   }
 }

@@ -21,7 +21,6 @@ import frc.robot.ncommands.intake.*;
 import frc.robot.ncommands.turret.*;
 import frc.robot.nsubsystems.*;
 import frc.robot.ncommands.auton.*;
-import frc.robot.ncommands.auton.parallels.leaveStartingConfig;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -128,9 +127,8 @@ public class RobotContainer implements RobotMap {
     manipButton3.whileHeld(new runRoller(intake,  2400 , false));
     manipButton5.toggleWhenPressed(new moveIntake(intake));
     //manipButton9.whenPressed(new rotateColorWheel(colorWheel, 0));
-    manipButton10.whenPressed(new raiseEndgame(endgame, 165));
-    manipButton11.whileHeld(new runWinch(endgame, -.85));
-    manipButton12.whenPressed(new raiseEndgame(endgame, 15));
+    manipButton10.whenPressed(new raiseEndgame(endgame, 145));
+    manipButton12.whenPressed(new raiseEndgame(endgame, 0));
   }
 
 

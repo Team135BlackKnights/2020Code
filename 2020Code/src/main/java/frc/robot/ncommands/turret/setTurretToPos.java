@@ -5,20 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.ncommands.newTurret;
+package frc.robot.ncommands.turret;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.nsubsystems.newTurret;
+import frc.robot.nsubsystems.Turret;
 
 public class setTurretToPos extends CommandBase {
   /**
    * Creates a new setTurretToPos.
    */
-  private newTurret turret;
+  private Turret turret;
   private double rotationPos, hoodPos;
   private boolean isFinished;
-  public setTurretToPos(newTurret _turret, double _rotationPos, double _hoodPos)
+  public setTurretToPos(Turret _turret, double _rotationPos, double _hoodPos)
   {
     turret = _turret;
     rotationPos = _rotationPos;
@@ -32,6 +32,7 @@ public class setTurretToPos extends CommandBase {
   {
     isFinished = false;
     turret.resetAllTurretEncoders();
+    turret.initLimelight(1, 0);
     SmartDashboard.putString("New Turret Command Running: ", "set Turret To Pos");
   }
 

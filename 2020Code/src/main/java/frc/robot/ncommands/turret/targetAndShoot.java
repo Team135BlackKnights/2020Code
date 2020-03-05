@@ -5,31 +5,28 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.ncommands.newTurret;
+package frc.robot.ncommands.turret;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.nsubsystems.newTurret;
+import frc.robot.nsubsystems.Turret;
 import frc.robot.util.ImprovedJoystick;
 
 public class targetAndShoot extends CommandBase {
   /**
    * Creates a new targetAndShoot.
    */
-  newTurret turret;
+  Turret turret;
   boolean isFinished, targetTurret, overrideTurret;
   double errorSum;
-  int ballsToShoot;
   private long furtherTime = 0;
   ImprovedJoystick joystick;
-  public targetAndShoot(newTurret _turret, Joystick _joystick, int autonBalls) 
+  public targetAndShoot(Turret _turret, Joystick _joystick) 
   {
     turret = _turret;
     joystick = new ImprovedJoystick(_joystick);
-    ballsToShoot = autonBalls;
     addRequirements(turret);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -51,12 +48,11 @@ public class targetAndShoot extends CommandBase {
   @Override
   public void execute() 
   {
-    boolean isTargetValid, isDriving, isAuton, isShooting, isTargetWithinRange;
+    boolean isTargetValid, isDriving, isShooting, isTargetWithinRange;
     boolean isPOVLeft, isPOVRight, isPOVUp, isPOVDown, isPOVTopRight, isPOVBottomRight, isPOVBottomLeft, isPOVTopLeft;
 
     long timeNow = System.currentTimeMillis();
 
-    isAuton = Timer.getMatchTime() <= 15;
     double distanceToTarget, horizontalOffset, rotationError, hoodDesired, hoodActual, hoodError, 
     desiredRPM, overrideRPM, actualRPM, rpmError, maxRPM, minRotationError, minHoodError, feedForwardRPM,
     shooterInput, rotationInput, hoodInput;
@@ -103,11 +99,8 @@ public class targetAndShoot extends CommandBase {
     sP = 0;
     sI = 0;
 
-    if(isAuton)
-    {
-      desiredRPM = 4600;
-    }
-    else if(!isAuton && overrideRPM == 5100 || overrideRPM == 0)
+    
+    if(overrideRPM == 5100 || overrideRPM == 0)
     {
       desiredRPM = 4600;
     }
@@ -142,35 +135,11 @@ public class targetAndShoot extends CommandBase {
 
     shooterInput = feedForwardRPM *sF + rpmError *sP + errorSum;
     
-    isTargetWithinRange = ((isTargetValid && Math.abs(rotationError) < 1 && Math.abs(hoodError) < 5) || isShooting);
+    isTargetWithinRange = ((isTargetValid && Math.abs(rotationError) < minRotationError && Math.abs(hoodError) < minHoodError) || isShooting);
 
-    if(isAuton && ballsToShoot > 3 && !isDriving)
-    {
-      if(turret.ballsShot < 3 && isTargetWithinRange)
-      {
-          turret.runShooter(shooterInput);
-      }
-      else if(turret.ballsShot < ballsToShoot && Math.abs(RobotContainer.drive.getLeftMetres()) > 1 && isTargetWithinRange)
-      {
-          turret.runShooter(shooterInput);
-      }
-      else 
-      {
-        turret.runShooter(0);
-      }
-    }
-    else if(isAuton && ballsToShoot == 3 && !isDriving)
-    {
-      if(turret.ballsShot <3 && isTargetWithinRange)
-      {
-          turret.runShooter(shooterInput);
-      }
-      else 
-      {
-        turret.runShooter(0);
-      }
-    }
-    else if(isTargetWithinRange && joystick.getJoystickButtonValue(1) && !isDriving)
+   
+
+    if(isTargetWithinRange && joystick.getJoystickButtonValue(1) && !isDriving)
       {
         turret.runShooter(shooterInput);
       }
@@ -180,18 +149,7 @@ public class targetAndShoot extends CommandBase {
       }
     
 
-    if(isAuton)
-    {
-      if(!isTargetWithinRange && targetTurret)
-      {
-        turret.aimTurret(rotationInput, hoodInput);
-      }
-      else if(!isTargetWithinRange && !targetTurret)
-      {
-        turret.aimTurret(0, 0);
-      }
-    }
-    else if (isPOVUp) {
+    if (isPOVUp) {
       turret.aimTurret(0, .65);
       SmartDashboard.putString("Turret State: ", "Driver Override");
 

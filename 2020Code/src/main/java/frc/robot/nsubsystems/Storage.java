@@ -30,13 +30,13 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE {
   public Storage() {
     conveyorSpark = new CANSparkMax(CONVEYOR_SPARK, MotorType.kBrushless);
     initCANSparkMax(conveyorSpark, IdleMode.kBrake);
-    conveyorSpark.setInverted(true);
+    conveyorSpark.setInverted(false);
     conveyorEncoder = conveyorSpark.getEncoder();
     intakeBallTripSwitch = new DigitalInput(INTAKE_TRIP_SWITCH);
     conveyorEncoder = conveyorSpark.getEncoder();
     lastSwtichPosition = false;
     currentBallCount = 0;
-    desiredEncoderPos = 4;
+    desiredEncoderPos = -4;
     System.out.println("Storage Initialized");
   }
 
@@ -118,13 +118,10 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE {
     {
       resetConveyorEncoder();
     }
-    if(1==1)//RobotContainer.nTurret.isReadyForBall)
-    {
-      runConveyor(.4);;
-    }
+    
     if(getConveyorRotations() > desiredEncoderPos)
     {
-      runConveyor(.4);
+      runConveyor(-.4);
     }
   }
 
@@ -139,6 +136,7 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE {
   public void periodic() {
     intakeBallCount();
     autoResetEncoder();
+    printStorageData();
    // autoMoveBalls();
    // printStorageData();
     // This method will be called once per scheduler run
