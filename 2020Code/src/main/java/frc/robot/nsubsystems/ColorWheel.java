@@ -10,7 +10,7 @@ package frc.robot.nsubsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.RobotMap;
-
+import frc.robot.util.MotorControl;
 import edu.wpi.first.wpilibj.I2C;
 
 import com.revrobotics.CANSparkMax;
@@ -171,7 +171,7 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL 
    }
    public void moveColorWheel(double power)
    {
-      power = RobotContainer.drive.limit(power, .85, -.85);
+      power = MotorControl.limit(power, .85, -.85);
       rotatorSpark.set(power);
    }
 

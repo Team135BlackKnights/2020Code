@@ -10,8 +10,7 @@ package frc.robot.ncommands.drive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.FalconDrive;
-import frc.robot.util.PathFollower;
-import frc.robot.util.Waypoint;
+import frc.robot.util.PathFIndingFIles.*;
 
 public class followPath extends CommandBase {
   /**

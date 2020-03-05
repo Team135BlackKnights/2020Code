@@ -7,11 +7,9 @@
 
 package frc.robot.ncommands.drive;
 
-import frc.robot.util.Waypoint;
+import frc.robot.util.PathFIndingFIles.*;
+ 
 
-/**
- * Add your docs here.
- */
 public class paths
 {
     public static Waypoint[] redRightWaypoints()

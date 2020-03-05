@@ -10,7 +10,8 @@ package frc.robot.ncommands.turret;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.*;
-import frc.robot.util.MovingAverage;
+import frc.robot.util.MotorControl;
+import frc.robot.util.PathFIndingFIles.MovingAverage;
 import frc.robot.*;
 
 public class runTurretAuton extends CommandBase {
@@ -84,8 +85,8 @@ public class runTurretAuton extends CommandBase {
     currentTopWheelRPM = turret.getTopWheelRPM();
     currentBottomWheelRPM = turret.getBottomWheelRPM();
     feederActual = turret.getFeederRPM();
-    storageActual = storage.getConveyorVel();
-    currentStoragePos = storage.getConveyorRotations();
+    storageActual = MotorControl.getMotorVelocity(storage.conveyorEncoder);
+    currentStoragePos = MotorControl.getMotorRotations(storage.conveyorEncoder);
     MovingAverage smoothStorage = new MovingAverage(25);
     double averagedStorage = smoothStorage.process((float)storageActual);
     

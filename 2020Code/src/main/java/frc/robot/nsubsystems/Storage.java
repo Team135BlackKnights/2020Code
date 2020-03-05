@@ -17,107 +17,79 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.RobotMap;
+import frc.robot.util.MotorControl;
 
-public class Storage extends SubsystemBase implements RobotMap.INTAKE {
-
+public class Storage extends SubsystemBase implements RobotMap.INTAKE{
   public CANSparkMax conveyorSpark;
   public CANEncoder conveyorEncoder;
-  public DigitalInput intakeBallTripSwitch, testInput;
+  public DigitalInput intakeBallTripSwitch;
   public int currentBallCount;
-  public boolean lastSwtichPosition;
-  public double desiredEncoderPos; 
+  public boolean lastSwitchPosition;
+  public double desiredEncoderPos;
 
   public Storage() {
+    //Conveyor Spark setup
     conveyorSpark = new CANSparkMax(CONVEYOR_SPARK, MotorType.kBrushless);
     initCANSparkMax(conveyorSpark, IdleMode.kBrake);
     conveyorSpark.setInverted(true);
+
+    //Conveyor Encoder setup
     conveyorEncoder = conveyorSpark.getEncoder();
-    intakeBallTripSwitch = new DigitalInput(INTAKE_TRIP_SWITCH);
-    conveyorEncoder = conveyorSpark.getEncoder();
-    lastSwtichPosition = false;
-    currentBallCount = 0;
     desiredEncoderPos = 4;
+
+    //Ball Counting setup
+    currentBallCount = 0;
+    intakeBallTripSwitch = new DigitalInput(INTAKE_TRIP_SWITCH);
+
+    //init completed
     System.out.println("Storage Initialized");
   }
-
+  
+  //Our defualt set up for sparks
   public void initCANSparkMax(CANSparkMax spark, IdleMode mode) {
     spark.setInverted(false);
     spark.enableVoltageCompensation(12);
     spark.setIdleMode(mode);
   }
 
+  //run the storage conveyor
   public void runConveyor(double power) {
     conveyorSpark.set(power);
   }
 
-  public double getEncoderPosition(CANEncoder encoder) {
-    return encoder.getPosition();
-  }
-
-  public double ticksToRotations(double ticks) {
-    return ticks / 4096;
-  }
-
-  
-
-  public void resetConveyorEncoder() {
-    conveyorEncoder.setPosition(0);
-  }
-
-  public double getConveyorRotations()
-  {
-    return getEncoderPosition(conveyorEncoder);
-  }
-
-  public double getConveyorVel()
-  {
-    return conveyorEncoder.getVelocity();
-  }
-
-  public boolean isBallAtTripSwitch()
-  {
+  //check if the ball is at the trip switch
+  public boolean isBallAtTripSwitch() {
     return intakeBallTripSwitch.get();
   }
-  
 
-  public void autoResetEncoder()
-  {
-    if(isBallAtTripSwitch())
-    {
-      resetConveyorEncoder();
+  //Reset encoder position if the ball is at the trip switch
+  public void autoResetEncoder() {
+    if (isBallAtTripSwitch()) {
+      MotorControl.resetEncoder(conveyorEncoder);
     }
   }
 
-  
-
-  public void intakeBallCount()
-  {
-
-    if (isBallAtTripSwitch() != lastSwtichPosition && isBallAtTripSwitch() != false) {
+  //keep active count of number of balls in the storage system
+  public void intakeBallCount() {
+    //Counts up on state change from False to True by making sure that there was a change and that it then is positive
+    if ((isBallAtTripSwitch() != lastSwitchPosition) && (isBallAtTripSwitch())) {
       currentBallCount++;
       RobotContainer.activeBallCount++;
     }
-    if (lastSwtichPosition != isBallAtTripSwitch()) {
-      lastSwtichPosition = isBallAtTripSwitch();
-    }
-
+    //update previous update
+    if (lastSwitchPosition != isBallAtTripSwitch()) 
+      lastSwitchPosition = isBallAtTripSwitch();
   }
 
-  public double limit(double x, double upperLimit, double lowerLimit) {
-    if (x >= upperLimit) {
-      x = upperLimit;
-    } else if (x <= lowerLimit) {
-      x = lowerLimit;
-    }
-    return x;
-  }
-
+  //TODO:: When new shooter is on finish if statements
   public void autoMoveBalls()
   {
     if(isBallAtTripSwitch())// && //!RobotContainer.nTurret.isReadyForBall)
     {
-      resetConveyorEncoder();
+      MotorControl.resetEncoder(conveyorEncoder);
     }
+
+    // Warning was coming from the if() being always true so I commented it out and had it just run
     /*
     if(RobotContainer.nTurret.isReadyForBall)
     {
@@ -125,16 +97,18 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE {
     }
     */
     runConveyor(.4);
-    if(getConveyorRotations() > desiredEncoderPos)
+
+    if(MotorControl.getMotorRotations(conveyorEncoder) > desiredEncoderPos)
     {
       runConveyor(.4);
     }
   }
 
+  //Print storage information for debugging purposes 
   public void printStorageData()
   {
     SmartDashboard.putNumber("Balls Through System ", currentBallCount);
-    SmartDashboard.putNumber("Conveyor Position", getEncoderPosition(conveyorEncoder));
+    SmartDashboard.putNumber("Conveyor Position", MotorControl.getEncoderPosition(conveyorEncoder));
     SmartDashboard.putBoolean("is Ball at trip Switch", isBallAtTripSwitch());
   }
 
@@ -142,8 +116,7 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE {
   public void periodic() {
     intakeBallCount();
     autoResetEncoder();
-   // autoMoveBalls();
-   // printStorageData();
-    // This method will be called once per scheduler run
+    //autoMoveBalls();
+    //printStorageData(); 
   }
 }
