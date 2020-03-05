@@ -30,7 +30,5 @@ public class leaveStartingConfig extends ParallelCommandGroup {
       // 6 ball right side auto -150 position
       new resetDriveEncoders(RobotContainer.drive)
     );
-    // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());super();
   }
 }

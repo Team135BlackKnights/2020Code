@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import static frc.robot.RobotContainer.activeBallCount;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -19,6 +21,7 @@ public class Robot extends TimedRobot {
 	public RobotContainer RobotContainer;
 	private Command autoCommand;
 	SendableChooser<Command> autoChooser = new SendableChooser<>();
+
 	@Override
 	public void robotInit() {
 
@@ -29,7 +32,7 @@ public class Robot extends TimedRobot {
 		autoChooser.addOption("Right Side ", RobotContainer.getRightSideAuto());
 
 		SmartDashboard.putData(autoChooser);
-	
+
 	}
 
 	@Override
@@ -55,14 +58,15 @@ public class Robot extends TimedRobot {
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 		autoCommand = autoChooser.getSelected();
-	//	SmartDashboard.putString("Auto Command ", autoChooser.getSelected().toString());
+		// SmartDashboard.putString("Auto Command ",
+		// autoChooser.getSelected().toString());
 	}
 
 	// Initialize auto
 	@Override
 	public void autonomousInit() {
 		RobotContainer.initLimelight(2, 0);
-		RobotContainer.activeBallCount = 3;
+		activeBallCount = 3;
 		autoCommand = autoChooser.getSelected();
 		//SmartDashboard.putString("Auto Command ", autoChooser.getSelected().toString());
 		if(autoCommand != null)
