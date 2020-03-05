@@ -29,14 +29,9 @@ public class driveWithJoysticks extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Creates a value for each joystick's power based on the direction/power of the
-    // joystick and the max set by the slider
 
     double lateralPower, rotationPower;
     boolean isReversed = false, isHalfPower;
-
-    // Declare the power based off the correct stick and, if it is active, lowered
-    // power mode to drive slower.
 
     lateralPower = _rightJoystick.getJoystickAxis(1) *_rightJoystick.getJoystickSlider();
     rotationPower = _leftJoystick.getJoystickAxis(2) * _leftJoystick.getJoystickSlider();

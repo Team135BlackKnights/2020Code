@@ -56,6 +56,9 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL 
 
    }
 
+   // Checks if the color it is seeing is blue by checking it against the min and
+   // max tolerances of each color
+
    public boolean IsBlue() {
       return ((red() >= BlueRedMin && red() <= BlueRedMax) && (green() >= BlueGreenMin && green() <= BlueGreenMax)
             && (blue() >= BlueBlueMin && blue() <= BlueBlueMax));
@@ -99,18 +102,23 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL 
          // Takes the Game Specific Data and changes it to a usable form
          switch (gameData.charAt(0)) {
          case 'B':
+            //Color to reach is red
             desiredColor = "Red";
             break;
          case 'G':
+            //Color to reach is yellow
             desiredColor = "Yellow";
             break;
          case 'R':
+            //Color to reach is blue
             desiredColor = "Blue";
             break;
          case 'Y':
+            //Color to reach is green
             desiredColor = "Green";
             break;
          default:
+            //No color has been recieved to reach
             desiredColor = "No color";
             break;
          }
@@ -140,15 +148,29 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL 
 
    // Determine what the current color under the color sensor is
    public String checkForColor() {
+
+      //The current color is blue
       if (IsBlue()) {
          return "Blue";
-      } else if (IsRed()) {
+      }
+
+      //The current color is red
+      else if (IsRed()) {
          return "Red";
-      } else if (IsGreen()) {
+      }
+
+      //The current color is green
+      else if (IsGreen()) {
          return "Green";
-      } else if (IsYellow()) {
+      }
+
+      //The current color is yellow
+      else if (IsYellow()) {
          return "Yellow";
-      } else
+      }
+
+      //No color is seen
+      else
          return "No Color";
    }
 

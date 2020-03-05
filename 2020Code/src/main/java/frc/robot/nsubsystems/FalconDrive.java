@@ -37,7 +37,6 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   public static final double wheelDiameterInches = 6.375;// 18;
   public static final double wheelCircumferenceInches = wheelDiameterInches * Math.PI;
   public static final double encoderTicksPerRev = 2048;
- // DifferentialDriveOdometry(getHeading());
 
   public DifferentialDriveOdometry m_odometry;
 
@@ -50,7 +49,6 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   public SpeedControllerGroup leftDriveSide, rightDriveSide;
   public DifferentialDrive chassis;
 
-  // Declares Ultrasonic Sensors
   public AHRS navx;
 
   public FalconDrive() {
@@ -85,15 +83,12 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     // controller groups
     chassis = new DifferentialDrive(leftDriveSide, rightDriveSide);
     chassis.setSafetyEnabled(false);
-    // turns off system where if the motors don't recieve signal, the chassis learns
-    // about it and gets mad
+    //disable safety to prevent motors from calling errors 
 
-    chassis.setMaxOutput(.98); // Maximum zoom is 98%
+    chassis.setMaxOutput(.98); // set the maximum output of the drive train to .98
 
-    resetEncoders(); // Calls method to reset the internal encoders of the motors
-    setBrakeMode(NeutralMode.Brake);
-    // Calls method which makes it so that when the input is neutral, the motors
-    // will brake
+    resetEncoders(); // reset drive encoders when we create a new falcon drive 
+    setBrakeMode(NeutralMode.Brake);// upon drive train init set 0 input state to brake
    
     pose = new Pose2d();
     m_odometry = new DifferentialDriveOdometry(getHeading());
@@ -114,19 +109,20 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     falcon.configOpenloopRamp(.35);
   }
 
-  // Sets the neutral input to brake all four motors
+  // config for each falcon to apply all the desired settings
+
   public void setBrakeMode(NeutralMode neutralMode) {
     frontLeftFX.setNeutralMode(neutralMode);
     frontRightFX.setNeutralMode(neutralMode);
     rearLeftFX.setNeutralMode(neutralMode);
     rearRightFX.setNeutralMode(neutralMode);
-
   }
+  // set the 0 input state of each motor to a specified state 
 
-  // Method sets the Chassis to Tank Drive mode while pulling double arguements
   public void TankDrive(double leftPower, double rightPower) {
     chassis.tankDrive(leftPower, rightPower);
   }
+  // recieve a left and right output then output motors accordingly 
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(getLeftMps(), getRightMps());
@@ -140,10 +136,10 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     rearRightFX.enableVoltageCompensation(isDesired);
   }
 
-  // Method sets the Chassis to Arcade Drive while pulling double arguements
   public void ArcadeDrive(double lateralPower, double rotationalPower) {
     chassis.arcadeDrive(lateralPower, rotationalPower);
   }
+  // recieve a forward and rotational input and translate it into motor outputs. 
 
   public void setCompressorOff() {
     compressor.setClosedLoopControl(false);
