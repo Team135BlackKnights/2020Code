@@ -195,17 +195,6 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     navx.zeroYaw();
   }
 
-  // Tests if the variable x is above the upper limit or below the lower, and if
-  // so, it sets it to the limit
-  public double limit(double x, double upperLimit, double lowerLimit) {
-    if (x >= upperLimit) {
-      x = upperLimit;
-    } else if (x <= lowerLimit) {
-      x = lowerLimit;
-    }
-    return x;
-  }
-
   // Finds the Left position of the encoders of the left drive group, and averages
   // them in order to normalize the results
   public double getLeftPos() {

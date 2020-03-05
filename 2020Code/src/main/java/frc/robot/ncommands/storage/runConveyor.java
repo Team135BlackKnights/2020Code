@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.nsubsystems.*;
 import frc.robot.util.ImprovedJoystick;
+import frc.robot.util.MotorControl;
 
 public class runConveyor extends CommandBase {
 
@@ -36,7 +37,7 @@ public class runConveyor extends CommandBase {
   @Override
   public void execute() {
 
-    double currentConveyPos = storage.getConveyorRotations();
+    double currentConveyPos = MotorControl.getMotorRotations(storage.conveyorEncoder);
     double conveyorError = -3-currentConveyPos;
     double conveyorPower = 0;
     boolean isButton7, isButton8;
@@ -46,7 +47,7 @@ public class runConveyor extends CommandBase {
     
     if(storage.isBallAtTripSwitch())
     {
-      storage.resetConveyorEncoder();
+      MotorControl.resetEncoder(storage.conveyorEncoder);
     }
 
     if(currentConveyPos > -3 && !isButton7 && !isButton8)
@@ -60,7 +61,7 @@ public class runConveyor extends CommandBase {
     else if (isButton7)
     {
       conveyorPower = .6;
-      storage.resetConveyorEncoder();
+      MotorControl.resetEncoder(storage.conveyorEncoder);
       RobotContainer.intake.runRoller(-.3);
      // RobotContainer.turret.runBallFeeder(.2);
       if(RobotContainer.intake.isRollerLowered())
@@ -73,7 +74,7 @@ public class runConveyor extends CommandBase {
     {
       conveyorPower = -.85;
       RobotContainer.intake.runRoller(.3);
-      storage.resetConveyorEncoder();
+      MotorControl.resetEncoder(storage.conveyorEncoder);
       SmartDashboard.putString("Conveyor Override: ", "Conveyor Going Down");
     } else {
       conveyorPower = 0;

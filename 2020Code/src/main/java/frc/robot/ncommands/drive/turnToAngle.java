@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.nsubsystems.FalconDrive;
+import frc.robot.util.MotorControl;
 
 public class turnToAngle extends CommandBase {
   /**
@@ -58,11 +59,11 @@ public class turnToAngle extends CommandBase {
     double power = error/90;
     if(error > 0)
     {
-      power = drive.limit(power, .75, minPower);
+      power = MotorControl.limit(power, .75, minPower);
     }
      else if(error <0)
      {
-      power = drive.limit(power, -minPower, -.75);
+      power = MotorControl.limit(power, -minPower, -.75);
 
      }
     double kP, kI, kD;

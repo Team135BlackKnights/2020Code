@@ -124,7 +124,7 @@ public class RobotContainer implements RobotMap {
     leftButton11.toggleWhenPressed(new toggleCompressor(drive));
     // leftButton12.whenPressed(new resetTurretEncoder(turret));
 
-    // manipTrigger.whileHeld(new runTurretAndStorage(storage, turret, limelight));
+    manipTrigger.whileHeld(new runConveyor(storage, manipJoystick));
     manipThumb.whileHeld(new runEndgameWithJoystick(endgame, manipJoystick));
     manipButton3.whileHeld(new runRoller(intake,  2400 , false));
     manipButton5.toggleWhenPressed(new moveIntake(intake));

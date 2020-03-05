@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.nsubsystems.FalconDrive;
+import frc.robot.util.MotorControl;
 
 
 public class encoderDrive extends CommandBase {
@@ -82,8 +83,8 @@ public class encoderDrive extends CommandBase {
       leftInput = leftPower * lP; 
       rightInput = rightPower * rP;
 
-      leftInput = drive.limit(leftInput, .95, -.95);
-      rightInput = drive.limit(rightInput, .95, -.95);
+      leftInput = MotorControl.limit(leftInput, .95, -.95);
+      rightInput = MotorControl.limit(rightInput, .95, -.95);
 
       prevLeftError = leftError;
       prevRightError = rightError;
