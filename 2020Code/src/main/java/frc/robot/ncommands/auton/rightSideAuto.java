@@ -12,7 +12,6 @@ import frc.robot.ncommands.auton.parallels.leaveStartingConfig;
 import frc.robot.ncommands.auton.parallels.runRollerAndDriveRightSide;
 import frc.robot.ncommands.drive.encoderDrive;
 import frc.robot.ncommands.intake.runRoller;
-import frc.robot.ncommands.turret.runTurretAuton;
 import frc.robot.nsubsystems.*;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -31,7 +30,6 @@ public class rightSideAuto extends SequentialCommandGroup {
   
       new leaveStartingConfig(intake, turret),
       parallel(
-        new runTurretAuton(turret, limelight, storage, 6),
       sequence
       (
         new runRollerAndDriveRightSide(drive, intake),

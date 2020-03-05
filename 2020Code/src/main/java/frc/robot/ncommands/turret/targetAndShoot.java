@@ -5,27 +5,27 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.ncommands.newTurret;
+package frc.robot.ncommands.turret;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.nsubsystems.newTurret;
+import frc.robot.nsubsystems.Turret;
 import frc.robot.util.ImprovedJoystick;
 
 public class targetAndShoot extends CommandBase {
   /**
    * Creates a new targetAndShoot.
    */
-  newTurret turret;
+  Turret turret;
   boolean isFinished, targetTurret, overrideTurret;
   double errorSum;
   int ballsToShoot;
   private long furtherTime = 0;
   ImprovedJoystick joystick;
-  public targetAndShoot(newTurret _turret, Joystick _joystick, int autonBalls) 
+  public targetAndShoot(Turret _turret, Joystick _joystick, int autonBalls) 
   {
     turret = _turret;
     joystick = new ImprovedJoystick(_joystick);
@@ -58,13 +58,16 @@ public class targetAndShoot extends CommandBase {
 
     isAuton = Timer.getMatchTime() <= 15;
     double distanceToTarget, horizontalOffset, rotationError, hoodDesired, hoodActual, hoodError, 
-    desiredRPM, overrideRPM, actualRPM, rpmError, maxRPM, feedForwardRPM,
+    desiredRPM, overrideRPM, actualRPM, rpmError, maxRPM, minRotationError, minHoodError, feedForwardRPM,
     shooterInput, rotationInput, hoodInput;
 
     distanceToTarget = turret.distanceToTarget();
     horizontalOffset = turret.limelightData[1];
     isTargetValid = turret.limelightData[0] >=1;
     isDriving = RobotContainer.drive.getLinearMps() >= .15;
+
+    minRotationError = 1;
+    minHoodError = 5;
 
     if (joystick.getJoystickButtonValue(6) && timeNow >= furtherTime) {
       furtherTime = timeNow + 100;
@@ -139,7 +142,7 @@ public class targetAndShoot extends CommandBase {
 
     shooterInput = feedForwardRPM *sF + rpmError *sP + errorSum;
     
-    isTargetWithinRange = ((isTargetValid && Math.abs(rotationError) < 1 && Math.abs(hoodError) < 5) || isShooting);
+    isTargetWithinRange = ((isTargetValid && Math.abs(rotationError) < minRotationError && Math.abs(hoodError) < minHoodError) || isShooting);
 
     if(isAuton && ballsToShoot > 3 && !isDriving)
     {

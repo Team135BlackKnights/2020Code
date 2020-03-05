@@ -31,11 +31,11 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE{
     //Conveyor Spark setup
     conveyorSpark = new CANSparkMax(CONVEYOR_SPARK, MotorType.kBrushless);
     initCANSparkMax(conveyorSpark, IdleMode.kBrake);
-    conveyorSpark.setInverted(true);
+    conveyorSpark.setInverted(false);
 
     //Conveyor Encoder setup
     conveyorEncoder = conveyorSpark.getEncoder();
-    desiredEncoderPos = 4;
+    desiredEncoderPos = -4;
 
     //Ball Counting setup
     currentBallCount = 0;
@@ -100,7 +100,7 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE{
 
     if(MotorControl.getMotorRotations(conveyorEncoder) > desiredEncoderPos)
     {
-      runConveyor(.4);
+      runConveyor(-.4);
     }
   }
 

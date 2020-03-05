@@ -8,11 +8,8 @@
 package frc.robot.nsubsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.RobotMap;
-import frc.robot.util.ImprovedJoystick;
-
-import java.io.IOException;
-import java.nio.file.Path;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -23,18 +20,14 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.util.Units;
 
 public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
@@ -51,7 +44,6 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   public Pose2d pose;
 
   public WPI_TalonFX frontLeftFX, frontRightFX, rearLeftFX, rearRightFX;
-  public Servo testServo;
   public Solenoid shifter;
   public Compressor compressor;
 
@@ -59,10 +51,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   public DifferentialDrive chassis;
 
   // Declares Ultrasonic Sensors
-  public Ultrasonic rearRightSonar, frontRightSonar, rearLeftSonar, frontLeftSonar, rearSonar;
   public AHRS navx;
-
-  ImprovedJoystick leftJoystick, rightJoystick;
 
   public FalconDrive() {
     // Creates each individual motor, named for its position on the robot
@@ -71,9 +60,6 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
 
     frontRightFX = new WPI_TalonFX(FRONT_RIGHT_FALCON);
     rearRightFX = new WPI_TalonFX(REAR_RIGHT_FALCON);
-
-    testServo = new Servo(0);
-    //testServo.setSpeed(1);
 
     // *************************************
     configFalcon(frontLeftFX, true);
@@ -105,7 +91,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     chassis.setMaxOutput(.98); // Maximum zoom is 98%
 
     resetEncoders(); // Calls method to reset the internal encoders of the motors
-    setBrakeMode(NeutralMode.Coast);
+    setBrakeMode(NeutralMode.Brake);
     // Calls method which makes it so that when the input is neutral, the motors
     // will brake
    
@@ -114,7 +100,6 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
 
 
     System.out.println("Falcon Drive Initialized");
-    // Outputs the text letting the user know that the Falcon has been initialized
   }
 
   public void configFalcon(WPI_TalonFX falcon, boolean isLeft) {
@@ -125,12 +110,8 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     falcon.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, 100);
     falcon.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_50Ms, 100);
     falcon.configVelocityMeasurementWindow(4, 100);
-  }
-
-  public void runServo(double speed)
-  {
-    testServo.set(speed +.5);
-    SmartDashboard.putNumber("Servo Pos", testServo.getAngle());
+    falcon.configClosedloopRamp(.35);
+    falcon.configOpenloopRamp(.35);
   }
 
   // Sets the neutral input to brake all four motors
@@ -150,6 +131,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(getLeftMps(), getRightMps());
   }
+
   public void setVoltageCompensation(boolean isDesired)
   {
     frontLeftFX.enableVoltageCompensation(isDesired);
@@ -158,24 +140,9 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     rearRightFX.enableVoltageCompensation(isDesired);
   }
 
-  public void tankVolts(double leftVolts, double rightVolts) {
-    setVoltageCompensation(false);
-    frontLeftFX.setVoltage(leftVolts);
-    rearLeftFX.setVoltage(leftVolts);
-    frontRightFX.setVoltage(rightVolts);
-    rearRightFX.setVoltage(rightVolts);
-    chassis.feed();
-
-  }
-
   // Method sets the Chassis to Arcade Drive while pulling double arguements
   public void ArcadeDrive(double lateralPower, double rotationalPower) {
     chassis.arcadeDrive(lateralPower, rotationalPower);
-  }
-
-  // Method sets the Chassis to Curvature Drive while pulling double arguements
-  public void CurvatureDrive(double xSpeed, double zRotation) {
-    chassis.curvatureDrive(xSpeed, zRotation, true);
   }
 
   public void setCompressorOff() {
@@ -202,7 +169,6 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     frontRightFX.setSelectedSensorPosition(0);
     rearLeftFX.setSelectedSensorPosition(0);
     rearRightFX.setSelectedSensorPosition(0);
-    SmartDashboard.putBoolean("Encoders Reset:", true);
   }
 
   // Takes the position of the encoder of a specific motor and returns the value
@@ -220,22 +186,13 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   public void shiftGears(boolean isHighGear) {
     shifter.set(isHighGear);
   }
+  
   public boolean shifterState()
   {
     return shifter.get();
 
   }
 
-  public double getAngle() {
-    //SmartDashboard.putNumber("Current angle of Robot:", navx.getYaw());
-    return navx.getYaw();
-  }
-
-  // Returns the rate at which the robot is rotating(in degrees per second) based
-  // on the navx's yaw reading
-  public double getRotationRate() {
-    return navx.getRate();
-  }
 
   // Resets the Yaw of the navx
   public void resetGyro() {
@@ -258,11 +215,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   {
     return rotations*6*Math.PI;
   }
-  public void printMetres()
-  {
-    SmartDashboard.putNumber("left Dist Metres", (Units.inchesToMeters(rotationsToInches(getLeftPos())) * gearRatio));
-    SmartDashboard.putNumber("right Dist Metres", (Units.inchesToMeters(rotationsToInches(getRightPos())) * gearRatio));
-  }
+  
   public double getLeftMetres()
   {
     return (Units.inchesToMeters(rotationsToInches(getLeftPos()))) * gearRatio;
@@ -270,6 +223,12 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   public double getRightMetres()
   {
     return (Units.inchesToMeters(rotationsToInches(getRightPos()))) * gearRatio;
+  }
+
+  public void printMetres()
+  {
+    SmartDashboard.putNumber("left Dist Metres", getLeftMetres());
+    SmartDashboard.putNumber("right Dist Metres", getRightMetres());
   }
 
   public double getEncoderMps(TalonFX talon)
@@ -299,11 +258,6 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   
   // Prints the positions of all of encoders as well as the averages of the groups
   public void printPositions() {
-    SmartDashboard.putNumber("front Left Position:", getEncoderDistance(frontLeftFX));
-    SmartDashboard.putNumber("rear Left Position:", getEncoderDistance(rearLeftFX));
-    SmartDashboard.putNumber("front Right Position:", getEncoderDistance(frontRightFX));
-    SmartDashboard.putNumber("rear Right Position:", getEncoderDistance(rearRightFX));
-
     SmartDashboard.putNumber("Average Left Position:", getLeftPos());
     SmartDashboard.putNumber("Average Right Position:", getRightPos());
   }
@@ -349,33 +303,15 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   }
 
   // Returns the distance found by the Ultrasonic Sensors in inches
-  public double sonarDistance(Ultrasonic sonar) {
-    return sonar.getRangeInches();
-  }
-
-  // Prints the distances found by each ultrasonic sensor in inches
-  public void printUltrasonicValues() {
-    SmartDashboard.putNumber("front right ultrasonic:", sonarDistance(frontRightSonar));
-    SmartDashboard.putNumber("front left ultrasonic:", sonarDistance(frontLeftSonar));
-    SmartDashboard.putNumber("rear right ultrasonic:", sonarDistance(rearRightSonar));
-    SmartDashboard.putNumber("rear left ultrasonic:", sonarDistance(rearLeftSonar));
-  }
 
   public void printMps()
   {
-    SmartDashboard.putNumber("Front Left Mps", getEncoderMps(frontLeftFX));
-    SmartDashboard.putNumber("Front Right Mps", getEncoderMps(frontRightFX));
-    SmartDashboard.putNumber("Rear Left Mps", getEncoderMps(rearLeftFX));
-    SmartDashboard.putNumber("Rear Right Mps", getEncoderMps(rearRightFX));
-   
     SmartDashboard.putNumber("Left Mps", getLeftMps());
     SmartDashboard.putNumber("Right Mps", getRightMps());
     SmartDashboard.putNumber("Linear Mps ", getLinearMps());
     SmartDashboard.putNumber("Angular Mps", getAngularMps());
 
   }
-
-  
 
   public void printPose()
   {
@@ -391,7 +327,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   public void periodic() 
   {
    
-
+    printMetres();
     pose = m_odometry.update(getHeading(),getLeftMetres(), getRightMetres());
    // SmartDashboard.putString("pose", pose.toString());
     //printPose();
@@ -434,20 +370,6 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     return getLinearMps() < 0 && (getAngularMps() <=.15);
   }
 
-
-
-  public boolean doesPathExist(String path) {
-    try {
-      final Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(path);
-      // The line below isn't doing anything but it needs to run to see if it works /
-      // gives me an error
-      TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-      return true;
-    } catch (final IOException ex) {
-      SmartDashboard.putString("Unable to open trajectory: ", "");
-      return false;
-    }
-  }
   
     public void resetOdometry() { m_odometry.resetPosition(new Pose2d(),
     getHeading()); }

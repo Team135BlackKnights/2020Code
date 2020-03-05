@@ -9,6 +9,8 @@ package frc.robot;
 
 import static frc.robot.RobotContainer.activeBallCount;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -57,6 +59,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+
 		autoCommand = autoChooser.getSelected();
 		// SmartDashboard.putString("Auto Command ",
 		// autoChooser.getSelected().toString());
@@ -66,6 +69,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		RobotContainer.initLimelight(2, 0);
+		RobotContainer.drive.resetEncoders();
 		activeBallCount = 3;
 		autoCommand = autoChooser.getSelected();
 		//SmartDashboard.putString("Auto Command ", autoChooser.getSelected().toString());

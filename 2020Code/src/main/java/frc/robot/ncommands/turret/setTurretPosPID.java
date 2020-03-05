@@ -5,26 +5,28 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.ncommands.drive;
+package frc.robot.ncommands.turret;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.FalconDrive;
 import frc.robot.util.PathFIndingFIles.*;
+import frc.robot.nsubsystems.Turret;
 
-public class followPath extends CommandBase {
+public class setTurretPosPID extends CommandBase {
   /**
-   * Creates a new followPath.
+   * Creates a new setTurretPosPID.
    */
-  private FalconDrive drive;
-  private PathFollower follower;
-  private Waypoint[] waypoints;
- 
-  public followPath(FalconDrive _drive, Waypoint[] _waypoints) 
+  Turret turret;
+  double desiredHoodPos, desiredRotationPos;
+  boolean isFinished;
+  public setTurretPosPID(Turret _turret, double _desiredHoodPos, double _desiredRotationPos) 
   {
-    waypoints = _waypoints;
-    drive = _drive;
-    follower = new PathFollower(waypoints, drive);
+    turret =_turret;
+    desiredHoodPos = _desiredHoodPos;
+    desiredRotationPos = _desiredRotationPos;
+
+    addRequirements(turret);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -32,23 +34,36 @@ public class followPath extends CommandBase {
   @Override
   public void initialize() 
   {
-    
-    SmartDashboard.putString("Drive Command Running: ", "follow Path");
-
+    isFinished = false;
+    SmartDashboard.putString("New Turret Command Running: ", "set Turret To Pos w/PID");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() 
   {
-    follower.followPath();
+    double currentHoodPos, currentRotationPos, hoodError, rotationError, hP, rP, hoodInput, rotationInput; 
+
+    currentHoodPos = turret.getHoodPos();
+    currentRotationPos = turret.getRotationPos();
+
+    hoodError = desiredHoodPos - currentHoodPos;
+    rotationError = desiredRotationPos - currentRotationPos;
+    isFinished = (Math.abs(hoodError) <2  && Math.abs(rotationError) < 1);
+
+    hP = 1;
+    rP = 1;
+
+    hoodInput = hoodError * hP;
+    rotationInput = rotationError * rP;
+
+    turret.aimTurret(rotationInput, hoodInput);
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    SmartDashboard.putString("Drive Command Running: ", "No Command Running");
-
   }
 
   // Returns true when the command should end.

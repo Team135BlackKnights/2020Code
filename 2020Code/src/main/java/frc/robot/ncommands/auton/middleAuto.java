@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.ncommands.auton.parallels.leaveStartingConfig;
 import frc.robot.ncommands.drive.encoderDrive;
 import frc.robot.ncommands.intake.runRoller;
-import frc.robot.ncommands.turret.runTurretAuton;
 import frc.robot.nsubsystems.FalconDrive;
 import frc.robot.nsubsystems.Intake;
 import frc.robot.nsubsystems.Storage;
@@ -32,8 +31,6 @@ public class middleAuto extends SequentialCommandGroup {
     // super(new FooCommand(), new BarCommand());
     super
     (
-      parallel(
-        new runTurretAuton(turret, limelight, storage, 5),
       
       sequence(
         new leaveStartingConfig(intake, turret),
@@ -47,6 +44,6 @@ public class middleAuto extends SequentialCommandGroup {
         )
       )
 
-    ));
+    );
   }
 }

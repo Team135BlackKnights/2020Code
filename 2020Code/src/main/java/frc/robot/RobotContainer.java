@@ -111,7 +111,8 @@ public class RobotContainer implements RobotMap {
   private void configureButtonBindings() {
     // rightButton3.whenPressed(new toggleLight(turret));
     rightButton10.whenPressed(new resetGyro(drive));
-    
+    rightButton11.whenPressed(new encoderDrive(drive, 2, 2 , false));
+    rightButton12.whenPressed(new encoderDrive(drive, 0 , 0 , false));
     // rightButton11.whenPressed(new leaveStartingConfig(intake, turret));
     // rightButton11.whenPressed(new rightSideAuto(drive, intake, turret, limelight, storage, false));
     
@@ -127,10 +128,9 @@ public class RobotContainer implements RobotMap {
     manipThumb.whileHeld(new runEndgameWithJoystick(endgame, manipJoystick));
     manipButton3.whileHeld(new runRoller(intake,  2400 , false));
     manipButton5.toggleWhenPressed(new moveIntake(intake));
-    // manipButton9.whenPressed(new rotateColorWheel(colorWheel, 0));
-    manipButton10.whenPressed(new raiseEndgame(endgame, 165));
-    manipButton11.whileHeld(new runWinch(endgame, -.85));
-    manipButton12.whenPressed(new raiseEndgame(endgame, 15));
+    //manipButton9.whenPressed(new rotateColorWheel(colorWheel, 0));
+    manipButton10.whenPressed(new raiseEndgame(endgame, 145));
+    manipButton12.whenPressed(new raiseEndgame(endgame, 0));
   }
 
 

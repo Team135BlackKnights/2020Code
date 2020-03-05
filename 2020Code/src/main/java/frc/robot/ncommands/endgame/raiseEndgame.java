@@ -7,6 +7,8 @@
 
 package frc.robot.ncommands.endgame;
 
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.Endgame;
@@ -28,7 +30,10 @@ public class raiseEndgame extends CommandBase {
   public void initialize() {
 
     SmartDashboard.putString("Endgame Command Running: ", "raise Endgame " + _target);
-
+    if(_target < endgame.getLiftRaiseEncoderPosition())
+    {
+      endgame.setLiftBrakeMode(IdleMode.kBrake);
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -42,7 +47,7 @@ public class raiseEndgame extends CommandBase {
     power = targetError / 90;
     minPower = .15;
     minDirection = targetError > 0 ? 1 : -1;
-    kp = 1.23;
+    kp = 3.23;
 
     minPower = minPower * minDirection;
 

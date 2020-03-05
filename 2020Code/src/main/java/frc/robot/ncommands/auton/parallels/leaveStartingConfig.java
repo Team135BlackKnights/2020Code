@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.ncommands.drive.resetDriveEncoders;
 //import frc.robot.ncommands.intake.moveIntake;
-import frc.robot.ncommands.turret.rotateAndTiltTurretToPos;
 import frc.robot.nsubsystems.Intake;
 import frc.robot.nsubsystems.Turret;
 
@@ -28,7 +27,6 @@ public class leaveStartingConfig extends ParallelCommandGroup {
     (
      
       //new moveIntake(intake),
-      new rotateAndTiltTurretToPos(turret, -115, 0),// TODO different starting config changes dependant on start position
       // 6 ball right side auto -150 position
       new resetDriveEncoders(RobotContainer.drive)
     );

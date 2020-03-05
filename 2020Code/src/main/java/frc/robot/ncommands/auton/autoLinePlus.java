@@ -10,7 +10,6 @@ package frc.robot.ncommands.auton;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.ncommands.auton.parallels.leaveStartingConfig;
 import frc.robot.ncommands.drive.encoderDrive;
-import frc.robot.ncommands.turret.runTurretAuton;
 import frc.robot.nsubsystems.FalconDrive;
 import frc.robot.nsubsystems.Intake;
 import frc.robot.nsubsystems.Storage;
@@ -33,9 +32,8 @@ public class autoLinePlus extends SequentialCommandGroup {
         new leaveStartingConfig(intake, turret),
         new encoderDrive(drive, -1.25, -1.25, false)
         )
-      ,
-        new runTurretAuton(turret, limelight, storage, 3)     
       
+    
     );
   }
 }
