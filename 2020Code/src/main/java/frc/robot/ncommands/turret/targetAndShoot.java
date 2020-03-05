@@ -54,7 +54,7 @@ public class targetAndShoot extends CommandBase {
     long timeNow = System.currentTimeMillis();
 
     double distanceToTarget, horizontalOffset, rotationError, hoodDesired, hoodActual, hoodError, 
-    desiredRPM, overrideRPM, actualRPM, rpmError, maxRPM, feedForwardRPM,
+    desiredRPM, overrideRPM, actualRPM, rpmError, maxRPM, feedForwardRPM, minRotationError, minHoodError,
     shooterInput, rotationInput, hoodInput;
 
     distanceToTarget = turret.distanceToTarget();
@@ -78,6 +78,8 @@ public class targetAndShoot extends CommandBase {
     isPOVTopLeft = joystick.isPovDirectionPressed(7);
 
     maxRPM = 5100;
+    minRotationError = 1;
+    minHoodError = 5;
 
     rotationError = horizontalOffset/30;
 
