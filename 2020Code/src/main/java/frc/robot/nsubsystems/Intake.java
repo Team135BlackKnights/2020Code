@@ -32,7 +32,7 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE {
   public Intake() {
     //Motor and Encoder setup
     rollerSpark = new CANSparkMax(ROLLER_SPARK, MotorType.kBrushless);
-    MotorControl.initCANSparkMax(rollerSpark, IdleMode.kCoast);
+    MotorControl.initCANSparkMax(rollerSpark, false, false, 30);
     rollerEncoder = rollerSpark.getEncoder();
 
     //Solenoid declaration
@@ -77,8 +77,6 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE {
     isRollerLowered();
     SmartDashboard.putNumber("roller Velocity", MotorControl.getSparkVelocity(rollerEncoder));
 
-   // printIntakeData();
-
-    // This method will be called once per scheduler run
+    // printIntakeData();
   }
 }

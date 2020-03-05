@@ -28,9 +28,8 @@ public class Endgame extends SubsystemBase implements RobotMap.ENDGAME
   {
     liftRaiseSpark = new CANSparkMax(LIFT_UP_SPARK_ID, MotorType.kBrushless);
     liftRaiseEncoder = liftRaiseSpark.getEncoder();
-    MotorControl.initCANSparkMax(liftRaiseSpark, IdleMode.kBrake);
+    MotorControl.initCANSparkMax(liftRaiseSpark, true, true, 30);
 
-    liftRaiseSpark.setInverted(true);
     rachet = new Solenoid(3);
 
     MotorControl.resetSparkEncoder(liftRaiseEncoder);

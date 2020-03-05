@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.RobotMap;
+import frc.robot.util.MotorControl;
 
 public class Turret extends SubsystemBase implements RobotMap.TURRET{
   /**
@@ -79,11 +80,11 @@ public static final int
 
     ballTrip = new DigitalInput(15);
 
-    initSpark(rotationSpark, true, false, 20);
-    initSpark(hoodSpark, true, false, 20);
-    initSpark(shooterMaster, true, false, 30);
-    initSpark(shooterSlave, true, false, 30);
-    initSpark(indexerSpark, true, true, 30);
+    MotorControl.initCANSparkMax(rotationSpark, true, false, 20);
+    MotorControl.initCANSparkMax(hoodSpark, true, false, 20);
+    MotorControl.initCANSparkMax(shooterMaster, true, false, 30);
+    MotorControl.initCANSparkMax(shooterSlave, true, false, 30);
+    MotorControl.initCANSparkMax(indexerSpark, true, true, 30);
 
     shooterSlave.follow(shooterMaster);
 
@@ -98,21 +99,7 @@ public static final int
     System.out.print("new Turret Initialized");
   }
 
-  public void initSpark(CANSparkMax spark, boolean isBraked, boolean isInverted, int currentLimit)
-  {
-    spark.restoreFactoryDefaults();
-    spark.setInverted(isInverted);
-    spark.enableVoltageCompensation(12);
-    if(isBraked)
-    {
-      spark.setIdleMode(IdleMode.kBrake);
-    }
-    else 
-    {
-      spark.setIdleMode(IdleMode.kCoast);
-    }
-    spark.setSmartCurrentLimit(currentLimit);
-  }
+  
 
   public void resetShooterEncoder()
   {
