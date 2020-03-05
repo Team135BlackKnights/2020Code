@@ -37,7 +37,7 @@ public class runConveyor extends CommandBase {
   @Override
   public void execute() {
 
-    double currentConveyPos = storage.getConveyorRotations();
+    double currentConveyPos = MotorControl.getMotorRotations(storage.conveyorEncoder);
     double conveyorError = -3-currentConveyPos;
     double conveyorPower = 0;
     boolean isButton7, isButton8;
@@ -47,7 +47,7 @@ public class runConveyor extends CommandBase {
     
     if(storage.isBallAtTripSwitch())
     {
-      storage.resetConveyorEncoder();
+      MotorControl.resetEncoder(storage.conveyorEncoder);
     }
 
     if(currentConveyPos > -3 && !isButton7 && !isButton8)
