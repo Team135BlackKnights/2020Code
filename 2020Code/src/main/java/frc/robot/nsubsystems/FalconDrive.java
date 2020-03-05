@@ -10,7 +10,6 @@ package frc.robot.nsubsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.RobotMap;
-
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
@@ -18,7 +17,6 @@ import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
-
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -30,28 +28,25 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
 
-public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
+public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE
+{
   public double poofs = 2.54; // Constant for conversion between inches and centimeters
   public static final double distBetweenWheelsInches = 21;// 26.84603809585759;
   public static final double gearRatio = 1/10.86;
   public static final double wheelDiameterInches = 6.375;// 18;
   public static final double wheelCircumferenceInches = wheelDiameterInches * Math.PI;
   public static final double encoderTicksPerRev = 2048;
-
   public DifferentialDriveOdometry m_odometry;
-
   public Pose2d pose;
-
   public WPI_TalonFX frontLeftFX, frontRightFX, rearLeftFX, rearRightFX;
   public Solenoid shifter;
   public Compressor compressor;
-
   public SpeedControllerGroup leftDriveSide, rightDriveSide;
   public DifferentialDrive chassis;
-
   public AHRS navx;
 
-  public FalconDrive() {
+  public FalconDrive()
+  {
     // Creates each individual motor, named for its position on the robot
     frontLeftFX = new WPI_TalonFX(FRONT_LEFT_FALCON);
     rearLeftFX = new WPI_TalonFX(REAR_LEFT_FALCON);
