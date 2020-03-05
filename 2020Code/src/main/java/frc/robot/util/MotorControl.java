@@ -8,8 +8,19 @@
 package frc.robot.util;
 
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 public class MotorControl {
+    //Our defualt set up for sparks
+    public static void initCANSparkMax(CANSparkMax spark, IdleMode mode) {
+        spark.setInverted(false);
+        spark.enableVoltageCompensation(12);
+        spark.setIdleMode(mode);
+        spark.setSmartCurrentLimit(30, 30);
+    }
+
+
     // Makes sure that the value given is within the limit setting it to the upper
     // or lower if it is above or below
     public static double limit(double x, double upperLimit, double lowerLimit) {
@@ -22,12 +33,12 @@ public class MotorControl {
     }
 
     // set the encoder's current value to 0 (does not move conveyor)
-    public static void resetEncoder(CANEncoder encoder) {
+    public static void resetSparkEncoder(CANEncoder encoder) {
         encoder.setPosition(0);
     }
 
     // get current encoder position based off an encoder (returned in ticks)
-    public static double getEncoderPosition(CANEncoder encoder) {
+    public static double getSparkEncoderPosition(CANEncoder encoder) {
         return encoder.getPosition();
     }
 
@@ -38,12 +49,12 @@ public class MotorControl {
 
     // Get current conveyor rotations using getEncoderPosition() and
     // ticksToRotations()
-    public static double getMotorRotations(CANEncoder encoder) {
-        return ticksToRotations(getEncoderPosition(encoder));
+    public static double getSparkEncoderRotations(CANEncoder encoder) {
+        return ticksToRotations(getSparkEncoderPosition(encoder));
     }
 
     // Get Conveyor Velocity
-    public static double getMotorVelocity(CANEncoder encoder) {
+    public static double getSparkVelocity(CANEncoder encoder) {
         return encoder.getVelocity();
     }
 }

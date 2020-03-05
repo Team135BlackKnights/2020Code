@@ -9,6 +9,7 @@ package frc.robot.ncommands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.Intake;
+import frc.robot.util.MotorControl;
 
 public class resetIntakeEncoders extends CommandBase {
   Intake intake;
@@ -20,7 +21,7 @@ public class resetIntakeEncoders extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intake.resetEncoders();
+    MotorControl.resetSparkEncoder(intake.rollerEncoder);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
