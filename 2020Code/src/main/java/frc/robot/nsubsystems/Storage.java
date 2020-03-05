@@ -30,8 +30,7 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE{
   public Storage() {
     //Conveyor Spark setup
     conveyorSpark = new CANSparkMax(CONVEYOR_SPARK, MotorType.kBrushless);
-    MotorControl.initCANSparkMax(conveyorSpark, IdleMode.kBrake);
-    conveyorSpark.setInverted(false);
+    MotorControl.initCANSparkMax(conveyorSpark, true, false, 30);
 
     //Conveyor Encoder setup
     conveyorEncoder = conveyorSpark.getEncoder();

@@ -42,18 +42,17 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL
    //Color Wheel sensors, motors, and information from FMS
    public ColorWheel()
    {
-      // Creates a color sensor in controlPanelColorSensor
+      // Creates a color sensor
       controlPanelColorSensor = new ColorSensorV3(i2cPort);
 
-      // Creates a SparkMax motor controller in rotatorSpark
+      // Creates a SparkMax motor and inits
       rotatorSpark = new CANSparkMax(ROTATOR_ID, MotorType.kBrushless);
-
-      initCANSparkMax(rotatorSpark, IdleMode.kBrake);
+      MotorControl.initCANSparkMax(rotatorSpark, true, false, 30);
 
       // Gets the data sent by the FMS as to what color we need
       gameData = DriverStation.getInstance().getGameSpecificMessage();
       
-      // Desired color is none
+      // Desired color is none to start with
       desiredColor = "No Color";
 
       // Prints the color wheel subsystem is active
@@ -61,45 +60,25 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL
 
    }
 
-   // Checks if the color it is seeing is blue by checking it against the min and
+   // Checks what color it seen by checking it against the min and
    // max tolerances of each color
-   public boolean IsBlue()
-   {
+   public boolean IsBlue() {
       return ((red() >= BlueRedMin && red() <= BlueRedMax) && (green() >= BlueGreenMin && green() <= BlueGreenMax)
             && (blue() >= BlueBlueMin && blue() <= BlueBlueMax));
    }
-
-   // Checks if the color it is seeing is red by checking it against the min and
-   // max tolerances of each color
-   public boolean IsRed()
-   {
+   public boolean IsRed() {
       return ((red() >= RedRedMin && red() <= RedRedMax) && (green() >= RedGreenMin && green() <= RedGreenMax)
             && (blue() >= RedBlueMin && blue() <= RedBlueMax));
    }
-
-   // Checks if the color it is seeing is green by checking it against the min and
-   // max tolerances of each color
-   public boolean IsGreen()
-   {
+   public boolean IsGreen() {
       return ((red() >= GreenRedMin && red() <= GreenRedMax) && (green() >= GreenGreenMin && green() <= GreenGreenMax)
             && (blue() >= GreenBlueMin && blue() <= GreenBlueMax));
    }
-
-   // Checks if the color it is seeing is yellow by checking it against the min and
-   // max tolerances of each color
-   public boolean IsYellow()
-   {
-      return ((red() >= YellowRedMin && red() <= YellowRedMax)
-            && (green() >= YellowGreenMin && green() <= YellowGreenMax)
+   public boolean IsYellow() {
+      return ((red() >= YellowRedMin && red() <= YellowRedMax) && (green() >= YellowGreenMin && green() <= YellowGreenMax)
             && (blue() >= YellowBlueMin && blue() <= YellowBlueMax));
    }
 
-   public void initCANSparkMax(CANSparkMax spark, IdleMode mode)
-   {
-      spark.setInverted(false);
-      spark.enableVoltageCompensation(12);
-      spark.setIdleMode(mode);
-   }
 
    public String gameColor()
    {
@@ -107,9 +86,10 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL
       // than 0
       if (gameData.length() > 0)
       {
-         // Takes the Game Specific Data and changes it to a usable form
+         // Takes the Game Data and uses the first character
          switch (gameData.charAt(0))
          {
+         //Character and desired color are different due to coming at the color wheel at a 90 degree angle
          case 'B':
             //Color to reach is red
             desiredColor = "Red";
@@ -137,7 +117,7 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL
          }
       } 
       
-      // Code for no data received yet
+      // No data received yet
       else
       {
          desiredColor = "No Color";
@@ -169,31 +149,22 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL
    // Determine what the current color under the color sensor is
    public String checkForColor()
    {
-      //The current color is blue
       if (IsBlue())
       {
          return "Blue";
       }
-
-      //The current color is red
       else if (IsRed())
       {
          return "Red";
       }
-
-      //The current color is green
       else if (IsGreen())
       {
          return "Green";
       }
-
-      //The current color is yellow
       else if (IsYellow())
       {
          return "Yellow";
       }
-
-      //No color is seen
       else
          return "No Color";
    }
@@ -223,7 +194,7 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL
       rotatorSpark.set(0);
    }
 
-   // Using subsystem to move control panel
+   //Run motor to move colorwheel
    public void moveColorWheel(double power)
    {
       power = MotorControl.limit(power, .85, -.85);
@@ -248,13 +219,9 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL
       SmartDashboard.putNumber("color green", green());
       SmartDashboard.putNumber("color blue  ", blue());
 
-      // Prints the current color to smart dash
+      //Other useful information
       SmartDashboard.putString("Current Color", currentColor);
-
-      // Prints the amount of color changes to smart dash
       SmartDashboard.putNumber("ColorChanges:", colorChanges);
-
-      // Prints the desired color to smart dash
       SmartDashboard.putString("Desired Color ", desiredColor);
    }
 
