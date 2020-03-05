@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import frc.robot.util.MotorControl;
 
 public class Intake extends SubsystemBase implements RobotMap.INTAKE {
 
@@ -29,44 +30,23 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE {
   public boolean raiseLowerState;
   public double autonRPM; 
   public Intake() {
+    //Motor and Encoder setup
     rollerSpark = new CANSparkMax(ROLLER_SPARK, MotorType.kBrushless);
-
-    initCANSparkMax(rollerSpark, IdleMode.kCoast);
-
+    MotorControl.initCANSparkMax(rollerSpark, IdleMode.kCoast);
     rollerEncoder = rollerSpark.getEncoder();
 
+    //Solenoid declaration
     raiseLower = new Solenoid(RAISE_LOWER);
+
+    //Default RPM for rollers during auto
     autonRPM = 4800;
 
+    //Intake initialized
     System.out.println("Intake Initialized");
-  }
-
-  public void initCANSparkMax(CANSparkMax spark, IdleMode mode)
-  {
-    spark.setInverted(false);
-    spark.enableVoltageCompensation(12);
-    spark.setIdleMode(mode);
-    spark.setSmartCurrentLimit(30, 30);
   }
 
   public void runRoller(double power) {
     rollerSpark.set(power);
-  }
-
-  public void resetEncoders() {
-    rollerEncoder.setPosition(0);
-  }
-
-  public double getEncoderPosition(CANEncoder encoder) {
-    return encoder.getPosition();
-  }
-
-  public double ticksToRotations(double ticks) {
-    return ticks / 4096;
-  }
-
-  public double getEncoderVelocity(CANEncoder encoder) {
-    return encoder.getVelocity();
   }
 
   public double getIntakeSonarDistanceIn() {
@@ -89,9 +69,9 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE {
     return rollerEncoder.getVelocity();
   }
 
-  public void printIntakeStuff() {
+  public void printIntakeData() {
     SmartDashboard.putBoolean("is Intake Lower", isRollerLowered());
-    SmartDashboard.putNumber("intake roller position", getEncoderPosition(rollerEncoder));
+    SmartDashboard.putNumber("intake roller position", MotorControl.getSparkEncoderPosition(rollerEncoder));
     SmartDashboard.putNumber("roller Vel", getRollerRPM());
   }
 
@@ -100,7 +80,7 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE {
     isRollerLowered();
     SmartDashboard.putNumber("roller Vel", getRollerRPM());
 
-   // printIntakeStuff();
+   // printIntakeData();
 
     // This method will be called once per scheduler run
   }

@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.Storage;
 import frc.robot.util.MotorControl;
-import frc.robot.util.PathFIndingFIles.MovingAverage;
+import frc.robot.util.MovingAverage;
 
 public class runConveyorPower extends CommandBase {
   /**
@@ -36,7 +36,7 @@ public class runConveyorPower extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double currentRPM = MotorControl.getMotorVelocity(storage.conveyorEncoder);
+    double currentRPM = MotorControl.getSparkVelocity(storage.conveyorEncoder);
     MovingAverage smoothPls = new MovingAverage(25);
     double maybe = smoothPls.process((float)currentRPM);
     double storageMaxVel = 5200;

@@ -36,12 +36,9 @@ public class RobotContainer implements RobotMap {
  // public static final Turret turret = new Turret();
   
   public static final Storage storage = new Storage();
-  //public static final newStorage nStorage = new newStorage;
   public static final Intake intake = new Intake();
   public static final Endgame endgame = new Endgame();
   public static final ColorWheel colorWheel = null;//new ColorWheel();
-  public static final TurretLimelight limelight = TurretLimelight.getInstance();
-  public static final Rioduino arduino = new Rioduino();
   public final autoLine autoLineCommand = null; //new autoLine(drive, intake, turret);
   public final rightSideAuto rightSideAutoCommand = null; //new rightSideAuto(drive, intake, turret, limelight, storage, true);
   public final autoLinePlus autoLinePlusCommand = null; //new autoLinePlus(drive, intake, turret, limelight, storage);
@@ -268,7 +265,7 @@ public class RobotContainer implements RobotMap {
 
   public void initLimelight(int ledMode, int pipeline)
   {
-    limelight.initLimelight(ledMode, pipeline);
+    //limelight.initLimelight(ledMode, pipeline);
   }
 
   public Command getAutoLinePlus()

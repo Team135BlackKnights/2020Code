@@ -30,7 +30,7 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE{
   public Storage() {
     //Conveyor Spark setup
     conveyorSpark = new CANSparkMax(CONVEYOR_SPARK, MotorType.kBrushless);
-    initCANSparkMax(conveyorSpark, IdleMode.kBrake);
+    MotorControl.initCANSparkMax(conveyorSpark, IdleMode.kBrake);
     conveyorSpark.setInverted(false);
 
     //Conveyor Encoder setup
@@ -45,13 +45,6 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE{
     System.out.println("Storage Initialized");
   }
   
-  //Our defualt set up for sparks
-  public void initCANSparkMax(CANSparkMax spark, IdleMode mode) {
-    spark.setInverted(false);
-    spark.enableVoltageCompensation(12);
-    spark.setIdleMode(mode);
-  }
-
   //run the storage conveyor
   public void runConveyor(double power) {
     conveyorSpark.set(power);
@@ -65,7 +58,7 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE{
   //Reset encoder position if the ball is at the trip switch
   public void autoResetEncoder() {
     if (isBallAtTripSwitch()) {
-      MotorControl.resetEncoder(conveyorEncoder);
+      MotorControl.resetSparkEncoder(conveyorEncoder);
     }
   }
 
@@ -86,7 +79,7 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE{
   {
     if(isBallAtTripSwitch())// && //!RobotContainer.nTurret.isReadyForBall)
     {
-      MotorControl.resetEncoder(conveyorEncoder);
+      MotorControl.resetSparkEncoder(conveyorEncoder);
     }
 
     // Warning was coming from the if() being always true so I commented it out and had it just run
@@ -98,7 +91,7 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE{
     */
     runConveyor(.4);
 
-    if(MotorControl.getMotorRotations(conveyorEncoder) > desiredEncoderPos)
+    if(MotorControl.getSparkEncoderRotations(conveyorEncoder) > desiredEncoderPos)
     {
       runConveyor(-.4);
     }
@@ -108,7 +101,7 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE{
   public void printStorageData()
   {
     SmartDashboard.putNumber("Balls Through System ", currentBallCount);
-    SmartDashboard.putNumber("Conveyor Position", MotorControl.getEncoderPosition(conveyorEncoder));
+    SmartDashboard.putNumber("Conveyor Position", MotorControl.getSparkEncoderPosition(conveyorEncoder));
     SmartDashboard.putBoolean("is Ball at trip Switch", isBallAtTripSwitch());
   }
 

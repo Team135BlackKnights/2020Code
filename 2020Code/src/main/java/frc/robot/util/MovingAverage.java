@@ -1,4 +1,4 @@
-package frc.robot.util.PathFIndingFIles;
+package frc.robot.util;
 
 public class MovingAverage {
 	private int _in;

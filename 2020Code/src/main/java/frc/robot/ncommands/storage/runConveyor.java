@@ -37,7 +37,7 @@ public class runConveyor extends CommandBase {
   @Override
   public void execute() {
 
-    double currentConveyPos = MotorControl.getMotorRotations(storage.conveyorEncoder);
+    double currentConveyPos = MotorControl.getSparkEncoderRotations(storage.conveyorEncoder);
     double conveyorError = -3-currentConveyPos;
     double conveyorPower = 0;
     boolean isButton7, isButton8;
@@ -47,7 +47,7 @@ public class runConveyor extends CommandBase {
     
     if(storage.isBallAtTripSwitch())
     {
-      MotorControl.resetEncoder(storage.conveyorEncoder);
+      MotorControl.resetSparkEncoder(storage.conveyorEncoder);
     }
 
     if(currentConveyPos > -3 && !isButton7 && !isButton8)
@@ -61,7 +61,7 @@ public class runConveyor extends CommandBase {
     else if (isButton7)
     {
       conveyorPower = .6;
-      MotorControl.resetEncoder(storage.conveyorEncoder);
+      MotorControl.resetSparkEncoder(storage.conveyorEncoder);
       RobotContainer.intake.runRoller(-.3);
      // RobotContainer.turret.runBallFeeder(.2);
       if(RobotContainer.intake.isRollerLowered())
@@ -74,7 +74,7 @@ public class runConveyor extends CommandBase {
     {
       conveyorPower = -.85;
       RobotContainer.intake.runRoller(.3);
-      MotorControl.resetEncoder(storage.conveyorEncoder);
+      MotorControl.resetSparkEncoder(storage.conveyorEncoder);
       SmartDashboard.putString("Conveyor Override: ", "Conveyor Going Down");
     } else {
       conveyorPower = 0;

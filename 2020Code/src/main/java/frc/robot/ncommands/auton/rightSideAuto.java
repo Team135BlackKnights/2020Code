@@ -22,7 +22,7 @@ public class rightSideAuto extends SequentialCommandGroup {
    * Creates a new testAuto.
    */
   
-  public rightSideAuto(FalconDrive drive, Intake intake, Turret turret, TurretLimelight limelight, Storage storage, boolean isShooting) {
+  public rightSideAuto(FalconDrive drive, Intake intake, Turret turret, Storage storage, boolean isShooting) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super
