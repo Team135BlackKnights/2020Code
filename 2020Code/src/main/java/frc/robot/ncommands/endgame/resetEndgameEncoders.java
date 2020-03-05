@@ -9,6 +9,7 @@ package frc.robot.ncommands.endgame;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.Endgame;
+import frc.robot.util.MotorControl;
 
 public class resetEndgameEncoders extends CommandBase {
   Endgame endgame;
@@ -20,7 +21,7 @@ public class resetEndgameEncoders extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    endgame.resetAllEndgameEncoders();
+    MotorControl.resetSparkEncoder(endgame.liftRaiseEncoder);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

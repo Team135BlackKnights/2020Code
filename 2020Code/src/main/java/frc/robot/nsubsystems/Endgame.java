@@ -16,6 +16,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import frc.robot.RobotMap;
+import frc.robot.util.MotorControl;
 
 public class Endgame extends SubsystemBase implements RobotMap.ENDGAME {
 
@@ -26,18 +27,15 @@ public class Endgame extends SubsystemBase implements RobotMap.ENDGAME {
   public Endgame() {
     liftRaiseSpark = new CANSparkMax(LIFT_UP_SPARK_ID, MotorType.kBrushless);
     liftRaiseEncoder = liftRaiseSpark.getEncoder();
-    initCANSparkMax(liftRaiseSpark, IdleMode.kBrake);
+    MotorControl.initCANSparkMax(liftRaiseSpark, IdleMode.kBrake);
+
     liftRaiseSpark.setInverted(true);
     rachet = new Solenoid(3);
 
-    resetAllEndgameEncoders();
+    MotorControl.resetSparkEncoder(liftRaiseEncoder);
   }
 
-  public void initCANSparkMax(CANSparkMax spark, IdleMode mode) {
-    spark.setInverted(false);
-    spark.enableVoltageCompensation(12);
-    spark.setIdleMode(mode);
-  }
+  
 
   public void setLiftBrakeMode(IdleMode mode)
   {
@@ -46,7 +44,7 @@ public class Endgame extends SubsystemBase implements RobotMap.ENDGAME {
 
   public void runLiftRaiseSpark(double power) 
   {
-    power = limit(power, .95, -.95);
+    power = MotorControl.limit(power, .95, -.95);
     liftRaiseSpark.set(power);
   }
 
@@ -60,27 +58,6 @@ public class Endgame extends SubsystemBase implements RobotMap.ENDGAME {
     return rachet.get();
   }
 
-  public void resetAllEndgameEncoders() {
-    resetLiftEncoder();
-  }
-
-
-  public void resetLiftEncoder() {
-    liftRaiseEncoder.setPosition(0);
-  }
-
-  public double getLiftRaiseEncoderPosition() {
-    return liftRaiseEncoder.getPosition();
-  }
-
-  public double ticksToRotations(double ticks) {
-    return ticks / 4096;
-  }
-
-  public double ticksToInches(double ticks) {
-    return ticks / 4096; // NEED TO UPDATE WITH ACTUAL CONVERSION RATE
-  }
-
   public double getMotorPower(CANSparkMax spark)
   {
     return spark.getAppliedOutput();
@@ -89,20 +66,11 @@ public class Endgame extends SubsystemBase implements RobotMap.ENDGAME {
 
   public void printPosition() {
 
-    SmartDashboard.putNumber("LiftRaise Encoder Distance", getLiftRaiseEncoderPosition());
+    SmartDashboard.putNumber("LiftRaise Encoder Distance", MotorControl.getSparkEncoderPosition(liftRaiseEncoder));
   }
 
-  public double getLiftEncoderVelocity() {
-    return liftRaiseEncoder.getVelocity();
-  }
-
-  public double returnEncoderVelocity(CANEncoder encoder) {
-    return encoder.getVelocity();
-  }
-
- 
   public void printVelocity() {
-    SmartDashboard.putNumber("LiftRaise Encoder Velocity", returnEncoderVelocity(liftRaiseEncoder));
+    SmartDashboard.putNumber("LiftRaise Encoder Velocity", MotorControl.getSparkVelocity(liftRaiseEncoder));
   }
 
   public double getLiftRaiseTemp() {
@@ -120,15 +88,6 @@ public class Endgame extends SubsystemBase implements RobotMap.ENDGAME {
   public void printVoltage() 
   {
     SmartDashboard.putNumber("LiftRaise Motor Voltage", getVoltage(liftRaiseSpark));
-  }
-
-  public double limit(double x, double upperLimit, double lowerLimit) {
-    if (x >= upperLimit) {
-      x = upperLimit;
-    } else if (x <= lowerLimit) {
-      x = lowerLimit;
-    }
-    return x;
   }
 
   public void printEverything() {

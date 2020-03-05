@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.nsubsystems.Intake;
+import frc.robot.util.MotorControl;
 
 public class runRoller extends CommandBase {
 
@@ -35,7 +36,7 @@ public class runRoller extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double actualRPM = intake.getRollerRPM();
+    double actualRPM = MotorControl.getSparkVelocity(intake.rollerEncoder);
     double maxRPM = 5400; 
     double error = _RPM-actualRPM;
     
