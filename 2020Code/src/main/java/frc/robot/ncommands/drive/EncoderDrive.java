@@ -74,9 +74,9 @@ public class encoderDrive extends CommandBase {
       rightPower = rightError;
 
 
-      double lP, lI, lD, rP, rI, rD; 
-      lP = 2.45; lI = 0; lD = 0; 
-      rP = 2.45; rI = 0; rD = 0; 
+      double lP,rP;
+      lP = 2.45; 
+      rP = 2.45; 
       double leftInput, rightInput; 
 
       leftInput = leftPower * lP; 
