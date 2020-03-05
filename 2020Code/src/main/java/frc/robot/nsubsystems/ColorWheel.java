@@ -23,8 +23,8 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 
-public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL {
-
+public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL 
+{
    public ColorSensorV3 controlPanelColorSensor;
    private final I2C.Port i2cPort = I2C.Port.kOnboard;
    public CANSparkMax rotatorSpark;
@@ -40,19 +40,24 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL 
    public boolean atDesiredRoations;
    public CANSparkMax spark;
 
-   public ColorWheel() {
+   //Color Wheel sensors, motors, and information from FMS
+   public ColorWheel()
+   {
       // Creates a color sensor in controlPanelColorSensor
       controlPanelColorSensor = new ColorSensorV3(i2cPort);
+
       // Creates a SparkMax motor controller in rotatorSpark
       rotatorSpark = new CANSparkMax(ROTATOR_ID, MotorType.kBrushless);
 
       initCANSparkMax(rotatorSpark, IdleMode.kBrake);
+
       // Gets the data sent by the FMS as to what color we need
       gameData = DriverStation.getInstance().getGameSpecificMessage();
+      
+      // Desired color is none
+      desiredColor = "No Color";
 
-      desiredColor = "No Color"; // Desired color is none
-
-      System.out.println("Color Wheel Initialized"); // Prints to screen
+      System.out.println("Color Wheel Initialized");
 
    }
 
@@ -176,21 +181,29 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL 
 
    public void countColor() {
 
-      SmartDashboard.putString("Last Seen Color:", lastSeenColor); // Prints the last seen color to dash
-      if ((checkForColor() != lastSeenColor) && (checkForColor() != "No Color")) {
-         // if the current color is not the last seen color and it isn't No Color, add 1
-         // to the count
+      // Prints the last seen color to dash
+      SmartDashboard.putString("Last Seen Color:", lastSeenColor);
+
+      // if the current color is not the last seen color and it isn't No Color, add 1
+      // to the count
+      if ((checkForColor() != lastSeenColor) && (checkForColor() != "No Color")) 
+      {
          colorChanges++;
       }
-      if (currentColor != "No Color") { // If the current color isn't no color, put it into last seen
+
+      // If the current color isn't no color, put it into last seen
+      if (currentColor != "No Color")
+      { 
          lastSeenColor = currentColor;
       }
    }   
 
-    // To stop the control panel, the motor controller is set to 0 power
-   public void stopControlPanel() {
+   // To stop the control panel, the motor controller is set to 0 power
+   public void stopControlPanel()
+   {
       rotatorSpark.set(0);
    }
+
    public void moveColorWheel(double power)
    {
       power = MotorControl.limit(power, .85, -.85);
