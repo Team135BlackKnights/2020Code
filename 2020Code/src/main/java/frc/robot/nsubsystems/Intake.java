@@ -64,21 +64,18 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE {
   public double getRollerPower() {
     return rollerSpark.getAppliedOutput();
   }
-  public double getRollerRPM()
-  {
-    return rollerEncoder.getVelocity();
-  }
+  
 
   public void printIntakeData() {
     SmartDashboard.putBoolean("is Intake Lower", isRollerLowered());
     SmartDashboard.putNumber("intake roller position", MotorControl.getSparkEncoderPosition(rollerEncoder));
-    SmartDashboard.putNumber("roller Vel", getRollerRPM());
+    SmartDashboard.putNumber("roller Velocity", MotorControl.getSparkVelocity(rollerEncoder));
   }
 
   @Override
   public void periodic() {
     isRollerLowered();
-    SmartDashboard.putNumber("roller Vel", getRollerRPM());
+    SmartDashboard.putNumber("roller Velocity", MotorControl.getSparkVelocity(rollerEncoder));
 
    // printIntakeData();
 

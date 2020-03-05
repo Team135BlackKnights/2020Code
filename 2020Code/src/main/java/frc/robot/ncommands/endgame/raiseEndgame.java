@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.Endgame;
+import frc.robot.util.MotorControl;
 
 public class raiseEndgame extends CommandBase {
 
@@ -30,7 +31,7 @@ public class raiseEndgame extends CommandBase {
   public void initialize() {
 
     SmartDashboard.putString("Endgame Command Running: ", "raise Endgame " + _target);
-    if(_target < endgame.getLiftRaiseEncoderPosition())
+    if(_target < MotorControl.getSparkEncoderPosition(endgame.liftRaiseEncoder))
     {
       endgame.setLiftBrakeMode(IdleMode.kBrake);
     }
@@ -41,7 +42,7 @@ public class raiseEndgame extends CommandBase {
   public void execute() {
     double currentLiftPos, kp, power, minPower, minDirection;
 
-    currentLiftPos = endgame.getLiftRaiseEncoderPosition();
+    currentLiftPos = MotorControl.getSparkEncoderPosition(endgame.liftRaiseEncoder);
     targetError = _target - currentLiftPos;
 
     power = targetError / 90;
@@ -52,7 +53,7 @@ public class raiseEndgame extends CommandBase {
     minPower = minPower * minDirection;
 
     power = (power * kp) + minPower;
-    power = endgame.limit(power, .75  , -.75);
+    power = MotorControl.limit(power, .75  , -.75);
     endgame.runLiftRaiseSpark(power);
   }
 
