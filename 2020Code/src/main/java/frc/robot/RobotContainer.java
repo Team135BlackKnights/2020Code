@@ -111,7 +111,8 @@ public class RobotContainer implements RobotMap {
   private void configureButtonBindings() {
     // rightButton3.whenPressed(new toggleLight(turret));
     rightButton10.whenPressed(new resetGyro(drive));
-    
+    rightButton11.whenPressed(new encoderDrive(drive, 2, 2 , false));
+    rightButton12.whenPressed(new encoderDrive(drive, 0 , 0 , false));
     // rightButton11.whenPressed(new leaveStartingConfig(intake, turret));
     // rightButton11.whenPressed(new rightSideAuto(drive, intake, turret, limelight, storage, false));
     

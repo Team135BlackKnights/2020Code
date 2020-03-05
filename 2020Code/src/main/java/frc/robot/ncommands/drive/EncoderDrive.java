@@ -7,6 +7,8 @@
 
 package frc.robot.ncommands.drive;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
@@ -42,6 +44,7 @@ public class encoderDrive extends CommandBase {
     leftError = leftDesired-drive.getLeftMetres() ;
     rightError = rightDesired-drive.getRightMetres();
     isFinished = false;
+    drive.setBrakeMode(NeutralMode.Brake);
 
   }
 
@@ -70,27 +73,22 @@ public class encoderDrive extends CommandBase {
       leftPower = leftError;
       rightPower = rightError;
 
-      double leftErrorSum =+ leftError*.02;
-      double rightErrorSum =+ rightError *.02;
-
-      double leftErrorChange = (leftError - prevLeftError)/.02;
-      double rightErrorChange = (rightError - prevRightError)/.02;
 
       double lP, lI, lD, rP, rI, rD; 
-      lP = 4.47; lI = 0; lD = 0; 
-      rP = 4.58; rI = 0; rD = 0; 
+      lP = 2.45; lI = 0; lD = 0; 
+      rP = 2.45; rI = 0; rD = 0; 
       double leftInput, rightInput; 
 
-      leftInput = leftPower * lP + leftErrorSum * lI + leftErrorChange * lD; 
-      rightInput = rightPower * rP + rightErrorSum * rI + rightErrorChange * rD;
+      leftInput = leftPower * lP; 
+      rightInput = rightPower * rP;
 
-      leftInput = drive.limit(leftInput, .55, -.55);
-      rightInput = drive.limit(rightInput, .55, -.55);
+      leftInput = drive.limit(leftInput, .95, -.95);
+      rightInput = drive.limit(rightInput, .95, -.95);
 
       prevLeftError = leftError;
       prevRightError = rightError;
     
-      this.drive.TankDrive(leftInput, rightInput);
+      drive.TankDrive(leftInput, rightInput);
     }
   }
 

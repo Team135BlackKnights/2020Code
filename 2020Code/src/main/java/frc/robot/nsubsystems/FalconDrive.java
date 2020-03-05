@@ -91,7 +91,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     chassis.setMaxOutput(.98); // Maximum zoom is 98%
 
     resetEncoders(); // Calls method to reset the internal encoders of the motors
-    setBrakeMode(NeutralMode.Coast);
+    setBrakeMode(NeutralMode.Brake);
     // Calls method which makes it so that when the input is neutral, the motors
     // will brake
    
@@ -110,8 +110,8 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     falcon.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, 100);
     falcon.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_50Ms, 100);
     falcon.configVelocityMeasurementWindow(4, 100);
-    falcon.configClosedloopRamp(.5);
-    falcon.configOpenloopRamp(.5);
+    falcon.configClosedloopRamp(.35);
+    falcon.configOpenloopRamp(.35);
   }
 
   // Sets the neutral input to brake all four motors
@@ -338,6 +338,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   public void periodic() 
   {
    
+    printMetres();
     pose = m_odometry.update(getHeading(),getLeftMetres(), getRightMetres());
    // SmartDashboard.putString("pose", pose.toString());
     //printPose();
