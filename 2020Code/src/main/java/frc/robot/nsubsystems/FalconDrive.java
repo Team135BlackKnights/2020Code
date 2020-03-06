@@ -20,23 +20,17 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
 
-public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE
-{
+public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   public double poofs = 2.54; // Constant for conversion between inches and centimeters
   public static final double distBetweenWheelsInches = 21;// 26.84603809585759;
-  public static final double gearRatio = 1/10.86;
+  public static final double gearRatio = 1 / 10.86;
   public static final double wheelDiameterInches = 6.375;// 18;
   public static final double wheelCircumferenceInches = wheelDiameterInches * Math.PI;
   public static final double encoderTicksPerRev = 2048;
-  public DifferentialDriveOdometry m_odometry;
-  public Pose2d pose;
   public WPI_TalonFX frontLeftFX, frontRightFX, rearLeftFX, rearRightFX;
   public Solenoid shifter;
   public Compressor compressor;
@@ -44,8 +38,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE
   public DifferentialDrive chassis;
   public AHRS navx;
 
-  public FalconDrive()
-  {
+  public FalconDrive() {
     // Creates each individual motor, named for its position on the robot
     frontLeftFX = new WPI_TalonFX(FRONT_LEFT_FALCON);
     rearLeftFX = new WPI_TalonFX(REAR_LEFT_FALCON);
@@ -77,16 +70,12 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE
     // controller groups
     chassis = new DifferentialDrive(leftDriveSide, rightDriveSide);
     chassis.setSafetyEnabled(false);
-    //disable safety to prevent motors from calling errors 
+    // disable safety to prevent motors from calling errors
 
     chassis.setMaxOutput(.98); // set the maximum output of the drive train to .98
 
-    resetEncoders(); // reset drive encoders when we create a new falcon drive 
+    resetEncoders(); // reset drive encoders when we create a new falcon drive
     setBrakeMode(NeutralMode.Brake);// upon drive train init set 0 input state to brake
-   
-    pose = new Pose2d();
-    m_odometry = new DifferentialDriveOdometry(getHeading());
-
 
     System.out.println("Falcon Drive Initialized");
   }
@@ -103,37 +92,35 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE
     falcon.configOpenloopRamp(.35);
   }
 
-  // config for each falcon to apply all the desired settings
+  public void setVoltageCompensation(boolean enable) {
+    frontLeftFX.enableVoltageCompensation(enable);
+    rearLeftFX.enableVoltageCompensation(enable);
+    frontRightFX.enableVoltageCompensation(enable);
+    rearRightFX.enableVoltageCompensation(enable);
+  }
 
+  // config for each falcon to apply all the desired settings
   public void setBrakeMode(NeutralMode neutralMode) {
     frontLeftFX.setNeutralMode(neutralMode);
     frontRightFX.setNeutralMode(neutralMode);
     rearLeftFX.setNeutralMode(neutralMode);
     rearRightFX.setNeutralMode(neutralMode);
   }
-  // set the 0 input state of each motor to a specified state 
+  // set the 0 input state of each motor to a specified state
 
   public void TankDrive(double leftPower, double rightPower) {
     chassis.tankDrive(leftPower, rightPower);
   }
-  // recieve a left and right output then output motors accordingly 
+  // recieve a left and right output then output motors accordingly
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(getLeftMps(), getRightMps());
   }
 
-  public void setVoltageCompensation(boolean isDesired)
-  {
-    frontLeftFX.enableVoltageCompensation(isDesired);
-    rearLeftFX.enableVoltageCompensation(isDesired);
-    frontRightFX.enableVoltageCompensation(isDesired);
-    rearRightFX.enableVoltageCompensation(isDesired);
-  }
-
   public void ArcadeDrive(double lateralPower, double rotationalPower) {
     chassis.arcadeDrive(lateralPower, rotationalPower);
   }
-  // recieve a forward and rotational input and translate it into motor outputs. 
+  // recieve a forward and rotational input and translate it into motor outputs.
 
   public void setCompressorOff() {
     compressor.setClosedLoopControl(false);
@@ -169,20 +156,17 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE
 
   // Returns the velocity of the chosen motor's encoder
   public double getEncoderVelocity(TalonFX falcon) {
-    return falcon.getSelectedSensorVelocity()*10/4096;
+    return falcon.getSelectedSensorVelocity() * 10 / 4096;
   }
-  
 
   public void shiftGears(boolean isHighGear) {
     shifter.set(isHighGear);
   }
-  
-  public boolean shifterState()
-  {
+
+  public boolean shifterState() {
     return shifter.get();
 
   }
-
 
   // Resets the Yaw of the navx
   public void resetGyro() {
@@ -200,52 +184,53 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE
   public double getRightPos() {
     return (-getEncoderDistance(frontRightFX) + -getEncoderDistance(rearRightFX)) / 2;
   }
-  
-  public double rotationsToInches(double rotations)
-  {
-    return rotations*6*Math.PI;
+
+  // Using rotations and wheel diameter, find how far those rotations are
+  public double rotationsToInches(double rotations) {
+    return rotations * 6 * Math.PI;
   }
-  
-  public double getLeftMetres()
-  {
+
+  // Find how far the left wheels have gone
+  public double getLeftMetres() {
     return (Units.inchesToMeters(rotationsToInches(getLeftPos()))) * gearRatio;
   }
-  public double getRightMetres()
-  {
+
+  // Find how far the right wheels have gone
+  public double getRightMetres() {
     return (Units.inchesToMeters(rotationsToInches(getRightPos()))) * gearRatio;
   }
 
-  public void printMetres()
-  {
+  // Output the current distance that the left and right sides have traveled
+  public void printMetres() {
     SmartDashboard.putNumber("left Dist Metres", getLeftMetres());
     SmartDashboard.putNumber("right Dist Metres", getRightMetres());
   }
 
-  public double getEncoderMps(TalonFX talon)
-  {
-    return 0.0254*(rotationsToInches(getEncoderVelocity(talon))) * gearRatio;
-  }
-  
-  public double getLeftMps()
-  {
-    return (getEncoderMps(frontLeftFX) + getEncoderMps(rearLeftFX))/2;
+  // Meters per second from encoders
+  public double getEncoderMps(TalonFX talon) {
+    return 0.0254 * (rotationsToInches(getEncoderVelocity(talon))) * gearRatio;
   }
 
-  public double getRightMps()
-  {
-    return (-getEncoderMps(frontRightFX) + -getEncoderMps(rearRightFX))/2;
+  // Average the two motors of left side for accurate count
+  public double getLeftMps() {
+    return (getEncoderMps(frontLeftFX) + getEncoderMps(rearLeftFX)) / 2;
   }
 
-  public double getLinearMps()
-  {
-    return (getLeftMps() + getRightMps())/2;
+  // Average the two motors of right side for accurate count
+  public double getRightMps() {
+    return (-getEncoderMps(frontRightFX) + -getEncoderMps(rearRightFX)) / 2;
   }
 
-  public double getAngularMps()
-  {
-    return (getLeftMps() - getRightMps())/Units.inchesToMeters(21);
+  // Averaged movement by average of left and right encoders
+  public double getLinearMps() {
+    return (getLeftMps() + getRightMps()) / 2;
   }
-  
+
+  // TODO:: what is this keaton?
+  public double getAngularMps() {
+    return (getLeftMps() - getRightMps()) / Units.inchesToMeters(21);
+  }
+
   // Prints the positions of all of encoders as well as the averages of the groups
   public void printPositions() {
     SmartDashboard.putNumber("Average Left Position:", getLeftPos());
@@ -282,7 +267,6 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE
     SmartDashboard.putNumber("front Right Voltage: ", getMotorVoltage(frontRightFX));
     SmartDashboard.putNumber("rear Right Voltage: ", getMotorVoltage(rearRightFX));
   }
-  
 
   // Prints the results of the getmotortemp method for all of the four motors
   public void printTemperature() {
@@ -293,9 +277,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE
   }
 
   // Returns the distance found by the Ultrasonic Sensors in inches
-
-  public void printMps()
-  {
+  public void printMps() {
     SmartDashboard.putNumber("Left Mps", getLeftMps());
     SmartDashboard.putNumber("Right Mps", getRightMps());
     SmartDashboard.putNumber("Linear Mps ", getLinearMps());
@@ -303,65 +285,20 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE
 
   }
 
-  public void printPose()
-  {
-    SmartDashboard.putNumber("rotation", pose.getRotation().getDegrees());
-    SmartDashboard.putNumber("translation y ", pose.getTranslation().getY());
-    SmartDashboard.putNumber("translation x ", pose.getTranslation().getX());
-  }
-
-
-  // Prints the distance found by the lidar in inches
-
   @Override
-  public void periodic() 
-  {
-   
+  public void periodic() {
+
     printMetres();
-    pose = m_odometry.update(getHeading(),getLeftMetres(), getRightMetres());
-   // SmartDashboard.putString("pose", pose.toString());
-    //printPose();
-    //printMps();
-    //printMetres();
-    // This method will be called once per scheduler run
+    // printMps();
   }
 
-  public Pose2d getPose() {
-    return m_odometry.getPoseMeters();
-  }
-  public Rotation2d getHeading() 
-  {
-    return Rotation2d.fromDegrees(Math.IEEEremainder(-navx.getYaw(), 360.0d));
+  // Check if driving
+  public boolean drivingForward() {
+    return getLinearMps() > 0 && (getAngularMps() <= .15);
   }
 
-  
-  public double robotXPos()
-  {
-    return pose.getTranslation().getX();
+  public boolean drivingBackward() {
+    return getLinearMps() < 0 && (getAngularMps() <= .15);
   }
 
-  public double robotYPos()
-  {
-    return pose.getTranslation().getY();
-  }
-
-  public double robotTheta()
-  {
-    return pose.getRotation().getDegrees();
-  }
-
-  public boolean drivingForward()
-  {
-    return getLinearMps() > 0 && (getAngularMps() <=.15);
-  }
-
-  public boolean drivingBackward()
-  {
-    return getLinearMps() < 0 && (getAngularMps() <=.15);
-  }
-
-  
-    public void resetOdometry() { m_odometry.resetPosition(new Pose2d(),
-    getHeading()); }
-     
 }

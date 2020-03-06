@@ -14,23 +14,18 @@ import com.revrobotics.CANSparkMax.IdleMode;
 //File to use methods in most subsystems/commands without writing them out in each of them
 
 public class MotorControl {
-    //Our defualt set up for sparks
-    public static void initCANSparkMax(CANSparkMax spark, boolean isBraked, boolean isInverted, int currentLimit)
-  {
-    spark.restoreFactoryDefaults();
-    spark.setInverted(isInverted);
-    spark.enableVoltageCompensation(12);
-    if(isBraked)
-    {
-      spark.setIdleMode(IdleMode.kBrake);
+    // Our defualt set up for sparks
+    public static void initCANSparkMax(CANSparkMax spark, boolean isBraked, boolean isInverted, int currentLimit) {
+        spark.restoreFactoryDefaults();
+        spark.setInverted(isInverted);
+        spark.enableVoltageCompensation(12);
+        if (isBraked) {
+            spark.setIdleMode(IdleMode.kBrake);
+        } else {
+            spark.setIdleMode(IdleMode.kCoast);
+        }
+        spark.setSmartCurrentLimit(currentLimit);
     }
-    else 
-    {
-      spark.setIdleMode(IdleMode.kCoast);
-    }
-    spark.setSmartCurrentLimit(currentLimit);
-  }
-
 
     // Makes sure that the value given is within the limit setting it to the upper
     // or lower if it is above or below
@@ -67,5 +62,10 @@ public class MotorControl {
     // Get Conveyor Velocity
     public static double getSparkVelocity(CANEncoder encoder) {
         return encoder.getVelocity();
+    }
+
+    // Get the output currently affecting a motor
+    public static double getMotorPower(CANSparkMax spark) {
+        return spark.getAppliedOutput();
     }
 }
