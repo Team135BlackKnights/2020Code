@@ -41,8 +41,7 @@ public class runEndgameWithJoystick extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) 
-  {
+  public void end(boolean interrupted) {
     SmartDashboard.putString("Endgame Command Running: ", "Run Endgame with Joystick");
     endgame.runLiftRaiseSpark(0);
     endgame.setShifterPos(false);

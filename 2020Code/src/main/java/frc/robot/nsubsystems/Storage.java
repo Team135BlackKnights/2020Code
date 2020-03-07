@@ -62,8 +62,9 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE {
 
   // keep active count of number of balls in the storage system
   public void intakeBallCount() {
-    //Counts up on state change from False to True by making sure that there was a change and that it then is positive
-    if ((isBallAtTripSwitch() != lastSwitchPosition) && (isBallAtTripSwitch()) && RobotContainer.activeBallCount<=4) {
+    // Counts up on state change from False to True by making sure that there was a
+    // change and that it then is positive
+    if ((isBallAtTripSwitch() != lastSwitchPosition) && (isBallAtTripSwitch()) && RobotContainer.activeBallCount <= 4) {
       currentBallCount++;
       RobotContainer.activeBallCount++;
     }
@@ -91,9 +92,8 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE {
     }
   }
 
-  //Print storage information for debugging purposes 
-  public void printStorageData()
-  {
+  // Print storage information for debugging purposes
+  public void printStorageData() {
     SmartDashboard.putNumber("Balls Through System ", RobotContainer.activeBallCount);
     SmartDashboard.putNumber("Conveyor Position", MotorControl.getSparkEncoderPosition(conveyorEncoder));
     SmartDashboard.putBoolean("is Ball at trip Switch", isBallAtTripSwitch());
@@ -103,7 +103,7 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE {
   public void periodic() {
     intakeBallCount();
     autoResetEncoder();
-    //autoMoveBalls();
-    printStorageData(); 
+    // autoMoveBalls();
+    printStorageData();
   }
 }

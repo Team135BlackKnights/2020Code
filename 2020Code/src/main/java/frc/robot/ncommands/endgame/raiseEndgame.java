@@ -29,10 +29,9 @@ public class raiseEndgame extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+
     SmartDashboard.putString("Endgame Command Running: ", "raise Endgame " + _target);
-    if(_target < MotorControl.getSparkEncoderPosition(endgame.liftRaiseEncoder))
-    {
+    if (_target < MotorControl.getSparkEncoderPosition(endgame.liftRaiseEncoder)) {
       endgame.setLiftBrakeMode(IdleMode.kBrake);
     }
     endgame.setShifterPos(true);
@@ -60,8 +59,7 @@ public class raiseEndgame extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) 
-  {
+  public void end(boolean interrupted) {
     SmartDashboard.putString("Endgame Command Running: ", "No Command Running");
     endgame.runLiftRaiseSpark(0);
     endgame.setShifterPos(false);

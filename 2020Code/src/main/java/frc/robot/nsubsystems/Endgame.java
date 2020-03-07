@@ -17,15 +17,13 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import frc.robot.RobotMap;
 import frc.robot.util.MotorControl;
 
-public class Endgame extends SubsystemBase implements RobotMap.ENDGAME
-{
+public class Endgame extends SubsystemBase implements RobotMap.ENDGAME {
   public CANSparkMax liftRaiseSpark;
   public CANEncoder liftRaiseEncoder;
-  public Solenoid winchSolenoid; 
+  public Solenoid winchSolenoid;
 
   // Sets motors for endgame
-  public Endgame()
-  {
+  public Endgame() {
     // Init motor and encoder for lift
     liftRaiseSpark = new CANSparkMax(LIFT_UP_SPARK_ID, MotorType.kBrushless);
     liftRaiseEncoder = liftRaiseSpark.getEncoder();
@@ -36,63 +34,53 @@ public class Endgame extends SubsystemBase implements RobotMap.ENDGAME
   }
 
   // Used to lock the lift during endgame
-  public void setLiftBrakeMode(IdleMode mode)
-  {
+  public void setLiftBrakeMode(IdleMode mode) {
     liftRaiseSpark.setIdleMode(mode);
   }
 
-  public void setShifterPos(boolean isPressed)
-  {
+  public void setShifterPos(boolean isPressed) {
     winchSolenoid.set(isPressed);
   }
 
   // Runs spark to raise the lift
-  public void runLiftRaiseSpark(double power)
-  {
+  public void runLiftRaiseSpark(double power) {
     // Sets power for raise spark
     power = MotorControl.limit(power, .95, -.95);
     liftRaiseSpark.set(power);
   }
 
   // Prints the distance traveled by the lift raise to the smart dash
-  public void printPosition()
-  {
+  public void printPosition() {
     SmartDashboard.putNumber("LiftRaise Encoder Distance", MotorControl.getSparkEncoderPosition(liftRaiseEncoder));
   }
 
   // Prints the velocity of the lift raise to the smart dash
-  public void printVelocity()
-  {
+  public void printVelocity() {
     SmartDashboard.putNumber("LiftRaise Encoder Velocity", MotorControl.getSparkVelocity(liftRaiseEncoder));
   }
 
   // Checks the temperature of the lift raise motor
-  public double getLiftRaiseTemp()
-  {
+  public double getLiftRaiseTemp() {
     return liftRaiseSpark.getMotorTemperature();
   }
 
   // Prints the lift raise motor temperature to the smart dash
-  public void printTemp()
-  {
+  public void printTemp() {
     SmartDashboard.putNumber("LiftRaise Motor Temp", getLiftRaiseTemp());
   }
 
   // Checks the voltage of the lift raise motor
-  public double getVoltage(CANSparkMax spark)
-  {
+  public double getVoltage(CANSparkMax spark) {
     return spark.getBusVoltage();
   }
 
   // Prints the lift raise motor voltage to the smart dash
-  public void printVoltage()
-  {
+  public void printVoltage() {
     SmartDashboard.putNumber("LiftRaise Motor Voltage", getVoltage(liftRaiseSpark));
   }
 
   // Prints all information
-  public void printEverything()
-  {
+  public void printEverything() {
     printPosition();
     printVelocity();
     printTemp();
@@ -100,8 +88,7 @@ public class Endgame extends SubsystemBase implements RobotMap.ENDGAME
   }
 
   @Override
-  public void periodic()
-  {
+  public void periodic() {
     // This method will be called once per scheduled run
   }
 }

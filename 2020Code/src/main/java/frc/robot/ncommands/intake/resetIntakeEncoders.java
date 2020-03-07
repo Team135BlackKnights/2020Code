@@ -21,7 +21,7 @@ public class resetIntakeEncoders extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //reset motor
+    // reset motor
     MotorControl.resetSparkEncoder(intake.rollerEncoder);
   }
 

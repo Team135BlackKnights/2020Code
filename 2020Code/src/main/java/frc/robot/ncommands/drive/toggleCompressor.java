@@ -26,7 +26,7 @@ public class toggleCompressor extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //Change the compressor to what it currently isn't
+    // Change the compressor to what it currently isn't
     isCompressorOn = !isCompressorOn;
     if (isCompressorOn) {
       drive.setCompressorOn();

@@ -16,9 +16,7 @@ import frc.robot.nsubsystems.FalconDrive;
 import frc.robot.util.MotorControl;
 
 public class encoderDrive extends CommandBase {
-  /**
-   * Creates a new encoderDrive.
-   */
+ 
   public FalconDrive drive;
   public double leftDesired, rightDesired, leftError, rightError;
   public boolean isFinished;
@@ -30,7 +28,6 @@ public class encoderDrive extends CommandBase {
     this.rightDesired = rightDesired;
     this.waitingForBalls = waitingForBalls;
     addRequirements(drive);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -52,9 +49,9 @@ public class encoderDrive extends CommandBase {
     if (waitingForBalls) {
       if (RobotContainer.activeBallCount <= 0)
         waitingForBalls = false;
-    } 
+    }
 
-    // After the wait is done then run 
+    // After the wait is done then run
     else {
       // Checks if it is at the location
       if (Math.abs(leftError) < .05 && Math.abs(rightError) < .05) {
@@ -69,7 +66,6 @@ public class encoderDrive extends CommandBase {
       leftError = leftDesired - currentLeftPos;
       rightError = rightDesired - currentRightPos;
 
-      
       // Use the error to move proportional to distance
       double lP, rP;
       lP = 2.45;

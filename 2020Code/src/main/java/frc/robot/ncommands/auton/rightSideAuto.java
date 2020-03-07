@@ -14,18 +14,12 @@ import frc.robot.ncommands.drive.encoderDrive;
 import frc.robot.ncommands.intake.runRoller;
 import frc.robot.nsubsystems.*;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
+
 public class rightSideAuto extends SequentialCommandGroup {
-  /**
-   * Creates a new testAuto.
-   */
   
   public rightSideAuto(FalconDrive drive, Intake intake, Turret turret, Storage storage, boolean isShooting) {
     super
     (
-  
       new leaveStartingConfig(intake, turret),
       parallel(
       sequence
@@ -35,8 +29,5 @@ public class rightSideAuto extends SequentialCommandGroup {
         )
       )
     );
-
-    
-    
   }
 }

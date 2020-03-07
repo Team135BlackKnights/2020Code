@@ -12,7 +12,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 //File to use methods in most subsystems/commands without writing them out in each of them
-
 public class MotorControl {
     // Our defualt set up for sparks
     public static void initCANSparkMax(CANSparkMax spark, boolean isBraked, boolean isInverted, int currentLimit) {

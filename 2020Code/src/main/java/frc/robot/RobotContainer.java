@@ -21,13 +21,6 @@ import frc.robot.ncommands.intake.*;
 import frc.robot.nsubsystems.*;
 import frc.robot.ncommands.auton.*;
 
-/**
- * This class is where the bulk of the robot should be declared. Since
- * Command-based is a "declarative" paradigm, very little robot logic should
- * actually be handled in the {@link Robot} periodic methods (other than the
- * scheduler calls). Instead, the structure of the robot (including subsystems,
- * commands, and button mappings) should be declared here.
- */
 public class RobotContainer implements RobotMap {
   // The robot's subsystems and commands are defined here...
   public static final FalconDrive drive = new FalconDrive();
@@ -39,8 +32,7 @@ public class RobotContainer implements RobotMap {
   public static final Endgame endgame = new Endgame();
   public static final ColorWheel colorWheel = null;// new ColorWheel();
   public final autoLine autoLineCommand = null; // new autoLine(drive, intake, turret);
-  public final rightSideAuto rightSideAutoCommand = null; // new rightSideAuto(drive, intake, turret, limelight,
-                                                          // storage, true);
+  public final rightSideAuto rightSideAutoCommand = null; // new rightSideAuto(drive, intake, turret, limelight, storage, true);
   public final autoLinePlus autoLinePlusCommand = null; // new autoLinePlus(drive, intake, turret, limelight, storage);
   public final middleAuto middleAutoCommand = null; // new middleAuto(drive, turret, limelight, intake, storage);
   public static int activeBallCount = 3;
@@ -86,24 +78,16 @@ public class RobotContainer implements RobotMap {
   public RobotContainer() {
     drive.setDefaultCommand(new driveWithJoysticks(drive, leftJoystick, rightJoystick));
 
-     storage.setDefaultCommand(new runConveyor(storage, manipJoystick));
-     // turret.setDefaultCommand(new targetTurret(turret, limelight, manipJoystick));
+    storage.setDefaultCommand(new runConveyor(storage, manipJoystick));
+    // turret.setDefaultCommand(new targetTurret(turret, limelight, manipJoystick));
     // turret.setDefaultCommand(new TurretTest(turret, manipJoystick));
-    // turret.setDefaultCommand(new michiganTurretTeleop(turret, limelight, storage,
-    // manipJoystick));
+    // turret.setDefaultCommand(new michiganTurretTeleop(turret, limelight, storage, manipJoystick));
 
     // Configure the button bindings
     // limelight.initLimelight(1, 1);
 
     configureButtonBindings();
   }
-
-  /**
-   * Use this method to define your button->command mappings. Buttons can be
-   * created by instantiating a {@link GenericHID} or one of its subclasses
-   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
-   * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
 
   private void configureButtonBindings() {
     // rightButton3.whenPressed(new toggleLight(turret));
@@ -120,13 +104,12 @@ public class RobotContainer implements RobotMap {
     leftButton11.toggleWhenPressed(new toggleCompressor(drive));
     leftButton10.whenPressed(new raiseEndgame(endgame, 145));
     leftButton12.whenPressed(new raiseEndgame(endgame, 0));
-  
 
     manipTrigger.whileHeld(new runConveyor(storage, manipJoystick));
     manipThumb.whileHeld(new runEndgameWithJoystick(endgame, manipJoystick));
     manipButton3.whileHeld(new runRoller(intake, 2400, false));
     manipButton5.toggleWhenPressed(new moveIntake(intake));
-    //manipButton9.whenPressed(new rotateColorWheel(colorWheel, 0));
+    // manipButton9.whenPressed(new rotateColorWheel(colorWheel, 0));
   }
 
   public static boolean leftTrigger() {

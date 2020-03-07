@@ -218,7 +218,7 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL 
       // Counts color changes
       countColor();
 
-      // Prints to the smart dash
+      // Prints to the smartdash
       SmartDashboard.putString("Current Color", currentColor);
       SmartDashboard.putNumber("ColorChanges:", colorChanges);
       // This method will be called once per scheduled run

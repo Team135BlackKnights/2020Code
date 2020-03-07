@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 public interface RobotMap {
 
   public interface KOI {
+    // Variables for joysticks and their buttons initiation
     public static final int LEFT_JOYSTICK = 0, RIGHT_JOYSTICK = 1, MANIP_JOYSTICK = 2,
 
         TRIGGER_BUTTON = 1, THUMB_BUTTON = 2,
@@ -32,6 +33,7 @@ public interface RobotMap {
     public static final double JOYSTICK_DEADBAND = .2;
   }
 
+  // Variables used for the drivetrain initiation
   public interface DRIVE {
     final int FRONT_LEFT_FALCON = 3, FRONT_RIGHT_FALCON = 1, REAR_LEFT_FALCON = 4, REAR_RIGHT_FALCON = 2,
 
@@ -41,21 +43,20 @@ public interface RobotMap {
 
         ksVolts = 12, kvVoltSecondsPerMeter = 1, kaVoltSecondsSquaredPerMeter = 1;
 
-    // kDriveKinematics = 1;
-
     public SerialPort.Port navXPort = SerialPort.Port.kUSB;
     public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(.7);
 
   }
 
+  // Variables for Turret subsystem initiation
   public interface TURRET {
     public static final int ROTATION_SPARK_ID = 11, TOP_SHOOTER_SPARK_ID = 12, BOTTOM_SHOOTER_SPARK_ID = 13,
-        FEEDER_SPARK_ID = 14, TILT_SPARK_ID = 20,
-        LEFT_LIMIT_ID = 1, RIGHT_LIMIT_ID = 2, TILT_LIMIT_ID = 3,
+        FEEDER_SPARK_ID = 14, TILT_SPARK_ID = 20, LEFT_LIMIT_ID = 1, RIGHT_LIMIT_ID = 2, TILT_LIMIT_ID = 3,
         TARGETING_LIGHT = 0;
 
   }
 
+  // Variables for control over the color wheel
   public interface CONTROL_PANEL {
     public static final int ROTATOR_ID = 15;
 
@@ -93,11 +94,13 @@ public interface RobotMap {
 
   }
 
+  // Variables for Endgame initiation
   public interface ENDGAME {
     public static final int WIND_UP_SPARK_ID = 16, LIFT_UP_SPARK_ID = 17;
 
   }
 
+  // Variables for Intake inititation
   public interface INTAKE {
     final int CONVEYOR_SPARK = 18, ROLLER_SPARK = 19,
 

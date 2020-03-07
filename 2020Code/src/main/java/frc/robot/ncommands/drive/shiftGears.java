@@ -26,7 +26,7 @@ public class shiftGears extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //Shift gears to the other gear.
+    // Shift gears to the other gear.
     solenoidPosition = !solenoidPosition;
     drive.shiftGears(solenoidPosition);
   }

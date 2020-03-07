@@ -40,10 +40,10 @@ public class runConveyorPower extends CommandBase {
     double averagedRPM = smoothPls.process((float) currentRPM);
     double storageMaxVel = 5200;
     double error = desiredRPM - averagedRPM;
-    error = error / storageMaxVel;    
+    error = error / storageMaxVel;
     integral += error * .02;
     double derivative = (error - previousError) / .02;
-    
+
     // PID variables for tuning
     double kP, kI, kD;
     kP = 2.1;

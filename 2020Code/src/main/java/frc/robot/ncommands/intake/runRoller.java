@@ -16,42 +16,41 @@ import frc.robot.util.MotorControl;
 public class runRoller extends CommandBase {
 
   private final Intake intake;
-  private  double _RPM;
+  private double _RPM;
   public boolean isWaiting;
   public double usedPower;
 
   public runRoller(Intake subsystem, double RPM, boolean waitForTurret) {
     intake = subsystem;
-    _RPM = RPM >1000 ? RPM : RPM *5000;
+    _RPM = RPM > 1000 ? RPM : RPM * 5000;
     isWaiting = waitForTurret;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() 
-  {
+  public void initialize() {
     SmartDashboard.putString("Intake Command Running: ", "Run Roller " + _RPM);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //calculate how far off our desired rpm we are  
+    // calculate how far off our desired rpm we are
     double actualRPM = MotorControl.getSparkVelocity(intake.rollerEncoder);
-    double maxRPM = 5400; 
-    double error = _RPM-actualRPM;
-    double input = (_RPM+error)/maxRPM;
+    double maxRPM = 5400;
+    double error = _RPM - actualRPM;
+    double input = (_RPM + error) / maxRPM;
 
-    //if we want to wait for the shooter during auto
-    if(isWaiting)
-    {
-      //If there are too many balls that we can't hold them then don't intake, then run after
-      if(RobotContainer.activeBallCount >=3)
+    // if we want to wait for the shooter during auto
+    if (isWaiting) {
+      // If there are too many balls that we can't hold them then don't intake, then
+      // run after
+      if (RobotContainer.activeBallCount >= 3)
         input = 0;
-      else 
-        input = (_RPM+error)/maxRPM;
+      else
+        input = (_RPM + error) / maxRPM;
     }
-    
+
     intake.runRoller(input);
   }
 
