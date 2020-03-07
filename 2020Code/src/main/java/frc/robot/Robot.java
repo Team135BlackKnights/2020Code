@@ -91,6 +91,7 @@ public class Robot extends TimedRobot {
 		if (autoCommand != null) {
 			autoCommand.cancel();
 		}
+		RobotContainer.activeBallCount = 0; 
 	}
 
 	// Run Tele
