@@ -80,8 +80,7 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE {
       MotorControl.resetSparkEncoder(conveyorEncoder);
     }
 
-    // Warning was coming from the if() being always true so I commented it out and had it just run
-    
+    // Warning was coming from the turret not existing yet, so I commented it out and had it just run
     // if(RobotContainer.nTurret.isReadyForBall) { runConveyor(.4); }
     
     runConveyor(.4);
