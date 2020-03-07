@@ -10,11 +10,13 @@ public class ImprovedJoystick {
 	public final int TOP_POV = 0, RIGHT_POV = 1, BOTTOM_POV = 2, LEFT_POV = 3, TOP_RIGHT_POV = 4, BOTTOM_RIGHT_POV = 5,
 			BOTTOM_LEFT_POV = 6, TOP_LEFT_POV = 7;
 
+	//Two ways to create an Improved Joystick
+	//With input of joystick and deadband
 	public ImprovedJoystick(Joystick joystick, double deadband) {
 		_joystick = joystick;
 		_deadband = deadband;
 	}
-
+	//With input of joystick but using .2 for deadband
 	public ImprovedJoystick(Joystick joystick) {
 		_joystick = joystick;
 		_deadband = .2;
