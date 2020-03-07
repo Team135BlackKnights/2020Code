@@ -52,9 +52,9 @@ public class encoderDrive extends CommandBase {
     if (waitingForBalls) {
       if (RobotContainer.activeBallCount <= 0)
         waitingForBalls = false;
-    } 
+    }
 
-    // After the wait is done then run 
+    // After the wait is done then run
     else {
       // Checks if it is at the location
       if (Math.abs(leftError) < .05 && Math.abs(rightError) < .05) {
@@ -69,7 +69,6 @@ public class encoderDrive extends CommandBase {
       leftError = leftDesired - currentLeftPos;
       rightError = rightDesired - currentRightPos;
 
-      
       // Use the error to move proportional to distance
       double lP, rP;
       lP = 2.45;

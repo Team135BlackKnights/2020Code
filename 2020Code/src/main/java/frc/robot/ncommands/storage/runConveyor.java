@@ -38,8 +38,8 @@ public class runConveyor extends CommandBase {
   public void execute() {
 
     double currentConveyPos = MotorControl.getSparkEncoderPosition(storage.conveyorEncoder);
-    
-    //Power modifier to overcome friction
+
+    // Power modifier to overcome friction
     double powerMod = RobotContainer.activeBallCount * .075;
     powerMod = RobotContainer.activeBallCount >= 4 ? powerMod : 0;
 
@@ -50,21 +50,18 @@ public class runConveyor extends CommandBase {
     isButton7 = _joystick.getJoystickButtonValue(7);
     isButton8 = _joystick.getJoystickButtonValue(8);
 
-    //For intaking powercells
+    // For intaking powercells
     if (storage.isBallAtTripSwitch()) {
       MotorControl.resetSparkEncoder(storage.conveyorEncoder);
     }
 
-    if(currentConveyPos > -2.5 && !isButton7 && !isButton8)
-    {
-      conveyorPower = (conveyorError*.06) - powerMod;
-      
+    if (currentConveyPos > -2.5 && !isButton7 && !isButton8) {
+      conveyorPower = (conveyorError * .06) - powerMod;
+
       RobotContainer.intake.runRoller(0);
-      //RobotContainer.turret.runBallFeeder(0);
+      // RobotContainer.turret.runBallFeeder(0);
       SmartDashboard.putString("Conveyor Override: ", "Sensor Control");
-    }
-    else if (isButton7)
-    {
+    } else if (isButton7) {
       conveyorPower = .1;
       MotorControl.resetSparkEncoder(storage.conveyorEncoder);
       RobotContainer.intake.runRoller(-.3);

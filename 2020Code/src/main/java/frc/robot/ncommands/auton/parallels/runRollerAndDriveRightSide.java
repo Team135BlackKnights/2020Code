@@ -13,16 +13,8 @@ import frc.robot.ncommands.intake.runRoller;
 import frc.robot.nsubsystems.FalconDrive;
 import frc.robot.nsubsystems.Intake;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class runRollerAndDriveRightSide extends ParallelRaceGroup {
-  /**
-   * Creates a new runRollerAndDriveRightSide.
-   */
   public runRollerAndDriveRightSide(FalconDrive drive, Intake intake) {
-    // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());
     super
     (
       new runRoller(intake, intake.autonRPM, true),

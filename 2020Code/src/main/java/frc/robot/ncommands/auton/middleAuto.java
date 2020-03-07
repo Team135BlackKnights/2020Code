@@ -16,18 +16,10 @@ import frc.robot.nsubsystems.Intake;
 import frc.robot.nsubsystems.Storage;
 import frc.robot.nsubsystems.Turret;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class middleAuto extends SequentialCommandGroup {
-  /**
-   * Creates a new middleAuto.
-   */
 
   public middleAuto(FalconDrive drive, Turret turret, Intake intake, Storage storage) 
   {
-    // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());
     super
     (
       

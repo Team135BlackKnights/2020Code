@@ -14,18 +14,10 @@ import frc.robot.ncommands.drive.resetDriveEncoders;
 import frc.robot.nsubsystems.Intake;
 import frc.robot.nsubsystems.Turret;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class leaveStartingConfig extends ParallelCommandGroup {
-  /**
-   * Creates a new leaveStartingConfig.
-   */
   public leaveStartingConfig(Intake intake, Turret turret) {
-   
     super
     (
-     
       //new moveIntake(intake),
       // 6 ball right side auto -150 position
       new resetDriveEncoders(RobotContainer.drive)

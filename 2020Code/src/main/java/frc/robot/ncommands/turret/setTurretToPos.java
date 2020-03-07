@@ -12,14 +12,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.Turret;
 
 public class setTurretToPos extends CommandBase {
-  /**
-   * Creates a new setTurretToPos.
-   */
+
   private Turret turret;
   private double rotationPos, hoodPos;
   private boolean isFinished;
-  public setTurretToPos(Turret _turret, double _rotationPos, double _hoodPos)
-  {
+
+  public setTurretToPos(Turret _turret, double _rotationPos, double _hoodPos) {
     turret = _turret;
     rotationPos = _rotationPos;
     hoodPos = _hoodPos;
@@ -28,8 +26,7 @@ public class setTurretToPos extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() 
-  {
+  public void initialize() {
     isFinished = false;
     turret.resetAllTurretEncoders();
     turret.initLimelight(1, 0);
@@ -38,8 +35,7 @@ public class setTurretToPos extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute()
-  {
+  public void execute() {
     double currentHoodPos, currentRotationPos, hoodPower, rotationPower, rotationError, hoodError;
     currentHoodPos = turret.getHoodPos();
     currentRotationPos = turret.getRotationPos();
@@ -47,42 +43,30 @@ public class setTurretToPos extends CommandBase {
     hoodError = hoodPos - currentHoodPos;
     rotationError = rotationPos - currentRotationPos;
 
-    isFinished = (Math.abs(hoodError) <=5 && Math.abs(rotationError) <= 5);
-    if(hoodError > 5)
-    {
+    isFinished = (Math.abs(hoodError) <= 5 && Math.abs(rotationError) <= 5);
+    if (hoodError > 5) {
       hoodPower = -.45;
-    }
-    else if(hoodError < 5)
-    {
+    } else if (hoodError < 5) {
       hoodPower = .45;
-    }
-    else 
-    {
+    } else {
       hoodPower = 0;
     }
 
-    if(rotationError > 5)
-    {
+    if (rotationError > 5) {
       rotationPower = -.45;
-    }
-    else if (rotationError < 5)
-    {
+    } else if (rotationError < 5) {
       rotationPower = .45;
-    }
-    else 
-    {
+    } else {
       rotationPower = 0;
     }
 
     turret.aimTurret(rotationPower, hoodPower);
 
-    
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) 
-  {
+  public void end(boolean interrupted) {
     turret.stopTurret();
     SmartDashboard.putString("New Turret Command Running: ", "No Command Running");
   }

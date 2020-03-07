@@ -14,16 +14,9 @@ import frc.robot.nsubsystems.FalconDrive;
 import frc.robot.nsubsystems.Intake;
 import frc.robot.nsubsystems.Turret;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class autoLine extends SequentialCommandGroup {
-  /**
-   * Creates a new autoLine.
-   */
   public autoLine(FalconDrive drive, Intake intake, Turret turret) {
-    // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());
+   
     super
     (
       parallel(

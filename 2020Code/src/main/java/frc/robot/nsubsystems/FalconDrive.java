@@ -45,7 +45,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     frontRightFX = new WPI_TalonFX(FRONT_RIGHT_FALCON);
     rearRightFX = new WPI_TalonFX(REAR_RIGHT_FALCON);
 
-    //Config the four drivetrain motors
+    // Config the four drivetrain motors
     configFalcon(frontLeftFX, true);
     configFalcon(rearLeftFX, true);
     configFalcon(frontRightFX, true);
@@ -72,11 +72,11 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     resetEncoders();
     setBrakeMode(NeutralMode.Brake);// upon drive train init set 0 input state to brake
 
-    //Fully initialized
+    // Fully initialized
     System.out.println("Falcon Drive Initialized");
   }
 
-  //Defualt config for Talons to init with
+  // Defualt config for Talons to init with
   public void configFalcon(WPI_TalonFX falcon, boolean isLeft) {
     falcon.setNeutralMode(NeutralMode.Brake);
     falcon.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 100);
@@ -89,7 +89,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     falcon.configOpenloopRamp(.35);
   }
 
-  //enable voltage compensation for drive motors
+  // enable voltage compensation for drive motors
   public void setVoltageCompensation(boolean enable) {
     frontLeftFX.enableVoltageCompensation(enable);
     rearLeftFX.enableVoltageCompensation(enable);
@@ -125,7 +125,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     compressor.stop();
   }
 
-  //Stop moving
+  // Stop moving
   public void stopMotors() {
     chassis.tankDrive(0, 0);
   }
@@ -158,12 +158,12 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     return falcon.getSelectedSensorVelocity() * 10 / 4096;
   }
 
-  //Set to high or low gear
+  // Set to high or low gear
   public void shiftGears(boolean isHighGear) {
     shifter.set(isHighGear);
   }
 
-  //Check if in high or low gear
+  // Check if in high or low gear
   public boolean shifterState() {
     return shifter.get();
 
