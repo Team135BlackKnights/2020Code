@@ -21,7 +21,6 @@ public class setTurretToPos extends CommandBase {
     turret = _turret;
     rotationPos = _rotationPos;
     hoodPos = _hoodPos;
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
