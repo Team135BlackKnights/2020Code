@@ -18,8 +18,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.util.MotorControl;
 
-public class Intake extends SubsystemBase implements RobotMap.INTAKE {
-
+public class Intake extends SubsystemBase implements RobotMap.INTAKE
+{
   public CANSparkMax rollerSpark;
   public CANEncoder rollerEncoder;
   public Solenoid raiseLower;
