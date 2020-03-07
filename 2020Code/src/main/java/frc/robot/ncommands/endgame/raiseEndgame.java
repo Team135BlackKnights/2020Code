@@ -48,12 +48,12 @@ public class raiseEndgame extends CommandBase {
     power = targetError / 90;
     minPower = .15;
     minDirection = targetError > 0 ? 1 : -1;
-    kp = 3.23;
+    kp = 4.23;
 
     minPower = minPower * minDirection;
 
     power = (power * kp) + minPower;
-    power = MotorControl.limit(power, .75, -.75);
+    power = MotorControl.limit(power, .95  , -.95);
     endgame.runLiftRaiseSpark(power);
   }
 
