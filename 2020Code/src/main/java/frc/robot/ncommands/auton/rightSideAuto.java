@@ -23,8 +23,6 @@ public class rightSideAuto extends SequentialCommandGroup {
    */
   
   public rightSideAuto(FalconDrive drive, Intake intake, Turret turret, Storage storage, boolean isShooting) {
-    // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());
     super
     (
   
