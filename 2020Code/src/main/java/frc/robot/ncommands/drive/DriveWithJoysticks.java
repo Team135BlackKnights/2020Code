@@ -29,22 +29,26 @@ public class driveWithJoysticks extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
+
     double lateralPower, rotationPower;
     boolean isReversed = false, isHalfPower;
 
-    lateralPower = _rightJoystick.getJoystickAxis(1) *_rightJoystick.getJoystickSlider();
+    // Get values of buttons/joystick
+    lateralPower = _rightJoystick.getJoystickAxis(1) * _rightJoystick.getJoystickSlider();
     rotationPower = _leftJoystick.getJoystickAxis(2) * _leftJoystick.getJoystickSlider();
     isHalfPower = _rightJoystick.getJoystickButtonValue(2);
     isReversed = (_rightJoystick.getJoystickButtonValue(1));
 
+    // Decrease power if button is held
     if (isHalfPower) {
       lateralPower = lateralPower * .75;
       rotationPower = rotationPower * .5;
     }
+    // reverse if reverse is held down
     lateralPower = isReversed ? lateralPower : -lateralPower;
-    
-    drive.ArcadeDrive(lateralPower, rotationPower*.85);
+
+    // Run motor
+    drive.ArcadeDrive(lateralPower, rotationPower * .85);
   }
 
   // Called once the command ends or is interrupted.
