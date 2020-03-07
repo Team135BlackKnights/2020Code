@@ -14,9 +14,6 @@ import frc.robot.util.MotorControl;
 import frc.robot.util.MovingAverage;
 
 public class runConveyorPower extends CommandBase {
-  /**
-   * Creates a new runConveyorPower.
-   */
   Storage storage;
   private double desiredRPM;
   private double previousError;
