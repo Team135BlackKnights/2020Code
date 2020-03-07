@@ -42,17 +42,19 @@ public class raiseEndgame extends CommandBase {
   public void execute() {
     double currentLiftPos, kp, power, minPower, minDirection;
 
+    // Find how far off the desired location we are
     currentLiftPos = MotorControl.getSparkEncoderPosition(endgame.liftRaiseEncoder);
     targetError = _target - currentLiftPos;
 
+    // Find the power proportional to distance to target
     power = targetError / 90;
     minPower = .15;
     minDirection = targetError > 0 ? 1 : -1;
     kp = 4.23;
-
     minPower = minPower * minDirection;
-
     power = (power * kp) + minPower;
+
+    // Limit the pwer found to 95% max power
     power = MotorControl.limit(power, .95  , -.95);
     endgame.runLiftRaiseSpark(power);
   }
