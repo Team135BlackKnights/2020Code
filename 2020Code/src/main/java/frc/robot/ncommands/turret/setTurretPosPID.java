@@ -18,40 +18,40 @@ public class setTurretPosPID extends CommandBase {
   Turret turret;
   double desiredHoodPos, desiredRotationPos;
   boolean isFinished;
-  public setTurretPosPID(Turret _turret, double _desiredHoodPos, double _desiredRotationPos) 
-  {
-    turret =_turret;
+
+  public setTurretPosPID(Turret _turret, double _desiredHoodPos, double _desiredRotationPos) {
+    turret = _turret;
     desiredHoodPos = _desiredHoodPos;
     desiredRotationPos = _desiredRotationPos;
 
     addRequirements(turret);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() 
-  {
+  public void initialize() {
     isFinished = false;
     SmartDashboard.putString("New Turret Command Running: ", "set Turret To Pos w/PID");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() 
-  {
-    double currentHoodPos, currentRotationPos, hoodError, rotationError, hP, rP, hoodInput, rotationInput; 
-
+  public void execute() {
+    //Find how far off the hood and roatation are
+    double currentHoodPos, currentRotationPos, hoodError, rotationError, hP, rP, hoodInput, rotationInput;
     currentHoodPos = turret.getHoodPos();
     currentRotationPos = turret.getRotationPos();
-
     hoodError = desiredHoodPos - currentHoodPos;
     rotationError = desiredRotationPos - currentRotationPos;
-    isFinished = (Math.abs(hoodError) <2  && Math.abs(rotationError) < 1);
 
+    // Set tolerance 
+    isFinished = (Math.abs(hoodError) < 2 && Math.abs(rotationError) < 1);
+
+    // Set tuning variables
     hP = 1;
     rP = 1;
 
+    // Set powers
     hoodInput = hoodError * hP;
     rotationInput = rotationError * rP;
 
