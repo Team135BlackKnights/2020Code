@@ -12,9 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.Turret;
 
 public class setTurretPosPID extends CommandBase {
-  /**
-   * Creates a new setTurretPosPID.
-   */
+  
   Turret turret;
   double desiredHoodPos, desiredRotationPos;
   boolean isFinished;

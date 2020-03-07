@@ -38,6 +38,7 @@ public class Endgame extends SubsystemBase implements RobotMap.ENDGAME {
     liftRaiseSpark.setIdleMode(mode);
   }
 
+  // Set the position for the winch's solenoid
   public void setShifterPos(boolean isPressed) {
     winchSolenoid.set(isPressed);
   }

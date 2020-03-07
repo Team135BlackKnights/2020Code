@@ -13,9 +13,7 @@ import frc.robot.RobotContainer;
 import frc.robot.nsubsystems.Turret;
 
 public class shootXBalls extends CommandBase {
-  /**
-   * Creates a new shootXBalls.
-   */
+
   Turret turret;
   int ballsToShoot, ballsShot, initialBallsShot;
   boolean isFinished;
