@@ -35,6 +35,7 @@ public class raiseEndgame extends CommandBase {
     {
       endgame.setLiftBrakeMode(IdleMode.kBrake);
     }
+    endgame.setShifterPos(true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -63,6 +64,8 @@ public class raiseEndgame extends CommandBase {
   {
     SmartDashboard.putString("Endgame Command Running: ", "No Command Running");
     endgame.runLiftRaiseSpark(0);
+    endgame.setShifterPos(false);
+
   }
 
   // Returns true when the command should end.

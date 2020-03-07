@@ -8,6 +8,7 @@
 package frc.robot.nsubsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
@@ -19,6 +20,7 @@ import frc.robot.util.MotorControl;
 public class Endgame extends SubsystemBase implements RobotMap.ENDGAME {
   public CANSparkMax liftRaiseSpark;
   public CANEncoder liftRaiseEncoder;
+  public Solenoid winchSolenoid; 
 
   // Sets motors for endgame
   public Endgame() {
@@ -27,11 +29,18 @@ public class Endgame extends SubsystemBase implements RobotMap.ENDGAME {
     liftRaiseEncoder = liftRaiseSpark.getEncoder();
     MotorControl.initCANSparkMax(liftRaiseSpark, true, true, 30);
     MotorControl.resetSparkEncoder(liftRaiseEncoder);
+    winchSolenoid = new Solenoid(2);
+    setShifterPos(false);
   }
 
   // Used to lock the lift during endgame
   public void setLiftBrakeMode(IdleMode mode) {
     liftRaiseSpark.setIdleMode(mode);
+  }
+
+  public void setShifterPos(boolean isPressed)
+  {
+    winchSolenoid.set(isPressed);
   }
 
   // Runs spark to raise the lift

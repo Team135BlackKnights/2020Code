@@ -44,7 +44,7 @@ public class runConveyorPower extends CommandBase {
     double error = RPM-maybe;
     error = error/storageMaxVel;
 
-    double integral =+error*.02;
+    double integral =+ error*.02;
     double derivative = (error-previousError)/.02;
     
     double kP, kI, kD;

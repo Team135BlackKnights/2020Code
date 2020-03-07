@@ -29,6 +29,7 @@ public class runEndgameWithJoystick extends CommandBase {
   @Override
   public void initialize() {
     SmartDashboard.putString("Endgame command Running: ", "Run Endgame with Joystick");
+    endgame.setShifterPos(true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -43,6 +44,8 @@ public class runEndgameWithJoystick extends CommandBase {
   {
     SmartDashboard.putString("Endgame Command Running: ", "Run Endgame with Joystick");
     endgame.runLiftRaiseSpark(0);
+    endgame.setShifterPos(false);
+
   }
 
   // Returns true when the command should end.

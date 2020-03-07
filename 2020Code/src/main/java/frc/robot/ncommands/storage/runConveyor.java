@@ -52,9 +52,9 @@ public class runConveyor extends CommandBase {
       MotorControl.resetSparkEncoder(storage.conveyorEncoder);
     }
 
-    if(currentConveyPos > -3 && !isButton7 && !isButton8)
+    if(currentConveyPos > -2.5 && !isButton7 && !isButton8)
     {
-      conveyorPower = (conveyorError*.12) - powerMod;
+      conveyorPower = (conveyorError*.06) - powerMod;
       
       RobotContainer.intake.runRoller(0);
      // RobotContainer.turret.runBallFeeder(0);
@@ -62,7 +62,7 @@ public class runConveyor extends CommandBase {
     }
     else if (isButton7)
     {
-      conveyorPower = 1;
+      conveyorPower = .1;
       MotorControl.resetSparkEncoder(storage.conveyorEncoder);
       RobotContainer.intake.runRoller(-.3);
      // RobotContainer.turret.runBallFeeder(.2);
