@@ -15,17 +15,16 @@ import frc.robot.RobotContainer;
 import frc.robot.nsubsystems.FalconDrive;
 import frc.robot.util.MotorControl;
 
-
 public class encoderDrive extends CommandBase {
   /**
    * Creates a new encoderDrive.
    */
   public FalconDrive drive;
-  public double leftDesired, rightDesired, leftError, rightError, prevLeftError, prevRightError;
+  public double leftDesired, rightDesired, leftError, rightError;
   public boolean isFinished;
   public boolean waitingForBalls;
-  public encoderDrive(FalconDrive drive, double leftDesired, double rightDesired, boolean waitingForBalls) 
-  {
+
+  public encoderDrive(FalconDrive drive, double leftDesired, double rightDesired, boolean waitingForBalls) {
     this.drive = drive;
     this.leftDesired = leftDesired;
     this.rightDesired = rightDesired;
@@ -36,14 +35,11 @@ public class encoderDrive extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() 
-  {
-    SmartDashboard.putString("Drive Command Running: ", "Encoder Drive " + leftDesired  + rightDesired);
+  public void initialize() {
+    SmartDashboard.putString("Drive Command Running: ", "Encoder Drive " + leftDesired + rightDesired);
 
-    prevLeftError = 0;
-    prevRightError = 0; 
-    leftError = leftDesired-drive.getLeftMetres() ;
-    rightError = rightDesired-drive.getRightMetres();
+    leftError = leftDesired - drive.getLeftMetres();
+    rightError = rightDesired - drive.getRightMetres();
     isFinished = false;
     drive.setBrakeMode(NeutralMode.Brake);
 
@@ -51,52 +47,48 @@ public class encoderDrive extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() 
-  {
+  public void execute() {
+    // If it needs to wait then don't run immediately
     if (waitingForBalls) {
-      if (RobotContainer.activeBallCount <= 0) waitingForBalls = false;
-    }
+      if (RobotContainer.activeBallCount <= 0)
+        waitingForBalls = false;
+    } 
+
+    // After the wait is done then run 
     else {
-      if(Math.abs(leftError) <.05 && Math.abs(rightError) < .05)
-      {
+      // Checks if it is at the location
+      if (Math.abs(leftError) < .05 && Math.abs(rightError) < .05) {
         isFinished = true;
       }
-      
+
+      // Get distances for both sides
       double currentLeftPos = drive.getLeftMetres();
       double currentRightPos = drive.getRightMetres();
-    
-      leftError = leftDesired-currentLeftPos;
-      rightError = rightDesired-currentRightPos;
-    
-      double leftPower, rightPower;
-    
 
-      leftPower = leftError;
-      rightPower = rightError;
+      // Find distance off our desired
+      leftError = leftDesired - currentLeftPos;
+      rightError = rightDesired - currentRightPos;
 
+      
+      // Use the error to move proportional to distance
+      double lP, rP;
+      lP = 2.45;
+      rP = 2.45;
+      double leftInput, rightInput;
+      leftInput = leftError * lP;
+      rightInput = rightError * rP;
 
-      double lP,rP;
-      lP = 2.45; 
-      rP = 2.45; 
-      double leftInput, rightInput; 
-
-      leftInput = leftPower * lP; 
-      rightInput = rightPower * rP;
-
+      // Limit the power to 95%
       leftInput = MotorControl.limit(leftInput, .95, -.95);
       rightInput = MotorControl.limit(rightInput, .95, -.95);
 
-      prevLeftError = leftError;
-      prevRightError = rightError;
-    
       drive.TankDrive(leftInput, rightInput);
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) 
-  {
+  public void end(boolean interrupted) {
     SmartDashboard.putString("Drive Command Running: ", "No Command Running");
     drive.stopMotors();
   }
