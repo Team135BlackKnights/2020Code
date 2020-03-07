@@ -9,8 +9,6 @@ package frc.robot;
 
 import static frc.robot.RobotContainer.activeBallCount;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -72,9 +70,9 @@ public class Robot extends TimedRobot {
 		RobotContainer.drive.resetEncoders();
 		activeBallCount = 3;
 		autoCommand = autoChooser.getSelected();
-		//SmartDashboard.putString("Auto Command ", autoChooser.getSelected().toString());
-		if(autoCommand != null)
-		{
+		// SmartDashboard.putString("Auto Command ",
+		// autoChooser.getSelected().toString());
+		if (autoCommand != null) {
 			autoCommand.schedule();
 		}
 	}

@@ -14,44 +14,45 @@ import edu.wpi.first.wpilibj.I2C;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
-import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 
-public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL 
-{
+public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL {
+   public static ColorWheel instance;
+
+   // Sensor
    public ColorSensorV3 controlPanelColorSensor;
    private final I2C.Port i2cPort = I2C.Port.kOnboard;
-   public CANSparkMax rotatorSpark;
-   public Solenoid extendSolenoid;
 
-   public static ColorWheel instance;
+   // Motor
+   public CANSparkMax rotatorSpark;
+
+   // Color information
    public Color detectedColor;
    public String currentColor;
+   public String gameData, desiredColor;
    public int colorChanges = 0;
    public String lastSeenColor = "No Color";
-   public String gameData, desiredColor;
+
+   // Rotation information
    public int wheelRotations = 0;
    public boolean atDesiredRoations;
-   public CANSparkMax spark;
 
-   //Color Wheel sensors, motors, and information from FMS
-   public ColorWheel()
-   {
+   // Color Wheel sensors, motors, and information from FMS
+   public ColorWheel() {
       // Creates a color sensor
       controlPanelColorSensor = new ColorSensorV3(i2cPort);
 
-      // Creates a SparkMax motor and inits
+      // Creates a SparkMax motor and inits our default config
       rotatorSpark = new CANSparkMax(ROTATOR_ID, MotorType.kBrushless);
       MotorControl.initCANSparkMax(rotatorSpark, true, false, 30);
 
       // Gets the data sent by the FMS as to what color we need
       gameData = DriverStation.getInstance().getGameSpecificMessage();
-      
+
       // Desired color is none to start with
       desiredColor = "No Color";
 
@@ -66,144 +67,119 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL
       return ((red() >= BlueRedMin && red() <= BlueRedMax) && (green() >= BlueGreenMin && green() <= BlueGreenMax)
             && (blue() >= BlueBlueMin && blue() <= BlueBlueMax));
    }
+
    public boolean IsRed() {
       return ((red() >= RedRedMin && red() <= RedRedMax) && (green() >= RedGreenMin && green() <= RedGreenMax)
             && (blue() >= RedBlueMin && blue() <= RedBlueMax));
    }
+
    public boolean IsGreen() {
       return ((red() >= GreenRedMin && red() <= GreenRedMax) && (green() >= GreenGreenMin && green() <= GreenGreenMax)
             && (blue() >= GreenBlueMin && blue() <= GreenBlueMax));
    }
+
    public boolean IsYellow() {
-      return ((red() >= YellowRedMin && red() <= YellowRedMax) && (green() >= YellowGreenMin && green() <= YellowGreenMax)
+      return ((red() >= YellowRedMin && red() <= YellowRedMax)
+            && (green() >= YellowGreenMin && green() <= YellowGreenMax)
             && (blue() >= YellowBlueMin && blue() <= YellowBlueMax));
    }
 
-
-   public String gameColor()
-   {
-      // Checks if the gamedata has arrived yet by making sure its length is greater
-      // than 0
-      if (gameData.length() > 0)
-      {
-         // Takes the Game Data and uses the first character
-         switch (gameData.charAt(0))
-         {
-         //Character and desired color are different due to coming at the color wheel at a 90 degree angle
+   public String gameColor() {
+      // Checks if the gamedata has arrived
+      if (gameData.length() > 0) {
+         // Takes the Game Data and uses the first character to find what color we want
+         switch (gameData.charAt(0)) {
+         // Character and desired color are different due to coming at the color wheel at
+         // a 90 degree angle
          case 'B':
-            //Color to reach is red
             desiredColor = "Red";
             break;
 
          case 'G':
-            //Color to reach is yellow
             desiredColor = "Yellow";
             break;
 
          case 'R':
-            //Color to reach is blue
             desiredColor = "Blue";
             break;
 
          case 'Y':
-            //Color to reach is green
             desiredColor = "Green";
             break;
 
          default:
-            //No color has been recieved to reach
+            // No color has been recieved to reach
             desiredColor = "No color";
             break;
          }
-      } 
-      
+      }
+
       // No data received yet
-      else
-      {
+      else {
          desiredColor = "No Color";
       }
 
       return desiredColor;
    }
 
-   
-
    // Detect current Red value given from the color sensor
-   public double red()
-   {
+   public double red() {
       return detectedColor.red;
    }
 
    // Detect current Green value given from the color sensor
-   public double green()
-   {
+   public double green() {
       return detectedColor.green;
    }
 
    // Detect current Blue value given from the color sensor
-   public double blue()
-   {
+   public double blue() {
       return detectedColor.blue;
    }
 
    // Determine what the current color under the color sensor is
-   public String checkForColor()
-   {
-      if (IsBlue())
-      {
+   public String checkForColor() {
+      if (IsBlue()) {
          return "Blue";
-      }
-      else if (IsRed())
-      {
+      } else if (IsRed()) {
          return "Red";
-      }
-      else if (IsGreen())
-      {
+      } else if (IsGreen()) {
          return "Green";
-      }
-      else if (IsYellow())
-      {
+      } else if (IsYellow()) {
          return "Yellow";
-      }
-      else
+      } else
          return "No Color";
    }
 
-   public void countColor()
-   {
+   public void countColor() {
       // Prints the last seen color to dash
       SmartDashboard.putString("Last Seen Color:", lastSeenColor);
 
       // if the current color is not the last seen color and it isn't No Color, add 1
       // to the count
-      if ((checkForColor() != lastSeenColor) && (checkForColor() != "No Color")) 
-      {
+      if ((checkForColor() != lastSeenColor) && (checkForColor() != "No Color")) {
          colorChanges++;
       }
 
       // If the current color isn't no color, put it into last seen
-      if (currentColor != "No Color")
-      { 
+      if (currentColor != "No Color") {
          lastSeenColor = currentColor;
       }
-   }   
+   }
 
    // To stop the control panel, the motor controller is set to 0 power
-   public void stopControlPanel()
-   {
+   public void stopControlPanel() {
       rotatorSpark.set(0);
    }
 
-   //Run motor to move colorwheel
-   public void moveColorWheel(double power)
-   {
+   // Run motor to move colorwheel
+   public void moveColorWheel(double power) {
       power = MotorControl.limit(power, .85, -.85);
       rotatorSpark.set(power);
    }
 
    // Gathers, sets, and displays information from the color sensor
-   public void printOut()
-   {
+   public void printOut() {
       // Sets detected color to the current color seen by the color sensor
       // (An RGB value)
       detectedColor = controlPanelColorSensor.getColor();
@@ -219,7 +195,7 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL
       SmartDashboard.putNumber("color green", green());
       SmartDashboard.putNumber("color blue  ", blue());
 
-      //Other useful information
+      // Other useful information
       SmartDashboard.putString("Current Color", currentColor);
       SmartDashboard.putNumber("ColorChanges:", colorChanges);
       SmartDashboard.putString("Desired Color ", desiredColor);
@@ -227,8 +203,7 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL
 
    // Pulls the game specific message from driver station
    @Override
-   public void periodic()
-   {
+   public void periodic() {
       detectedColor = controlPanelColorSensor.getColor();
 
       // The desired color for a phase of the match

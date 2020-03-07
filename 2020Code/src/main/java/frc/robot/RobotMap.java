@@ -33,11 +33,7 @@ public interface RobotMap {
   }
 
   public interface DRIVE {
-    final int 
-    FRONT_LEFT_FALCON = 3, 
-    FRONT_RIGHT_FALCON = 1, 
-    REAR_LEFT_FALCON = 4, 
-    REAR_RIGHT_FALCON = 2,
+    final int FRONT_LEFT_FALCON = 3, FRONT_RIGHT_FALCON = 1, REAR_LEFT_FALCON = 4, REAR_RIGHT_FALCON = 2,
 
         SHIFTER_ID = 1,
 
@@ -53,17 +49,9 @@ public interface RobotMap {
   }
 
   public interface TURRET {
-    public static final int 
-    ROTATION_SPARK_ID = 11, 
-    TOP_SHOOTER_SPARK_ID = 12, 
-    BOTTOM_SHOOTER_SPARK_ID = 13,
-        FEEDER_SPARK_ID = 14, 
-        TILT_SPARK_ID = 20,
-
-      LEFT_LIMIT_ID = 1, 
-      RIGHT_LIMIT_ID = 2,
-      TILT_LIMIT_ID = 3,
-
+    public static final int ROTATION_SPARK_ID = 11, TOP_SHOOTER_SPARK_ID = 12, BOTTOM_SHOOTER_SPARK_ID = 13,
+        FEEDER_SPARK_ID = 14, TILT_SPARK_ID = 20,
+        LEFT_LIMIT_ID = 1, RIGHT_LIMIT_ID = 2, TILT_LIMIT_ID = 3,
         TARGETING_LIGHT = 0;
 
   }
@@ -115,7 +103,7 @@ public interface RobotMap {
 
         RAISE_LOWER = 0,
 
-      INTAKE_TRIP_SWITCH = 0;
+        INTAKE_TRIP_SWITCH = 0;
   }
 
 }
