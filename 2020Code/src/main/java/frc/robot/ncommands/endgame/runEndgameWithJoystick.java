@@ -35,6 +35,7 @@ public class runEndgameWithJoystick extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    //sets power to the lift
     endgame.runLiftRaiseSpark(-_joystick.getJoystickAxis(1) / 1.2);
   }
 

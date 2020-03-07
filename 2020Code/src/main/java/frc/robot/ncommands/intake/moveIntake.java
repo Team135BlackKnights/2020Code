@@ -27,6 +27,7 @@ public class moveIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // Set intake to the position it isn't in
     solenoidPosition = !solenoidPosition;
     intake.raiseLower(solenoidPosition);
 

@@ -16,17 +16,15 @@ import frc.robot.nsubsystems.Turret;
 import frc.robot.util.ImprovedJoystick;
 
 public class targetAndShoot extends CommandBase {
-  /**
-   * Creates a new targetAndShoot.
-   */
+
   Turret turret;
   boolean isFinished, targetTurret, overrideTurret;
   double errorSum;
   int ballsToShoot;
   private long furtherTime = 0;
   ImprovedJoystick joystick;
-  public targetAndShoot(Turret _turret, Joystick _joystick, int autonBalls) 
-  {
+
+  public targetAndShoot(Turret _turret, Joystick _joystick, int autonBalls) {
     turret = _turret;
     joystick = new ImprovedJoystick(_joystick);
     ballsToShoot = autonBalls;
@@ -36,34 +34,32 @@ public class targetAndShoot extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() 
-  {
+  public void initialize() {
     turret.initLimelight(0, 0);
-    
+
     SmartDashboard.putString("New Turret Command Running: ", "set Turret To Pos");
     targetTurret = false;
     overrideTurret = false;
     errorSum = 0;
-    turret.ballsShot = 0; 
+    turret.ballsShot = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() 
-  {
+  public void execute() {
     boolean isTargetValid, isDriving, isAuton, isShooting, isTargetWithinRange;
     boolean isPOVLeft, isPOVRight, isPOVUp, isPOVDown, isPOVTopRight, isPOVBottomRight, isPOVBottomLeft, isPOVTopLeft;
 
     long timeNow = System.currentTimeMillis();
 
     isAuton = Timer.getMatchTime() <= 15;
-    double distanceToTarget, horizontalOffset, rotationError, hoodDesired, hoodActual, hoodError, 
-    desiredRPM, overrideRPM, actualRPM, rpmError, maxRPM, minRotationError, minHoodError, feedForwardRPM,
-    shooterInput, rotationInput, hoodInput;
+    double distanceToTarget, horizontalOffset, rotationError, hoodDesired, hoodActual, hoodError, desiredRPM,
+        overrideRPM, actualRPM, rpmError, maxRPM, minRotationError, minHoodError, feedForwardRPM, shooterInput,
+        rotationInput, hoodInput;
 
     distanceToTarget = turret.distanceToTarget();
     horizontalOffset = turret.limelightData[1];
-    isTargetValid = turret.limelightData[0] >=1;
+    isTargetValid = turret.limelightData[0] >= 1;
     isDriving = RobotContainer.drive.getLinearMps() >= .15;
 
     minRotationError = 1;
@@ -86,13 +82,13 @@ public class targetAndShoot extends CommandBase {
 
     maxRPM = 5100;
 
-    rotationError = horizontalOffset/30;
+    rotationError = horizontalOffset / 30;
 
-    hoodDesired = 1/distanceToTarget *120; //TODO determine a relationship between the two with an equation
+    hoodDesired = 1 / distanceToTarget * 120; // TODO determine a relationship between the two with an equation
     hoodActual = turret.getHoodPos();
     hoodError = hoodDesired - hoodActual;
 
-    overrideRPM = maxRPM*joystick.getJoystickThrottle();
+    overrideRPM = maxRPM * joystick.getJoystickThrottle();
     actualRPM = turret.getShooterVel();
 
     double rP, hP, sF, sP, sI;
@@ -103,95 +99,66 @@ public class targetAndShoot extends CommandBase {
     sP = 0;
     sI = 0;
 
-    if(isAuton)
-    {
+    if (isAuton) {
       desiredRPM = 4600;
-    }
-    else if(!isAuton && overrideRPM == 5100 || overrideRPM == 0)
-    {
+    } else if (!isAuton && overrideRPM == 5100 || overrideRPM == 0) {
       desiredRPM = 4600;
-    }
-    else 
-    {
+    } else {
       desiredRPM = overrideRPM;
     }
 
-    rpmError = desiredRPM -actualRPM;
-    feedForwardRPM = desiredRPM/maxRPM;
+    rpmError = desiredRPM - actualRPM;
+    feedForwardRPM = desiredRPM / maxRPM;
 
-    errorSum = errorSum + (rpmError*sI *.02);
+    errorSum = errorSum + (rpmError * sI * .02);
 
-    isShooting = (!(desiredRPM==0) && actualRPM > 2000);
-    turret.isReadyForBall = (!(desiredRPM==0) && Math.abs(rpmError) <=150);
+    isShooting = (!(desiredRPM == 0) && actualRPM > 2000);
+    turret.isReadyForBall = (!(desiredRPM == 0) && Math.abs(rpmError) <= 150);
 
-    if(isShooting)
-    {
+    if (isShooting) {
       targetTurret = false;
-    }
-    else if(overrideTurret)
-    {
-      targetTurret = false; 
-    }
-    else 
-    {
+    } else if (overrideTurret) {
+      targetTurret = false;
+    } else {
       targetTurret = true;
     }
 
     rotationInput = rotationError * rP;
-    hoodInput = hoodError * hP; 
+    hoodInput = hoodError * hP;
 
-    shooterInput = feedForwardRPM *sF + rpmError *sP + errorSum;
-    
-    isTargetWithinRange = ((isTargetValid && Math.abs(rotationError) < minRotationError && Math.abs(hoodError) < minHoodError) || isShooting);
+    shooterInput = feedForwardRPM * sF + rpmError * sP + errorSum;
 
-    if(isAuton && ballsToShoot > 3 && !isDriving)
-    {
-      if(turret.ballsShot < 3 && isTargetWithinRange)
-      {
-          turret.runShooter(shooterInput);
-      }
-      else if(turret.ballsShot < ballsToShoot && Math.abs(RobotContainer.drive.getLeftMetres()) > 1 && isTargetWithinRange)
-      {
-          turret.runShooter(shooterInput);
-      }
-      else 
-      {
-        turret.runShooter(0);
-      }
-    }
-    else if(isAuton && ballsToShoot == 3 && !isDriving)
-    {
-      if(turret.ballsShot <3 && isTargetWithinRange)
-      {
-          turret.runShooter(shooterInput);
-      }
-      else 
-      {
-        turret.runShooter(0);
-      }
-    }
-    else if(isTargetWithinRange && joystick.getJoystickButtonValue(1) && !isDriving)
-      {
+    isTargetWithinRange = ((isTargetValid && Math.abs(rotationError) < minRotationError
+        && Math.abs(hoodError) < minHoodError) || isShooting);
+
+    if (isAuton && ballsToShoot > 3 && !isDriving) {
+      if (turret.ballsShot < 3 && isTargetWithinRange) {
         turret.runShooter(shooterInput);
-      }
-      else 
-      {
+      } else if (turret.ballsShot < ballsToShoot && Math.abs(RobotContainer.drive.getLeftMetres()) > 1
+          && isTargetWithinRange) {
+        turret.runShooter(shooterInput);
+      } else {
         turret.runShooter(0);
       }
-    
-
-    if(isAuton)
-    {
-      if(!isTargetWithinRange && targetTurret)
-      {
-        turret.aimTurret(rotationInput, hoodInput);
+    } else if (isAuton && ballsToShoot == 3 && !isDriving) {
+      if (turret.ballsShot < 3 && isTargetWithinRange) {
+        turret.runShooter(shooterInput);
+      } else {
+        turret.runShooter(0);
       }
-      else if(!isTargetWithinRange && !targetTurret)
-      {
+    } else if (isTargetWithinRange && joystick.getJoystickButtonValue(1) && !isDriving) {
+      turret.runShooter(shooterInput);
+    } else {
+      turret.runShooter(0);
+    }
+
+    if (isAuton) {
+      if (!isTargetWithinRange && targetTurret) {
+        turret.aimTurret(rotationInput, hoodInput);
+      } else if (!isTargetWithinRange && !targetTurret) {
         turret.aimTurret(0, 0);
       }
-    }
-    else if (isPOVUp) {
+    } else if (isPOVUp) {
       turret.aimTurret(0, .65);
       SmartDashboard.putString("Turret State: ", "Driver Override");
 
@@ -203,7 +170,8 @@ public class targetAndShoot extends CommandBase {
       turret.aimTurret(0, -.65);
       SmartDashboard.putString("Turret State: ", "Driver Override");
 
-    } else if (isPOVLeft) {turret.aimTurret(-.65, 0);
+    } else if (isPOVLeft) {
+      turret.aimTurret(-.65, 0);
 
       SmartDashboard.putString("Turret State: ", "Driver Override");
 
@@ -222,12 +190,12 @@ public class targetAndShoot extends CommandBase {
       SmartDashboard.putString("Turret State: ", "Driver Override");
 
     } else if (isPOVTopLeft) {
-      turret.aimTurret(-.65,.65);
+      turret.aimTurret(-.65, .65);
 
       SmartDashboard.putString("Turret State: ", "Driver Override");
 
     } else if (!isTargetWithinRange && isTargetValid && targetTurret) {
-            turret.aimTurret(rotationInput, hoodInput);
+      turret.aimTurret(rotationInput, hoodInput);
 
       SmartDashboard.putString("Turret State: ", "Auto Targetting");
     } else {
@@ -237,12 +205,9 @@ public class targetAndShoot extends CommandBase {
     }
   }
 
-  
-
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) 
-  {
+  public void end(boolean interrupted) {
     turret.stopAllMotors();
   }
 

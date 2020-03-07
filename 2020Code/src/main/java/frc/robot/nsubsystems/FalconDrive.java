@@ -39,22 +39,21 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   public AHRS navx;
 
   public FalconDrive() {
-    // Creates each individual motor, named for its position on the robot
+    // Creates each individual motor named for its position on the robot
     frontLeftFX = new WPI_TalonFX(FRONT_LEFT_FALCON);
     rearLeftFX = new WPI_TalonFX(REAR_LEFT_FALCON);
-
     frontRightFX = new WPI_TalonFX(FRONT_RIGHT_FALCON);
     rearRightFX = new WPI_TalonFX(REAR_RIGHT_FALCON);
 
-    // *************************************
+    //Config the four drivetrain motors
     configFalcon(frontLeftFX, true);
     configFalcon(rearLeftFX, true);
     configFalcon(frontRightFX, true);
     configFalcon(rearRightFX, true);
 
+    // Shifter/Compressor for shifting to high and low gear
     shifter = new Solenoid(SHIFTER_ID);
     compressor = new Compressor();
-
     compressor.setClosedLoopControl(false);
     compressor.start();
 
@@ -66,20 +65,18 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     leftDriveSide = new SpeedControllerGroup(frontLeftFX, rearLeftFX);
     rightDriveSide = new SpeedControllerGroup(frontRightFX, rearRightFX);
 
-    // Declares the chassis as a DifferentialDrive, with the arguments of the motor
-    // controller groups
+    // Creates the drivetrain chassis enable our config
     chassis = new DifferentialDrive(leftDriveSide, rightDriveSide);
     chassis.setSafetyEnabled(false);
-    // disable safety to prevent motors from calling errors
-
-    chassis.setMaxOutput(.98); // set the maximum output of the drive train to .98
-
-    resetEncoders(); // reset drive encoders when we create a new falcon drive
+    chassis.setMaxOutput(.98);
+    resetEncoders();
     setBrakeMode(NeutralMode.Brake);// upon drive train init set 0 input state to brake
 
+    //Fully initialized
     System.out.println("Falcon Drive Initialized");
   }
 
+  //Defualt config for Talons to init with
   public void configFalcon(WPI_TalonFX falcon, boolean isLeft) {
     falcon.setNeutralMode(NeutralMode.Brake);
     falcon.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 100);
@@ -92,6 +89,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     falcon.configOpenloopRamp(.35);
   }
 
+  //enable voltage compensation for drive motors
   public void setVoltageCompensation(boolean enable) {
     frontLeftFX.enableVoltageCompensation(enable);
     rearLeftFX.enableVoltageCompensation(enable);
@@ -127,6 +125,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     compressor.stop();
   }
 
+  //Stop moving
   public void stopMotors() {
     chassis.tankDrive(0, 0);
   }
@@ -149,7 +148,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
   }
 
   // Takes the position of the encoder of a specific motor and returns the value
-  // as the number of rotations (i.e. 1.5 or 2)
+  // as the number of rotations
   public double getEncoderDistance(TalonFX falcon) {
     return falcon.getSelectedSensorPosition() / 4096;
   }
@@ -159,10 +158,12 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     return falcon.getSelectedSensorVelocity() * 10 / 4096;
   }
 
+  //Set to high or low gear
   public void shiftGears(boolean isHighGear) {
     shifter.set(isHighGear);
   }
 
+  //Check if in high or low gear
   public boolean shifterState() {
     return shifter.get();
 
@@ -226,7 +227,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     return (getLeftMps() + getRightMps()) / 2;
   }
 
-  // TODO:: what is this keaton?
+  // Figure out how fast the robot is turning
   public double getAngularMps() {
     return (getLeftMps() - getRightMps()) / Units.inchesToMeters(21);
   }
@@ -291,14 +292,4 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     printMetres();
     // printMps();
   }
-
-  // Check if driving
-  public boolean drivingForward() {
-    return getLinearMps() > 0 && (getAngularMps() <= .15);
-  }
-
-  public boolean drivingBackward() {
-    return getLinearMps() < 0 && (getAngularMps() <= .15);
-  }
-
 }

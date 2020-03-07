@@ -16,12 +16,12 @@ public class shootXBalls extends CommandBase {
   /**
    * Creates a new shootXBalls.
    */
-  Turret turret; 
+  Turret turret;
   int ballsToShoot, ballsShot, initialBallsShot;
   boolean isFinished;
-  double errorSum; 
-  public shootXBalls(Turret _turret, int _ballsToShoot) 
-  {
+  double errorSum;
+
+  public shootXBalls(Turret _turret, int _ballsToShoot) {
     turret = _turret;
     ballsToShoot = _ballsToShoot;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -29,49 +29,45 @@ public class shootXBalls extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() 
-  {
+  public void initialize() {
     isFinished = false;
     turret.initLimelight(1, 0);
     initialBallsShot = turret.ballsShot;
-    errorSum = 0; 
+    errorSum = 0;
     SmartDashboard.putString("New Turret Command Running: ", "set Turret To Pos");
 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() 
-  {
-    ballsShot = turret.ballsShot-initialBallsShot;
-    isFinished = ballsShot >=ballsToShoot;
+  public void execute() {
+
+    ballsShot = turret.ballsShot - initialBallsShot;
+    isFinished = ballsShot >= ballsToShoot;
     boolean readyForBall;
 
-    double desiredRPM, actualRPM, rpmError, rpmFeedForward, kF, kP, kI, shooterInput; 
+    double desiredRPM, actualRPM, rpmError, rpmFeedForward, kF, kP, kI, shooterInput;
 
-    desiredRPM = 3500; //TODO change later
+    desiredRPM = 3500; // TODO change later
     actualRPM = turret.getShooterVel();
     rpmError = desiredRPM - actualRPM;
 
-    rpmFeedForward = desiredRPM/turret.maxRPM;
+    rpmFeedForward = desiredRPM / turret.maxRPM;
 
     readyForBall = (Math.abs(rpmError) <= 150);
     kF = 1;
     kP = 0;
-    kI = 0; 
+    kI = 0;
 
-    errorSum = errorSum + (kI* rpmError);
+    errorSum = errorSum + (kI * rpmError);
 
     shooterInput = kF * rpmFeedForward + kP * rpmError + kI * errorSum;
 
     turret.runShooter(shooterInput);
-    if(readyForBall)
-    {
+    if (readyForBall) {
       turret.runIndexer(.5);
       RobotContainer.storage.runConveyor(.3);
-    }
-    else 
-    {
+    } else {
       turret.runIndexer(0);
       RobotContainer.storage.runConveyor(0);
     }
@@ -80,8 +76,7 @@ public class shootXBalls extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) 
-  {
+  public void end(boolean interrupted) {
     turret.stopAllMotors();
     RobotContainer.storage.runConveyor(0);
   }

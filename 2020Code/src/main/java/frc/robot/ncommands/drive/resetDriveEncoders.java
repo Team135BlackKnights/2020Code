@@ -20,6 +20,7 @@ public class resetDriveEncoders extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    // Runs method to reset the encoders from drivetrain
     drive.resetEncoders();
 
   }

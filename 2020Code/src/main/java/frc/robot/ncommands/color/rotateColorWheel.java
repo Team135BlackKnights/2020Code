@@ -14,25 +14,20 @@ import frc.robot.RobotContainer;
 import frc.robot.nsubsystems.ColorWheel;
 
 public class rotateColorWheel extends CommandBase {
-  /**
-   * Creates a new rotateColorWheel.
-   */
   public ColorWheel wheel;
   double input, rotationPower, initTime, uhOhTime, desiredRotations, colorChanges;
   public boolean isFinished;
   public String desiredColor;
   public boolean finishedRotation;
-  public rotateColorWheel(ColorWheel _wheel, double _input) 
-  {
+
+  public rotateColorWheel(ColorWheel _wheel, double _input) {
     wheel = _wheel;
     input = _input;
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() 
-  {
+  public void initialize() {
     isFinished = false;
     rotationPower = .5;
     uhOhTime = 5;
@@ -46,53 +41,41 @@ public class rotateColorWheel extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() 
-  {
+  public void execute() {
     wheel.countColor();
     String currentColor = wheel.currentColor;
-    double currentRotations = wheel.colorChanges/8;
-   
-   desiredRotations = desiredColor == "No Color" ? 4:0;
-    double input =0;
-    boolean isDriving = Math.abs(RobotContainer.drive.getLinearMps()) >.2;
-    
-   if(input!= 0)
-   {
-    if(Timer.getMatchTime() - initTime >uhOhTime)
-    {
-      wheel.moveColorWheel(input);
+    double currentRotations = wheel.colorChanges / 8;
+
+    desiredRotations = desiredColor == "No Color" ? 4 : 0;
+    double input = 0;
+    boolean isDriving = Math.abs(RobotContainer.drive.getLinearMps()) > .2;
+
+    if (input != 0) {
+      if (Timer.getMatchTime() - initTime > uhOhTime) {
+        wheel.moveColorWheel(input);
+        isFinished = isDriving ? true : false;
+      } else if (Timer.getMatchTime() - initTime < uhOhTime) {
+        isFinished = true;
+      }
+    }
+    if ((desiredRotations == 0) && currentColor != desiredColor) {
+      input = rotationPower;
       isFinished = isDriving ? true : false;
-    }
-    else 
-    if(Timer.getMatchTime() - initTime < uhOhTime)
-    {
-      isFinished = true;
-    }
-   }
-    if((desiredRotations == 0) && currentColor != desiredColor)
-    {
+    } else if (desiredRotations > currentRotations) {
       input = rotationPower;
-      isFinished = isDriving ? true :false;
-    }
-    else if(desiredRotations > currentRotations) 
-    {
-      input = rotationPower;
-      isFinished = isDriving ? true :false;
-    }
-    else 
-    {
+      isFinished = isDriving ? true : false;
+    } else {
       input = 0;
       isFinished = true;
     }
 
     wheel.moveColorWheel(input);
-   
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) 
-  {
+  public void end(boolean interrupted) {
     wheel.stopControlPanel();
     SmartDashboard.putString("Control Panel Command Running: ", "No Command Running");
   }

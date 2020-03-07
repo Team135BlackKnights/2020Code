@@ -11,18 +11,16 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.FalconDrive;
 
 public class resetGyro extends CommandBase {
-  /**
-   * Creates a new resetGyro.
-   */
+  
   FalconDrive drive; 
   public resetGyro(FalconDrive _drive) {
     drive = _drive;
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    //run method to reset gyro from drivetrain
     drive.resetGyro();
   }
 

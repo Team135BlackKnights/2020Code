@@ -8,7 +8,6 @@
 
 package frc.robot;
 
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -32,19 +31,19 @@ import frc.robot.ncommands.auton.*;
 public class RobotContainer implements RobotMap {
   // The robot's subsystems and commands are defined here...
   public static final FalconDrive drive = new FalconDrive();
-  //public static final newTurret nTurret = new newTurret();
- // public static final Turret turret = new Turret();
-  
+  // public static final newTurret nTurret = new newTurret();
+  // public static final Turret turret = new Turret();
+
   public static final Storage storage = new Storage();
   public static final Intake intake = new Intake();
   public static final Endgame endgame = new Endgame();
-  public static final ColorWheel colorWheel = null;//new ColorWheel();
-  public final autoLine autoLineCommand = null; //new autoLine(drive, intake, turret);
-  public final rightSideAuto rightSideAutoCommand = null; //new rightSideAuto(drive, intake, turret, limelight, storage, true);
-  public final autoLinePlus autoLinePlusCommand = null; //new autoLinePlus(drive, intake, turret, limelight, storage);
-  public final middleAuto middleAutoCommand =null; // new middleAuto(drive, turret, limelight, intake, storage);
+  public static final ColorWheel colorWheel = null;// new ColorWheel();
+  public final autoLine autoLineCommand = null; // new autoLine(drive, intake, turret);
+  public final rightSideAuto rightSideAutoCommand = null; // new rightSideAuto(drive, intake, turret, limelight,
+                                                          // storage, true);
+  public final autoLinePlus autoLinePlusCommand = null; // new autoLinePlus(drive, intake, turret, limelight, storage);
+  public final middleAuto middleAutoCommand = null; // new middleAuto(drive, turret, limelight, intake, storage);
   public static int activeBallCount = 3;
-
 
   public static Joystick leftJoystick = new Joystick(RobotMap.KOI.LEFT_JOYSTICK),
       rightJoystick = new Joystick(RobotMap.KOI.RIGHT_JOYSTICK),
@@ -59,7 +58,7 @@ public class RobotContainer implements RobotMap {
   public static JoystickButton rightTrigger = new JoystickButton(rightJoystick, KOI.TRIGGER_BUTTON),
       rightThumb = new JoystickButton(rightJoystick, KOI.THUMB_BUTTON),
       rightButton3 = new JoystickButton(rightJoystick, KOI.HANDLE_BOTTOM_LEFT_BUTTON),
-      rightButton10 = new JoystickButton(rightJoystick , KOI.BASE_MIDDLE_RIGHT_BUTTON),
+      rightButton10 = new JoystickButton(rightJoystick, KOI.BASE_MIDDLE_RIGHT_BUTTON),
       rightButton11 = new JoystickButton(rightJoystick, KOI.BASE_BOTTOM_LEFT_BUTTON),
       rightButton12 = new JoystickButton(rightJoystick, KOI.BASE_BOTTOM_RIGHT_BUTTON),
       leftTrigger = new JoystickButton(leftJoystick, KOI.TRIGGER_BUTTON),
@@ -90,14 +89,15 @@ public class RobotContainer implements RobotMap {
      storage.setDefaultCommand(new runConveyor(storage, manipJoystick));
      // turret.setDefaultCommand(new targetTurret(turret, limelight, manipJoystick));
     // turret.setDefaultCommand(new TurretTest(turret, manipJoystick));
-    // turret.setDefaultCommand(new michiganTurretTeleop(turret, limelight, storage, manipJoystick));
-    
+    // turret.setDefaultCommand(new michiganTurretTeleop(turret, limelight, storage,
+    // manipJoystick));
+
     // Configure the button bindings
     // limelight.initLimelight(1, 1);
-    
-    
+
     configureButtonBindings();
   }
+
   /**
    * Use this method to define your button->command mappings. Buttons can be
    * created by instantiating a {@link GenericHID} or one of its subclasses
@@ -108,11 +108,11 @@ public class RobotContainer implements RobotMap {
   private void configureButtonBindings() {
     // rightButton3.whenPressed(new toggleLight(turret));
     rightButton10.whenPressed(new resetGyro(drive));
-    rightButton11.whenPressed(new encoderDrive(drive, 2, 2 , false));
-    rightButton12.whenPressed(new encoderDrive(drive, 0 , 0 , false));
+    rightButton11.whenPressed(new encoderDrive(drive, 2, 2, false));
+    rightButton12.whenPressed(new encoderDrive(drive, 0, 0, false));
     // rightButton11.whenPressed(new leaveStartingConfig(intake, turret));
     // rightButton11.whenPressed(new rightSideAuto(drive, intake, turret, limelight, storage, false));
-    
+
     leftTrigger.whenPressed(new shiftGears(drive));
     leftButton7.whenPressed(new resetDriveEncoders(drive));
     leftButton8.whenPressed(new resetEndgameEncoders(endgame));
@@ -124,11 +124,10 @@ public class RobotContainer implements RobotMap {
 
     manipTrigger.whileHeld(new runConveyor(storage, manipJoystick));
     manipThumb.whileHeld(new runEndgameWithJoystick(endgame, manipJoystick));
-    manipButton3.whileHeld(new runRoller(intake,  2400 , false));
+    manipButton3.whileHeld(new runRoller(intake, 2400, false));
     manipButton5.toggleWhenPressed(new moveIntake(intake));
     //manipButton9.whenPressed(new rotateColorWheel(colorWheel, 0));
   }
-
 
   public static boolean leftTrigger() {
     return leftTrigger.get();
@@ -153,7 +152,6 @@ public class RobotContainer implements RobotMap {
   public boolean getManipThumb() {
     return manipThumb.get();
   }
-
 
   public boolean getManipButton7() {
     return manipButton7.get();
@@ -262,30 +260,25 @@ public class RobotContainer implements RobotMap {
 
   }
 
-  public void initLimelight(int ledMode, int pipeline)
-  {
-    //limelight.initLimelight(ledMode, pipeline);
+  public void initLimelight(int ledMode, int pipeline) {
+    // limelight.initLimelight(ledMode, pipeline);
   }
 
-  public Command getAutoLinePlus()
-  {
+  public Command getAutoLinePlus() {
     return autoLinePlusCommand;
   }
 
-  public Command getMiddleAuto()
-  {
+  public Command getMiddleAuto() {
     return middleAutoCommand;
 
   }
 
-  public Command getRightSideAuto()
-  {
+  public Command getRightSideAuto() {
     return rightSideAutoCommand;
 
   }
 
-  public Command getAutoLine()
-  {
+  public Command getAutoLine() {
     return autoLineCommand;
   }
 }
