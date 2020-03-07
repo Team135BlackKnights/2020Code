@@ -30,6 +30,7 @@ public class resetStorageEncoders extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // reset the encoder
     MotorControl.resetSparkEncoder(storage.conveyorEncoder);
 
   }

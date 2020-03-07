@@ -36,22 +36,20 @@ public class runRoller extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    //calculate how far off our desired rpm we are  
     double actualRPM = MotorControl.getSparkVelocity(intake.rollerEncoder);
     double maxRPM = 5400; 
     double error = _RPM-actualRPM;
-    
     double input = (_RPM+error)/maxRPM;
-    //double RPMIncrease = Math.abs(robotLinearSpeed/1.53) *500;
+
+    //if we want to wait for the shooter during auto
     if(isWaiting)
     {
+      //If there are too many balls that we can't hold them then don't intake, then run after
       if(RobotContainer.activeBallCount >=3)
-      {
         input = 0;
-      }
       else 
-      {
         input = (_RPM+error)/maxRPM;
-      }
     }
     
     intake.runRoller(input);

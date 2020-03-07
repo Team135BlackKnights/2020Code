@@ -1,6 +1,7 @@
 package frc.robot.util;
 
 public class MovingAverage {
+	//TODO:: Keaton needs to make these readable variables (not "_cnt" instead "count")
 	private int _in;
 	private int _ou;
 	private int _cnt;

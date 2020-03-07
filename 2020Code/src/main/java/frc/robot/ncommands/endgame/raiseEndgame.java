@@ -29,7 +29,7 @@ public class raiseEndgame extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    
     SmartDashboard.putString("Endgame Command Running: ", "raise Endgame " + _target);
     if(_target < MotorControl.getSparkEncoderPosition(endgame.liftRaiseEncoder))
     {
