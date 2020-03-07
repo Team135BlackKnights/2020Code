@@ -36,7 +36,7 @@ public class runEndgameWithJoystick extends CommandBase {
   @Override
   public void execute() {
     //sets power to the lift
-    endgame.runLiftRaiseSpark(-_joystick.getJoystickAxis(1) / 1.2);
+    endgame.runLiftRaiseSpark(-_joystick.getJoystickAxis(1));
   }
 
   // Called once the command ends or is interrupted.

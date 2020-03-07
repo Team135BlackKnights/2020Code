@@ -15,6 +15,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
@@ -51,6 +52,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
 
   public boolean currentState, previousState, isReadyForBall;
   public int ballsShot;
+  public double ballTime= 0;
+
 
   public Turret() {
     // Init Motors and encoders
@@ -208,9 +211,15 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
 
   public void updateBallCount() {
     currentState = isBallInTurret();
-    if (previousState && previousState != currentState) {
-      RobotContainer.activeBallCount--;
+    if (previousState && previousState != currentState) 
+    {
+      ballTime = Timer.getMatchTime();
+    }
+    if(!(ballTime == 0) && ballTime +.1 <= Timer.getMatchTime())
+    {
       ballsShot++;
+      RobotContainer.activeBallCount--;
+      ballTime= 0; 
     }
     previousState = currentState;
   }
