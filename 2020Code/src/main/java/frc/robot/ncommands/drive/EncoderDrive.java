@@ -16,9 +16,7 @@ import frc.robot.nsubsystems.FalconDrive;
 import frc.robot.util.MotorControl;
 
 public class encoderDrive extends CommandBase {
-  /**
-   * Creates a new encoderDrive.
-   */
+ 
   public FalconDrive drive;
   public double leftDesired, rightDesired, leftError, rightError;
   public boolean isFinished;
@@ -30,7 +28,6 @@ public class encoderDrive extends CommandBase {
     this.rightDesired = rightDesired;
     this.waitingForBalls = waitingForBalls;
     addRequirements(drive);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
