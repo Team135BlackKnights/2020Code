@@ -62,7 +62,7 @@ public class runConveyor extends CommandBase {
       // RobotContainer.turret.runBallFeeder(0);
       SmartDashboard.putString("Conveyor Override: ", "Sensor Control");
     } else if (isButton7) {
-      conveyorPower = .1;
+      conveyorPower = 1;
       MotorControl.resetSparkEncoder(storage.conveyorEncoder);
       RobotContainer.intake.runRoller(-.3);
       // RobotContainer.turret.runBallFeeder(.2);
