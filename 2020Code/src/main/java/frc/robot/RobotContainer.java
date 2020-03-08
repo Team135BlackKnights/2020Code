@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.ncommands.drive.*;
 import frc.robot.ncommands.endgame.*;
 import frc.robot.ncommands.storage.*;
+import frc.robot.ncommands.turret.targetAndShoot;
 import frc.robot.ncommands.intake.*;
 import frc.robot.nsubsystems.*;
 import frc.robot.ncommands.auton.*;
@@ -27,6 +28,7 @@ public class RobotContainer implements RobotMap {
   public static final Storage storage = new Storage();
   public static final Intake intake = new Intake();
   public static final Endgame endgame = new Endgame();
+  public static final Turret turret = new Turret();
   public static final ColorWheel colorWheel = null;// new ColorWheel();
   public final autoLine autoLineCommand = null; // new autoLine(drive, intake, turret);
   public final rightSideAuto rightSideAutoCommand = null; // new rightSideAuto(drive, intake, turret, limelight, storage, true);
@@ -76,6 +78,7 @@ public class RobotContainer implements RobotMap {
     drive.setDefaultCommand(new driveWithJoysticks(drive, leftJoystick, rightJoystick));
 
     storage.setDefaultCommand(new runConveyor(storage, manipJoystick));
+    turret.setDefaultCommand(new targetAndShoot(turret, manipJoystick, 6));
     // turret.setDefaultCommand(new targetTurret(turret, limelight, manipJoystick));
     // turret.setDefaultCommand(new TurretTest(turret, manipJoystick));
     // turret.setDefaultCommand(new michiganTurretTeleop(turret, limelight, storage, manipJoystick));
