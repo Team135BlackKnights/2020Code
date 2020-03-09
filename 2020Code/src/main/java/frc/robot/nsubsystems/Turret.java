@@ -59,8 +59,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     // Init Motors and encoders
     rotationSpark = new CANSparkMax(ROTATION_SPARK_ID, MotorType.kBrushless);
     hoodSpark = new CANSparkMax(TILT_SPARK_ID, MotorType.kBrushless);
-    shooterMaster = new CANSparkMax(TOP_SHOOTER_SPARK_ID, MotorType.kBrushless);
-    shooterSlave = new CANSparkMax(BOTTOM_SHOOTER_SPARK_ID, MotorType.kBrushless);
+    shooterMaster = new CANSparkMax(MASTER_SHOOTER_SPARK_ID, MotorType.kBrushless);
+    shooterSlave = new CANSparkMax(SLAVE_SHOOTER_SPARK_ID, MotorType.kBrushless);
     indexerSpark = new CANSparkMax(FEEDER_SPARK_ID, MotorType.kBrushless);
 
     rotationEncoder = new CANEncoder(rotationSpark);

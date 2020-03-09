@@ -50,7 +50,7 @@ public interface RobotMap {
 
   // Variables for Turret subsystem initiation
   public interface TURRET {
-    public static final int ROTATION_SPARK_ID = 11, TOP_SHOOTER_SPARK_ID = 12, BOTTOM_SHOOTER_SPARK_ID = 13,
+    public static final int ROTATION_SPARK_ID = 11, SLAVE_SHOOTER_SPARK_ID = 12, MASTER_SHOOTER_SPARK_ID = 13,
         FEEDER_SPARK_ID = 14, TILT_SPARK_ID = 20, LEFT_LIMIT_ID = 1, RIGHT_LIMIT_ID = 2, TILT_LIMIT_ID = 3,
         TARGETING_LIGHT = 0;
 
