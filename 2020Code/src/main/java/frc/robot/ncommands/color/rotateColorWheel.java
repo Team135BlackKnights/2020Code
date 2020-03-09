@@ -47,6 +47,7 @@ public class rotateColorWheel extends CommandBase {
     double currentRotations = wheel.colorChanges / 8;
 
     desiredRotations = desiredColor == "No Color" ? 4 : 0;
+    double input = 0; //TODO:: Value for input that isnt 0 because the if will never run
     boolean isDriving = Math.abs(RobotContainer.drive.getLinearMps()) > .2;
 
     //will never run due to input being set to 0

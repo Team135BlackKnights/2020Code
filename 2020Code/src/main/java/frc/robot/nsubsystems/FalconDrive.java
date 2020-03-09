@@ -70,7 +70,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
     chassis.setSafetyEnabled(false);
     chassis.setMaxOutput(.98);
     resetEncoders();
-    setBrakeMode(NeutralMode.Coast);// upon drive train init set 0 input state to brake
+    setBrakeMode(NeutralMode.Brake);// upon drive train init set 0 input state to brake
 
     // Fully initialized
     System.out.println("Falcon Drive Initialized");
@@ -78,7 +78,7 @@ public class FalconDrive extends SubsystemBase implements RobotMap.DRIVE {
 
   // Defualt config for Talons to init with
   public void configFalcon(WPI_TalonFX falcon, boolean isLeft) {
-    falcon.setNeutralMode(NeutralMode.Coast);
+    falcon.setNeutralMode(NeutralMode.Brake);
     falcon.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 100);
     falcon.configVoltageCompSaturation(12.0, 100);
     falcon.enableVoltageCompensation(true);

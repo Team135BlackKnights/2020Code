@@ -40,10 +40,10 @@ public class runConveyor extends CommandBase {
     double currentConveyPos = MotorControl.getSparkEncoderPosition(storage.conveyorEncoder);
 
     // Power modifier to overcome friction
-    double powerMod = 0;// RobotContainer.activeBallCount * .075;
+    double powerMod = RobotContainer.activeBallCount * .075;
     powerMod = RobotContainer.activeBallCount >= 4 ? powerMod : 0;
 
-    double conveyorError = -4.25 - currentConveyPos;
+    double conveyorError = -3 - currentConveyPos;
     double conveyorPower = 0;
     boolean isButton7, isButton8;
 
@@ -54,13 +54,9 @@ public class runConveyor extends CommandBase {
     if (storage.isBallAtTripSwitch()) {
       MotorControl.resetSparkEncoder(storage.conveyorEncoder);
     }
-    if(RobotContainer.turret.isReadyForBall)
-    { 
-      conveyorPower = -1;
-    }
-     else 
-    if (currentConveyPos > -4.35 && !isButton7 && !isButton8) {
-      conveyorPower = (conveyorError * .16) - powerMod;
+
+    if (currentConveyPos > -2.5 && !isButton7 && !isButton8) {
+      conveyorPower = (conveyorError * .06) - powerMod;
 
       RobotContainer.intake.runRoller(0);
       // RobotContainer.turret.runBallFeeder(0);
