@@ -51,10 +51,11 @@ public class runConveyor extends CommandBase {
     isButton8 = _joystick.getJoystickButtonValue(8);
 
     // For intaking powercells
+    
     if (storage.isBallAtTripSwitch()) {
       MotorControl.resetSparkEncoder(storage.conveyorEncoder);
     }
-
+    
     if (currentConveyPos > -2.5 && !isButton7 && !isButton8) {
       conveyorPower = (conveyorError * .06) - powerMod;
 
@@ -84,6 +85,8 @@ public class runConveyor extends CommandBase {
       conveyorPower = 0;
       SmartDashboard.putString("Conveyor Override: ", "Sensor Control");
     }
+
+    
     SmartDashboard.putNumber("run storage conveyor power", conveyorPower);
     storage.runConveyor(conveyorPower);
   }

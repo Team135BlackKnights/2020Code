@@ -67,6 +67,7 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE {
     if ((isBallAtTripSwitch() != lastSwitchPosition) && (isBallAtTripSwitch()) && RobotContainer.activeBallCount <= 4) {
       currentBallCount++;
       RobotContainer.activeBallCount++;
+      SmartDashboard.putNumber("Balls in Bot", RobotContainer.activeBallCount);
     }
     // update previous update
     if (lastSwitchPosition != isBallAtTripSwitch())

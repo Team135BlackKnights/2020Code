@@ -9,6 +9,7 @@ package frc.robot.nsubsystems;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.NetworkTable;
@@ -24,8 +25,8 @@ import frc.robot.util.MotorControl;
 
 public class Turret extends SubsystemBase implements RobotMap.TURRET {
 
-  public CANSparkMax rotationSpark, hoodSpark, shooterMaster, shooterSlave, indexerSpark;
-  public CANEncoder rotationEncoder, hoodEncoder, shooterEncoder, indexEncoder;
+  public CANSparkMax rotationSpark, hoodSpark, shooterMaster, shooterSlave,  indexerSpark;
+  public CANEncoder rotationEncoder, hoodEncoder, shooterEncoder, indexEncoder, secondShooterEncoder;
   public DigitalInput ballTrip;
   public double maxRPM;
 
@@ -67,14 +68,14 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     hoodEncoder = new CANEncoder(hoodSpark);
     shooterEncoder = new CANEncoder(shooterMaster);
     indexEncoder = new CANEncoder(indexerSpark);
+    secondShooterEncoder = new CANEncoder(shooterSlave);
 
     // Init Motors
     MotorControl.initCANSparkMax(rotationSpark, true, false, 20);
     MotorControl.initCANSparkMax(hoodSpark, true, false, 20);
-    MotorControl.initCANSparkMax(shooterMaster, true, false, 30);
-    MotorControl.initCANSparkMax(shooterSlave, true, false, 30);
+    MotorControl.initCANSparkMax(shooterMaster, false, true, 30);
+    MotorControl.initCANSparkMax(shooterSlave, false, true, 30);
     MotorControl.initCANSparkMax(indexerSpark, true, true, 30);
-
     shooterSlave.follow(shooterMaster);
 
     // Sensor for keeping a count of number of balls in the robot
@@ -322,6 +323,9 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     isBallInTurret();
     updateBallCount();
     autoIndexBall();
+    SmartDashboard.putNumber("Shooter Encoder Posiotion", MotorControl.getSparkEncoderPosition(shooterEncoder));
+    SmartDashboard.putNumber("2nd Shooter Encoder Posiotion", MotorControl.getSparkEncoderPosition(secondShooterEncoder));
+
     // This method will be called once per scheduler run
   }
 }

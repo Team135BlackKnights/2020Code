@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.ncommands.drive.*;
 import frc.robot.ncommands.endgame.*;
 import frc.robot.ncommands.storage.*;
+import frc.robot.ncommands.turret.flatPower;
+import frc.robot.ncommands.turret.targetAndShoot;
 import frc.robot.ncommands.intake.*;
 import frc.robot.nsubsystems.*;
 import frc.robot.ncommands.auton.*;
@@ -22,7 +24,7 @@ public class RobotContainer implements RobotMap {
   // The robot's subsystems and commands are defined here...
   public static final FalconDrive drive = new FalconDrive();
   // public static final newTurret nTurret = new newTurret();
-  // public static final Turret turret = new Turret();
+  public static final Turret turret = new Turret();
 
   public static final Storage storage = new Storage();
   public static final Intake intake = new Intake();
@@ -74,11 +76,8 @@ public class RobotContainer implements RobotMap {
 
   public RobotContainer() {
     drive.setDefaultCommand(new driveWithJoysticks(drive, leftJoystick, rightJoystick));
-
+    turret.setDefaultCommand(new targetAndShoot(turret, manipJoystick, activeBallCount));
     storage.setDefaultCommand(new runConveyor(storage, manipJoystick));
-    // turret.setDefaultCommand(new targetTurret(turret, limelight, manipJoystick));
-    // turret.setDefaultCommand(new TurretTest(turret, manipJoystick));
-    // turret.setDefaultCommand(new michiganTurretTeleop(turret, limelight, storage, manipJoystick));
 
     // Configure the button bindings
     // limelight.initLimelight(1, 1);
@@ -105,7 +104,8 @@ public class RobotContainer implements RobotMap {
     manipTrigger.whileHeld(new runConveyor(storage, manipJoystick));
     manipThumb.whileHeld(new runEndgameWithJoystick(endgame, manipJoystick));
     manipButton3.whileHeld(new runRoller(intake, 2400, false));
-    manipButton5.toggleWhenPressed(new moveIntake(intake));
+    manipButton5.whileHeld(new moveIntake(intake));
+    manipButton9.toggleWhenPressed(new flatPower(turret));
     // manipButton9.whenPressed(new rotateColorWheel(colorWheel, 0));
   }
 

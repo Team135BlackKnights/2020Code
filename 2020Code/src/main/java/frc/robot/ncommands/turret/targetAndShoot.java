@@ -37,7 +37,7 @@ public class targetAndShoot extends CommandBase {
   public void initialize() {
     turret.initLimelight(0, 0);
 
-    SmartDashboard.putString("New Turret Command Running: ", "set Turret To Pos");
+    SmartDashboard.putString("New Turret Command Running: ", "Target and Shoot Turret");
     targetTurret = false;
     overrideTurret = false;
     errorSum = 0;
@@ -52,12 +52,15 @@ public class targetAndShoot extends CommandBase {
 
     long timeNow = System.currentTimeMillis();
 
-    isAuton = Timer.getMatchTime() <= 15;
+    //TODO re enable based off matchtime
+    //isAuton = Timer.getMatchTime() <= 15;
+    isAuton = false;
     double distanceToTarget, horizontalOffset, rotationError, hoodDesired, hoodActual, hoodError, desiredRPM,
         overrideRPM, actualRPM, rpmError, maxRPM, minRotationError, minHoodError, feedForwardRPM, shooterInput,
         rotationInput, hoodInput;
 
-    distanceToTarget = turret.distanceToTarget();
+    distanceToTarget = turret.getAreaDistance();
+    SmartDashboard.putNumber("distance to Target", distanceToTarget);
     horizontalOffset = turret.limelightData[1];
     isTargetValid = turret.limelightData[0] >= 1;
     isDriving = RobotContainer.drive.getLinearMps() >= .15;
@@ -94,9 +97,9 @@ public class targetAndShoot extends CommandBase {
     double rP, hP, sF, sP, sI;
 
     rP = 1;
-    hP = 1;
-    sF = 1;
-    sP = 0;
+    hP = .5;
+    sF = .625;
+    sP = 2;
     sI = 0;
 
     if (isAuton) {
