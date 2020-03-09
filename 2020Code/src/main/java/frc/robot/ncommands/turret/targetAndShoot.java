@@ -59,7 +59,7 @@ public class targetAndShoot extends CommandBase {
         overrideRPM, actualRPM, rpmError, maxRPM, minRotationError, minHoodError, feedForwardRPM, shooterInput,
         rotationInput, hoodInput;
 
-    distanceToTarget = turret.getAreaDistance();
+    distanceToTarget = turret.distanceToTarget();
     SmartDashboard.putNumber("distance to Target", distanceToTarget);
     horizontalOffset = turret.limelightData[1];
     isTargetValid = turret.limelightData[0] >= 1;
@@ -97,9 +97,9 @@ public class targetAndShoot extends CommandBase {
     double rP, hP, sF, sP, sI;
 
     rP = 1;
-    hP = .5;
-    sF = .625;
-    sP = 2;
+    hP = 1;
+    sF = 1;
+    sP = 0;
     sI = 0;
 
     if (isAuton) {
