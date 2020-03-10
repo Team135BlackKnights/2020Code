@@ -163,34 +163,14 @@ public class targetAndShoot extends CommandBase {
 
         SmartDashboard.putBoolean("is Target Within range ", isTargetWithinRange);
 
-    if (isAuton && ballsToShoot > 3 && !isDriving) {
-      if (turret.ballsShot < 3 && isTargetWithinRange) {
-        turret.runShooter(shooterInput);
-      } else if (turret.ballsShot < ballsToShoot && Math.abs(RobotContainer.drive.getLeftMetres()) > 1
-          && isTargetWithinRange) {
-        turret.runShooter(shooterInput);
-      } else {
-        turret.runShooter(0);
-      }
-    } else if (isAuton && ballsToShoot == 3 && !isDriving) {
-      if (turret.ballsShot < 3 && isTargetWithinRange) {
-        turret.runShooter(shooterInput);
-      } else {
-        turret.runShooter(0);
-      }
-    } else if ( joystick.getJoystickButtonValue(1) && isTargetWithinRange && !isDriving) {
+   
+     if ( joystick.getJoystickButtonValue(1) && isTargetWithinRange && !isDriving) {
       turret.runShooter(shooterInput);
     } else {
       turret.runShooter(0);
     }
 
-    if (isAuton) {
-      if (!isTargetWithinRange && targetTurret) {
-        turret.aimTurret(rotationInput, hoodInput);
-      } else if (!isTargetWithinRange && !targetTurret) {
-        turret.aimTurret(0, 0);
-      }
-    } else if (isPOVUp) {
+    if (isPOVUp) {
       turret.aimTurret(0, .45);
       SmartDashboard.putString("Turret State: ", "Driver Override");
 
