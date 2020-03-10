@@ -9,7 +9,6 @@ package frc.robot.nsubsystems;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.NetworkTable;
@@ -22,13 +21,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.RobotMap;
 import frc.robot.util.MotorControl;
+import frc.robot.util.MovingAverage;
 
 public class Turret extends SubsystemBase implements RobotMap.TURRET {
 
-  public CANSparkMax rotationSpark, hoodSpark, shooterMaster, shooterSlave,  indexerSpark;
-  public CANEncoder rotationEncoder, hoodEncoder, shooterEncoder, indexEncoder, secondShooterEncoder;
+  public CANSparkMax rotationSpark, hoodSpark, shooterMaster, shooterSlave, indexerSpark;
+  public CANEncoder rotationEncoder, hoodEncoder, shooterEncoder, indexEncoder;
   public DigitalInput ballTrip;
   public double maxRPM;
+  public MovingAverage _targetAverage = new MovingAverage(100);
 
   // Create Limelight data
   NetworkTableInstance networkTableInstance = NetworkTableInstance.getDefault();
@@ -68,15 +69,15 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     hoodEncoder = new CANEncoder(hoodSpark);
     shooterEncoder = new CANEncoder(shooterMaster);
     indexEncoder = new CANEncoder(indexerSpark);
-    secondShooterEncoder = new CANEncoder(shooterSlave);
 
     // Init Motors
     MotorControl.initCANSparkMax(rotationSpark, true, false, 20);
-    MotorControl.initCANSparkMax(hoodSpark, true, false, 20);
-    MotorControl.initCANSparkMax(shooterMaster, false, true, 30);
-    MotorControl.initCANSparkMax(shooterSlave, false, true, 30);
+    MotorControl.initCANSparkMax(hoodSpark, true, true, 20);
+    MotorControl.initCANSparkMax(shooterMaster, false, false, 40);
+    MotorControl.initCANSparkMax(shooterSlave, false, true, 40);
     MotorControl.initCANSparkMax(indexerSpark, true, true, 30);
-    shooterSlave.follow(shooterMaster);
+
+    shooterSlave.follow(shooterMaster, true);
 
     // Sensor for keeping a count of number of balls in the robot
     ballTrip = new DigitalInput(15);
@@ -89,7 +90,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
 
     initLimelight(LED_OFF, DRIVER_CAMERA);
 
-    System.out.print("new Turret Initialized");
+    System.out.print("Turret Initialized");
   }
 
   public void resetShooterEncoder() {
@@ -132,7 +133,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
   }
 
   public double getShooterVel() {
-    return shooterEncoder.getVelocity();
+    return shooterEncoder.getVelocity() * 2.23;
   }
 
   public void runHood(double power) {
@@ -163,7 +164,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
   }
 
   public void runLimitedHood(double power) {
-    double reverseLimit = 0, forwardLimit = 100;
+    double reverseLimit = 0, forwardLimit = 200;
+    
     if (getHoodPos() >= forwardLimit) {
       power = limit(power, 0, -.45);
     } else if (getHoodPos() <= reverseLimit) {
@@ -171,6 +173,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     } else {
       power = limit(power, .45, -.45);
     }
+    
+
     hoodSpark.set(power);
   }
 
@@ -215,6 +219,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     if (previousState && previousState != currentState) 
     {
       ballTime = Timer.getMatchTime();
+      ballsShot++;
+      RobotContainer.activeBallCount--;
     }
     if(!(ballTime == 0) && ballTime +.1 <= Timer.getMatchTime())
     {
@@ -225,6 +231,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     previousState = currentState;
   }
 
+  
   public void printBallData() {
     SmartDashboard.putBoolean("Is Ball in Shooter", isBallInTurret());
     SmartDashboard.putNumber("Current Balls in System", RobotContainer.activeBallCount);
@@ -272,18 +279,30 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
   public double distanceToTarget() {
 
     double targetHeight = 8;
-    double limeligtHeight = 34 / 12;
+    double limeligtHeight = 35.5 / 12;
     double h = targetHeight - limeligtHeight;
 
-    double limelightAngle = 25;
+    double limelightAngle = 20;
     double targetAngle = getLimelightData()[VERTICAL_OFFSET];
 
     double theta = limelightAngle - targetAngle;
     return h / Math.tan(theta);
   }
 
+  public double getAveragedArea()
+  {
+    return _targetAverage.process((float)limelightData[TARGET_AREA]);
+  }
+  
+  public double getAreaDistance()
+  {
+    return 9.204*Math.pow(.5146, getAveragedArea()) -.5;
+  }
+
+
   public void printLimelightData() {
     SmartDashboard.putNumber("Distance To Target", distanceToTarget());
+    SmartDashboard.putNumber("Area Distance ", getAreaDistance());
     SmartDashboard.putBoolean("is Target Valid ?: ", limelightData[VALID_TARGET] >= 1);
     SmartDashboard.putNumber("Horizontal Offset", limelightData[HORIZONTAL_OFFSET]);
     SmartDashboard.putNumber("Vertical Offset", limelightData[VERTICAL_OFFSET]);
@@ -323,8 +342,9 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     isBallInTurret();
     updateBallCount();
     autoIndexBall();
-    SmartDashboard.putNumber("Shooter Encoder Posiotion", MotorControl.getSparkEncoderPosition(shooterEncoder));
-    SmartDashboard.putNumber("2nd Shooter Encoder Posiotion", MotorControl.getSparkEncoderPosition(secondShooterEncoder));
+    printLimelightData();
+    SmartDashboard.putNumber("Hood Pos: ", getHoodPos());
+    printShooterData();
 
     // This method will be called once per scheduler run
   }

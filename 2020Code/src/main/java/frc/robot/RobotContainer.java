@@ -16,10 +16,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.ncommands.drive.*;
 import frc.robot.ncommands.endgame.*;
 import frc.robot.ncommands.storage.*;
-import frc.robot.ncommands.turret.flatPower;
 import frc.robot.ncommands.turret.targetAndShoot;
 import frc.robot.ncommands.intake.*;
-//import frc.robot.ncommands.turret.*;
+import frc.robot.ncommands.turret.*;
 import frc.robot.nsubsystems.*;
 import frc.robot.ncommands.auton.*;
 
@@ -106,9 +105,8 @@ public class RobotContainer implements RobotMap {
 
     manipTrigger.whileHeld(new runConveyor(storage, manipJoystick));
     manipThumb.whileHeld(new runEndgameWithJoystick(endgame, manipJoystick));
-    manipButton3.whileHeld(new runRoller(intake, 2400, false));
+    manipButton3.whileHeld(new runRoller(intake, 4000, false));
     manipButton5.whileHeld(new moveIntake(intake));
-    manipButton9.toggleWhenPressed(new flatPower(turret));
     // manipButton9.whenPressed(new rotateColorWheel(colorWheel, 0));
   }
 

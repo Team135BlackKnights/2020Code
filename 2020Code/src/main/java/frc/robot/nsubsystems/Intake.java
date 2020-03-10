@@ -27,7 +27,7 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE {
   public Intake() {
     // Motor and Encoder setup
     rollerSpark = new CANSparkMax(ROLLER_SPARK, MotorType.kBrushless);
-    MotorControl.initCANSparkMax(rollerSpark, false, false, 30);
+    MotorControl.initCANSparkMax(rollerSpark, false, true, 30);
     rollerEncoder = rollerSpark.getEncoder();
 
     // Solenoid declaration

@@ -22,7 +22,7 @@ public class runRoller extends CommandBase {
 
   public runRoller(Intake subsystem, double RPM, boolean waitForTurret) {
     intake = subsystem;
-    _RPM = RPM > 1000 ? RPM : RPM * 5000;
+    _RPM = RPM >= 1000 ? RPM : RPM * 5000;
     isWaiting = waitForTurret;
   }
 

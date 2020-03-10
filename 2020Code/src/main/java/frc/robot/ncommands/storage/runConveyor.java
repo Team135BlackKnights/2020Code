@@ -43,7 +43,11 @@ public class runConveyor extends CommandBase {
     double powerMod = RobotContainer.activeBallCount * .075;
     powerMod = RobotContainer.activeBallCount >= 4 ? powerMod : 0;
 
-    double conveyorError = -3 - currentConveyPos;
+    if (storage.isBallAtTripSwitch()) {
+      MotorControl.resetSparkEncoder(storage.conveyorEncoder);
+    }
+    double desiredPosition = -30;
+    double conveyorError = desiredPosition - currentConveyPos;
     double conveyorPower = 0;
     boolean isButton7, isButton8;
 
@@ -52,17 +56,17 @@ public class runConveyor extends CommandBase {
 
     // For intaking powercells
     
-    if (storage.isBallAtTripSwitch()) {
-      MotorControl.resetSparkEncoder(storage.conveyorEncoder);
-    }
-    if (currentConveyPos > -2.5 && !isButton7 && !isButton8) {
-      conveyorPower = (conveyorError * .06) - powerMod;
+    
+    if (currentConveyPos > (desiredPosition) && !isButton7 && !isButton8) {
+      //conveyorPower = (conveyorError * .16) - powerMod;
 
+      //conveyorPower = conveyorError * (1 / Math.abs(desiredPosition));
+      conveyorPower = -1;
       RobotContainer.intake.runRoller(0);
       // RobotContainer.turret.runBallFeeder(0);
       SmartDashboard.putString("Conveyor Override: ", "Sensor Control");
     } else if (isButton7) {
-      conveyorPower = .1;
+      conveyorPower = 1;
       MotorControl.resetSparkEncoder(storage.conveyorEncoder);
       RobotContainer.intake.runRoller(-.3);
       // RobotContainer.turret.runBallFeeder(.2);

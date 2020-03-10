@@ -83,11 +83,8 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE {
 
     // Warning was coming from the if() being always true so I commented it out and
     // had it just run
-    /*
-     * if(RobotContainer.nTurret.isReadyForBall) { runConveyor(.4);; }
-     */
-    runConveyor(.4);
-
+    
+    if(RobotContainer.turret.isReadyForBall) { runConveyor(.4); }
     if (MotorControl.getSparkEncoderRotations(conveyorEncoder) > desiredEncoderPos) {
       runConveyor(-.4);
     }
