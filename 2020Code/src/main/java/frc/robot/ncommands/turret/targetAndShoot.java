@@ -101,7 +101,7 @@ public class targetAndShoot extends CommandBase {
     double rP, hP, sF, sP, sI;
 
     rP = 1;
-    hP = .5;
+    hP = .1;
     sF = .625;
     sP = 2;
     sI = 0;
