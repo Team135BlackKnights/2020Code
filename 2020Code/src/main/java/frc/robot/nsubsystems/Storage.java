@@ -51,7 +51,7 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE {
   // check if the ball is at the trip switch
   public boolean isBallAtTripSwitch() {
     return intakeBallTripSwitch.get();
-  }
+  } 
 
   // Reset encoder position if the ball is at the trip switch
   public void autoResetEncoder() {

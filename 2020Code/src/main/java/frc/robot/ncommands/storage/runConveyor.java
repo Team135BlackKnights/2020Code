@@ -57,14 +57,17 @@ public class runConveyor extends CommandBase {
     // For intaking powercells
     
     
-    if (currentConveyPos > (desiredPosition) && !isButton7 && !isButton8) {
+    if (currentConveyPos > desiredPosition && !isButton7 && !isButton8) {
       //conveyorPower = (conveyorError * .16) - powerMod;
-
       //conveyorPower = conveyorError * (1 / Math.abs(desiredPosition));
+
       conveyorPower = -1;
       RobotContainer.intake.runRoller(0);
       // RobotContainer.turret.runBallFeeder(0);
       SmartDashboard.putString("Conveyor Override: ", "Sensor Control");
+    } else if (RobotContainer.turret.isReadyForBall) {
+      conveyorPower = -1;
+
     } else if (isButton7) {
       conveyorPower = 1;
       MotorControl.resetSparkEncoder(storage.conveyorEncoder);

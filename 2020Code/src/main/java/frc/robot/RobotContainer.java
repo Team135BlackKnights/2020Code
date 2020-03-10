@@ -21,6 +21,7 @@ import frc.robot.ncommands.intake.*;
 import frc.robot.ncommands.turret.*;
 import frc.robot.nsubsystems.*;
 import frc.robot.ncommands.auton.*;
+import frc.robot.ncommands.color.rotateColorWheel;
 
 public class RobotContainer implements RobotMap {
   // The robot's subsystems and commands are defined here...
@@ -31,7 +32,7 @@ public class RobotContainer implements RobotMap {
   public static final Storage storage = new Storage();
   public static final Intake intake = new Intake();
   public static final Endgame endgame = new Endgame();
-  public static final ColorWheel colorWheel = null;// new ColorWheel();
+  public static final ColorWheel colorWheel = new ColorWheel();
   public final autoLine autoLineCommand = null; // new autoLine(drive, intake, turret);
   public final rightSideAuto rightSideAutoCommand = null; // new rightSideAuto(drive, intake, turret, limelight, storage, true);
   public final autoLinePlus autoLinePlusCommand = null; // new autoLinePlus(drive, intake, turret, limelight, storage);
@@ -78,7 +79,7 @@ public class RobotContainer implements RobotMap {
 
   public RobotContainer() {
     drive.setDefaultCommand(new driveWithJoysticks(drive, leftJoystick, rightJoystick));
-    turret.setDefaultCommand(new targetAndShoot(turret, manipJoystick, activeBallCount));
+    turret.setDefaultCommand(new targetAndShoot(turret, storage, manipJoystick, activeBallCount));
     storage.setDefaultCommand(new runConveyor(storage, manipJoystick));
 
     // Configure the button bindings
@@ -92,6 +93,9 @@ public class RobotContainer implements RobotMap {
     rightButton10.whenPressed(new resetGyro(drive));
     rightButton11.whenPressed(new encoderDrive(drive, 2, 2, false));
     rightButton12.whenPressed(new encoderDrive(drive, 0, 0, false));
+    rightButton3.whenPressed(new shootXBalls(turret, 3));
+    //rightButton3.whenPressed(new setTurretPosPID(turret, 147, -35));
+    
     // rightButton11.whenPressed(new leaveStartingConfig(intake, turret));
     // rightButton11.whenPressed(new rightSideAuto(drive, intake, turret, limelight, storage, false));
 
@@ -105,9 +109,9 @@ public class RobotContainer implements RobotMap {
 
     manipTrigger.whileHeld(new runConveyor(storage, manipJoystick));
     manipThumb.whileHeld(new runEndgameWithJoystick(endgame, manipJoystick));
-    manipButton3.whileHeld(new runRoller(intake, 4000, false));
+    manipButton3.whileHeld(new runRoller(intake, 3000, false));
     manipButton5.whileHeld(new moveIntake(intake));
-    // manipButton9.whenPressed(new rotateColorWheel(colorWheel, 0));
+    manipButton9.whenPressed(new rotateColorWheel(colorWheel, 0));
   }
 
   public static boolean leftTrigger() {

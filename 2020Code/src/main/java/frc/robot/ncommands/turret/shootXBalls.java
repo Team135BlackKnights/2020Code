@@ -18,7 +18,7 @@ public class shootXBalls extends CommandBase {
    */
   Turret turret;
   int ballsToShoot, ballsShot, initialBallsShot;
-  boolean isFinished;
+  boolean isFinished, isReadyToShoot; 
   double errorSum;
 
   public shootXBalls(Turret _turret, int _ballsToShoot) {
@@ -35,7 +35,7 @@ public class shootXBalls extends CommandBase {
     initialBallsShot = turret.ballsShot;
     errorSum = 0;
     SmartDashboard.putString("New Turret Command Running: ", "set Turret To Pos");
-
+    isReadyToShoot = false; 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -44,32 +44,61 @@ public class shootXBalls extends CommandBase {
 
     ballsShot = turret.ballsShot - initialBallsShot;
     isFinished = ballsShot >= ballsToShoot;
-    boolean readyForBall;
+    
 
-    double desiredRPM, actualRPM, rpmError, rpmFeedForward, kF, kP, kI, shooterInput;
+    double desiredRPM, actualRPM, rpmError, rpmFeedForward, kF, kP, shooterInput,
+    horizontalOffset, distanceToTarget, rP, hP, minRotationError, rotationError, rotationInput, minHoodError, hoodError, hoodDesired, hoodActual, hoodInput; 
+    boolean isTargetWithinRange, isTargetValid; 
 
-    desiredRPM = 3500; // TODO change later
+    distanceToTarget = turret.getAreaDistance();
+    SmartDashboard.putNumber("distance to Target", distanceToTarget);
+    horizontalOffset = turret.limelightData[1] - 3.5;
+    isTargetValid = turret.limelightData[0] >= 1;
+
+    minRotationError = .025;
+    minHoodError = 2;
+    isTargetValid = turret.getLimelightData()[0] >= 1;
+
+    rotationError = horizontalOffset / 30 ;
+    hoodDesired = (-1.1855* Math.pow(distanceToTarget, 2)) + (22.115 * distanceToTarget) + 78.0045;
+    SmartDashboard.putNumber("Desired Hood Pos", hoodDesired);
+    hoodActual = turret.getHoodPos();
+    hoodError = hoodDesired - hoodActual;
+
+
+    desiredRPM = (20.9988 * Math.pow(distanceToTarget, 2))  + (122.8191* distanceToTarget) + 2285.4107;
     actualRPM = turret.getShooterVel();
-    rpmError = desiredRPM - actualRPM;
+    rpmError = (desiredRPM - actualRPM)/6000;
 
     rpmFeedForward = desiredRPM / turret.maxRPM;
+    
+    isTargetWithinRange = ((isTargetValid && Math.abs(rotationError) < minRotationError && Math.abs(hoodError) < minHoodError));
+    if(isTargetWithinRange)
+    {
+      isReadyToShoot = true; 
+    }
 
-    readyForBall = (Math.abs(rpmError) <= 150);
-    kF = 1;
-    kP = 0;
-    kI = 0;
+    turret.isReadyForBall = (!(desiredRPM == 0) && Math.abs(rpmError) <= .10);
+    rP = 1;
+    hP = .1;
+    kF = .625;
+    kP = 2;
 
-    errorSum = errorSum + (kI * rpmError);
 
-    shooterInput = kF * rpmFeedForward + kP * rpmError + kI * errorSum;
 
-    turret.runShooter(shooterInput);
-    if (readyForBall) {
-      turret.runIndexer(.5);
-      RobotContainer.storage.runConveyor(.3);
+    rotationInput = rotationError * rP;
+    hoodInput = hoodError * hP;
+    shooterInput = kF * rpmFeedForward + kP * rpmError;
+    
+    if (turret.isReadyForBall) {
+      turret.runIndexer(.4);
     } else {
       turret.runIndexer(0);
-      RobotContainer.storage.runConveyor(0);
+    }
+    if (isReadyToShoot && ballsShot >= 0 ) {
+      turret.runShooter(shooterInput);
+    } else {
+      turret.aimTurret(rotationInput, hoodInput);
     }
 
   }
@@ -78,7 +107,6 @@ public class shootXBalls extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     turret.stopAllMotors();
-    RobotContainer.storage.runConveyor(0);
   }
 
   // Returns true when the command should end.

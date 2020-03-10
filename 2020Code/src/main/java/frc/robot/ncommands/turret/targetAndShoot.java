@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.nsubsystems.Storage;
 import frc.robot.nsubsystems.Turret;
 import frc.robot.util.ImprovedJoystick;
 import frc.robot.util.MotorControl;
@@ -26,11 +27,13 @@ public class targetAndShoot extends CommandBase {
   int ballsToShoot;
   private long furtherTime = 0;
   ImprovedJoystick joystick;
+  Storage storage;
 
-  public targetAndShoot(Turret _turret, Joystick _joystick, int autonBalls) {
+  public targetAndShoot(Turret _turret, Storage _storage, Joystick _joystick, int autonBalls) {
     turret = _turret;
     joystick = new ImprovedJoystick(_joystick);
     ballsToShoot = autonBalls;
+    storage = _storage;
     addRequirements(turret);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -89,7 +92,7 @@ public class targetAndShoot extends CommandBase {
 
     rotationError = horizontalOffset / 30 ;
 
-    hoodDesired = (-1.1855* Math.pow(distanceToTarget, 2)) + (22.115 * distanceToTarget) + 78.0045;// TODO determine a relationship between the two with an equation
+    hoodDesired = (-1.1855* Math.pow(distanceToTarget, 2)) + (22.115 * distanceToTarget) + 78.0045;
     SmartDashboard.putNumber("Desired Hood Pos", hoodDesired);
     hoodActual = turret.getHoodPos();
     hoodError = hoodDesired - hoodActual;
@@ -126,6 +129,7 @@ public class targetAndShoot extends CommandBase {
       desiredRPM = overrideRPM;
     }
 
+
     SmartDashboard.putNumber("shooter desired RPM", desiredRPM);
 
     rpmError = (desiredRPM - actualRPM)/maxRPM;
@@ -137,15 +141,15 @@ public class targetAndShoot extends CommandBase {
     turret.isReadyForBall = (!(desiredRPM == 0) && Math.abs(rpmError) <= .10);
 
 
-    if(!targetTurret)
+    if(overrideTurret)
     {
-      turret.initLimelight(0, 0);
+      turret.initLimelight(1,0);
     }
     else 
     {
-      turret.initLimelight(0, 0);
-
+      turret.initLimelight(0,0);
     }
+
 
     rotationInput = rotationError * rP;
     hoodInput = hoodError * hP;
@@ -235,6 +239,8 @@ public class targetAndShoot extends CommandBase {
     if(turret.isReadyForBall)
     {
       turret.runIndexer(.4);
+      // RobotContainer.storage.runConveyor(-1);
+      //storage.runConveyor(1);
     }
     else 
     {

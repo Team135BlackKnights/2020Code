@@ -15,6 +15,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -80,13 +81,13 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     shooterSlave.follow(shooterMaster, true);
 
     // Sensor for keeping a count of number of balls in the robot
-    ballTrip = new DigitalInput(15);
+    ballTrip = new DigitalInput(5);
 
     currentState = ballTrip.get();
     previousState = false;
-    isReadyForBall = false;
+    isReadyForBall = true;
     ballsShot = 0;
-    maxRPM = 5100;
+    maxRPM = 6000;
 
     initLimelight(LED_OFF, DRIVER_CAMERA);
 
@@ -184,8 +185,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
   }
 
   public void aimTurret(double rotationPower, double hoodPower) {
-    runLimitedHood(hoodPower);
-    runLimitedRotation(rotationPower);
+    runHood(hoodPower);
+    runRotation(rotationPower);
   }
 
   public boolean isBallInTurret() {
@@ -218,15 +219,13 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     currentState = isBallInTurret();
     if (previousState && previousState != currentState) 
     {
-      ballTime = Timer.getMatchTime();
-      ballsShot++;
-      RobotContainer.activeBallCount--;
+      ballTime =  System.currentTimeMillis();
     }
-    if(!(ballTime == 0) && ballTime +.1 <= Timer.getMatchTime())
+    if(!(ballTime == 0) && ballTime +1 <= System.currentTimeMillis())
     {
       ballsShot++;
       RobotContainer.activeBallCount--;
-      ballTime= 0; 
+      ballTime = 0; 
     }
     previousState = currentState;
   }
@@ -236,6 +235,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     SmartDashboard.putBoolean("Is Ball in Shooter", isBallInTurret());
     SmartDashboard.putNumber("Current Balls in System", RobotContainer.activeBallCount);
     SmartDashboard.putNumber("Balls Shot", ballsShot);
+    SmartDashboard.putNumber("Ball time ", ballTime);
+    SmartDashboard.putNumber("Match time ", DriverStation.getInstance().getMatchTime());
   }
 
   public void printShooterData() {
@@ -343,7 +344,9 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     updateBallCount();
     autoIndexBall();
     printLimelightData();
+    printBallData();
     SmartDashboard.putNumber("Hood Pos: ", getHoodPos());
+    SmartDashboard.putNumber("Rotation Pos ", getRotationPos());
     printShooterData();
 
     // This method will be called once per scheduler run

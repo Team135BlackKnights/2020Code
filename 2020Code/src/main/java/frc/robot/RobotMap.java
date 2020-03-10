@@ -58,7 +58,7 @@ public interface RobotMap {
 
   // Variables for control over the color wheel
   public interface CONTROL_PANEL {
-    public static final int ROTATOR_ID = 15;
+    public static final int ROTATOR_ID = 16;
 
     // Blue color mins and maxes
     public double BlueRedMin = .09;
@@ -96,7 +96,7 @@ public interface RobotMap {
 
   // Variables for Endgame initiation
   public interface ENDGAME {
-    public static final int WIND_UP_SPARK_ID = 16, LIFT_UP_SPARK_ID = 17;
+    public static final int WIND_UP_SPARK_ID = 15, LIFT_UP_SPARK_ID = 17;
 
   }
 

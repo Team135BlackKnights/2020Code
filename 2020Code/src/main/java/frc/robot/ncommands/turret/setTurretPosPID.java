@@ -36,6 +36,7 @@ public class setTurretPosPID extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
+
   public void execute() {
     // Find how far off the hood and roatation are
     double currentHoodPos, currentRotationPos, hoodError, rotationError, hP, rP, hoodInput, rotationInput;
@@ -43,13 +44,12 @@ public class setTurretPosPID extends CommandBase {
     currentRotationPos = turret.getRotationPos();
     hoodError = desiredHoodPos - currentHoodPos;
     rotationError = desiredRotationPos - currentRotationPos;
-
     // Set tolerance
-    isFinished = (Math.abs(hoodError) < 2 && Math.abs(rotationError) < 1);
+    isFinished = (Math.abs(hoodError) < 3 && Math.abs(rotationError) < 3);
 
     // Set tuning variables
-    hP = 1;
-    rP = 1;
+    hP = .11;
+    rP = .1;
 
     // Set powers
     hoodInput = hoodError * hP;
