@@ -8,19 +8,21 @@
 
 package frc.robot.ncommands.turret;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.nsubsystems.Storage;
 import frc.robot.nsubsystems.Turret;
 import frc.robot.util.ImprovedJoystick;
 import frc.robot.util.MotorControl;
 
-public class targetAndShoot extends CommandBase {
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
+
+public class targetAndShoot extends CommandBase
+{
   Turret turret;
   boolean isFinished, targetTurret, overrideTurret;
   double errorSum;
@@ -29,7 +31,8 @@ public class targetAndShoot extends CommandBase {
   ImprovedJoystick joystick;
   Storage storage;
 
-  public targetAndShoot(Turret _turret, Storage _storage, Joystick _joystick, int autonBalls) {
+  public targetAndShoot(Turret _turret, Storage _storage, Joystick _joystick, int autonBalls)
+  {
     turret = _turret;
     joystick = new ImprovedJoystick(_joystick);
     ballsToShoot = autonBalls;
@@ -40,9 +43,12 @@ public class targetAndShoot extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
+  public void initialize()
+  {
+    //
     turret.initLimelight(0, 0);
 
+    // Sets the initial values needed for the turret
     SmartDashboard.putString("Turret Command Running: ", "Target and shoot Turret");
     targetTurret = false;
     overrideTurret = false;
@@ -52,32 +58,45 @@ public class targetAndShoot extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
+  public void execute()
+  {
     boolean isTargetValid, isDriving, isAuton, isShooting, isTargetWithinRange;
     boolean isPOVLeft, isPOVRight, isPOVUp, isPOVDown, isPOVTopRight, isPOVBottomRight, isPOVBottomLeft, isPOVTopLeft;
 
     long timeNow = System.currentTimeMillis();
 
+    // Value for autonomous/ no autonomous
     isAuton = false;
     
     double distanceToTarget, horizontalOffset, rotationError, hoodDesired, hoodActual, hoodError, desiredRPM,
-        overrideRPM, actualRPM, rpmError, maxRPM, minRotationError, minHoodError, feedForwardRPM, shooterInput,
-        rotationInput, hoodInput;
+          overrideRPM, actualRPM, rpmError, maxRPM, minRotationError, minHoodError, feedForwardRPM, shooterInput,
+          rotationInput, hoodInput;
 
+    // Information for our current position relative to the target
     distanceToTarget = turret.getAreaDistance();
     SmartDashboard.putNumber("distance to Target", distanceToTarget);
+
+    // Information for our horizontal offset, based on limelight data
     horizontalOffset = turret.limelightData[1] - 3.5;
+
+    // Information for ourtarget verification
     isTargetValid = turret.limelightData[0] >= 1;
+
+    // Information for our driving status
     isDriving = RobotContainer.drive.getLinearMps() >= .15;
 
+    // Preset error numbers to maintain
     minRotationError = .025;
     minHoodError = 2;
 
-    if (joystick.getJoystickButtonValue(6) && timeNow >= furtherTime) {
+    //
+    if (joystick.getJoystickButtonValue(6) && timeNow >= furtherTime)
+    {
       furtherTime = timeNow + 200;
       overrideTurret = !overrideTurret;
     }
 
+    // Joystick values for aiming
     isPOVUp = joystick.isPovDirectionPressed(0);
     isPOVRight = joystick.isPovDirectionPressed(1);
     isPOVDown = joystick.isPovDirectionPressed(2);
@@ -90,17 +109,25 @@ public class targetAndShoot extends CommandBase {
 
     maxRPM = 6000;
 
+    // Equation for our rotational error 
     rotationError = horizontalOffset / 30 ;
 
+    // Retrieves / calculates the desired hood position based on our distance
+    // from our target, this allows for consistent targetting
     hoodDesired = (-1.1855* Math.pow(distanceToTarget, 2)) + (22.115 * distanceToTarget) + 78.0045;
     SmartDashboard.putNumber("Desired Hood Pos", hoodDesired);
+
+    // Retrieves and calculates our current hood position, and how
+    // far off we are from our desired position
     hoodActual = turret.getHoodPos();
     hoodError = hoodDesired - hoodActual;
 
+    //
     overrideRPM = 5200 * joystick.getJoystickSlider();
     SmartDashboard.putNumber("Override RPM", overrideRPM);
     actualRPM = turret.getShooterVel();
 
+    //RotationProportional, HoodProportional, ShooterFeedForward
     double rP, hP, sF, sP, sI;
 
     rP = 1;
@@ -109,69 +136,94 @@ public class targetAndShoot extends CommandBase {
     sP = 2;
     sI = 0;
 
-    
-
+    // Equation to determine when the robot is at shooting power
     isShooting =  (actualRPM > 2000);
 
-    if (isShooting) {
+    // If robot is currently shooting, then stop targeting
+    if (isShooting)
+    {
       targetTurret = false;
-    } else if (overrideTurret) {
+    }
+    
+    //
+    else if (overrideTurret)
+    {
       targetTurret = false;
-    } else {
+    }
+    
+    // If none of the above apply, then look for the target
+    else
+    {
       targetTurret = true;
     }
 
+      // Retrieves / calculates the rpm needed to successfully score points
+      // based on the distance away from the target we are
       desiredRPM = (20.9988 * Math.pow(distanceToTarget, 2))  + (122.8191* distanceToTarget) + 2285.4107;
-   
-    SmartDashboard.putNumber("shooter desired RPM", desiredRPM);
+      SmartDashboard.putNumber("shooter desired RPM", desiredRPM);
 
-    rpmError = (desiredRPM - actualRPM)/maxRPM;
-    feedForwardRPM = desiredRPM / maxRPM;
+      // Calculates the offset of our rpm in order to stabilize
+      rpmError = (desiredRPM - actualRPM)/maxRPM;
+      feedForwardRPM = desiredRPM / maxRPM;
 
-    errorSum = errorSum + (rpmError * sI * .02);
+      //
+      errorSum = errorSum + (rpmError * sI * .02);
+      turret.isReadyForBall = (!(desiredRPM == 0) && Math.abs(rpmError) <= .10);
 
+      //
+      if(overrideTurret)
+      {
+        turret.initLimelight(1,0);
+      }
 
-    turret.isReadyForBall = (!(desiredRPM == 0) && Math.abs(rpmError) <= .10);
+      //
+      else 
+      {
+        turret.initLimelight(0,0);
+      }
 
-
-    if(overrideTurret)
-    {
-      turret.initLimelight(1,0);
-    }
-    else 
-    {
-      turret.initLimelight(0,0);
-    }
-
-
-    rotationInput = rotationError * rP;
-    hoodInput = hoodError * hP;
+      //
+      rotationInput = rotationError * rP;
+      hoodInput = hoodError * hP;
     
-    shooterInput = (feedForwardRPM * sF) + (rpmError * sP) + (errorSum);
-    shooterInput = MotorControl.limit(shooterInput, 1, 0);
-    SmartDashboard.putNumber("shooterInput", shooterInput);
-    isTargetWithinRange = ((isTargetValid && Math.abs(rotationError) < minRotationError
-       && Math.abs(hoodError) < minHoodError) || isShooting);
+      //
+      shooterInput = (feedForwardRPM * sF) + (rpmError * sP) + (errorSum);
+      shooterInput = MotorControl.limit(shooterInput, 1, 0);
+      SmartDashboard.putNumber("shooterInput", shooterInput);
 
-
-        SmartDashboard.putBoolean("is Target Within range ", isTargetWithinRange);
-
+      //
+      isTargetWithinRange = ((isTargetValid && Math.abs(rotationError) < minRotationError
+      && Math.abs(hoodError) < minHoodError) || isShooting);
+      SmartDashboard.putBoolean("is Target Within range ", isTargetWithinRange);
    
-     if ( joystick.getJoystickButtonValue(1) && isTargetWithinRange && !isDriving) {
-      turret.runShooter(shooterInput);
-    } else {
-      turret.runShooter(0);
-    }
+      //
+      if ( joystick.getJoystickButtonValue(1) && isTargetWithinRange && !isDriving)
+      {
+        turret.runShooter(shooterInput);
+      }
 
-    if (isPOVUp) {
-      turret.aimTurret(0, .45);
-      SmartDashboard.putString("Turret State: ", "Driver Override");
+      //
+      else
+      {
+        turret.runShooter(0);
+      }
 
-    } else if (isPOVRight) {
-      turret.aimTurret(.45, 0);
-      SmartDashboard.putString("Turret State: ", "Driver Override");
+      //
+      // If the POV is up...
+      if (isPOVUp)
+      {
+        turret.aimTurret(0, .45);
+        SmartDashboard.putString("Turret State: ", "Driver Override");
+      }  
 
-    } else if (isPOVDown) {
+      //
+      else if (isPOVRight)
+      {
+        turret.aimTurret(.45, 0);
+        SmartDashboard.putString("Turret State: ", "Driver Override");
+      }
+
+    else if (isPOVDown) {
       turret.aimTurret(0, -.45);
       SmartDashboard.putString("Turret State: ", "Driver Override");
 

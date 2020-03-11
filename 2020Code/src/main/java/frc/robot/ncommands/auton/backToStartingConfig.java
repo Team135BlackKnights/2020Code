@@ -13,9 +13,7 @@ import frc.robot.ncommands.turret.TurnOffLimelight;
 import frc.robot.ncommands.turret.setTurretPosPID;
 import frc.robot.nsubsystems.Turret;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
+
 public class backToStartingConfig extends SequentialCommandGroup {
 
   public backToStartingConfig(Turret turret, Joystick manipJoystick) {
