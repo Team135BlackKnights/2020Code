@@ -31,24 +31,25 @@ public class shootXBalls extends CommandBase {
   @Override
   public void initialize() {
     isFinished = false;
-    turret.initLimelight(1, 0);
+    turret.initLimelight(0, 0);
     initialBallsShot = turret.ballsShot;
     errorSum = 0;
-    SmartDashboard.putString("New Turret Command Running: ", "set Turret To Pos");
+    SmartDashboard.putString("New Turret Command Running: ", "shoot x balls x = " + ballsToShoot) ;
     isReadyToShoot = false; 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    turret.updateBallCount();
 
     ballsShot = turret.ballsShot - initialBallsShot;
-    isFinished = ballsShot >= ballsToShoot;
+    SmartDashboard.putNumber("shoot x balls shot", ballsShot);
+    isFinished = (ballsShot >= ballsToShoot);
     
-
     double desiredRPM, actualRPM, rpmError, rpmFeedForward, kF, kP, shooterInput,
     horizontalOffset, distanceToTarget, rP, hP, minRotationError, rotationError, rotationInput, minHoodError, hoodError, hoodDesired, hoodActual, hoodInput; 
-    boolean isTargetWithinRange, isTargetValid; 
+    boolean isTargetWithinRange, isTargetValid, isShooting;
 
     distanceToTarget = turret.getAreaDistance();
     SmartDashboard.putNumber("distance to Target", distanceToTarget);
@@ -64,25 +65,38 @@ public class shootXBalls extends CommandBase {
     SmartDashboard.putNumber("Desired Hood Pos", hoodDesired);
     hoodActual = turret.getHoodPos();
     hoodError = hoodDesired - hoodActual;
-
-
-    desiredRPM = (20.9988 * Math.pow(distanceToTarget, 2))  + (122.8191* distanceToTarget) + 2285.4107;
     actualRPM = turret.getShooterVel();
+    isShooting = actualRPM > 2000;
+
+    isTargetWithinRange = ((isTargetValid && Math.abs(rotationError) < minRotationError && Math.abs(hoodError) < minHoodError) || isShooting);
+
+
+    if(!isTargetWithinRange)
+    {
+      desiredRPM = 1700;
+    }
+    else 
+    {
+      desiredRPM = (20.9988 * Math.pow(distanceToTarget, 2))  + (122.8191* distanceToTarget) + 2285.4107;
+    }
     rpmError = (desiredRPM - actualRPM)/6000;
 
     rpmFeedForward = desiredRPM / turret.maxRPM;
-    
-    isTargetWithinRange = ((isTargetValid && Math.abs(rotationError) < minRotationError && Math.abs(hoodError) < minHoodError));
+
+
     if(isTargetWithinRange)
     {
       isReadyToShoot = true; 
     }
 
-    turret.isReadyForBall = (!(desiredRPM == 0) && Math.abs(rpmError) <= .10);
-    rP = 1;
+    turret.isReadyForBall = (!(desiredRPM == 1700) && Math.abs(rpmError) <= .075);
+
+    rP = 1.2;
+
     hP = .1;
     kF = .625;
     kP = 2;
+    
 
 
 
@@ -91,15 +105,33 @@ public class shootXBalls extends CommandBase {
     shooterInput = kF * rpmFeedForward + kP * rpmError;
     
     if (turret.isReadyForBall) {
-      turret.runIndexer(.4);
+      turret.runIndexer(.3);
     } else {
       turret.runIndexer(0);
     }
-    if (isReadyToShoot && ballsShot >= 0 ) {
-      turret.runShooter(shooterInput);
-    } else {
+
+    if(!isTargetWithinRange)
+    {
       turret.aimTurret(rotationInput, hoodInput);
     }
+    else 
+    {
+      turret.aimTurret(0, 0);
+    }
+
+    if (isReadyToShoot && ballsShot >= 0 ) {
+      turret.runShooter(shooterInput);
+    } 
+    else if(!isTargetWithinRange)
+    {
+      turret.runShooter(shooterInput);
+    }
+    else 
+    {
+      turret.runShooter(0);
+
+    }
+  
 
   }
 
@@ -107,6 +139,7 @@ public class shootXBalls extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     turret.stopAllMotors();
+    turret.isReadyForBall = false;
   }
 
   // Returns true when the command should end.

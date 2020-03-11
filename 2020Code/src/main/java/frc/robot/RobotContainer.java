@@ -34,7 +34,7 @@ public class RobotContainer implements RobotMap {
   public static final Endgame endgame = new Endgame();
   public static final ColorWheel colorWheel = new ColorWheel();
   public final autoLine autoLineCommand = null; // new autoLine(drive, intake, turret);
-  public final rightSideAuto rightSideAutoCommand = null; // new rightSideAuto(drive, intake, turret, limelight, storage, true);
+  public final rightSideAuto rightSideAutoCommand = new rightSideAuto(drive, intake, turret, storage, true);
   public final autoLinePlus autoLinePlusCommand = null; // new autoLinePlus(drive, intake, turret, limelight, storage);
   public final middleAuto middleAutoCommand = null; // new middleAuto(drive, turret, limelight, intake, storage);
   public static int activeBallCount = 3;
@@ -80,6 +80,7 @@ public class RobotContainer implements RobotMap {
   public RobotContainer() {
     drive.setDefaultCommand(new driveWithJoysticks(drive, leftJoystick, rightJoystick));
     turret.setDefaultCommand(new targetAndShoot(turret, storage, manipJoystick, activeBallCount));
+    storage.conveyorEncoder.setPosition(-35);
     storage.setDefaultCommand(new runConveyor(storage, manipJoystick));
 
     // Configure the button bindings
@@ -105,12 +106,13 @@ public class RobotContainer implements RobotMap {
     leftButton9.whenPressed(new resetIntakeEncoders(intake));
     leftButton11.toggleWhenPressed(new toggleCompressor(drive));
     leftButton10.whenPressed(new raiseEndgame(endgame, 145));
+    leftButton10.whenPressed(new setTurretPosPID(turret, -15, 0));
     leftButton12.whenPressed(new raiseEndgame(endgame, 0));
 
     manipTrigger.whileHeld(new runConveyor(storage, manipJoystick));
     manipThumb.whileHeld(new runEndgameWithJoystick(endgame, manipJoystick));
-    manipButton3.whileHeld(new runRoller(intake, 3000, false));
-    manipButton5.whileHeld(new moveIntake(intake));
+    manipButton3.whileHeld(new runRoller(intake, 2700, false));
+    manipButton5.whenPressed(new moveIntake(intake));
     manipButton9.whenPressed(new rotateColorWheel(colorWheel, 0));
   }
 
@@ -245,8 +247,9 @@ public class RobotContainer implements RobotMap {
 
   }
 
-  public void initLimelight(int ledMode, int pipeline) {
-    // limelight.initLimelight(ledMode, pipeline);
+  public void initLimelight(int ledMode, int pipeline)
+  {
+    RobotContainer.turret.initLimelight(0, 0);
   }
 
   public Command getAutoLinePlus() {

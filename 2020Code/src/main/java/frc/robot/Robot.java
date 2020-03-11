@@ -51,17 +51,17 @@ public class Robot extends TimedRobot {
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 		autoCommand = autoChooser.getSelected();
-		// SmartDashboard.putString("Auto Command ", autoChooser.getSelected().toString());
+		//SmartDashboard.putString("Auto Command ", autoChooser.getSelected().toString());
 	}
 
 	// Initialize auto
 	@Override
 	public void autonomousInit() {
-		RobotContainer.initLimelight(2, 0);
+		RobotContainer.initLimelight(0, 0);
 		RobotContainer.drive.resetEncoders();
 		activeBallCount = 3;
 		autoCommand = autoChooser.getSelected();
-		// SmartDashboard.putString("Auto Command ", autoChooser.getSelected().toString());
+		SmartDashboard.putString("Auto Command ", autoChooser.getSelected().toString());
 		if (autoCommand != null) {
 			autoCommand.schedule();
 		}

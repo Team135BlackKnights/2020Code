@@ -12,6 +12,8 @@ import frc.robot.ncommands.auton.parallels.leaveStartingConfig;
 import frc.robot.ncommands.auton.parallels.runRollerAndDriveRightSide;
 import frc.robot.ncommands.drive.encoderDrive;
 import frc.robot.ncommands.intake.runRoller;
+import frc.robot.ncommands.turret.primeTurret;
+import frc.robot.ncommands.turret.shootXBalls;
 import frc.robot.nsubsystems.*;
 
 
@@ -20,14 +22,15 @@ public class rightSideAuto extends SequentialCommandGroup {
   public rightSideAuto(FalconDrive drive, Intake intake, Turret turret, Storage storage, boolean isShooting) {
     super
     (
-      new leaveStartingConfig(intake, turret),
-      parallel(
-      sequence
-      (
-        new runRollerAndDriveRightSide(drive, intake),
-        parallel(new encoderDrive(drive, 2, 2, false), new runRoller(intake, intake.autonRPM, false))
-        )
+      race(new leaveStartingConfig(intake, turret), new primeTurret(turret)),
+      //new leaveStartingConfig(intake, turret),
+  //    new encoderDrive(drive, .5, .5, false),
+      new shootXBalls(turret , 3),
+      race(new runRollerAndDriveRightSide(drive, intake), new primeTurret(turret)),
+      //  new runRollerAndDriveRightSide(drive, intake),
+      race(new encoderDrive(drive, 2, 2, false), new runRoller(intake, intake.autonRPM, false), new primeTurret(turret)),
+      new shootXBalls(turret, 3)
       )
-    );
+    ;
   }
 }

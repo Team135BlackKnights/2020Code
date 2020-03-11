@@ -33,8 +33,7 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE {
 
     // Conveyor Encoder setup
     conveyorEncoder = conveyorSpark.getEncoder();
-    desiredEncoderPos = -4;
-
+    conveyorEncoder.setPosition(-35);
     // Ball Counting setup
     currentBallCount = 0;
     intakeBallTripSwitch = new DigitalInput(INTAKE_TRIP_SWITCH);

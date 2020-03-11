@@ -45,11 +45,13 @@ public class setTurretPosPID extends CommandBase {
     hoodError = desiredHoodPos - currentHoodPos;
     rotationError = desiredRotationPos - currentRotationPos;
     // Set tolerance
-    isFinished = (Math.abs(hoodError) < 3 && Math.abs(rotationError) < 3);
+   
+    isFinished = (Math.abs(hoodError) < 25 && Math.abs(rotationError) < 15);
+  
 
     // Set tuning variables
-    hP = .11;
-    rP = .1;
+    hP = .22;
+    rP = .2;
 
     // Set powers
     hoodInput = hoodError * hP;
@@ -61,12 +63,15 @@ public class setTurretPosPID extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
+  public void end(boolean interrupted) 
+  {
+    turret.aimTurret(0,0);
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return isFinished;
   }
 }

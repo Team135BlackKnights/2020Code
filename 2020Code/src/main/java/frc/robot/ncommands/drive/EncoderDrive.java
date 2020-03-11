@@ -68,15 +68,15 @@ public class encoderDrive extends CommandBase {
 
       // Use the error to move proportional to distance
       double lP, rP;
-      lP = 2.45;
-      rP = 2.45;
+      lP = 3.45;
+      rP = 3.45;
       double leftInput, rightInput;
       leftInput = leftError * lP;
       rightInput = rightError * rP;
 
       // Limit the power to 95%
-      leftInput = MotorControl.limit(leftInput, .95, -.95);
-      rightInput = MotorControl.limit(rightInput, .95, -.95);
+      leftInput = MotorControl.limit(leftInput, .85, -.85);
+      rightInput = MotorControl.limit(rightInput, .85, -.85);
 
       drive.TankDrive(leftInput, rightInput);
     }

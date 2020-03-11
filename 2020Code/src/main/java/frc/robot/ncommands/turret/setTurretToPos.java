@@ -28,7 +28,7 @@ public class setTurretToPos extends CommandBase {
   public void initialize() {
     isFinished = false;
     turret.resetAllTurretEncoders();
-    turret.initLimelight(1, 0);
+    turret.initLimelight(0, 0);
     SmartDashboard.putString("New Turret Command Running: ", "set Turret To Pos");
   }
 

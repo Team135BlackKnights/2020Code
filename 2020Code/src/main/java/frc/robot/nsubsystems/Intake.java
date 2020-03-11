@@ -32,9 +32,10 @@ public class Intake extends SubsystemBase implements RobotMap.INTAKE {
 
     // Solenoid declaration
     raiseLower = new Solenoid(RAISE_LOWER);
+    raiseLower.set(false);
 
     // Default RPM for rollers during auto
-    autonRPM = 4800;
+    autonRPM = 3300;
 
     // Intake initialized
     System.out.println("Intake Initialized");

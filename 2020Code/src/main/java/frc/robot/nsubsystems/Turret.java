@@ -85,7 +85,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
 
     currentState = ballTrip.get();
     previousState = false;
-    isReadyForBall = true;
+    isReadyForBall = false;
     ballsShot = 0;
     maxRPM = 6000;
 
@@ -185,8 +185,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
   }
 
   public void aimTurret(double rotationPower, double hoodPower) {
-    runHood(hoodPower);
-    runRotation(rotationPower);
+    runLimitedHood(hoodPower);
+    runLimitedRotation(rotationPower);
   }
 
   public boolean isBallInTurret() {
@@ -213,6 +213,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
   public void stopAllMotors() {
     stopShooter();
     stopTurret();
+    runIndexer(0);
   }
 
   public void updateBallCount() {
@@ -221,7 +222,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     {
       ballTime =  System.currentTimeMillis();
     }
-    if(!(ballTime == 0) && ballTime +1 <= System.currentTimeMillis())
+    if(!(ballTime == 0) && ballTime +.25 <= System.currentTimeMillis())
     {
       ballsShot++;
       RobotContainer.activeBallCount--;
@@ -337,17 +338,19 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
       runIndexer(.5);
     }
   }
+  public double systemTime = System.currentTimeMillis();
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("sytem time dif", systemTime -System.currentTimeMillis());
     isBallInTurret();
     updateBallCount();
-    autoIndexBall();
     printLimelightData();
     printBallData();
     SmartDashboard.putNumber("Hood Pos: ", getHoodPos());
     SmartDashboard.putNumber("Rotation Pos ", getRotationPos());
     printShooterData();
+    systemTime = System.currentTimeMillis();
 
     // This method will be called once per scheduler run
   }

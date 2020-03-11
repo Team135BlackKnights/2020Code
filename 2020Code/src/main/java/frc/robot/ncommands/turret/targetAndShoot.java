@@ -74,7 +74,7 @@ public class targetAndShoot extends CommandBase {
     minHoodError = 2;
 
     if (joystick.getJoystickButtonValue(6) && timeNow >= furtherTime) {
-      furtherTime = timeNow + 100;
+      furtherTime = timeNow + 200;
       overrideTurret = !overrideTurret;
     }
 
@@ -121,15 +121,8 @@ public class targetAndShoot extends CommandBase {
       targetTurret = true;
     }
 
-    if (isAuton) {
-      desiredRPM = 2500;
-    } else if (!isAuton && overrideRPM == 5200 || overrideRPM == 0 && targetTurret) {
       desiredRPM = (20.9988 * Math.pow(distanceToTarget, 2))  + (122.8191* distanceToTarget) + 2285.4107;
-    } else {
-      desiredRPM = overrideRPM;
-    }
-
-
+   
     SmartDashboard.putNumber("shooter desired RPM", desiredRPM);
 
     rpmError = (desiredRPM - actualRPM)/maxRPM;
