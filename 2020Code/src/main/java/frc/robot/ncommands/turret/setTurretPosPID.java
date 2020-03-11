@@ -39,6 +39,8 @@ public class setTurretPosPID extends CommandBase {
 
   public void execute() {
     // Find how far off the hood and roatation are
+  
+
     double currentHoodPos, currentRotationPos, hoodError, rotationError, hP, rP, hoodInput, rotationInput;
     currentHoodPos = turret.getHoodPos();
     currentRotationPos = turret.getRotationPos();
