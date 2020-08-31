@@ -9,7 +9,7 @@ package frc.robot.ncommands.auton;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.ncommands.auton.parallels.leaveStartingConfig;
-import frc.robot.ncommands.drive.encoderDrive;
+import frc.robot.ncommands.drive.EncoderDrive;
 import frc.robot.ncommands.intake.runRoller;
 import frc.robot.nsubsystems.FalconDrive;
 import frc.robot.nsubsystems.Intake;
@@ -27,11 +27,11 @@ public class middleAuto extends SequentialCommandGroup {
         new leaveStartingConfig(intake, turret),
         parallel(
           new runRoller(intake, 3000, true),
-          new encoderDrive(drive,2,3, true)
+          new EncoderDrive(drive,2,3, true)
         ),
         parallel(
           new runRoller(intake, 3000, false),
-          new encoderDrive(drive, 1, 1, false)
+          new EncoderDrive(drive, 1, 1, false)
         )
       )
 
