@@ -20,7 +20,7 @@ public class TargetTurret extends CommandBase {
   private final Turret turret;
   private final TurretLimelight turretLimelight;
   private final ImprovedJoystick _joystick;
-  private double horizontalOffset, verticalOffset, targetArea, anglularOffset;
+  private double horizontalOffset, verticalOffset;
   private boolean targetExist;
   private double loopRuns; 
   private boolean targetTurret;
@@ -52,8 +52,6 @@ public class TargetTurret extends CommandBase {
     targetExist = turretLimelight.GetLimelightData()[0] >= 1 ? true : false;
     verticalOffset = turretLimelight.GetLimelightData()[2];
     horizontalOffset = turretLimelight.GetLimelightData()[1];
-    anglularOffset = turretLimelight.GetLimelightData()[4];
-    targetArea = turretLimelight.GetLimelightData()[3];
   
     double rotationPower, tiltPower;
 

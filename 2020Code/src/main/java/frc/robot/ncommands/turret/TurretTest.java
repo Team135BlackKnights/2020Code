@@ -34,13 +34,13 @@ public class TurretTest extends CommandBase {
   @Override
   public void execute() 
   {
-    double manipYpower, manipZpower,topRPM, bottomRPM, feederPower;
+    double manipYpower, manipZpower;//topRPM, bottomRPM, feederPower;
     
     manipYpower = _joystick.getJoystickAxis(1);
     manipZpower = _joystick.getJoystickAxis(2);
 
-    boolean isTriggerPressed;
-    isTriggerPressed =  _joystick.getJoystickButtonValue(1);
+    //boolean isTriggerPressed;
+    //isTriggerPressed =  _joystick.getJoystickButtonValue(1);
     /*
     if(isTriggerPressed)
     {
@@ -53,9 +53,8 @@ public class TurretTest extends CommandBase {
       feederPower = 0;
     }
     */
-    topRPM = manipYpower;
-    feederPower = 0;
-    bottomRPM = topRPM*3/2;
+   // feederPower = 0;
+    
 
     turret.aimTurret(manipZpower/25, -manipYpower/3);
    // turret.runShooterPower(-topRPM, bottomRPM);
