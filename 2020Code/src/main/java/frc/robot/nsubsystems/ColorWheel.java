@@ -181,13 +181,13 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL{
 
    public String spinToWhatColor(String FMScolor)
    {
-      Dictionary colors = new Hashtable<>(); 
+      Dictionary<String, String> colors = new Hashtable<>(); 
       colors.put("Red", "Blue"); 
       colors.put("Green", "Yellow"); 
       colors.put("Blue", "Red"); 
       colors.put("Yellow", "Green"); 
-      Enumeration values = colors.elements();
-      for (Enumeration k = colors.keys(); k.hasMoreElements();) 
+      Enumeration<String> values = colors.elements();
+      for (Enumeration<String> k = colors.keys(); k.hasMoreElements();) 
       { 
          
          if(k.nextElement() == FMScolor)
