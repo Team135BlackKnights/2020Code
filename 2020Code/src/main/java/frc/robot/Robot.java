@@ -58,7 +58,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		RobotContainer.initLimelight(0, 0);
-		RobotContainer.drive.resetEncoders();
+		frc.robot.RobotContainer.drive.resetEncoders();
 		activeBallCount = 3;
 		autoCommand = autoChooser.getSelected();
 		SmartDashboard.putString("Auto Command ", autoChooser.getSelected().toString());
@@ -79,7 +79,7 @@ public class Robot extends TimedRobot {
 		if (autoCommand != null) {
 			autoCommand.cancel();
 		}
-		RobotContainer.activeBallCount = 0;
+		frc.robot.RobotContainer.activeBallCount = 0;
 	}
 
 	// Run Tele
