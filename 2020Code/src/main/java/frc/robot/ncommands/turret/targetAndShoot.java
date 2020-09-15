@@ -60,13 +60,10 @@ public class targetAndShoot extends CommandBase
   @Override
   public void execute()
   {
-    boolean isTargetValid, isDriving, isAuton, isShooting, isTargetWithinRange;
+    boolean isTargetValid, isDriving, isShooting, isTargetWithinRange;
     boolean isPOVLeft, isPOVRight, isPOVUp, isPOVDown, isPOVTopRight, isPOVBottomRight, isPOVBottomLeft, isPOVTopLeft;
 
     long timeNow = System.currentTimeMillis();
-
-    // Value for autonomous/ no autonomous
-    isAuton = false;
     
     double distanceToTarget, horizontalOffset, rotationError, hoodDesired, hoodActual, hoodError, desiredRPM,
           overrideRPM, actualRPM, rpmError, maxRPM, minRotationError, minHoodError, feedForwardRPM, shooterInput,

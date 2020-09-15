@@ -42,11 +42,11 @@ public class runConveyor extends CommandBase {
     // Power modifier to overcome friction
     double powerMod = RobotContainer.activeBallCount * .075;
     powerMod = RobotContainer.activeBallCount >= 4 ? powerMod : 0;
-    double currentTime = System.currentTimeMillis();
+    //double currentTime = System.currentTimeMillis(); uncomment this only if we ever need the time for SOME reason
     double desiredPosition = -35;
-    double conveyorError = desiredPosition - currentConveyPos;
+    //double conveyorError = desiredPosition - currentConveyPos; turns out it works egnuff we don't need this
     double conveyorPower = 0;
-    boolean isButton7, isButton8, doesIntakeHaveCommand; 
+    boolean isButton7, isButton8; 
 
     if (storage.isBallAtTripSwitch()) 
     {
