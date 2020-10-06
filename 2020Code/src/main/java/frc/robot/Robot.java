@@ -29,9 +29,9 @@ public class Robot extends TimedRobot {
 		RobotContainer.initLimelight(2, 0);
 		autoChooser.setDefaultOption("Auto Line Plus", RobotContainer.getAutoLinePlus());
 		autoChooser.addOption("Auto Line", RobotContainer.getAutoLine());
-		autoChooser.addOption("Right Side ", RobotContainer.getRightSideAuto());
+		//autoChooser.addOption("Right Side ", RobotContainer.getRightSideAuto());
 
-		SmartDashboard.putData(autoChooser);
+		//SmartDashboard.putData(autoChooser);
 
 	}
 
@@ -51,7 +51,7 @@ public class Robot extends TimedRobot {
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 		autoCommand = autoChooser.getSelected();
-		//SmartDashboard.putString("Auto Command ", autoChooser.getSelected().toString());
+		SmartDashboard.putString("Auto Command ", autoChooser.getSelected().toString());
 	}
 
 	// Initialize auto

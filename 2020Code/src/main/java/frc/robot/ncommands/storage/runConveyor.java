@@ -57,7 +57,7 @@ public class runConveyor extends CommandBase {
     
     isButton7 = _joystick.getJoystickButtonValue(7);
     isButton8 = _joystick.getJoystickButtonValue(8);
-    SmartDashboard.putBoolean("is ready for ball", RobotContainer.turret.isReadyForBall);
+//    SmartDashboard.putBoolean("is ready for ball", RobotContainer.turret.isReadyForBall);
 
     // For intaking powercells
     if (RobotContainer.turret.isReadyForBall) {
