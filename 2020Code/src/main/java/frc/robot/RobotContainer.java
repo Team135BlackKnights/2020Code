@@ -31,7 +31,7 @@ public class RobotContainer implements RobotMap {
   public static final Storage storage = new Storage();
   public static final Intake intake = new Intake();
   public static final Endgame endgame = new Endgame();
-  public static final ColorWheel colorWheel = new ColorWheel();
+  //public static final ColorWheel colorWheel = new ColorWheel();
   public final autoLine autoLineCommand = null; // new autoLine(drive, intake, turret);
   public final rightSideAuto rightSideAutoCommand = new rightSideAuto(drive, intake, turret, storage, true);
   public final autoLinePlus autoLinePlusCommand = null; // new autoLinePlus(drive, intake, turret, limelight, storage);
@@ -112,7 +112,7 @@ public class RobotContainer implements RobotMap {
     manipThumb.whileHeld(new runEndgameWithJoystick(endgame, manipJoystick));
     manipButton3.whileHeld(new runRoller(intake, 2700, false));
     manipButton5.whenPressed(new moveIntake(intake));
-    manipButton9.whenPressed(new rotateColorWheel(colorWheel, 0));
+    //manipButton9.whenPressed(new rotateColorWheel(colorWheel, 0));
   }
 
   public static boolean leftTrigger() {
