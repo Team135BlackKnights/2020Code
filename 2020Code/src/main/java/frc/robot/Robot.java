@@ -51,7 +51,7 @@ public class Robot extends TimedRobot {
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 		autoCommand = autoChooser.getSelected();
-		SmartDashboard.putString("Auto Command ", autoChooser.getSelected().toString());
+		//SmartDashboard.putString("Auto Command ", autoChooser.getSelected().toString());
 	}
 
 	// Initialize auto

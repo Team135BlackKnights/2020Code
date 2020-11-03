@@ -132,7 +132,7 @@ public class targetAndShoot extends CommandBase
     sI = 0;
 
     // Equation to determine when the robot is at shooting power
-    isShooting =  (actualRPM > 2000);
+    isShooting = (actualRPM > 2000);
 
     // If robot is currently shooting, then stop targeting
     if (isShooting)

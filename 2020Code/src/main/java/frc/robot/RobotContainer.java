@@ -76,7 +76,7 @@ public class RobotContainer implements RobotMap {
       manipButton12 = new JoystickButton(manipJoystick, KOI.BASE_BOTTOM_RIGHT_BUTTON);
 
   public RobotContainer() {
-    drive.setDefaultCommand(new driveWithJoysticks(drive, leftJoystick, rightJoystick));
+    drive.setDefaultCommand(new DriveWithJoysticks(drive, leftJoystick, rightJoystick));
     turret.setDefaultCommand(new targetAndShoot(turret, storage, manipJoystick, activeBallCount));
     storage.conveyorEncoder.setPosition(-35);
     storage.setDefaultCommand(new runConveyor(storage, manipJoystick));
@@ -92,7 +92,7 @@ public class RobotContainer implements RobotMap {
     rightButton10.whenPressed(new resetGyro(drive));
     rightButton11.whenPressed(new encoderDrive(drive, 2, 2, false));
     rightButton12.whenPressed(new encoderDrive(drive, 0, 0, false));
-    rightButton3.whenPressed(new shootXBalls(turret, 3));
+    rightButton3.whenPressed(new primeTurret(turret));
     //rightButton3.whenPressed(new setTurretPosPID(turret, 147, -35));
     
     // rightButton11.whenPressed(new leaveStartingConfig(intake, turret));

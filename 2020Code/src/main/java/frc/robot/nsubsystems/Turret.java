@@ -141,8 +141,8 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     hoodSpark.set(power);
   }
 
-  public void runRotation(double power) {
-    power = limit(power, .85, -.85);
+  public void runRotation(double power) { //controles hood min-max pos
+    power = limit(power, 1, -.7);
     rotationSpark.set(power);
   }
 
@@ -152,7 +152,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
   }
 
   public void runLimitedRotation(double power) {
-    double reverseLimit = -250, forwardLimit = 35;
+    double reverseLimit = -200, forwardLimit = 40;
     if (getRotationPos() >= forwardLimit) {
       power = limit(power, 0, -.45);
     } else if (getRotationPos() <= reverseLimit) {
