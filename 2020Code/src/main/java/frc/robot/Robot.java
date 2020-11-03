@@ -29,9 +29,9 @@ public class Robot extends TimedRobot {
 		RobotContainer.initLimelight(2, 0);
 		autoChooser.setDefaultOption("Auto Line Plus", RobotContainer.getAutoLinePlus());
 		autoChooser.addOption("Auto Line", RobotContainer.getAutoLine());
-		autoChooser.addOption("Right Side ", RobotContainer.getRightSideAuto());
+		//autoChooser.addOption("Right Side ", RobotContainer.getRightSideAuto());
 
-		SmartDashboard.putData(autoChooser);
+		//SmartDashboard.putData(autoChooser);
 
 	}
 
@@ -51,14 +51,14 @@ public class Robot extends TimedRobot {
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 		autoCommand = autoChooser.getSelected();
-		//SmartDashboard.putString("Auto Command ", autoChooser.getSelected().toString());
+		SmartDashboard.putString("Auto Command ", autoChooser.getSelected().toString());
 	}
 
 	// Initialize auto
 	@Override
 	public void autonomousInit() {
 		RobotContainer.initLimelight(0, 0);
-		RobotContainer.drive.resetEncoders();
+		frc.robot.RobotContainer.drive.resetEncoders();
 		activeBallCount = 3;
 		autoCommand = autoChooser.getSelected();
 		SmartDashboard.putString("Auto Command ", autoChooser.getSelected().toString());
@@ -79,7 +79,7 @@ public class Robot extends TimedRobot {
 		if (autoCommand != null) {
 			autoCommand.cancel();
 		}
-		RobotContainer.activeBallCount = 0;
+		frc.robot.RobotContainer.activeBallCount = 0;
 	}
 
 	// Run Tele

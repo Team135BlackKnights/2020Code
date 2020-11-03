@@ -73,7 +73,6 @@ public class Storage extends SubsystemBase implements RobotMap.INTAKE {
       lastSwitchPosition = isBallAtTripSwitch();
   }
 
-  // TODO:: When new shooter is on finish if statements
   public void autoMoveBalls() {
     if (isBallAtTripSwitch())// && //!RobotContainer.nTurret.isReadyForBall)
     {

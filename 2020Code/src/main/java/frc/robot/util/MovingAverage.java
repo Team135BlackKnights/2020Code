@@ -1,7 +1,7 @@
 package frc.robot.util;
 
 public class MovingAverage {
-	// TODO:: For Keaton = make these readable variables (not "_cnt" instead "count")
+	//For Keaton = make these readable variables (not "_cnt" instead "count")
 	// the reason for this is due to unclear reading from variables like _d and _ou
 	// they might make sense to you but not nessesarily to those who read it
 	private int _in;

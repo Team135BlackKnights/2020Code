@@ -14,9 +14,7 @@ import frc.robot.nsubsystems.Turret;
 import frc.robot.util.ImprovedJoystick;
 import frc.robot.util.MotorControl;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -60,13 +58,10 @@ public class targetAndShoot extends CommandBase
   @Override
   public void execute()
   {
-    boolean isTargetValid, isDriving, isAuton, isShooting, isTargetWithinRange;
+    boolean isTargetValid, isDriving, isShooting, isTargetWithinRange;
     boolean isPOVLeft, isPOVRight, isPOVUp, isPOVDown, isPOVTopRight, isPOVBottomRight, isPOVBottomLeft, isPOVTopLeft;
 
     long timeNow = System.currentTimeMillis();
-
-    // Value for autonomous/ no autonomous
-    isAuton = false;
     
     double distanceToTarget, horizontalOffset, rotationError, hoodDesired, hoodActual, hoodError, desiredRPM,
           overrideRPM, actualRPM, rpmError, maxRPM, minRotationError, minHoodError, feedForwardRPM, shooterInput,
