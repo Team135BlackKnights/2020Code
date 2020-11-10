@@ -75,7 +75,7 @@ public class runConveyor extends CommandBase {
      else if (isButton7) {
       conveyorPower = 1;
       storage.conveyorEncoder.setPosition(-35);
-      RobotContainer.intake.runRoller(-.5);
+      //RobotContainer.intake.runRoller(-.5);
       RobotContainer.turret.runIndexer(-.5);
       if (RobotContainer.intake.isRollerLowered()) {
         RobotContainer.intake.raiseLower(true);

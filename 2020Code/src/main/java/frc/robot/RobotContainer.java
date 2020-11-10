@@ -30,7 +30,7 @@ public class RobotContainer implements RobotMap {
   public static final Storage storage = new Storage();
   public static final Intake intake = new Intake();
   public static final Endgame endgame = new Endgame();
-  public static final ColorWheel colorWheel = new ColorWheel();
+  //public static final ColorWheel colorWheel = new ColorWheel();
   public final autoLine autoLineCommand = null; // new autoLine(drive, intake, turret);
   public final rightSideAuto rightSideAutoCommand = new rightSideAuto(drive, intake, turret, storage, true);
   public final autoLinePlus autoLinePlusCommand = null; // new autoLinePlus(drive, intake, turret, limelight, storage);
@@ -76,7 +76,7 @@ public class RobotContainer implements RobotMap {
       manipButton12 = new JoystickButton(manipJoystick, KOI.BASE_BOTTOM_RIGHT_BUTTON);
 
   public RobotContainer() {
-    drive.setDefaultCommand(new driveWithJoysticks(drive, leftJoystick, rightJoystick));
+    drive.setDefaultCommand(new DriveWithJoysticks(drive, leftJoystick, rightJoystick));
     turret.setDefaultCommand(new targetAndShoot(turret, storage, manipJoystick, activeBallCount));
     storage.conveyorEncoder.setPosition(-35);
     storage.setDefaultCommand(new runConveyor(storage, manipJoystick));
@@ -92,7 +92,7 @@ public class RobotContainer implements RobotMap {
     rightButton10.whenPressed(new resetGyro(drive));
     rightButton11.whenPressed(new encoderDrive(drive, 2, 2, false));
     rightButton12.whenPressed(new encoderDrive(drive, 0, 0, false));
-    rightButton3.whenPressed(new shootXBalls(turret, 3));
+    rightButton3.whenPressed(new primeTurret(turret));
     //rightButton3.whenPressed(new setTurretPosPID(turret, 147, -35));
     
     // rightButton11.whenPressed(new leaveStartingConfig(intake, turret));
@@ -111,7 +111,7 @@ public class RobotContainer implements RobotMap {
     manipThumb.whileHeld(new runEndgameWithJoystick(endgame, manipJoystick));
     manipButton3.whileHeld(new runRoller(intake, 2700, false));
     manipButton5.whenPressed(new moveIntake(intake));
-    manipButton9.whenPressed(new rotateColorWheel(colorWheel, 0));
+    //manipButton9.whenPressed(new rotateColorWheel(colorWheel, 0));
   }
 
   public static boolean leftTrigger() {
