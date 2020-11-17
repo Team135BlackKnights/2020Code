@@ -46,8 +46,8 @@ public class primeTurret extends CommandBase {
 
     shooterInput = kF * shooterFeedforward + kP * shooterError;
 
-    turret.runShooter(.6);
-    turret.runIndexer(.3);
+    turret.runShooter(shooterInput);
+    turret.runIndexer(shooterInput);
 
   }
 

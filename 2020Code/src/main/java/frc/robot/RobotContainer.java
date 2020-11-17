@@ -19,7 +19,6 @@ import frc.robot.ncommands.intake.*;
 import frc.robot.ncommands.turret.*;
 import frc.robot.nsubsystems.*;
 import frc.robot.ncommands.auton.*;
-import frc.robot.ncommands.color.rotateColorWheel;
 
 public class RobotContainer implements RobotMap {
   // The robot's subsystems and commands are defined here...
@@ -50,12 +49,15 @@ public class RobotContainer implements RobotMap {
   public static JoystickButton rightTrigger = new JoystickButton(rightJoystick, KOI.TRIGGER_BUTTON),
       rightThumb = new JoystickButton(rightJoystick, KOI.THUMB_BUTTON),
       rightButton3 = new JoystickButton(rightJoystick, KOI.HANDLE_BOTTOM_LEFT_BUTTON),
+      rightButton5 = new JoystickButton(rightJoystick, KOI.HANDLE_TOP_LEFT_BUTTON),
+      rightButton6 = new JoystickButton(rightJoystick, KOI.HANDLE_TOP_RIGHT_BUTTON),
       rightButton10 = new JoystickButton(rightJoystick, KOI.BASE_MIDDLE_RIGHT_BUTTON),
       rightButton11 = new JoystickButton(rightJoystick, KOI.BASE_BOTTOM_LEFT_BUTTON),
       rightButton12 = new JoystickButton(rightJoystick, KOI.BASE_BOTTOM_RIGHT_BUTTON),
       leftTrigger = new JoystickButton(leftJoystick, KOI.TRIGGER_BUTTON),
       leftThumb = new JoystickButton(leftJoystick, KOI.THUMB_BUTTON),
 
+      leftButton3 = new JoystickButton(leftJoystick, KOI.HANDLE_BOTTOM_LEFT_BUTTON),
       leftButton7 = new JoystickButton(leftJoystick, KOI.BASE_TOP_LEFT_BUTTON),
       leftButton8 = new JoystickButton(leftJoystick, KOI.BASE_TOP_RIGHT_BUTTON),
       leftButton9 = new JoystickButton(leftJoystick, KOI.BASE_MIDDLE_LEFT_BUTTON),
@@ -88,33 +90,18 @@ public class RobotContainer implements RobotMap {
   }
 
   private void configureButtonBindings() {
-    // rightButton3.whenPressed(new toggleLight(turret));
-    rightButton10.whenPressed(new resetGyro(drive));
-    rightButton11.whenPressed(new encoderDrive(drive, 2, 2, false));
-    rightButton12.whenPressed(new encoderDrive(drive, 0, 0, false));
-    rightButton3.whenPressed(new primeTurret(turret));
-    //rightButton3.whenPressed(new setTurretPosPID(turret, 147, -35));
-    
-    // rightButton11.whenPressed(new leaveStartingConfig(intake, turret));
-    // rightButton11.whenPressed(new rightSideAuto(drive, intake, turret, limelight, storage, false));
 
-    leftTrigger.whenPressed(new shiftGears(drive));
-    leftButton7.whenPressed(new resetDriveEncoders(drive));
-    leftButton8.whenPressed(new resetEndgameEncoders(endgame));
-    leftButton9.whenPressed(new resetIntakeEncoders(intake));
-    leftButton11.toggleWhenPressed(new toggleCompressor(drive));
-    leftButton10.whenPressed(new raiseEndgame(endgame, 145));
-    leftButton12.whenPressed(new backToStartingConfig(turret, manipJoystick));
-    leftButton12.whenPressed(new raiseEndgame(endgame, 0));
+    rightButton3.whenPressed(new runRoller(intake, 2700, false));
+    rightButton5.whenPressed(new moveIntake(intake));
+    rightButton6.whenPressed(new runConveyor(storage, rightJoystick));
 
-    manipTrigger.whileHeld(new runConveyor(storage, manipJoystick));
-    manipThumb.whileHeld(new runEndgameWithJoystick(endgame, manipJoystick));
-    manipButton3.whileHeld(new runRoller(intake, 2700, false));
-    manipButton5.whenPressed(new moveIntake(intake));
-    //manipButton9.whenPressed(new rotateColorWheel(colorWheel, 0));
+    manipThumb.whenPressed(new shiftGears(drive));
+    manipButton3.whenPressed(new TurnOffLimelight(turret, manipJoystick));
+
   }
 
   public static boolean leftTrigger() {
+    
     return leftTrigger.get();
   }
 
