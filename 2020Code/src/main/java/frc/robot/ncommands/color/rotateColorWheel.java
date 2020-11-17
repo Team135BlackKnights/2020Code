@@ -4,7 +4,7 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
+/*
 package frc.robot.ncommands.color;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -88,3 +88,4 @@ public class rotateColorWheel extends CommandBase {
     return isFinished;
   }
 }
+*/

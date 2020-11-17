@@ -4,7 +4,7 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
+/*
 package frc.robot.nsubsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -225,3 +225,4 @@ public class ColorWheel extends SubsystemBase implements RobotMap.CONTROL_PANEL 
    }
 
 }
+*/
