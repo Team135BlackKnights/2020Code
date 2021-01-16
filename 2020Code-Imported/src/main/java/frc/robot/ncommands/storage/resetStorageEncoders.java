@@ -4,30 +4,34 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-/*
-package frc.robot.ncommands.drive;
+
+package frc.robot.ncommands.storage;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.nsubsystems.FalconDrive;
+import frc.robot.nsubsystems.Storage;
+import frc.robot.util.MotorControl;
 
-public class resetGyro extends CommandBase {
+//This command is made for reseting the encoder's position in the storage subsystem
 
-  FalconDrive drive;
+public class resetStorageEncoders extends CommandBase {
+  Storage storage;
 
-  public resetGyro(FalconDrive _drive) {
-    drive = _drive;
+  public resetStorageEncoders(Storage subsystem) {
+    storage = subsystem;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // run method to reset gyro from drivetrain
-    drive.resetGyro();
+    // storage.resetConveyorEncoder();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // Reset the encoder for the Conveyor in storage
+    MotorControl.resetSparkEncoder(storage.conveyorEncoder);
+
   }
 
   // Called once the command ends or is interrupted.
@@ -41,4 +45,3 @@ public class resetGyro extends CommandBase {
     return true;
   }
 }
-*/

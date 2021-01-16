@@ -4,25 +4,24 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-/*
-package frc.robot.ncommands.drive;
+
+package frc.robot.ncommands.endgame;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.nsubsystems.FalconDrive;
+import frc.robot.nsubsystems.Endgame;
+import frc.robot.util.MotorControl;
 
-public class resetGyro extends CommandBase {
+public class resetEndgameEncoders extends CommandBase {
+  Endgame endgame;
 
-  FalconDrive drive;
-
-  public resetGyro(FalconDrive _drive) {
-    drive = _drive;
+  public resetEndgameEncoders(Endgame subsystem) {
+    endgame = subsystem;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // run method to reset gyro from drivetrain
-    drive.resetGyro();
+    MotorControl.resetSparkEncoder(endgame.liftRaiseEncoder);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,4 +40,3 @@ public class resetGyro extends CommandBase {
     return true;
   }
 }
-*/

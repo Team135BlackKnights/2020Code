@@ -4,30 +4,33 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-/*
-package frc.robot.ncommands.drive;
+
+package frc.robot.ncommands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.nsubsystems.FalconDrive;
+import frc.robot.nsubsystems.*;
 
-public class resetGyro extends CommandBase {
+public class moveIntake extends CommandBase {
 
-  FalconDrive drive;
+  private final Intake intake;
+  private static boolean solenoidPosition = false;
 
-  public resetGyro(FalconDrive _drive) {
-    drive = _drive;
+  public moveIntake(Intake subsystem) {
+    intake = subsystem;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // run method to reset gyro from drivetrain
-    drive.resetGyro();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // Set intake to the position it isn't in
+    solenoidPosition = !solenoidPosition;
+    intake.raiseLower(solenoidPosition);
+
   }
 
   // Called once the command ends or is interrupted.
@@ -41,4 +44,3 @@ public class resetGyro extends CommandBase {
     return true;
   }
 }
-*/

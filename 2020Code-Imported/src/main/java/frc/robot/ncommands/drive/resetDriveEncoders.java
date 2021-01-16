@@ -4,25 +4,25 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-/*
+
 package frc.robot.ncommands.drive;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nsubsystems.FalconDrive;
 
-public class resetGyro extends CommandBase {
-
+public class resetDriveEncoders extends CommandBase {
   FalconDrive drive;
 
-  public resetGyro(FalconDrive _drive) {
-    drive = _drive;
+  public resetDriveEncoders(FalconDrive subsystem) {
+    drive = subsystem;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // run method to reset gyro from drivetrain
-    drive.resetGyro();
+    // Runs method to reset the encoders from drivetrain
+    drive.resetEncoders();
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,4 +41,3 @@ public class resetGyro extends CommandBase {
     return true;
   }
 }
-*/

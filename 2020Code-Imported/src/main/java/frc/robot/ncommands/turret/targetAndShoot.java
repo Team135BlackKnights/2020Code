@@ -49,7 +49,7 @@ public class targetAndShoot extends CommandBase
     // Sets the initial values needed for the turret
     SmartDashboard.putString("Turret Command Running: ", "Target and shoot Turret");
     targetTurret = false;
-    overrideTurret = true;
+    overrideTurret = false;
     errorSum = 0;
     turret.ballsShot = 0;
   }
@@ -192,7 +192,7 @@ public class targetAndShoot extends CommandBase
       SmartDashboard.putBoolean("is Target Within range ", isTargetWithinRange);
    
       //
-      if ( joystick.getJoystickButtonValue(1) /&& isTargetWithinRange && !isDriving)
+      if ( joystick.getJoystickButtonValue(1) && isTargetWithinRange && !isDriving)
       {
         turret.runShooter(shooterInput);
       }
