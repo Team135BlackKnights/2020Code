@@ -192,7 +192,7 @@ public class targetAndShoot extends CommandBase
       SmartDashboard.putBoolean("is Target Within range ", isTargetWithinRange);
    
       //
-      if ( joystick.getJoystickButtonValue(1) /&& isTargetWithinRange && !isDriving)
+      if ( joystick.getJoystickButtonValue(1) && isTargetWithinRange && !isDriving)
       {
         turret.runShooter(shooterInput);
       }

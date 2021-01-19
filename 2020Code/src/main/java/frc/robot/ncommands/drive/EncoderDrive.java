@@ -15,14 +15,14 @@ import frc.robot.RobotContainer;
 import frc.robot.nsubsystems.FalconDrive;
 import frc.robot.util.MotorControl;
 
-public class encoderDrive extends CommandBase {
+public class EncoderDrive extends CommandBase {
  
   public FalconDrive drive;
   public double leftDesired, rightDesired, leftError, rightError;
   public boolean isFinished;
   public boolean waitingForBalls;
 
-  public encoderDrive(FalconDrive drive, double leftDesired, double rightDesired, boolean waitingForBalls) {
+  public EncoderDrive(FalconDrive drive, double leftDesired, double rightDesired, boolean waitingForBalls) {
     this.drive = drive;
     this.leftDesired = leftDesired;
     this.rightDesired = rightDesired;

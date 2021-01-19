@@ -20,7 +20,7 @@ public interface RobotMap {
 
   public interface KOI {
     // Variables for joysticks and their buttons initiation
-    public static final int LEFT_JOYSTICK = 1, RIGHT_JOYSTICK = 2, MANIP_JOYSTICK = 0,
+    public static final int LEFT_JOYSTICK = 0, RIGHT_JOYSTICK = 2, MANIP_JOYSTICK = 1,
 
         TRIGGER_BUTTON = 1, THUMB_BUTTON = 2,
 

@@ -77,8 +77,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
     MotorControl.initCANSparkMax(shooterSlave, false, false, 40);
     MotorControl.initCANSparkMax(indexerSpark, true, true, 30);
 
-    //swapped master and slave also the inversion for the two
-    shooterMaster.follow(shooterSlave, true);
+    shooterSlave.follow(shooterMaster, true);
 
     // Sensor for keeping a count of number of balls in the robot
     ballTrip = new DigitalInput(5);
@@ -181,7 +180,7 @@ public class Turret extends SubsystemBase implements RobotMap.TURRET {
 
   public void runShooter(double power) {
     power = limit(power, .9, -.9);
-    shooterMaster.set(power);
+    shooterMaster.set(-power);
   }
 
   public void aimTurret(double rotationPower, double hoodPower) {

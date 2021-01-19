@@ -10,7 +10,7 @@ package frc.robot.ncommands.auton;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.ncommands.auton.parallels.leaveStartingConfig;
 import frc.robot.ncommands.auton.parallels.runRollerAndDriveRightSide;
-import frc.robot.ncommands.drive.encoderDrive;
+import frc.robot.ncommands.drive.EncoderDrive;
 import frc.robot.ncommands.intake.runRoller;
 import frc.robot.ncommands.turret.primeTurret;
 import frc.robot.ncommands.turret.shootXBalls;
@@ -28,7 +28,7 @@ public class rightSideAuto extends SequentialCommandGroup {
       new shootXBalls(turret , 3),
       race(new runRollerAndDriveRightSide(drive, intake), new primeTurret(turret)),
       //  new runRollerAndDriveRightSide(drive, intake),
-      race(new encoderDrive(drive, 2, 2, false), new runRoller(intake, intake.autonRPM, false), new primeTurret(turret)),
+      race(new EncoderDrive(drive, 2, 2, false), new runRoller(intake, intake.autonRPM, false), new primeTurret(turret)),
       new shootXBalls(turret, 3)
       )
     ;

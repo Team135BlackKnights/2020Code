@@ -38,6 +38,9 @@ public class DriveWithJoysticks extends CommandBase {
     isHalfPower = _rightJoystick.getJoystickButtonValue(2);
     isReversed = (_rightJoystick.getJoystickButtonValue(1));
 
+    SmartDashboard.putNumber("Right Slider", _rightJoystick.getJoystickSlider());
+    SmartDashboard.putNumber("Left Slider", _leftJoystick.getJoystickSlider());
+
     // Decrease power if button is held
     if (isHalfPower) {
       lateralPower = lateralPower * .75;
